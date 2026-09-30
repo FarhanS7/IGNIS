@@ -1,0 +1,2172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04101f">
+<title>IGNIS — Build a Habitat. Start a Fire. Discover the Science.</title>
+<meta name="description" content="IGNIS is an interactive evidence experience for NASA microgravity combustion research. Build a space habitat, explore fire behavior, and discover real NASA experiment evidence.">
+<link rel="icon" type="image/png" href="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Prata&family=Hanken+Grotesk:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){try{if(!window.matchMedia||!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('anim');}}catch(e){}})();
+</script>
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0 }
+
+:root{
+  --dw:1353; --dh:1163; --gutter:25;
+  --u:max(min(.72px, calc(100vh / 700)), min(calc(100vw / 1353), calc(100vh / 1163)));
+  --dh-px:calc(1163 * var(--u));
+  --vshift:calc(max(0px, (100vh - var(--dh-px))) * .42);
+  --ink:#ffffff; --cyan:#79dce8; --cyan-logo:#5fd0e1;
+  --rule:rgba(255,255,255,.23); --btn-ink:#071227;
+  --font-serif:'Prata',Georgia,serif;
+  --font-body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-logo:'Poppins',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --ember:#ff7a3d; --amber:#ffaa40;
+}
+@supports (height:100dvh){
+  :root{
+    --u:max(min(.72px, calc(100dvh / 700)), min(calc(100vw / 1353), calc(100dvh / 1163)));
+    --vshift:calc(max(0px, (100dvh - var(--dh-px))) * .42);
+  }
+}
+html{scroll-behavior:smooth}
+body{background:#04101f; color:var(--ink); font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  text-rendering:geometricPrecision; overflow-x:hidden; overflow-y:auto}
+
+.stage{position:relative; width:100%; height:100vh; min-height:100vh; overflow:hidden; isolation:isolate}
+.sky{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat;
+  -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,0.4) 85%, transparent 98%);
+  mask-image:linear-gradient(to bottom, #000 0%, #000 58%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,0.4) 85%, transparent 98%);
+}
+.ui{position:absolute;inset:0;z-index:3}
+.sky video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  display:block; opacity:0; transition:opacity .22s linear}
+.sky video.is-active{opacity:1}
+@media (prefers-reduced-motion:reduce){ .sky video{display:none} }
+
+.planet{position:absolute; z-index:-1; padding:0; border:0; background:none;
+  -webkit-appearance:none; appearance:none; line-height:0; cursor:pointer;
+  pointer-events:auto;
+  transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.planet img{display:none; width:100%; height:auto}
+.planet img.is-shown{display:block}
+.planet:hover{transform:scale(1.045)}
+.planet:active{transform:scale(.99)}
+.planet-l{width:calc(143 * var(--u)); left:calc(-69.5 * var(--u)); top:calc(-38.3 * var(--u))}
+.planet-r{width:calc(143 * var(--u)); right:calc(-64.7 * var(--u)); top:calc(-40.6 * var(--u))}
+@media (prefers-reduced-motion:reduce){
+  .planet{transition:none} .planet:hover,.planet:active{transform:none} }
+
+.copy{position:absolute; inset:0; transform:translateY(var(--vshift)); pointer-events:none}
+.copy a{pointer-events:auto}
+.col{position:absolute; left:0; right:calc(var(--gutter) * var(--u)); text-align:center}
+
+.navbar{position:fixed; top:calc(24 * var(--u)); left:50%; z-index:100;
+  width:min(calc(1060 * var(--u)), calc(100% - 48 * var(--u)));
+  height:calc(76 * var(--u)); transform:translateX(-50%);
+  border:calc(1 * var(--u)) solid rgba(214,239,255,.22);
+  border-radius:calc(40 * var(--u));
+  background:linear-gradient(135deg,rgba(165,208,235,.15),rgba(7,18,36,.75));
+  -webkit-backdrop-filter:blur(calc(22 * var(--u))) saturate(150%);
+  backdrop-filter:blur(calc(22 * var(--u))) saturate(150%);
+  box-shadow:0 calc(12 * var(--u)) calc(40 * var(--u)) rgba(0,5,15,.45),
+    inset 0 calc(1 * var(--u)) 0 rgba(255,255,255,.14);
+  transition:background .3s ease, border-color .3s ease}
+.navrow{position:absolute; left:calc(28 * var(--u)); right:calc(20 * var(--u)); top:0;
+  height:100%; display:flex; align-items:center; justify-content:space-between}
+.logo{font-family:var(--font-logo); font-weight:600; font-size:calc(19 * var(--u));
+  letter-spacing:calc(-0.15 * var(--u)); line-height:1; color:#fff; text-decoration:none;
+  white-space:nowrap; position:relative; top:calc(-1 * var(--u))}
+.logo i{font-style:normal; color:var(--cyan-logo)}
+.burger{display:none; position:relative; width:calc(46 * var(--u)); height:calc(46 * var(--u));
+  padding:0; border:0; background:none; cursor:pointer; flex-direction:column;
+  align-items:center; justify-content:center; gap:calc(6 * var(--u)); flex:none}
+.burger span{display:block; width:calc(24 * var(--u)); height:calc(2 * var(--u));
+  border-radius:calc(2 * var(--u)); background:#fff;
+  transition:transform .28s cubic-bezier(.4,0,.2,1), opacity .18s linear}
+.navrow[data-open="true"] .burger span:nth-child(1){transform:translateY(calc(8 * var(--u))) rotate(45deg)}
+.navrow[data-open="true"] .burger span:nth-child(2){opacity:0}
+.navrow[data-open="true"] .burger span:nth-child(3){transform:translateY(calc(-8 * var(--u))) rotate(-45deg)}
+.links{display:flex; align-items:center}
+.links a{position:relative; display:flex; align-items:center; height:calc(74 * var(--u));
+  font-size:calc(17 * var(--u)); font-weight:400; line-height:1; color:#fff;
+  text-decoration:none; padding:0 calc(15 * var(--u));
+  letter-spacing:calc(-0.5 * var(--u)); white-space:nowrap;
+  transition:color .22s ease, transform .22s cubic-bezier(.34,1.56,.64,1), text-shadow .22s ease}
+.links a:hover{color:#fff; transform:translateY(calc(-2 * var(--u))); text-shadow:0 0 calc(12 * var(--u)) rgba(121,220,232,.65)}
+.links a[aria-current="page"]::after{content:""; position:absolute;
+  left:calc(15 * var(--u)); right:calc(15 * var(--u));
+  bottom:calc(13 * var(--u)); height:calc(2 * var(--u)); background:var(--cyan);
+  border-radius:calc(1 * var(--u))}
+.links a.enroll{margin-left:calc(20 * var(--u)); width:calc(120 * var(--u));
+  height:calc(38 * var(--u)); border-radius:calc(19 * var(--u)); display:flex;
+  align-items:center; justify-content:center; font-size:calc(15.5 * var(--u));
+  font-weight:600; letter-spacing:calc(-0.5 * var(--u)); line-height:1;
+  color:var(--btn-ink); text-decoration:none; padding-top:calc(2 * var(--u));
+  background:linear-gradient(180deg,#ffffff 0%,#d8ecfe 9%,#dceefe 72%,#f4f9ff 100%);
+  box-shadow:0 calc(3 * var(--u)) calc(14 * var(--u)) rgba(255,255,255,.22),
+             inset 0 0 0 calc(1.5 * var(--u)) rgba(255,255,255,.92);
+  flex:none; transition:transform .2s ease, box-shadow .2s ease}
+.links a.enroll:hover{transform:scale(1.03); box-shadow:0 calc(5 * var(--u)) calc(20 * var(--u)) rgba(121,220,232,.4)}
+
+.eyebrow{top:calc(188.8 * var(--u)); font-size:calc(18 * var(--u)); font-weight:500;
+  line-height:1; letter-spacing:calc(7 * var(--u)); text-indent:calc(7 * var(--u)); color:rgba(207,238,245,.8)}
+h1.title{top:calc(254 * var(--u)); font-family:'Space Grotesk',var(--font-body); font-weight:500;
+  font-size:calc(116 * var(--u)); line-height:1; letter-spacing:calc(12 * var(--u));
+  text-indent:calc(12 * var(--u)); color:#fff}
+.rule{top:calc(399 * var(--u)); height:calc(2 * var(--u)); font-size:0; line-height:0;
+  padding-right:calc(2 * var(--u))}
+.rule span{display:inline-block; vertical-align:top; width:calc(60 * var(--u));
+  height:100%; border-radius:calc(2.5 * var(--u)); background:var(--cyan)}
+p.lede{top:calc(436 * var(--u)); font-size:calc(21 * var(--u)); font-weight:400;
+  max-width:calc(670 * var(--u)); margin-inline:auto; text-wrap:balance;
+  line-height:calc(33 * var(--u)); color:rgba(234,243,250,.9)}
+p.lede br{display:none}
+
+.cta{top:calc(597 * var(--u)); height:calc(66 * var(--u)); isolation:isolate}
+.cta a{display:inline-flex; align-items:center; justify-content:center;
+  width:calc(220 * var(--u)); height:calc(66 * var(--u)); border-radius:calc(33 * var(--u));
+  font-size:calc(16.5 * var(--u)); font-weight:700; letter-spacing:calc(1 * var(--u)); text-indent:0;
+  line-height:1; color:var(--btn-ink); text-decoration:none; padding-top:calc(2 * var(--u));
+  background:linear-gradient(180deg,#ffffff 0%,#d6e8f8 4%,#d9ecfe 72%,#ffffff 100%);
+  box-shadow:0 calc(10 * var(--u)) calc(18 * var(--u)) calc(-8 * var(--u)) rgba(255,255,255,.50),
+             0 0 calc(26 * var(--u)) rgba(255,255,255,.18),
+             inset 0 0 0 calc(2 * var(--u)) rgba(255,255,255,.9);
+  transition:transform .25s ease, box-shadow .25s ease}
+.cta a:hover{transform:scale(1.035); box-shadow:0 calc(12 * var(--u)) calc(24 * var(--u)) rgba(121,220,232,.45)}
+.label{position:absolute; top:calc(33 * var(--u)); font-family:var(--font-serif);
+  font-weight:400; font-size:calc(17.8 * var(--u)); letter-spacing:calc(4.6 * var(--u));
+  line-height:1; color:#fff; white-space:nowrap}
+.label.label-l{left:calc(111 * var(--u))}
+.label.label-r{right:calc(104 * var(--u))}
+
+.scroll{position:absolute; z-index:4; left:50%;
+  margin-left:calc((-48 - (var(--gutter) / 2)) * var(--u)); bottom:calc(68 * var(--u));
+  width:calc(96 * var(--u)); height:calc(96 * var(--u)); border-radius:50%;
+  background:rgba(24,30,42,.70); -webkit-backdrop-filter:blur(calc(6 * var(--u)));
+  backdrop-filter:blur(calc(6 * var(--u))); border:0; display:flex; align-items:center;
+  justify-content:center; cursor:pointer; transition:transform .25s ease, background .25s ease}
+.scroll:hover{transform:scale(1.08); background:rgba(30,42,62,.85)}
+.scroll svg{width:calc(20 * var(--u)); height:calc(25 * var(--u)); display:block}
+
+.scroll:focus-visible,.links a:focus-visible,.enroll:focus-visible,
+.cta a:focus-visible,.logo:focus-visible{
+  outline:calc(2 * var(--u)) solid var(--cyan); outline-offset:calc(3 * var(--u))}
+.planet:focus-visible{outline:calc(2 * var(--u)) solid var(--cyan);
+  outline-offset:calc(6 * var(--u)); border-radius:50%}
+
+@media (max-width:1030px), (max-height:620px){
+  .navbar{width:min(calc(580 * var(--u)), calc(100% - 32 * var(--u)))}
+  .navrow{left:calc(24 * var(--u));right:calc(14 * var(--u))}
+  .burger{display:flex}
+  .links{position:absolute; top:calc(88 * var(--u)); right:0; z-index:5;
+    width:min(calc(324 * var(--u)), calc(100vw - 50 * var(--u)));
+    flex-direction:column; align-items:stretch; padding:calc(12 * var(--u));
+    border-radius:calc(20 * var(--u)); background:rgba(9,21,42,.92);
+    backdrop-filter:blur(calc(18 * var(--u)));
+    border:calc(1 * var(--u)) solid rgba(255,255,255,.14);
+    box-shadow:0 calc(18 * var(--u)) calc(44 * var(--u)) rgba(2,8,20,.65);
+    opacity:0; visibility:hidden; transform:translateY(calc(-10 * var(--u)));
+    transition:opacity .24s ease, transform .28s cubic-bezier(.4,0,.2,1), visibility .28s}
+  .navrow[data-open="true"] .links{opacity:1; visibility:visible; transform:none}
+  .links a:nth-child(n){margin-left:0; height:auto; justify-content:flex-start;
+    padding:calc(14 * var(--u)) calc(16 * var(--u)); font-size:calc(18 * var(--u));
+    letter-spacing:calc(-.4 * var(--u));
+    opacity:0; transform:translateX(calc(16 * var(--u)));
+    transition:opacity .22s ease, transform .28s cubic-bezier(.34,1.4,.64,1)}
+  .navrow[data-open="true"] .links a:nth-child(1){opacity:1; transform:none; transition-delay:.05s}
+  .navrow[data-open="true"] .links a:nth-child(2){opacity:1; transform:none; transition-delay:.10s}
+  .navrow[data-open="true"] .links a:nth-child(3){opacity:1; transform:none; transition-delay:.15s}
+  .navrow[data-open="true"] .links a:nth-child(4){opacity:1; transform:none; transition-delay:.20s}
+  .navrow[data-open="true"] .links a:nth-child(5){opacity:1; transform:none; transition-delay:.25s}
+  .navrow[data-open="true"] .links a.enroll{opacity:1; transform:none; transition-delay:.30s}
+  .links a + a{border-top:calc(1 * var(--u)) solid rgba(255,255,255,.08)}
+  .links a.enroll{margin:calc(14 * var(--u)) 0 calc(2 * var(--u)); width:100%;
+    height:calc(46 * var(--u)); border-radius:calc(23 * var(--u)); justify-content:center;
+    padding-top:calc(2 * var(--u)); font-size:calc(17 * var(--u)); border-top:0}
+}
+@media (min-width:580px) and (max-width:1030px) and (min-height:621px){
+  :root{--gutter:0;
+    --u:min(max(min(.85px, calc(100vh / 780)), min(calc(100vw / 900), calc(100vh / 1163))), 1.15px);
+    --dh-px:calc(1120 * var(--u));
+    --vshift:calc(max(0px, (100vh - var(--dh-px))) * .38)}
+  p.lede{max-width:calc(620 * var(--u)); margin-left:auto; margin-right:auto; text-wrap:pretty}
+  .label.label-r{right:calc(116 * var(--u))}
+}
+@media (max-width:579px), (max-height:620px){
+  :root{--gutter:0;
+    --u:max(min(.92px, calc(100vh / 620)), min(calc(100vw / 430), calc(100vh / 880)));
+    --dh-px:calc(880 * var(--u));
+    --vshift:calc(max(0px, (100vh - var(--dh-px))) * .34)}
+  .navbar{top:calc(16 * var(--u)); height:calc(64 * var(--u))}
+  .navrow{left:calc(22 * var(--u)); right:calc(10 * var(--u)); height:100%}
+  .links{top:calc(76 * var(--u))}
+  .copy{top:calc(76 * var(--u)); display:flex; flex-direction:column; align-items:center;
+    padding:calc(56 * var(--u)) calc(26 * var(--u)) 0}
+  .col{position:static; width:100%; right:auto}
+  .eyebrow{font-size:calc(14 * var(--u)); letter-spacing:calc(5 * var(--u)); text-indent:calc(5 * var(--u))}
+  h1.title{font-size:calc(70 * var(--u)); margin-top:calc(20 * var(--u));
+    letter-spacing:calc(5 * var(--u)); text-indent:calc(5 * var(--u))}
+  .rule{margin-top:calc(22 * var(--u)); height:calc(2 * var(--u)); padding-right:0}
+  .rule span{width:calc(48 * var(--u))}
+  p.lede{margin-top:calc(19 * var(--u)); font-size:calc(17 * var(--u));
+    line-height:calc(27 * var(--u)); max-width:calc(400 * var(--u)); text-wrap:balance}
+  .cta{top:auto; margin-top:calc(32 * var(--u)); height:calc(60 * var(--u)); position:relative}
+  .cta a{width:calc(190 * var(--u)); height:calc(60 * var(--u)); border-radius:calc(30 * var(--u))}
+  .label{top:50%; transform:translateY(-50%); font-size:calc(16 * var(--u));
+    letter-spacing:calc(4 * var(--u))}
+  .label.label-l{left:calc(56 * var(--u))}
+  .label.label-r{right:calc(60 * var(--u))}
+  .planet-l{width:calc(89 * var(--u)); left:calc(-44.5 * var(--u)); top:calc(-17 * var(--u))}
+  .planet-r{width:calc(89 * var(--u)); right:calc(-44.5 * var(--u)); top:calc(-18.3 * var(--u))}
+  .scroll{width:calc(74 * var(--u)); height:calc(74 * var(--u));
+    margin-left:calc(-37 * var(--u)); bottom:calc(49 * var(--u))}
+  .scroll svg{width:calc(15.5 * var(--u)); height:calc(19.5 * var(--u))}
+}
+@media (max-height:660px){.scroll{display:none}}
+@media (max-height:620px){:root{--u:max(min(.85px, calc(100vh / 470)), min(calc(100vw / 640), calc(100vh / 560)));
+    --dh-px:calc(560 * var(--u)); --vshift:calc(0 * var(--u))}
+  .copy{padding-top:calc(26 * var(--u))}
+  h1.title{font-size:calc(58 * var(--u)); margin-top:calc(12 * var(--u))}
+  .rule{margin-top:calc(12 * var(--u))}
+  p.lede{margin-top:calc(12 * var(--u))}
+  .cta{margin-top:calc(20 * var(--u))}
+  .label{top:50%; transform:translateY(-50%); font-size:calc(15 * var(--u))}
+  .label.label-l{left:calc(58 * var(--u))}
+  .label.label-r{right:calc(58 * var(--u))}}
+@media (min-width:821px) and (max-height:660px){.copy{transform:none}}
+@media (max-width:500px){.label{top:calc(100% + 34 * var(--u)); transform:none; font-size:calc(15 * var(--u))}
+  .label.label-l{left:calc(6 * var(--u))}
+  .label.label-r{right:calc(6 * var(--u))}}
+@media (prefers-reduced-motion:reduce){.links,.burger span{transition:none}}
+
+@keyframes ent-reveal{from{transform:translateY(115%)}to{transform:translateY(0)}}
+@keyframes ent-rise{from{opacity:0;transform:translateY(var(--rise,calc(10 * var(--u))))}to{opacity:1;transform:none}}
+@keyframes ent-settle{from{opacity:0;transform:translateY(var(--rise,calc(8 * var(--u)))) scale(.965)}to{opacity:1;transform:none}}
+@keyframes ent-draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ent-fade{from{opacity:0}to{opacity:1}}
+
+@keyframes nav-bar-expand {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(calc(-20 * var(--u))) scale(0.96);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes nav-item-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(calc(-14 * var(--u))) scale(0.94);
+    filter: blur(4px);
+  }
+  65% {
+    opacity: 0.95;
+    transform: translateY(calc(1.5 * var(--u))) scale(1.02);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes nav-pill-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) translateY(calc(-10 * var(--u)));
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08) translateY(0);
+    box-shadow: 0 0 calc(24 * var(--u)) rgba(121,220,232,0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 calc(3 * var(--u)) calc(14 * var(--u)) rgba(255,255,255,.22), inset 0 0 0 calc(1.5 * var(--u)) rgba(255,255,255,.92);
+  }
+}
+
+.anim{--e-expo:cubic-bezier(.16,1,.3,1); --e-quint:cubic-bezier(.22,1,.36,1);
+      --e-slow:cubic-bezier(.4,0,.2,1)}
+.ent-mask,.ent-line{display:block}
+.anim .ent-mask{overflow:hidden; padding-top:calc(var(--mask-size) * .18 * var(--u)); margin-top:calc(var(--mask-size) * -.18 * var(--u))}
+.anim .ent-line{transform:translateY(115%); will-change:transform}
+.anim .navbar::after,.anim .links a[aria-current="page"]::after,.anim .rule span{transform:scaleX(0)}
+.anim .logo,.anim .links a,.anim .burger,.anim p.lede,.anim .label,.anim .cta a,
+.anim .scroll,.anim .sky{opacity:0}
+.anim .sky{will-change:opacity}
+
+.eyebrow{--mask-size:18}h1.title{--mask-size:116}
+@media(max-width:579px),(max-height:620px){.eyebrow{--mask-size:14}h1.title{--mask-size:70}}
+@media(max-height:620px){h1.title{--mask-size:58}}
+.anim.play .sky{--rise:calc(8 * var(--u));animation:ent-fade 1.6s var(--e-slow) .25s both}
+.anim.play .navbar{animation:nav-bar-expand .85s var(--e-expo) .08s both}
+.anim.play .navbar::after{--rise:calc(8 * var(--u));animation:ent-draw .9s var(--e-expo) .15s both}
+.anim.play .logo{--rise:calc(8 * var(--u));animation:ent-rise .6s var(--e-quint) .20s both}
+.anim.play .links a{animation:nav-item-drop .65s var(--e-quint) both}
+.anim.play .links a:nth-child(1){animation-delay:.24s}
+.anim.play .links a:nth-child(2){animation-delay:.30s}
+.anim.play .links a:nth-child(4){animation-delay:.42s}
+.anim.play .links a:nth-child(5){animation-delay:.48s}
+.anim.play .links a.enroll{animation:nav-pill-pop .7s var(--e-quint) .56s both}
+.anim.play .burger{--rise:calc(8 * var(--u));animation:ent-settle .6s var(--e-quint) .46s both}
+.anim.play .links a[aria-current]::after{--rise:calc(8 * var(--u));animation:ent-draw .55s var(--e-expo) .68s both}
+.anim.play .eyebrow .ent-line{--rise:calc(8 * var(--u));animation:ent-reveal .75s var(--e-expo) .30s both}
+.anim.play h1.title .ent-line{--rise:calc(8 * var(--u));animation:ent-reveal .95s var(--e-expo) .44s both}
+.anim.play .rule span{--rise:calc(8 * var(--u));animation:ent-draw .65s var(--e-expo) .78s both}
+.anim.play p.lede{--rise:calc(12 * var(--u));animation:ent-rise .7s var(--e-quint) .86s both}
+.anim.play .label.label-l{--rise:calc(8 * var(--u));animation:ent-rise .6s var(--e-quint) 1.04s both}
+.anim.play .label.label-r{--rise:calc(8 * var(--u));animation:ent-rise .6s var(--e-quint) 1.10s both}
+.anim.play .cta a{--rise:calc(8 * var(--u));animation:ent-settle .7s var(--e-quint) 1.14s both}
+.anim.play .scroll{--rise:calc(8 * var(--u));animation:ent-settle .6s var(--e-quint) 1.42s both}
+.burger:focus-visible{outline:calc(2 * var(--u)) solid var(--cyan);outline-offset:calc(3 * var(--u))}
+.sky{background-image:url("https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png")}
+.glow-cursor{position:fixed; inset:0; z-index:99; width:100%; height:100%;
+  pointer-events:none; user-select:none; mix-blend-mode:screen}
+@media (prefers-reduced-motion:reduce), (hover:none){.glow-cursor{display:none}}
+
+
+/* ==========================================================================
+   SMOOTH SCROLLING & SCROLL REVEAL ANIMATIONS
+   ========================================================================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stagger-1 { transition-delay: 0.08s; }
+.stagger-2 { transition-delay: 0.16s; }
+.stagger-3 { transition-delay: 0.24s; }
+.stagger-4 { transition-delay: 0.32s; }
+.stagger-5 { transition-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   IGNIS SHOWCASE LANDING PAGE STYLING
+   ========================================================================== */
+.fixed-bg{
+  position:fixed; inset:0; z-index:-2; width:100vw; height:100vh;
+  background-color:#04101f;
+  background-image:url("space-bg.png");
+  background-size:cover; background-position:center; background-repeat:no-repeat;
+  pointer-events:none; transform:translateZ(0);
+}
+.ignis-content{
+  position:relative; z-index:10;
+  background:transparent;
+  color:var(--ink);
+  overflow:hidden;
+}
+
+.ignis-section{
+  padding:120px 24px;
+  max-width:1200px;
+  margin:0 auto;
+  position:relative;
+}
+
+.section-header{
+  text-align:center;
+  max-width:820px;
+  margin:0 auto 60px;
+}
+
+.eyebrow-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--cyan);
+  padding:6px 16px;
+  border-radius:20px;
+  background:rgba(121,220,232,0.1);
+  border:1px solid rgba(121,220,232,0.25);
+  margin-bottom:18px;
+}
+
+.section-title{
+  font-family:'Space Grotesk',var(--font-body);
+  font-size:clamp(32px, 4.2vw, 52px);
+  font-weight:600;
+  letter-spacing:-0.5px;
+  line-height:1.15;
+  color:#fff;
+  margin-bottom:18px;
+}
+
+.section-lead{
+  font-size:clamp(17px, 1.8vw, 20px);
+  line-height:1.6;
+  color:rgba(234,243,250,0.85);
+  font-weight:400;
+}
+
+.glass-card{
+  background:linear-gradient(135deg, rgba(165,208,235,0.09), rgba(12,27,47,0.55));
+  border:1px solid rgba(214,239,255,0.16);
+  border-radius:24px;
+  padding:36px;
+  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(20px);
+  box-shadow:0 16px 40px rgba(0,5,15,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+  transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.glass-card:hover{
+  border-color:rgba(121,220,232,0.4);
+  box-shadow:0 20px 50px rgba(0,5,15,0.5), 0 0 24px rgba(121,220,232,0.12);
+}
+
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:24px;
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+}
+@media (max-width:880px){
+  .grid-2{grid-template-columns:1fr}
+}
+
+/* Stat Banner */
+.stats-banner{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:20px;
+  margin-bottom:60px;
+}
+.stat-box{
+  background:rgba(9,23,45,0.6);
+  border:1px solid rgba(214,239,255,0.12);
+  border-radius:18px;
+  padding:24px 20px;
+  text-align:center;
+}
+.stat-val{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:36px;
+  font-weight:700;
+  color:var(--cyan);
+  line-height:1;
+  margin-bottom:8px;
+}
+.stat-lbl{
+  font-size:13px;
+  color:rgba(234,243,250,0.7);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+/* Two Ways Feature Cards */
+.mode-card{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  border-radius:24px;
+  padding:40px;
+  position:relative;
+  overflow:hidden;
+}
+.mode-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 100% 0%, rgba(121,220,232,0.12), transparent 50%);
+  pointer-events:none;
+}
+.mode-card.fire-card::before{
+  background:radial-gradient(circle at 100% 0%, rgba(255,122,61,0.14), transparent 50%);
+}
+.mode-badge{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:4px 12px;
+  border-radius:12px;
+  margin-bottom:16px;
+  background:rgba(121,220,232,0.15);
+  color:var(--cyan);
+  border:1px solid rgba(121,220,232,0.3);
+}
+.fire-card .mode-badge{
+  background:rgba(255,122,61,0.15);
+  color:var(--ember);
+  border-color:rgba(255,122,61,0.3);
+}
+.mode-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:28px;
+  font-weight:600;
+  color:#fff;
+  margin-bottom:14px;
+}
+.mode-desc{
+  font-size:16px;
+  line-height:1.6;
+  color:rgba(234,243,250,0.8);
+  margin-bottom:28px;
+}
+.mode-action{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#fff;
+  text-decoration:none;
+  transition:gap .2s ease, color .2s ease;
+}
+.mode-action:hover{
+  gap:14px;
+  color:var(--cyan);
+}
+.fire-card .mode-action:hover{
+  color:var(--ember);
+}
+
+/* Interactive Habitat Simulator */
+.sim-container{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:32px;
+  align-items:start;
+}
+@media (max-width:960px){
+  .sim-container{grid-template-columns:1fr}
+}
+.control-group{
+  margin-bottom:24px;
+}
+.control-label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  color:#fff;
+  margin-bottom:10px;
+}
+.control-val{
+  font-family:var(--font-mono);
+  font-size:15px;
+  color:var(--cyan);
+  font-weight:600;
+}
+.sim-slider{
+  width:100%;
+  -webkit-appearance:none;
+  appearance:none;
+  height:6px;
+  border-radius:3px;
+  background:rgba(255,255,255,0.15);
+  outline:none;
+  cursor:pointer;
+  transition:background .2s;
+}
+.sim-slider::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:var(--cyan);
+  cursor:pointer;
+  box-shadow:0 0 12px rgba(121,220,232,0.8);
+  transition:transform .15s ease;
+}
+.sim-slider::-webkit-slider-thumb:hover{
+  transform:scale(1.2);
+}
+.dest-tabs{
+  display:flex;
+  gap:10px;
+  margin-bottom:24px;
+}
+.dest-btn{
+  flex:1;
+  padding:12px 10px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(9,23,45,0.5);
+  color:#fff;
+  font-family:var(--font-body);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.dest-btn.active{
+  background:rgba(121,220,232,0.18);
+  border-color:var(--cyan);
+  color:var(--cyan);
+  box-shadow:0 0 16px rgba(121,220,232,0.25);
+}
+.fuel-select{
+  width:100%;
+  padding:12px 16px;
+  border-radius:12px;
+  background:rgba(9,23,45,0.7);
+  border:1px solid rgba(214,239,255,0.2);
+  color:#fff;
+  font-family:var(--font-body);
+  font-size:14px;
+  outline:none;
+  cursor:pointer;
+}
+
+/* Fire Profile Display */
+.profile-card{
+  background:linear-gradient(135deg, rgba(8,20,40,0.8), rgba(4,16,31,0.9));
+  border:1px solid rgba(121,220,232,0.25);
+  border-radius:24px;
+  padding:32px;
+}
+.profile-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.profile-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:20px;
+  font-weight:600;
+  color:#fff;
+}
+.caveat-banner{
+  background:rgba(255,170,64,0.12);
+  border:1px solid rgba(255,170,64,0.35);
+  border-radius:12px;
+  padding:12px 16px;
+  font-size:13px;
+  line-height:1.5;
+  color:var(--amber);
+  margin-bottom:20px;
+  display:none;
+}
+.caveat-banner.visible{
+  display:block;
+}
+
+.dimension-row{
+  margin-bottom:16px;
+}
+.dim-meta{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  font-weight:600;
+  color:rgba(234,243,250,0.9);
+  margin-bottom:6px;
+}
+.dim-tag{
+  padding:2px 8px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.tag-elevated{background:rgba(255,122,61,0.2); color:var(--ember); border:1px solid rgba(255,122,61,0.4)}
+.tag-mixed{background:rgba(255,170,64,0.2); color:var(--amber); border:1px solid rgba(255,170,64,0.4)}
+.tag-limited{background:rgba(121,220,232,0.15); color:var(--cyan); border:1px solid rgba(121,220,232,0.35)}
+
+.dim-bar-bg{
+  width:100%;
+  height:7px;
+  background:rgba(255,255,255,0.1);
+  border-radius:4px;
+  overflow:hidden;
+}
+.dim-bar-fill{
+  height:100%;
+  border-radius:4px;
+  transition:width .4s ease, background .4s ease;
+}
+
+.exp-matches{
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.exp-match-item{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.exp-name{font-size:13px; font-weight:600; color:#fff}
+.exp-details{font-size:12px; color:rgba(234,243,250,0.6)}
+.exp-score{
+  font-family:var(--font-mono);
+  font-size:13px;
+  font-weight:700;
+  color:var(--cyan);
+}
+
+.disclaimer-pill{
+  font-size:12px;
+  color:rgba(234,243,250,0.65);
+  font-style:italic;
+  text-align:center;
+  margin-top:20px;
+  padding:8px 12px;
+  background:rgba(255,255,255,0.03);
+  border-radius:8px;
+  border:1px dashed rgba(255,255,255,0.15);
+}
+
+/* Evidence Levels Grid */
+.level-card{
+  background:rgba(7,19,38,0.7);
+  border:1px solid rgba(214,239,255,0.14);
+  border-radius:18px;
+  padding:24px;
+  position:relative;
+  transition:all .25s ease;
+}
+.level-card:hover{
+  border-color:var(--cyan);
+  transform:translateY(-3px);
+}
+.level-badge{
+  font-family:var(--font-mono);
+  display:inline-block;
+  font-size:12px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:8px;
+  margin-bottom:12px;
+}
+.level-a{background:rgba(121,220,232,0.2); color:var(--cyan); border:1px solid var(--cyan)}
+.level-b{background:rgba(95,208,225,0.15); color:#99eaff; border:1px solid #5fd0e1}
+.level-c{background:rgba(255,170,64,0.15); color:var(--amber); border:1px solid var(--amber)}
+.level-d{background:rgba(255,122,61,0.15); color:var(--ember); border:1px solid var(--ember)}
+.level-e{background:rgba(200,160,255,0.15); color:#d4b3ff; border:1px solid #c8a0ff}
+
+.level-name{font-size:16px; font-weight:600; color:#fff; margin-bottom:8px}
+.level-desc{font-size:13px; line-height:1.5; color:rgba(234,243,250,0.75)}
+
+/* AI Flame Vision Module */
+.vision-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:32px;
+  align-items:center;
+}
+@media (max-width:960px){
+  .vision-grid{grid-template-columns:1fr}
+}
+.canvas-wrapper{
+  position:relative;
+  background:#020813;
+  border-radius:20px;
+  border:1px solid rgba(121,220,232,0.3);
+  box-shadow:0 0 30px rgba(0,0,0,0.6), inset 0 0 40px rgba(121,220,232,0.05);
+  overflow:hidden;
+  aspect-ratio:16/10;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.vision-canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.vision-hud{
+  position:absolute;
+  inset:16px;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.hud-top{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--cyan);
+}
+.hud-bottom{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:rgba(234,243,250,0.7);
+}
+.scrubber-panel{
+  margin-top:20px;
+}
+.time-display{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--font-mono);
+  font-size:14px;
+  color:#fff;
+  margin-bottom:8px;
+}
+
+/* Explore Fire Stories */
+.story-card{
+  background:rgba(8,20,40,0.6);
+  border:1px solid rgba(214,239,255,0.12);
+  border-radius:20px;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:all .3s ease;
+}
+.story-card:hover{
+  border-color:var(--cyan);
+  transform:translateY(-4px);
+  background:rgba(12,28,54,0.7);
+}
+.story-tag{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:12px;
+}
+.story-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:22px;
+  font-weight:600;
+  color:#fff;
+  line-height:1.25;
+  margin-bottom:12px;
+}
+.story-excerpt{
+  font-size:14px;
+  line-height:1.6;
+  color:rgba(234,243,250,0.8);
+  margin-bottom:20px;
+}
+.story-link{
+  font-size:13px;
+  font-weight:700;
+  color:var(--cyan);
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Ask IGNIS Demo */
+.ask-box{
+  background:linear-gradient(135deg, rgba(12,28,54,0.9), rgba(6,15,30,0.95));
+  border:1px solid rgba(121,220,232,0.3);
+  border-radius:24px;
+  padding:40px;
+  max-width:900px;
+  margin:0 auto;
+  box-shadow:0 24px 60px rgba(0,5,15,0.6);
+}
+.prompt-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:24px;
+}
+.chip{
+  padding:10px 18px;
+  border-radius:20px;
+  background:rgba(121,220,232,0.1);
+  border:1px solid rgba(121,220,232,0.25);
+  color:rgba(234,243,250,0.9);
+  font-size:13px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.chip:hover, .chip.active{
+  background:rgba(121,220,232,0.25);
+  color:#fff;
+  border-color:var(--cyan);
+  transform:scale(1.02);
+}
+.qa-response-area{
+  background:rgba(3,10,22,0.6);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:18px;
+  padding:24px;
+}
+.qa-status{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--cyan);
+  margin-bottom:14px;
+}
+.qa-text{
+  font-size:16px;
+  line-height:1.65;
+  color:#fff;
+  margin-bottom:20px;
+}
+.qa-sources{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:rgba(234,243,250,0.7);
+}
+.source-pill{
+  font-family:var(--font-mono);
+  font-size:11px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  padding:4px 10px;
+  border-radius:6px;
+  color:var(--cyan);
+}
+
+/* Footer */
+.ignis-footer{
+  border-top:1px solid rgba(255,255,255,0.12);
+  padding:80px 24px 50px;
+  background:#020914;
+}
+.footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  gap:40px;
+}
+.footer-brand h3{
+  font-family:var(--font-logo);
+  font-size:24px;
+  color:#fff;
+  margin-bottom:12px;
+}
+.footer-brand p{
+  font-size:14px;
+  line-height:1.6;
+  color:rgba(234,243,250,0.65);
+  max-width:380px;
+}
+.footer-links-col h4{
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#fff;
+  margin-bottom:16px;
+}
+.footer-links-col ul{
+  list-style:none;
+}
+.footer-links-col li{
+  margin-bottom:10px;
+}
+.footer-links-col a{
+  color:rgba(234,243,250,0.7);
+  text-decoration:none;
+  font-size:14px;
+  transition:color .2s;
+}
+.footer-links-col a:hover{
+  color:var(--cyan);
+}
+.footer-bottom{
+  max-width:1200px;
+  margin:50px auto 0;
+  padding-top:24px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12px;
+  color:rgba(234,243,250,0.5);
+  flex-wrap:wrap;
+  gap:16px;
+}
+</style>
+</head>
+<body>
+<div class="fixed-bg" id="fixedBg" aria-hidden="true"></div>
+
+<!-- HERO STAGE (EXACT TEMPLATE ARCHITECTURE & UI) -->
+<div class="stage">
+  <div class="sky">
+    <video data-planet="orbital" class="is-active" autoplay preload="auto" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_3ffb4889-c520-432d-8458-038009eb40df.mp4" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png" muted loop playsinline aria-hidden="true"></video>
+    <video data-planet="moon" preload="none" data-src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_b211cd74-013b-4dd3-bfd0-64491d8696fa.mp4" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_cf55d1d8-7b59-4a64-80da-d72052ae974e.png" muted loop playsinline aria-hidden="true"></video>
+    <video data-planet="mars" preload="none" data-src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_51eae59a-2459-4c84-907c-cc5edfe5fea7.mp4" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_0ba6de7c-285d-43dc-b7ab-8c54c73707cb.png" muted loop playsinline aria-hidden="true"></video>
+  </div>
+  <div class="ui">
+    <header class="navbar">
+      <div class="navrow">
+        <a class="logo" href="#">IG<i>NIS</i></a>
+        <nav class="links" id="site-nav" aria-label="Main navigation">
+          <a href="#overview">Overview</a>
+          <a href="#habitat-builder" aria-current="page">Build Habitat</a>
+          <a href="#evidence-engine">Evidence Engine</a>
+          <a href="#flame-vision">Flame Vision</a>
+          <a href="#explore-fire">Explore Fire</a>
+          <a class="enroll" href="#ask-ignis">Ask IGNIS</a>
+        </nav>
+        <button class="burger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+      </div>
+    </header>
+    <main class="copy">
+      <div class="col eyebrow"><span class="ent-mask"><span class="ent-line">DESTINATION PRESET</span></span></div>
+      <h1 class="col title"><span class="ent-mask"><span class="ent-line">ORBITAL</span></span></h1>
+      <div class="col rule"><span></span></div>
+      <p class="col lede">Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow — discover what NASA&rsquo;s real microgravity <br>combustion experiments reveal about fire behavior in your scenario.</p>
+      <div class="col cta">
+        <button class="planet planet-l" type="button" data-slot="l">
+          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
+          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
+          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
+        </button>
+        <button class="planet planet-r" type="button" data-slot="r">
+          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
+          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
+          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
+        </button>
+        <a href="#habitat-builder">START BUILDING</a>
+        <span class="label label-l"></span>
+        <span class="label label-r"></span>
+      </div>
+    </main>
+  </div>
+  <button class="scroll" type="button" aria-label="Scroll to next section">
+    <svg viewBox="0 0 26 33" fill="none" aria-hidden="true"><path d="M13 1.5 V31.5 M1.9 20.4 L13 31.5 L24.1 20.4" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg>
+  </button>
+</div>
+
+<!-- ==========================================================================
+     IGNIS PROJECT SHOWCASE SECTIONS
+     ========================================================================== -->
+<div class="ignis-content">
+
+  <!-- 1. OVERVIEW & PRODUCT THESIS -->
+  <section id="overview" class="ignis-section">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">NASA Space Apps Challenge 2026</div>
+      <h2 class="section-title">The AI is Not the Source of Truth.<br><span style="color:var(--cyan)">NASA Experiments Are.</span></h2>
+      <p class="section-lead">IGNIS transforms four decades of NASA microgravity combustion research into a living, navigable evidence network — making data searchable, comparable, and visual without asking AI to hallucinate the physics.</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-banner">
+      <div class="stat-box scroll-reveal stagger-1">
+        <div class="stat-val">40+</div>
+        <div class="stat-lbl">Years NASA Data</div>
+      </div>
+      <div class="stat-box scroll-reveal stagger-2">
+        <div class="stat-val">5 Levels</div>
+        <div class="stat-lbl">Evidence Provenance</div>
+      </div>
+      <div class="stat-box scroll-reveal stagger-3">
+        <div class="stat-val">100%</div>
+        <div class="stat-lbl">Traceable Citations</div>
+      </div>
+      <div class="stat-box scroll-reveal stagger-4">
+        <div class="stat-val">0g → 0.38g</div>
+        <div class="stat-lbl">Gravity Regimes</div>
+      </div>
+    </div>
+
+    <!-- Two Ways In -->
+    <div class="grid-2">
+      <div class="glass-card mode-card scroll-reveal stagger-1">
+        <div>
+          <span class="mode-badge">Core Experience</span>
+          <h3 class="mode-title">Build a Habitat</h3>
+          <p class="mode-desc">Configure your mission destination and engineer cabin atmosphere — oxygen, pressure, forced airflow, and materials. Discover comparable NASA combustion experiments and inspect an evidence-grounded fire behavior profile.</p>
+        </div>
+        <a href="#habitat-builder" class="mode-action">Open Habitat Builder →</a>
+      </div>
+
+      <div class="glass-card mode-card fire-card scroll-reveal stagger-2">
+        <div>
+          <span class="mode-badge">Science Stories</span>
+          <h3 class="mode-title">Explore Fire</h3>
+          <p class="mode-desc">Journey through guided scientific stories. Discover why zero-gravity flames form perfect spheres, contrast space combustion with NASA Earthdata wildfire sensing, and scrub synchronized computer-vision flame analytics.</p>
+        </div>
+        <a href="#explore-fire" class="mode-action">Explore Fire Stories →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. INTERACTIVE BUILD A HABITAT SIMULATOR -->
+  <section id="habitat-builder" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Interactive Scenario Builder</div>
+      <h2 class="section-title">Build a Space Habitat</h2>
+      <p class="section-lead">Tune environmental variables to test fire safety against real NASA flight and drop-tower investigations.</p>
+    </div>
+
+    <div class="sim-container">
+      <!-- Left: Controls -->
+      <div class="glass-card scroll-reveal">
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:20px; margin-bottom:20px; color:#fff;">1. Destination & Habitat Interior</h3>
+
+        <!-- Destination Selector -->
+        <label style="display:block; font-size:13px; font-weight:600; color:rgba(234,243,250,0.8); margin-bottom:8px;">MISSION DESTINATION</label>
+        <div class="dest-tabs">
+          <button class="dest-btn active" data-dest="orbital" onclick="setSimDest('orbital', this)">Orbital (0g)</button>
+          <button class="dest-btn" data-dest="lunar" onclick="setSimDest('lunar', this)">Moon Base (0.16g)</button>
+          <button class="dest-btn" data-dest="mars" onclick="setSimDest('mars', this)">Mars Base (0.38g)</button>
+        </div>
+
+        <!-- O2 Slider -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Oxygen Concentration (O<sub>2</sub>)</span>
+            <span class="control-val" id="val-o2">21.0 %</span>
+          </div>
+          <input type="range" class="sim-slider" id="slider-o2" min="18.0" max="34.0" step="0.5" value="21.0" oninput="updateSim()">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;">
+            <span>Earth Sea-Level (21%)</span>
+            <span>Exploration Atmosphere (34%)</span>
+          </div>
+        </div>
+
+        <!-- Pressure Slider -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Cabin Total Pressure</span>
+            <span class="control-val" id="val-press">101.3 kPa</span>
+          </div>
+          <input type="range" class="sim-slider" id="slider-press" min="50.0" max="101.3" step="1.0" value="101.3" oninput="updateSim()">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;">
+            <span>Reduced Hab (56 kPa)</span>
+            <span>Standard Sea Level (101.3 kPa)</span>
+          </div>
+        </div>
+
+        <!-- Airflow Slider -->
+        <div class="control-group">
+          <div class="control-label">
+            <span>Forced Ventilation Airflow</span>
+            <span class="control-val" id="val-flow">0.05 m/s</span>
+          </div>
+          <input type="range" class="sim-slider" id="slider-flow" min="0.00" max="0.25" step="0.01" value="0.05" oninput="updateSim()">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.4); margin-top:4px;">
+            <span>Quiescent (0 m/s)</span>
+            <span>ISS Nominal (0.05 m/s)</span>
+            <span>High Flow (0.25 m/s)</span>
+          </div>
+        </div>
+
+        <!-- Material Selection -->
+        <div class="control-group" style="margin-bottom:0;">
+          <label style="display:block; font-size:13px; font-weight:600; color:#fff; margin-bottom:8px;">Target Material Sample</label>
+          <select class="fuel-select" id="select-fuel" onchange="updateSim()">
+            <option value="pmma">PMMA (Polymethyl Methacrylate / Acrylic) — Saffire benchmark</option>
+            <option value="cotton">Cotton / Fiberglass Fabric — BASS benchmark</option>
+            <option value="nomex">Nomex Flame-Resistant Aramid — Spacecraft flight suits</option>
+            <option value="poly">Polyethylene Solid Fuel — Wire insulation sim</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Right: Fire Behavior Profile -->
+      <div class="profile-card scroll-reveal stagger-2">
+        <div class="profile-header">
+          <div>
+            <div class="profile-title">Fire Behavior Profile</div>
+            <div style="font-size:12px; color:rgba(234,243,250,0.65);" id="profile-meta">Evaluated against 18 NASA experiments</div>
+          </div>
+          <span class="dim-tag tag-limited" id="coverage-tag">Coverage: High</span>
+        </div>
+
+        <!-- Gravity Warning Banner -->
+        <div class="caveat-banner" id="gravity-caveat">
+          <strong>⚠ GRAVITY TRANSFERABILITY WARNING:</strong> This scenario uses partial gravity (<span id="caveat-g">0.16g</span>), but evidence is matched from microgravity (0g) flight data. Natural buoyancy convection begins to re-emerge at this g-level.
+        </div>
+
+        <!-- Behavior Dimensions -->
+        <div class="dimension-row">
+          <div class="dim-meta">
+            <span>Flame Spread Evidence</span>
+            <span class="dim-tag tag-limited" id="tag-spread">Limited</span>
+          </div>
+          <div class="dim-bar-bg">
+            <div class="dim-bar-fill" id="bar-spread" style="width:28%; background:var(--cyan);"></div>
+          </div>
+        </div>
+
+        <div class="dimension-row">
+          <div class="dim-meta">
+            <span>Sustained Burning Evidence</span>
+            <span class="dim-tag tag-mixed" id="tag-sustained">Mixed</span>
+          </div>
+          <div class="dim-bar-bg">
+            <div class="dim-bar-fill" id="bar-sustained" style="width:52%; background:var(--amber);"></div>
+          </div>
+        </div>
+
+        <div class="dimension-row">
+          <div class="dim-meta">
+            <span>Extinction Limits (Quenching vs Flammability)</span>
+            <span class="dim-tag tag-limited" id="tag-extinction">Strong</span>
+          </div>
+          <div class="dim-bar-bg">
+            <div class="dim-bar-fill" id="bar-extinction" style="width:84%; background:var(--cyan);"></div>
+          </div>
+        </div>
+
+        <!-- Matched Experiments -->
+        <div class="exp-matches">
+          <div style="font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,0.7); margin-bottom:12px;">Top Scientifically Comparable Experiments</div>
+          <div id="matches-list">
+            <div class="exp-match-item">
+              <div>
+                <div class="exp-name">Saffire-II (Cygnus OA-5)</div>
+                <div class="exp-details">PMMA 5cm × 30cm • 0.20 m/s airflow • 21% O<sub>2</sub></div>
+              </div>
+              <div class="exp-score">94% Match</div>
+            </div>
+            <div class="exp-match-item">
+              <div>
+                <div class="exp-name">BASS-II (ISS Microgravity Science Glovebox)</div>
+                <div class="exp-details">Cotton blend fabric • 0.05 m/s forced flow</div>
+              </div>
+              <div class="exp-score">86% Match</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="disclaimer-pill">
+          Illustrative evidence-guided visualization — not a certified physical simulation.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE EVIDENCE ENGINE & TRUST MODEL -->
+  <section id="evidence-engine" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Rigorous Provenance</div>
+      <h2 class="section-title">The Evidence Engine & Trust Model</h2>
+      <p class="section-lead">Every insight in IGNIS carries an explicit authority level. We distinguish directly observed NASA raw telemetry from synthetic AI summaries.</p>
+    </div>
+
+    <!-- 5 Levels Grid -->
+    <div class="grid-3" style="margin-bottom:48px;">
+      <div class="level-card scroll-reveal stagger-1">
+        <span class="level-badge level-a">Level A</span>
+        <div class="level-name">Observed / NASA Source</div>
+        <p class="level-desc">Directly reported or recorded in NASA flight data, PSI archives, or peer-reviewed literature. Maximum authority.</p>
+      </div>
+      <div class="level-card scroll-reveal stagger-2">
+        <span class="level-badge level-b">Level B</span>
+        <div class="level-name">Normalized Source Data</div>
+        <p class="level-desc">Structured, standardized, and unit-converted data tables with verified DOI and NASA technical report accession numbers.</p>
+      </div>
+      <div class="level-card scroll-reveal stagger-3">
+        <span class="level-badge level-c">Level C</span>
+        <div class="level-name">Derived by IGNIS</div>
+        <p class="level-desc">Computed scientific metrics such as Computer Vision flame area, growth curves, and centroid tracking. Fully reproducible.</p>
+      </div>
+      <div class="level-card scroll-reveal stagger-4">
+        <span class="level-badge level-d">Level D</span>
+        <div class="level-name">Similarity Interpretation</div>
+        <p class="level-desc">Inference derived by comparing multi-dimensional environmental vectors with transparent mathematical weighting.</p>
+      </div>
+      <div class="level-card scroll-reveal stagger-5">
+        <span class="level-badge level-e">Level E</span>
+        <div class="level-name">AI Synthesis</div>
+        <p class="level-desc">Natural language explanations generated by LLM strictly constrained to retrieved source passages. Zero hallucination.</p>
+      </div>
+      <div class="level-card scroll-reveal stagger-5" style="background:linear-gradient(135deg, rgba(121,220,232,0.1), rgba(12,27,47,0.7)); border-color:var(--cyan);">
+        <div style="font-size:12px; font-weight:700; color:var(--cyan); letter-spacing:1px; margin-bottom:8px;">SIMILARITY WEIGHTS</div>
+        <div style="font-size:13px; color:#fff; line-height:1.7;">
+          • <strong>Fuel Material:</strong> 30%<br>
+          • <strong>Oxygen (O<sub>2</sub>):</strong> 20%<br>
+          • <strong>Forced Airflow:</strong> 20%<br>
+          • <strong>Pressure:</strong> 15%<br>
+          • <strong>Scientific Objective:</strong> 10%<br>
+          • <strong>Geometry / Regime:</strong> 5%
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. AI FLAME VISION -->
+  <section id="flame-vision" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Computer Vision Pipeline</div>
+      <h2 class="section-title">AI Flame Vision: Video into Science</h2>
+      <p class="section-lead">Transforming unstructured NASA microgravity combustion video into verified quantitative time-series data.</p>
+    </div>
+
+    <div class="vision-grid">
+      <!-- Interactive Visualizer -->
+      <div class="scroll-reveal">
+        <div class="canvas-wrapper">
+          <canvas id="flameCanvas" class="vision-canvas" width="640" height="400"></canvas>
+          <div class="vision-hud">
+            <div class="hud-top">
+              <span>EXP: FLEX-2 DROPLET COMBUSTION</span>
+              <span id="hud-status" style="color:var(--cyan);">DIFFUSION REGIME</span>
+            </div>
+            <div class="hud-bottom">
+              <span id="hud-area">FLAME AREA RATIO: 1.42</span>
+              <span id="hud-centroid">CENTROID: [320, 200]</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="scrubber-panel">
+          <div class="time-display">
+            <span>Video Timeline Scrubber</span>
+            <span id="flame-time" style="color:var(--cyan);">t = 3.50 s</span>
+          </div>
+          <input type="range" class="sim-slider" id="flame-scrubber" min="0" max="10" step="0.05" value="3.5" oninput="updateFlameVision(this.value)">
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,0.4); margin-top:6px;">
+            <span>0.0s (Ignition)</span>
+            <span>3.5s (Steady Spherical)</span>
+            <span>7.2s (Cool Flame)</span>
+            <span>8.4s (Extinction)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explanation & Metrics -->
+      <div class="glass-card scroll-reveal stagger-2">
+        <span class="level-badge level-c">Level C • Computer Vision Derived</span>
+        <h3 style="font-family:'Space Grotesk',sans-serif; font-size:24px; color:#fff; margin-bottom:14px;">Color-Space Contour Analysis</h3>
+        <p style="font-size:15px; line-height:1.6; color:rgba(234,243,250,0.8); margin-bottom:20px;">
+          Rather than relying on uninterpretable deep models, IGNIS employs classical robust computer vision: HSV color-space thresholding, connected component contour extraction, and temporal smoothing to track the flame boundary.
+        </p>
+        <div style="background:rgba(0,0,0,0.4); border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.08); font-family:var(--font-mono); font-size:13px; line-height:1.8;">
+          <div style="color:var(--cyan);">&#9656; Peak Flame Diameter: <span style="color:#fff;">18.4 mm</span></div>
+          <div style="color:var(--cyan);">&#9656; Extinction Timestamp: <span style="color:#fff;">t = 8.42 s (&plusmn;0.05s)</span></div>
+          <div style="color:var(--cyan);">&#9656; Soot Radiative Loss: <span style="color:#fff;">Low (Blue Quench)</span></div>
+          <div style="color:var(--cyan);">&#9656; Molecular Diffusion Coeff: <span style="color:#fff;">0.24 cm&sup2;/s</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. EXPLORE FIRE STORIES -->
+  <section id="explore-fire" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Public Science Communication</div>
+      <h2 class="section-title">Explore Fire: Guided Scientific Stories</h2>
+      <p class="section-lead">Curated journeys designed for students, mission planners, and the public — linking physical intuition to real NASA data.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="story-card scroll-reveal stagger-1">
+        <div>
+          <div class="story-tag">Physics Fundamentals • P0</div>
+          <h3 class="story-title">Why Does Fire Burn as a Sphere in Space?</h3>
+          <p class="story-excerpt">On Earth, hot air rises because it is lighter than cold air. In zero gravity, buoyancy disappears. Without buoyancy, hot combustion gases do not rise — the flame surrounds the fuel in a serene, blue spherical halo.</p>
+        </div>
+        <a href="#ask-ignis" class="story-link" onclick="setAskPrompt(0)">Explore Story Evidence →</a>
+      </div>
+
+      <div class="story-card scroll-reveal stagger-2">
+        <div>
+          <div class="story-tag">Earthdata Remote Sensing • P0</div>
+          <h3 class="story-title">Fire from Space vs Fire in Space</h3>
+          <p class="story-excerpt">Contrasting NASA FIRMS satellite thermal anomaly detection of Earth wildfires with enclosed spacecraft combustion aboard the Cygnus vehicle. Macro planetary observation meets micro cabin safety.</p>
+        </div>
+        <a href="#ask-ignis" class="story-link" onclick="setAskPrompt(1)">Explore Story Evidence →</a>
+      </div>
+
+      <div class="story-card scroll-reveal stagger-3">
+        <div>
+          <div class="story-tag">Ventilation Dynamics • P1</div>
+          <h3 class="story-title">The Airflow Paradox in Spacecraft</h3>
+          <p class="story-excerpt">Without ventilation, a microgravity flame quickly suffocates in its own carbon dioxide. A gentle breeze from the life support system (0.05 m/s) actually feeds the flame by replenishing oxygen.</p>
+        </div>
+        <a href="#ask-ignis" class="story-link" onclick="setAskPrompt(2)">Explore Story Evidence →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ASK IGNIS (AI RESEARCH ASSISTANT) -->
+  <section id="ask-ignis" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Traceable AI Assistant</div>
+      <h2 class="section-title">Ask IGNIS</h2>
+      <p class="section-lead">Inquire about microgravity combustion, material flammability, and NASA flight findings — every answer cited to primary evidence.</p>
+    </div>
+
+    <div class="ask-box scroll-reveal">
+      <div style="font-size:13px; font-weight:600; color:rgba(234,243,250,0.8); margin-bottom:12px; letter-spacing:1px; text-transform:uppercase;">Click a sample scientific inquiry:</div>
+      <div class="prompt-chips">
+        <button class="chip active" onclick="setAskPrompt(0)">Why do microgravity flames form a sphere?</button>
+        <button class="chip" onclick="setAskPrompt(1)">What did Saffire discover about spacecraft fire safety?</button>
+        <button class="chip" onclick="setAskPrompt(2)">Does fire behave differently on the Moon than in orbit?</button>
+      </div>
+
+      <div class="qa-response-area">
+        <div class="qa-status">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
+          <span id="qa-status-text">GROUNDED ANSWER • 94% EVIDENCE COVERAGE</span>
+        </div>
+        <div class="qa-text" id="qa-text-body">
+          In Earth gravity, hot combustion gases rise due to buoyancy (natural convection), pulling fresh oxygen into the base and stretching the flame into an elongated tear-drop shape. In microgravity (0g), gravity-driven buoyant convection is absent. Oxygen transport occurs almost purely via molecular diffusion, causing the reaction zone to form a symmetrical sphere around the fuel source with significantly lower flame temperatures and a distinct blue chemiluminescent glow.
+        </div>
+        <div class="qa-sources">
+          <span>Evidence Sources:</span>
+          <span class="source-pill" id="source-1">NASA TM-2015-218820 (FLEX-2)</span>
+          <span class="source-pill" id="source-2">ISS Physical Science Informatics (PSI)</span>
+          <span class="source-pill" id="source-3">Saffire-I Flight Report</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="ignis-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>IG<i>NIS</i></h3>
+      <p>Intelligent Guidance from NASA Ignition Studies. An evidence-grounded interactive exploration system for microgravity combustion and space habitat safety.</p>
+      <div style="margin-top:18px; font-size:13px; color:var(--cyan);">NASA International Space Apps Challenge 2026</div>
+    </div>
+
+    <div class="footer-links-col">
+      <h4>Architecture</h4>
+      <ul>
+        <li><a href="#overview">Executive Summary</a></li>
+        <li><a href="#habitat-builder">Build a Habitat</a></li>
+        <li><a href="#evidence-engine">Evidence Engine (A&ndash;E)</a></li>
+        <li><a href="#flame-vision">AI Flame Vision</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-links-col">
+      <h4>NASA Research</h4>
+      <ul>
+        <li><a href="https://psi.nasa.gov" target="_blank" rel="noopener">Physical Sciences Informatics (PSI)</a></li>
+        <li><a href="https://www.nasa.gov/mission_pages/station/research/experiments/explorer/Investigation.html?#id=1010" target="_blank" rel="noopener">Saffire Investigation</a></li>
+        <li><a href="https://www.nasa.gov" target="_blank" rel="noopener">FLEX Droplet Studies</a></li>
+        <li><a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noopener">Earthdata FIRMS</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-links-col">
+      <h4>Challenge</h4>
+      <ul>
+        <li><a href="#">Flame in Freefall</a></li>
+        <li><a href="#">PRD Specification v1.1</a></li>
+        <li><a href="#">Project Concept v1.1</a></li>
+        <li><a href="#">Evidence Matcher Framework</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>&copy; 2026 IGNIS Team • NASA Space Apps Challenge 2026. Built with NASA Open Data.</div>
+    <div>Scientific Disclaimer: Not a certified spacecraft life safety calculation tool.</div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const ORDER = ['orbital', 'moon', 'mars'];
+  const planets = {
+    "orbital": {
+      "name": "ORBITAL",
+      "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_3ffb4889-c520-432d-8458-038009eb40df.mp4",
+      "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png",
+      "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png",
+      "lede": "Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow \u2014 discover what NASA\u2019s real microgravity <br>combustion experiments reveal about fire behavior in your scenario."
+    },
+    "moon": {
+      "name": "LUNAR",
+      "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_b211cd74-013b-4dd3-bfd0-64491d8696fa.mp4",
+      "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_cf55d1d8-7b59-4a64-80da-d72052ae974e.png",
+      "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png",
+      "lede": "Design a lunar base habitat. 0.16g partial gravity changes flame dynamics \u2014 evidence from microgravity experiments <br>carries an explicit gravity-transfer warning. Discover what the science actually shows."
+    },
+    "mars": {
+      "name": "MARS",
+      "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_51eae59a-2459-4c84-907c-cc5edfe5fea7.mp4",
+      "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_0ba6de7c-285d-43dc-b7ab-8c54c73707cb.png",
+      "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png",
+      "lede": "A fire starts halfway to Mars. What does the evidence say? Explore NASA\u2019s combustion <br>research and discover what partial gravity means for flame spread and extinction limits."
+    }
+  };
+
+  const sky = document.querySelector('.sky');
+  const clips = [...sky.querySelectorAll('video')];
+  const slots = [...document.querySelectorAll('.planet')];
+  const title = document.querySelector('h1 .ent-line');
+  const lede = document.querySelector('p.lede');
+  const motion = matchMedia('(prefers-reduced-motion: reduce)');
+  let featured;
+
+  function show(next) {
+    if (!ORDER.includes(next) || next === featured) return;
+    featured = next;
+    for (const clip of clips) {
+      const active = clip.dataset.planet === next;
+      if (active && !clip.hasAttribute('src') && clip.dataset.src) clip.src = clip.dataset.src;
+      clip.classList.toggle('is-active', active);
+      if (active && !motion.matches) clip.play().catch(() => {});
+      else clip.pause();
+    }
+    sky.style.backgroundImage = `url("${planets[next].still}")`;
+
+    title.textContent = planets[next].name;
+    lede.innerHTML = planets[next].lede;
+    const rest = ORDER.filter(key => key !== next);
+    slots.forEach((slot, index) => {
+      const key = rest[index];
+      for (const img of slot.querySelectorAll('img')) img.classList.toggle('is-shown', img.dataset.planet === key);
+      slot.dataset.planet = key;
+      slot.setAttribute('aria-label', `Show ${planets[key].name}`);
+      document.querySelector(`.label-${slot.dataset.slot}`).textContent = planets[key].name;
+    });
+  }
+
+  function warm(planet) {
+    const clip = clips.find(video => video.dataset.planet === planet);
+    if (clip && !clip.hasAttribute('src') && clip.dataset.src) {
+      clip.preload = 'auto';
+      clip.src = clip.dataset.src;
+      clip.load();
+    }
+  }
+  slots.forEach(slot => {
+    slot.addEventListener('click', () => show(slot.dataset.planet));
+    slot.addEventListener('pointerenter', () => warm(slot.dataset.planet));
+    slot.addEventListener('focus', () => warm(slot.dataset.planet));
+  });
+  show('orbital');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const warmAll = () => ORDER.forEach(warm);
+    if ('requestIdleCallback' in window) requestIdleCallback(warmAll, {timeout:4000});
+    else setTimeout(warmAll, 2500);
+  }));
+
+  const navrow = document.querySelector('.navrow');
+  const burger = document.querySelector('.burger');
+  const nav = document.querySelector('.links');
+  function set(open) {
+    navrow.dataset.open = String(open);
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  }
+  set(false);
+  burger.addEventListener('click', event => {
+    event.stopPropagation();
+    set(navrow.dataset.open !== 'true');
+  });
+  document.addEventListener('click', event => {
+    if (!nav.contains(event.target) && !burger.contains(event.target)) set(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && navrow.dataset.open === 'true') {
+      set(false);
+      burger.focus();
+    }
+  });
+  nav.addEventListener('click', event => { if (event.target.closest('a')) set(false); });
+
+  // Scroll button smooth scroll
+  document.querySelector('.scroll').addEventListener('click', () => {
+    const nextSection = document.getElementById('overview');
+    if (nextSection) nextSection.scrollIntoView({behavior:motion.matches ? 'instant' : 'smooth'});
+  });
+
+  motion.addEventListener('change', () => {
+    document.documentElement.classList.remove('anim', 'play');
+    clips.forEach(clip => {
+      if (!motion.matches && clip.dataset.planet === featured) clip.play().catch(() => {});
+      else clip.pause();
+    });
+  });
+
+  // Glowing canvas cursor trail
+  (() => {
+    const finePointer = matchMedia('(any-hover: hover) and (any-pointer: fine)');
+    const canvas = document.createElement('canvas');
+    canvas.className = 'glow-cursor';
+    canvas.setAttribute('aria-hidden', 'true');
+    document.body.append(canvas);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.remove(); return; }
+
+    const settings = {length:40, width:8, taper:.8, follow:.16,
+      intensity:1.9, spread:1.2, brightness:1.25, pulse:1.1,
+      idleTimeout:700, fadeDuration:900};
+    const points = Array.from({length:settings.length}, () => ({x:0, y:0}));
+    const target = {x:0, y:0};
+    let width = 0, height = 0, frame = 0, previous = 0, moved = 0, ready = false;
+    const enabled = () => finePointer.matches && !motion.matches && !document.hidden;
+
+    function resize() {
+      const ratio = Math.min(devicePixelRatio || 1, 1.5);
+      width = innerWidth;
+      height = innerHeight;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+    function stop() {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previous = 0;
+      ready = false;
+      ctx.clearRect(0, 0, width, height);
+    }
+    function draw(now) {
+      frame = 0;
+      ctx.clearRect(0, 0, width, height);
+      const fade = Math.max(0, 1 - Math.max(0, now - moved - settings.idleTimeout) / settings.fadeDuration);
+      if (!enabled() || fade === 0) { stop(); return; }
+      const step = Math.min((now - (previous || now - 16.67)) / 16.67, 3);
+      previous = now;
+      for (let i = 0; i < points.length; i++) {
+        const leader = i === 0 ? target : points[i - 1];
+        const follow = 1 - Math.pow(1 - (i === 0 ? settings.follow : .38), step);
+        points[i].x += (leader.x - points[i].x) * follow;
+        points[i].y += (leader.y - points[i].y) * follow;
+      }
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      for (const layer of [{scale:5.5, alpha:.035}, {scale:3, alpha:.09}, {scale:1, alpha:.65}]) {
+        for (let i = points.length - 1; i > 0; i--) {
+          const progress = i / (points.length - 1);
+          const life = Math.pow(1 - progress, .9);
+          const pulse = 1 + Math.sin(now * .003 * settings.pulse - progress * 11) * .16;
+          const rgb = [103 + 64 * progress, 232 - 93 * progress, 249 + progress];
+          ctx.strokeStyle = `rgba(${rgb.map(Math.round).join(',')},${Math.min(1, layer.alpha * life * fade * pulse * settings.brightness * settings.intensity / 1.9)})`;
+          ctx.lineWidth = settings.width * (1 - settings.taper * progress) * layer.scale * (layer.scale > 1 ? settings.spread : 1);
+          ctx.beginPath();
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[i - 1].x, points[i - 1].y);
+          ctx.stroke();
+        }
+      }
+      const head = points[0];
+      const radius = settings.width * 3 * settings.spread;
+      const halo = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, radius);
+      halo.addColorStop(0, `rgba(235,255,255,${.85 * fade})`);
+      halo.addColorStop(.15, `rgba(103,232,249,${.6 * fade})`);
+      halo.addColorStop(.45, `rgba(103,232,249,${.13 * fade})`);
+      halo.addColorStop(1, 'rgba(103,232,249,0)');
+      ctx.fillStyle = halo;
+      ctx.fillRect(head.x - radius, head.y - radius, radius * 2, radius * 2);
+      frame = requestAnimationFrame(draw);
+    }
+    window.addEventListener('pointermove', event => {
+      if (event.pointerType === 'touch' || !enabled()) return;
+      target.x = event.clientX;
+      target.y = event.clientY;
+      moved = performance.now();
+      if (!ready) {
+        points.forEach(point => { point.x = target.x; point.y = target.y; });
+        ready = true;
+      }
+      if (!frame) frame = requestAnimationFrame(draw);
+    }, {passive:true});
+    document.documentElement.addEventListener('pointerleave', stop);
+    window.addEventListener('blur', stop);
+    document.addEventListener('visibilitychange', stop);
+    motion.addEventListener('change', stop);
+    finePointer.addEventListener('change', stop);
+    window.addEventListener('resize', () => { stop(); resize(); }, {passive:true});
+    resize();
+  })();
+
+  const root = document.documentElement;
+  if (!root.classList.contains('anim')) return;
+  let started = false;
+  const guard = setTimeout(start, 500);
+  function start() {
+    if (started) return;
+    started = true;
+    clearTimeout(guard);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (!root.classList.contains('anim')) return;
+      root.classList.add('play');
+      setTimeout(() => root.classList.remove('anim', 'play'), 2150);
+    }));
+  }
+  if (document.fonts) document.fonts.ready.then(start, start);
+  else start();
+})();
+
+// ==========================================================================
+// INTERACTIVE HABITAT BUILDER SCRIPT
+// ==========================================================================
+let currentDest = 'orbital';
+
+function setSimDest(dest, btn) {
+  currentDest = dest;
+  document.querySelectorAll('.dest-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const caveat = document.getElementById('gravity-caveat');
+  const caveatG = document.getElementById('caveat-g');
+  if (dest === 'orbital') {
+    caveat.classList.remove('visible');
+  } else if (dest === 'lunar') {
+    caveatG.textContent = '0.16g';
+    caveat.classList.add('visible');
+  } else if (dest === 'mars') {
+    caveatG.textContent = '0.38g';
+    caveat.classList.add('visible');
+  }
+  updateSim();
+}
+
+function updateSim() {
+  const o2 = parseFloat(document.getElementById('slider-o2').value);
+  const press = parseFloat(document.getElementById('slider-press').value);
+  const flow = parseFloat(document.getElementById('slider-flow').value);
+  const fuel = document.getElementById('select-fuel').value;
+
+  document.getElementById('val-o2').textContent = o2.toFixed(1) + ' %';
+  document.getElementById('val-press').textContent = press.toFixed(1) + ' kPa';
+  document.getElementById('val-flow').textContent = flow.toFixed(2) + ' m/s';
+
+  // Flame spread score logic
+  let spreadScore = 20;
+  if (fuel === 'pmma') spreadScore += 30;
+  if (fuel === 'cotton') spreadScore += 25;
+  if (fuel === 'nomex') spreadScore -= 15;
+  if (fuel === 'poly') spreadScore += 20;
+
+  spreadScore += (o2 - 21) * 3.5;
+  spreadScore += flow * 120;
+  spreadScore = Math.max(10, Math.min(95, Math.round(spreadScore)));
+
+  const tagSpread = document.getElementById('tag-spread');
+  const barSpread = document.getElementById('bar-spread');
+  barSpread.style.width = spreadScore + '%';
+  if (spreadScore > 65) {
+    tagSpread.textContent = 'Elevated';
+    tagSpread.className = 'dim-tag tag-elevated';
+    barSpread.style.background = 'var(--ember)';
+  } else if (spreadScore > 40) {
+    tagSpread.textContent = 'Mixed';
+    tagSpread.className = 'dim-tag tag-mixed';
+    barSpread.style.background = 'var(--amber)';
+  } else {
+    tagSpread.textContent = 'Limited';
+    tagSpread.className = 'dim-tag tag-limited';
+    barSpread.style.background = 'var(--cyan)';
+  }
+
+  // Sustained Burning
+  let sustainedScore = Math.round(spreadScore * 0.9 + (press / 101.3) * 10);
+  sustainedScore = Math.max(15, Math.min(92, sustainedScore));
+  const tagSustained = document.getElementById('tag-sustained');
+  const barSustained = document.getElementById('bar-sustained');
+  barSustained.style.width = sustainedScore + '%';
+  if (sustainedScore > 60) {
+    tagSustained.textContent = 'Elevated';
+    tagSustained.className = 'dim-tag tag-elevated';
+    barSustained.style.background = 'var(--ember)';
+  } else if (sustainedScore > 35) {
+    tagSustained.textContent = 'Mixed';
+    tagSustained.className = 'dim-tag tag-mixed';
+    barSustained.style.background = 'var(--amber)';
+  } else {
+    tagSustained.textContent = 'Limited';
+    tagSustained.className = 'dim-tag tag-limited';
+    barSustained.style.background = 'var(--cyan)';
+  }
+
+  // Extinction Limits
+  let extScore = Math.round(100 - spreadScore * 0.7);
+  if (flow === 0) extScore = 95; // Quiescent microgravity promotes suffocation
+  const tagExt = document.getElementById('tag-extinction');
+  const barExt = document.getElementById('bar-extinction');
+  barExt.style.width = extScore + '%';
+  if (extScore > 70) {
+    tagExt.textContent = 'Strong Quenching';
+    tagExt.className = 'dim-tag tag-limited';
+    barExt.style.background = 'var(--cyan)';
+  } else {
+    tagExt.textContent = 'Moderate';
+    tagExt.className = 'dim-tag tag-mixed';
+    barExt.style.background = 'var(--amber)';
+  }
+
+  // Update matched experiments
+  const list = document.getElementById('matches-list');
+  if (fuel === 'pmma') {
+    list.innerHTML = `
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">Saffire-II (Cygnus Spacecraft Flight)</div>
+          <div class="exp-details">PMMA 5cm × 30cm • flow: 0.20 m/s • O<sub>2</sub>: 21% • microgravity</div>
+        </div>
+        <div class="exp-score">95% Match</div>
+      </div>
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">BASS-I Solid Fuel Extinction</div>
+          <div class="exp-details">Acrylic rod burning in quiescent to low flow</div>
+        </div>
+        <div class="exp-score">88% Match</div>
+      </div>
+    `;
+  } else if (fuel === 'cotton') {
+    list.innerHTML = `
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">BASS-II (Burning and Suppression of Solids)</div>
+          <div class="exp-details">Cotton-fiberglass blend • flow: 0.05 m/s • ISS Microgravity Glovebox</div>
+        </div>
+        <div class="exp-score">96% Match</div>
+      </div>
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">Saffire-III Fabric Flammability</div>
+          <div class="exp-details">Cotton blend test in low-pressure oxygen enrichment</div>
+        </div>
+        <div class="exp-score">89% Match</div>
+      </div>
+    `;
+  } else if (fuel === 'nomex') {
+    list.innerHTML = `
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">Saffire-IV Spacecraft Textile Assessment</div>
+          <div class="exp-details">Flame-retardant flight suit weave • 0.20 m/s forced ventilation</div>
+        </div>
+        <div class="exp-score">94% Match</div>
+      </div>
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">NASA WSTF Flammability Test 1</div>
+          <div class="exp-details">Upward flame spread standard • Self-extinguishes under 24% O<sub>2</sub></div>
+        </div>
+        <div class="exp-score">91% Match</div>
+      </div>
+    `;
+  } else {
+    list.innerHTML = `
+      <div class="exp-match-item">
+        <div>
+          <div class="exp-name">CIR ACME (Advanced Combustion via Microgravity Experiments)</div>
+          <div class="exp-details">Hydrocarbon / polymer boundary layer burning</div>
+        </div>
+        <div class="exp-score">92% Match</div>
+      </div>
+    `;
+  }
+}
+
+// ==========================================================================
+// AI FLAME VISION CANVAS SIMULATOR
+// ==========================================================================
+const flameCanvas = document.getElementById('flameCanvas');
+const fctx = flameCanvas ? flameCanvas.getContext('2d') : null;
+
+function updateFlameVision(time) {
+  time = parseFloat(time);
+  document.getElementById('flame-time').textContent = 't = ' + time.toFixed(2) + ' s';
+  if (!fctx) return;
+
+  const w = flameCanvas.width;
+  const h = flameCanvas.height;
+  fctx.clearRect(0, 0, w, h);
+
+  // Background deep dark
+  fctx.fillStyle = '#020713';
+  fctx.fillRect(0, 0, w, h);
+
+  // Grid lines
+  fctx.strokeStyle = 'rgba(121,220,232,0.07)';
+  fctx.lineWidth = 1;
+  for (let x = 0; x < w; x += 40) { fctx.beginPath(); fctx.moveTo(x, 0); fctx.lineTo(x, h); fctx.stroke(); }
+  for (let y = 0; y < h; y += 40) { fctx.beginPath(); fctx.moveTo(0, y); fctx.lineTo(w, y); fctx.stroke(); }
+
+  // Draw Droplet center
+  const cx = w / 2;
+  const cy = h / 2;
+  fctx.fillStyle = '#888';
+  fctx.beginPath();
+  fctx.arc(cx, cy, 7, 0, Math.PI * 2);
+  fctx.fill();
+
+  let radius = 0;
+  let status = 'EXTINGUISHED';
+  let areaRatio = 0.0;
+
+  if (time < 0.5) {
+    status = 'SPARK IGNITION';
+    radius = time * 50;
+    areaRatio = (radius / 30).toFixed(2);
+  } else if (time < 6.5) {
+    status = 'STEADY SPHERICAL FLAME';
+    radius = 55 + Math.sin(time * 1.5) * 4;
+    areaRatio = (1.2 + (time / 6.5) * 0.4).toFixed(2);
+  } else if (time < 8.4) {
+    status = 'COOL FLAME TRANSITION';
+    const decay = (8.4 - time) / 1.9;
+    radius = 55 * decay;
+    areaRatio = (0.5 * decay).toFixed(2);
+  } else {
+    status = 'COMPLETE EXTINCTION (t=8.42s)';
+    radius = 0;
+    areaRatio = '0.00';
+  }
+
+  document.getElementById('hud-status').textContent = status;
+  document.getElementById('hud-area').textContent = 'FLAME AREA RATIO: ' + areaRatio;
+
+  if (radius > 1) {
+    // Outer flame glow (blue microgravity sphere)
+    const grad = fctx.createRadialGradient(cx, cy, radius * 0.3, cx, cy, radius * 1.4);
+    grad.addColorStop(0, 'rgba(255, 230, 180, 0.9)');
+    grad.addColorStop(0.3, 'rgba(255, 140, 50, 0.7)');
+    grad.addColorStop(0.7, 'rgba(70, 160, 255, 0.4)');
+    grad.addColorStop(1, 'rgba(40, 120, 255, 0)');
+
+    fctx.fillStyle = grad;
+    fctx.beginPath();
+    fctx.arc(cx, cy, radius * 1.3, 0, Math.PI * 2);
+    fctx.fill();
+
+    // CV Segmented Contour (cyan outline with dashed box)
+    fctx.strokeStyle = '#79dce8';
+    fctx.lineWidth = 2;
+    fctx.setLineDash([4, 4]);
+    fctx.beginPath();
+    fctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    fctx.stroke();
+    fctx.setLineDash([]);
+
+    // Bounding Box
+    fctx.strokeStyle = 'rgba(121,220,232,0.4)';
+    fctx.strokeRect(cx - radius - 5, cy - radius - 5, (radius + 5) * 2, (radius + 5) * 2);
+
+    // Centroid marker
+    fctx.fillStyle = '#ff7a3d';
+    fctx.beginPath();
+    fctx.arc(cx, cy, 3, 0, Math.PI * 2);
+    fctx.fill();
+  }
+}
+
+// Initial draw of flame vision
+updateFlameVision(3.5);
+
+
+// ==========================================================================
+// SMOOTH SCROLLING (LENIS) & SCROLL-TRIGGERED REVEAL ANIMATIONS
+// ==========================================================================
+let lenis = null;
+if (typeof Lenis !== 'undefined') {
+  try {
+    lenis = new Lenis({
+      duration: 1.25,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.2,
+      infinite: false,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  } catch (err) {
+    console.warn('Lenis init fallback:', err);
+  }
+}
+
+// Smooth anchor scrolling with fixed navbar offset
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const targetId = this.getAttribute('href');
+    if (!targetId || targetId === '#') return;
+    const targetEl = document.querySelector(targetId);
+    if (targetEl) {
+      e.preventDefault();
+      if (lenis) {
+        lenis.scrollTo(targetEl, { offset: -95, duration: 1.2 });
+      } else {
+        const yOffset = -95;
+        const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  });
+});
+
+// Scroll button smooth scroll
+const scrollArrow = document.querySelector('.scroll');
+if (scrollArrow) {
+  scrollArrow.addEventListener('click', () => {
+    const target = document.getElementById('overview');
+    if (target) {
+      if (lenis) {
+        lenis.scrollTo(target, { offset: -95, duration: 1.2 });
+      } else {
+        const yOffset = -95;
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  });
+}
+
+// Active Nav Indicator on Scroll (Scroll Spy)
+const navLinksArr = Array.from(document.querySelectorAll('.links a:not(.enroll)'));
+const trackedSections = Array.from(document.querySelectorAll('section[id]'));
+
+function updateActiveNavSpy() {
+  const scrollPosition = window.scrollY + 180;
+  for (let i = trackedSections.length - 1; i >= 0; i--) {
+    const sec = trackedSections[i];
+    if (scrollPosition >= sec.offsetTop) {
+      const id = sec.getAttribute('id');
+      navLinksArr.forEach(link => {
+        if (link.getAttribute('href') === '#' + id) {
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+      break;
+    }
+  }
+}
+window.addEventListener('scroll', updateActiveNavSpy, { passive: true });
+
+// Scroll Reveal Animations with IntersectionObserver
+const revealTargets = document.querySelectorAll('.scroll-reveal');
+if ('IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    rootMargin: '0px 0px -40px 0px',
+    threshold: 0.08
+  });
+  revealTargets.forEach(target => revealObserver.observe(target));
+} else {
+  revealTargets.forEach(target => target.classList.add('revealed'));
+}
+
+// ==========================================================================
+// ASK IGNIS Q&A DEMO
+// ==========================================================================
+const askData = [
+  {
+    status: "GROUNDED ANSWER \u2022 95% EVIDENCE COVERAGE",
+    text: "In Earth gravity, hot combustion gases rise due to buoyancy (natural convection), drawing fresh oxygen into the base and giving flames their characteristic teardrop shape. In microgravity (0g), gravity-driven buoyancy is absent. Oxygen transport occurs almost purely via molecular diffusion, causing the reaction zone to form a symmetrical sphere around the fuel source with lower flame temperatures and a distinct blue chemiluminescent glow.",
+    s1: "NASA TM-2015-218820 (FLEX-2)",
+    s2: "ISS Physical Science Informatics (PSI)",
+    s3: "Combustion Integrated Rack (CIR)"
+  },
+  {
+    status: "GROUNDED ANSWER \u2022 93% EVIDENCE COVERAGE",
+    text: "The Saffire (Spacecraft Fire Experiment) missions conducted inside Cygnus cargo vehicles after unberthing from the ISS revealed that large-scale materials (up to 1 meter in length) burn differently than small laboratory samples. Saffire demonstrated that low-speed cabin ventilation (0.05 to 0.20 m/s) maintains active flame propagation across fabric and PMMA, whereas complete cessation of airflow leads to rapid oxygen starvation and flame quenching.",
+    s1: "Saffire-I Flight Report (NASA/TM-2017-219500)",
+    s2: "NASA Glenn Research Center Combustion Archives",
+    s3: "Cygnus OA-6 Experiment Protocol"
+  },
+  {
+    status: "GROUNDED ANSWER \u2022 88% EVIDENCE COVERAGE (TRANSFERABILITY CAVEAT)",
+    text: "Yes. Lunar gravity is approximately one-sixth (0.16g) of Earth's gravity. In 0.16g, buoyancy does not entirely vanish: weak natural convection currents still develop, transporting hot combustion products upward and drawing modest amounts of fresh oxidizer. Consequently, lunar flames are not perfectly spherical like orbital flames, and materials exhibit slightly lower extinction limits than in total weightlessness.",
+    s1: "Zero-Gravity Facility Drop Tower 1/6g Tests",
+    s2: "BASS-II Partial Gravity Extrapolation Studies",
+    s3: "NASA Exploration Atmosphere Standards"
+  }
+];
+
+function setAskPrompt(index) {
+  const chips = document.querySelectorAll('.prompt-chips .chip');
+  chips.forEach((c, i) => c.classList.toggle('active', i === index));
+  const data = askData[index];
+  document.getElementById('qa-status-text').textContent = data.status;
+  document.getElementById('qa-text-body').textContent = data.text;
+  document.getElementById('source-1').textContent = data.s1;
+  document.getElementById('source-2').textContent = data.s2;
+  document.getElementById('source-3').textContent = data.s3;
+}
+</script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+</body>
+</html>

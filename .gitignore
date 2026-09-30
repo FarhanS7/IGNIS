@@ -1,0 +1,15 @@
+# Dependencies & Workspace Folders
+.agents/
+docs/
+skills/
+assets/
+
+# PRD and Framework Planning Docs
+IGNIS_PRD*
+IGNIS_Project_Concept*
+PRD_TO_TASKS_FRAMEWORK.md
+
+# OS & IDE temporary files
+.DS_Store
+Thumbs.db
+*.log
