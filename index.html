@@ -384,6 +384,209 @@ html.lenis, html.lenis body {
   }
 }
 
+
+/* ==========================================================================
+   MODERN HIGH-IMPACT HERO SECTION
+   ========================================================================== */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+  width: min(1080px, calc(100% - 48px));
+  text-align: center;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 22px;
+  border-radius: 30px;
+  background: rgba(121, 220, 232, 0.12);
+  border: 1px solid rgba(121, 220, 232, 0.35);
+  box-shadow: 0 0 24px rgba(121, 220, 232, 0.18);
+  margin-bottom: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: ent-rise .7s cubic-bezier(.16,1,.3,1) .25s both;
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+  animation: beacon-pulse 2s infinite;
+}
+
+@keyframes beacon-pulse {
+  0% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px var(--cyan); }
+  50% { transform: scale(1.35); opacity: 0.7; box-shadow: 0 0 16px var(--cyan); }
+  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px var(--cyan); }
+}
+
+.hero-badge-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: 'Space Grotesk', var(--font-body);
+  font-size: clamp(42px, 5.8vw, 82px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: #ffffff;
+  margin-bottom: 22px;
+  text-wrap: balance;
+  text-shadow: 0 4px 34px rgba(0, 5, 20, 0.85);
+  animation: ent-reveal .85s cubic-bezier(.16,1,.3,1) .35s both;
+}
+
+.hero-gradient-text {
+  background: linear-gradient(135deg, #79dce8 0%, #5fd0e1 45%, #ffffff 85%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-lead {
+  font-family: var(--font-body);
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(234, 243, 250, 0.9);
+  max-width: 800px;
+  margin: 0 auto 36px;
+  text-wrap: balance;
+  text-shadow: 0 2px 14px rgba(0, 5, 20, 0.9);
+  animation: ent-rise .75s cubic-bezier(.22,1,.36,1) .50s both;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  animation: ent-settle .8s cubic-bezier(.22,1,.36,1) .65s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: 34px;
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: #04101f;
+  background: linear-gradient(180deg, #ffffff 0%, #d8ecfe 10%, #dceefe 75%, #ffffff 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 10px 28px rgba(121, 220, 232, 0.35), 0 0 20px rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 36px rgba(121, 220, 232, 0.5), 0 0 28px rgba(255, 255, 255, 0.35);
+  color: #020813;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 34px;
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+  background: rgba(12, 27, 47, 0.55);
+  border: 1px solid rgba(214, 239, 255, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover {
+  background: rgba(20, 42, 72, 0.7);
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+  color: var(--cyan);
+  box-shadow: 0 8px 24px rgba(0, 5, 15, 0.4);
+}
+
+.hero-proof-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(234, 243, 250, 0.75);
+  animation: ent-fade .9s cubic-bezier(.4,0,.2,1) .8s both;
+}
+.proof-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.proof-check {
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+@media (max-width: 680px) {
+  .hero-content {
+    width: calc(100% - 32px);
+    transform: translate(-50%, -44%);
+  }
+  .hero-badge-text {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+  .hero-title {
+    font-size: 38px;
+  }
+  .hero-lead {
+    font-size: 15px;
+    margin-bottom: 26px;
+  }
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+  }
+  .hero-proof-strip {
+    gap: 14px;
+    font-size: 12px;
+  }
+}
+
 /* ==========================================================================
    IGNIS SHOWCASE LANDING PAGE STYLING
    ========================================================================== */
@@ -1081,27 +1284,47 @@ html.lenis, html.lenis body {
         <button class="burger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       </div>
     </header>
-    <main class="copy">
-      <div class="col eyebrow"><span class="ent-mask"><span class="ent-line">DESTINATION PRESET</span></span></div>
-      <h1 class="col title"><span class="ent-mask"><span class="ent-line">ORBITAL</span></span></h1>
-      <div class="col rule"><span></span></div>
-      <p class="col lede">Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow — discover what NASA&rsquo;s real microgravity <br>combustion experiments reveal about fire behavior in your scenario.</p>
-      <div class="col cta">
-        <button class="planet planet-l" type="button" data-slot="l">
-          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
-          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
-          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
-        </button>
-        <button class="planet planet-r" type="button" data-slot="r">
-          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
-          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
-          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
-        </button>
-        <a href="#habitat-builder">START BUILDING</a>
-        <span class="label label-l"></span>
-        <span class="label label-r"></span>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span class="hero-badge-text">NASA SPACE APPS CHALLENGE 2026 &bull; FLAME IN FREEFALL</span>
       </div>
-    </main>
+
+      <h1 class="hero-title">
+        Build a Space Habitat.<br>
+        <span class="hero-gradient-text">Discover the Fire Science.</span>
+      </h1>
+
+      <p class="hero-lead">
+        An evidence-grounded AI platform connecting space habitat engineering with 40+ years of NASA microgravity combustion research. Test cabin atmospheres, investigate flame spread, and discover real experiment evidence &mdash; where the AI is not the source of truth, NASA data is.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="#habitat-builder" class="btn-primary">
+          <span>Start Building Habitat</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#evidence-engine" class="btn-secondary">
+          <span>Explore Evidence Engine</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-proof-strip">
+        <div class="proof-item">
+          <span class="proof-check">&#10003;</span>
+          <span>40+ Years NASA Flight Data</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-check">&#10003;</span>
+          <span>Saffire, FLEX &amp; BASS Telemetry</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-check">&#10003;</span>
+          <span>5-Level Provenance Engine</span>
+        </div>
+      </div>
+    </div>
   </div>
   <button class="scroll" type="button" aria-label="Scroll to next section">
     <svg viewBox="0 0 26 33" fill="none" aria-hidden="true"><path d="M13 1.5 V31.5 M1.9 20.4 L13 31.5 L24.1 20.4" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg>
@@ -1584,15 +1807,16 @@ html.lenis, html.lenis body {
     }
     sky.style.backgroundImage = `url("${planets[next].still}")`;
 
-    title.textContent = planets[next].name;
-    lede.innerHTML = planets[next].lede;
+    if (title) title.textContent = planets[next].name;
+    if (lede) lede.innerHTML = planets[next].lede;
     const rest = ORDER.filter(key => key !== next);
     slots.forEach((slot, index) => {
       const key = rest[index];
       for (const img of slot.querySelectorAll('img')) img.classList.toggle('is-shown', img.dataset.planet === key);
       slot.dataset.planet = key;
       slot.setAttribute('aria-label', `Show ${planets[key].name}`);
-      document.querySelector(`.label-${slot.dataset.slot}`).textContent = planets[key].name;
+      const lbl = document.querySelector(`.label-${slot.dataset.slot}`);
+      if (lbl) lbl.textContent = planets[key].name;
     });
   }
 
