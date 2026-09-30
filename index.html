@@ -116,21 +116,32 @@ body{background:#04101f; color:var(--ink); font-family:var(--font-body);
   flex:none; transition:transform .2s ease, box-shadow .2s ease}
 .links a.enroll:hover{transform:scale(1.03); box-shadow:0 calc(5 * var(--u)) calc(20 * var(--u)) rgba(121,220,232,.4)}
 
-.eyebrow{top:calc(188.8 * var(--u)); font-size:calc(18 * var(--u)); font-weight:500;
-  line-height:1; letter-spacing:calc(7 * var(--u)); text-indent:calc(7 * var(--u)); color:rgba(207,238,245,.8)}
-h1.title{top:calc(254 * var(--u)); font-family:'Space Grotesk',var(--font-body); font-weight:500;
-  font-size:calc(116 * var(--u)); line-height:1; letter-spacing:calc(12 * var(--u));
-  text-indent:calc(12 * var(--u)); color:#fff}
-.rule{top:calc(399 * var(--u)); height:calc(2 * var(--u)); font-size:0; line-height:0;
-  padding-right:calc(2 * var(--u))}
-.rule span{display:inline-block; vertical-align:top; width:calc(60 * var(--u));
-  height:100%; border-radius:calc(2.5 * var(--u)); background:var(--cyan)}
-p.lede{top:calc(436 * var(--u)); font-size:calc(21 * var(--u)); font-weight:400;
-  max-width:calc(670 * var(--u)); margin-inline:auto; text-wrap:balance;
-  line-height:calc(33 * var(--u)); color:rgba(234,243,250,.9)}
+.eyebrow{top:calc(138 * var(--u)); font-size:calc(14 * var(--u)); font-weight:500; line-height:1; letter-spacing:0; text-indent:0}
+.hero-badge{display:inline-flex; align-items:center; gap:calc(8 * var(--u)); padding:calc(6 * var(--u)) calc(18 * var(--u));
+  border-radius:calc(30 * var(--u)); background:rgba(121,220,232,.12); border:calc(1 * var(--u)) solid rgba(121,220,232,.35);
+  box-shadow:0 0 calc(16 * var(--u)) rgba(121,220,232,.15)}
+.hero-badge-dot{width:calc(7 * var(--u)); height:calc(7 * var(--u)); border-radius:50%; background:var(--cyan); box-shadow:0 0 calc(8 * var(--u)) var(--cyan)}
+.hero-badge-text{font-family:var(--font-body); font-size:calc(11.5 * var(--u)); font-weight:700; letter-spacing:calc(2 * var(--u)); color:var(--cyan); text-transform:uppercase}
+
+h1.title{top:calc(196 * var(--u)); font-family:'Space Grotesk',var(--font-body); font-weight:700;
+  font-size:calc(54 * var(--u)); line-height:1.15; letter-spacing:calc(-1 * var(--u)); text-indent:0; color:#fff;
+  text-shadow:0 calc(4 * var(--u)) calc(30 * var(--u)) rgba(0,0,0,.75)}
+.hero-gradient-text{background:linear-gradient(135deg,#ffffff 0%,#79dce8 60%,#4da8e8 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+
+.dest-preset-wrapper{top:calc(334 * var(--u))}
+.dest-preset-pill{display:inline-flex; align-items:center; gap:calc(8 * var(--u)); padding:calc(5 * var(--u)) calc(16 * var(--u));
+  border-radius:calc(20 * var(--u)); background:rgba(8,20,38,.68); border:calc(1 * var(--u)) solid rgba(214,239,255,.24);
+  backdrop-filter:blur(calc(12 * var(--u))); -webkit-backdrop-filter:blur(calc(12 * var(--u)));
+  font-size:calc(12.5 * var(--u)); font-weight:600; letter-spacing:calc(1.5 * var(--u)); color:rgba(234,243,250,.85)}
+.dest-indicator-dot{width:calc(7 * var(--u)); height:calc(7 * var(--u)); border-radius:50%; background:#39ff96; box-shadow:0 0 calc(8 * var(--u)) #39ff96}
+.dest-name{color:#ffffff; font-weight:700; letter-spacing:calc(1.8 * var(--u))}
+
+p.lede{top:calc(390 * var(--u)); font-size:calc(18 * var(--u)); font-weight:400;
+  max-width:calc(740 * var(--u)); margin-inline:auto; text-wrap:balance;
+  line-height:calc(29 * var(--u)); color:rgba(234,243,250,.92); text-shadow:0 calc(2 * var(--u)) calc(12 * var(--u)) rgba(0,5,15,.8)}
 p.lede br{display:none}
 
-.cta{top:calc(597 * var(--u)); height:calc(66 * var(--u)); isolation:isolate}
+.cta{top:calc(558 * var(--u)); height:calc(66 * var(--u)); isolation:isolate}
 .cta a{display:inline-flex; align-items:center; justify-content:center;
   width:calc(220 * var(--u)); height:calc(66 * var(--u)); border-radius:calc(33 * var(--u));
   font-size:calc(16.5 * var(--u)); font-weight:700; letter-spacing:calc(1 * var(--u)); text-indent:0;
@@ -211,15 +222,14 @@ p.lede br{display:none}
   .copy{top:calc(76 * var(--u)); display:flex; flex-direction:column; align-items:center;
     padding:calc(56 * var(--u)) calc(26 * var(--u)) 0}
   .col{position:static; width:100%; right:auto}
-  .eyebrow{font-size:calc(14 * var(--u)); letter-spacing:calc(5 * var(--u)); text-indent:calc(5 * var(--u))}
-  h1.title{font-size:calc(70 * var(--u)); margin-top:calc(20 * var(--u));
-    letter-spacing:calc(5 * var(--u)); text-indent:calc(5 * var(--u))}
-  .rule{margin-top:calc(22 * var(--u)); height:calc(2 * var(--u)); padding-right:0}
-  .rule span{width:calc(48 * var(--u))}
-  p.lede{margin-top:calc(19 * var(--u)); font-size:calc(17 * var(--u));
-    line-height:calc(27 * var(--u)); max-width:calc(400 * var(--u)); text-wrap:balance}
-  .cta{top:auto; margin-top:calc(32 * var(--u)); height:calc(60 * var(--u)); position:relative}
-  .cta a{width:calc(190 * var(--u)); height:calc(60 * var(--u)); border-radius:calc(30 * var(--u))}
+  .eyebrow{font-size:calc(12 * var(--u)); letter-spacing:0; text-indent:0}
+  h1.title{font-size:calc(36 * var(--u)); margin-top:calc(16 * var(--u)); line-height:1.15;
+    letter-spacing:calc(-0.5 * var(--u)); text-indent:0}
+  .dest-preset-wrapper{margin-top:calc(14 * var(--u))}
+  p.lede{margin-top:calc(14 * var(--u)); font-size:calc(15 * var(--u));
+    line-height:calc(24 * var(--u)); max-width:calc(420 * var(--u)); text-wrap:balance}
+  .cta{top:auto; margin-top:calc(26 * var(--u)); height:calc(60 * var(--u)); position:relative}
+  .cta a{width:calc(220 * var(--u)); height:calc(60 * var(--u)); border-radius:calc(30 * var(--u)); font-size:calc(13 * var(--u))}
   .label{top:50%; transform:translateY(-50%); font-size:calc(16 * var(--u));
     letter-spacing:calc(4 * var(--u))}
   .label.label-l{left:calc(56 * var(--u))}
@@ -234,10 +244,10 @@ p.lede br{display:none}
 @media (max-height:620px){:root{--u:max(min(.85px, calc(100vh / 470)), min(calc(100vw / 640), calc(100vh / 560)));
     --dh-px:calc(560 * var(--u)); --vshift:calc(0 * var(--u))}
   .copy{padding-top:calc(26 * var(--u))}
-  h1.title{font-size:calc(58 * var(--u)); margin-top:calc(12 * var(--u))}
-  .rule{margin-top:calc(12 * var(--u))}
-  p.lede{margin-top:calc(12 * var(--u))}
-  .cta{margin-top:calc(20 * var(--u))}
+  h1.title{font-size:calc(34 * var(--u)); margin-top:calc(10 * var(--u)); line-height:1.15}
+  .dest-preset-wrapper{margin-top:calc(8 * var(--u))}
+  p.lede{margin-top:calc(8 * var(--u))}
+  .cta{margin-top:calc(16 * var(--u))}
   .label{top:50%; transform:translateY(-50%); font-size:calc(15 * var(--u))}
   .label.label-l{left:calc(58 * var(--u))}
   .label.label-r{right:calc(58 * var(--u))}}
@@ -381,209 +391,6 @@ html.lenis, html.lenis body {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
-  }
-}
-
-
-/* ==========================================================================
-   MODERN HIGH-IMPACT HERO SECTION
-   ========================================================================== */
-.hero-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -46%);
-  width: min(1080px, calc(100% - 48px));
-  text-align: center;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: auto;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 22px;
-  border-radius: 30px;
-  background: rgba(121, 220, 232, 0.12);
-  border: 1px solid rgba(121, 220, 232, 0.35);
-  box-shadow: 0 0 24px rgba(121, 220, 232, 0.18);
-  margin-bottom: 24px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  animation: ent-rise .7s cubic-bezier(.16,1,.3,1) .25s both;
-}
-
-.hero-badge-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 10px var(--cyan);
-  animation: beacon-pulse 2s infinite;
-}
-
-@keyframes beacon-pulse {
-  0% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px var(--cyan); }
-  50% { transform: scale(1.35); opacity: 0.7; box-shadow: 0 0 16px var(--cyan); }
-  100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px var(--cyan); }
-}
-
-.hero-badge-text {
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2.2px;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.hero-title {
-  font-family: 'Space Grotesk', var(--font-body);
-  font-size: clamp(42px, 5.8vw, 82px);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -1.5px;
-  color: #ffffff;
-  margin-bottom: 22px;
-  text-wrap: balance;
-  text-shadow: 0 4px 34px rgba(0, 5, 20, 0.85);
-  animation: ent-reveal .85s cubic-bezier(.16,1,.3,1) .35s both;
-}
-
-.hero-gradient-text {
-  background: linear-gradient(135deg, #79dce8 0%, #5fd0e1 45%, #ffffff 85%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-.hero-lead {
-  font-family: var(--font-body);
-  font-size: clamp(17px, 1.8vw, 21px);
-  font-weight: 400;
-  line-height: 1.6;
-  color: rgba(234, 243, 250, 0.9);
-  max-width: 800px;
-  margin: 0 auto 36px;
-  text-wrap: balance;
-  text-shadow: 0 2px 14px rgba(0, 5, 20, 0.9);
-  animation: ent-rise .75s cubic-bezier(.22,1,.36,1) .50s both;
-}
-
-.hero-cta-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  margin-bottom: 36px;
-  flex-wrap: wrap;
-  animation: ent-settle .8s cubic-bezier(.22,1,.36,1) .65s both;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 36px;
-  border-radius: 34px;
-  font-family: var(--font-body);
-  font-size: 16.5px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  color: #04101f;
-  background: linear-gradient(180deg, #ffffff 0%, #d8ecfe 10%, #dceefe 75%, #ffffff 100%);
-  border: 1px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 10px 28px rgba(121, 220, 232, 0.35), 0 0 20px rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-primary:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 36px rgba(121, 220, 232, 0.5), 0 0 28px rgba(255, 255, 255, 0.35);
-  color: #020813;
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  border-radius: 34px;
-  font-family: var(--font-body);
-  font-size: 16.5px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  color: #ffffff;
-  background: rgba(12, 27, 47, 0.55);
-  border: 1px solid rgba(214, 239, 255, 0.25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-.btn-secondary:hover {
-  background: rgba(20, 42, 72, 0.7);
-  border-color: var(--cyan);
-  transform: translateY(-2px);
-  color: var(--cyan);
-  box-shadow: 0 8px 24px rgba(0, 5, 15, 0.4);
-}
-
-.hero-proof-strip {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 26px;
-  flex-wrap: wrap;
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(234, 243, 250, 0.75);
-  animation: ent-fade .9s cubic-bezier(.4,0,.2,1) .8s both;
-}
-.proof-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.proof-check {
-  color: var(--cyan);
-  font-weight: 700;
-  font-size: 14px;
-}
-
-@media (max-width: 680px) {
-  .hero-content {
-    width: calc(100% - 32px);
-    transform: translate(-50%, -44%);
-  }
-  .hero-badge-text {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-  }
-  .hero-title {
-    font-size: 38px;
-  }
-  .hero-lead {
-    font-size: 15px;
-    margin-bottom: 26px;
-  }
-  .hero-cta-group {
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-  }
-  .btn-primary, .btn-secondary {
-    width: 100%;
-    justify-content: center;
-    padding: 14px 24px;
-  }
-  .hero-proof-strip {
-    gap: 14px;
-    font-size: 12px;
   }
 }
 
@@ -1284,47 +1091,41 @@ html.lenis, html.lenis body {
         <button class="burger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
       </div>
     </header>
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        <span class="hero-badge-text">NASA SPACE APPS CHALLENGE 2026 &bull; FLAME IN FREEFALL</span>
+    <main class="copy">
+      <div class="col eyebrow">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span class="hero-badge-text">NASA SPACE APPS CHALLENGE 2026 &bull; FLAME IN FREEFALL</span>
+        </div>
       </div>
-
-      <h1 class="hero-title">
+      <h1 class="col title">
         Build a Space Habitat.<br>
         <span class="hero-gradient-text">Discover the Fire Science.</span>
       </h1>
-
-      <p class="hero-lead">
-        An evidence-grounded AI platform connecting space habitat engineering with 40+ years of NASA microgravity combustion research. Test cabin atmospheres, investigate flame spread, and discover real experiment evidence &mdash; where the AI is not the source of truth, NASA data is.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href="#habitat-builder" class="btn-primary">
-          <span>Start Building Habitat</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a href="#evidence-engine" class="btn-secondary">
-          <span>Explore Evidence Engine</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-        </a>
-      </div>
-
-      <div class="hero-proof-strip">
-        <div class="proof-item">
-          <span class="proof-check">&#10003;</span>
-          <span>40+ Years NASA Flight Data</span>
-        </div>
-        <div class="proof-item">
-          <span class="proof-check">&#10003;</span>
-          <span>Saffire, FLEX &amp; BASS Telemetry</span>
-        </div>
-        <div class="proof-item">
-          <span class="proof-check">&#10003;</span>
-          <span>5-Level Provenance Engine</span>
+      <div class="col dest-preset-wrapper">
+        <div class="dest-preset-pill">
+          <span class="dest-indicator-dot"></span>
+          <span class="dest-preset-label">ENVIRONMENT PRESET:</span>
+          <span class="dest-name">ORBITAL (0g MICROGRAVITY)</span>
         </div>
       </div>
-    </div>
+      <p class="col lede">Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow &mdash; discover what NASA&rsquo;s real microgravity combustion experiments reveal about fire behavior in your scenario.</p>
+      <div class="col cta">
+        <button class="planet planet-l" type="button" data-slot="l" title="Switch environment">
+          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
+          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
+          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
+        </button>
+        <button class="planet planet-r" type="button" data-slot="r" title="Switch environment">
+          <img data-planet="orbital" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png">
+          <img data-planet="moon" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png">
+          <img data-planet="mars" alt="" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png">
+        </button>
+        <a href="#habitat-builder">START BUILDING HABITAT</a>
+        <span class="label label-l"></span>
+        <span class="label label-r"></span>
+      </div>
+    </main>
   </div>
   <button class="scroll" type="button" aria-label="Scroll to next section">
     <svg viewBox="0 0 26 33" fill="none" aria-hidden="true"><path d="M13 1.5 V31.5 M1.9 20.4 L13 31.5 L24.1 20.4" stroke="#ffffff" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg>
@@ -1766,24 +1567,27 @@ html.lenis, html.lenis body {
   const planets = {
     "orbital": {
       "name": "ORBITAL",
+      "presetText": "ORBITAL (0g MICROGRAVITY)",
       "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_3ffb4889-c520-432d-8458-038009eb40df.mp4",
       "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png",
       "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png",
-      "lede": "Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow \u2014 discover what NASA\u2019s real microgravity <br>combustion experiments reveal about fire behavior in your scenario."
+      "lede": "Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow &mdash; discover what NASA&rsquo;s real microgravity combustion experiments reveal about fire behavior in your scenario."
     },
     "moon": {
       "name": "LUNAR",
+      "presetText": "LUNAR (0.16g PARTIAL GRAVITY)",
       "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_b211cd74-013b-4dd3-bfd0-64491d8696fa.mp4",
       "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_cf55d1d8-7b59-4a64-80da-d72052ae974e.png",
       "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png",
-      "lede": "Design a lunar base habitat. 0.16g partial gravity changes flame dynamics \u2014 evidence from microgravity experiments <br>carries an explicit gravity-transfer warning. Discover what the science actually shows."
+      "lede": "Design a lunar base habitat. 0.16g partial gravity alters flame dynamics &mdash; evidence from microgravity experiments carries an explicit gravity-transfer warning. Discover what the science actually shows."
     },
     "mars": {
       "name": "MARS",
+      "presetText": "MARS (0.38g PARTIAL GRAVITY)",
       "clip": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_51eae59a-2459-4c84-907c-cc5edfe5fea7.mp4",
       "still": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_0ba6de7c-285d-43dc-b7ab-8c54c73707cb.png",
       "cutout": "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png",
-      "lede": "A fire starts halfway to Mars. What does the evidence say? Explore NASA\u2019s combustion <br>research and discover what partial gravity means for flame spread and extinction limits."
+      "lede": "A fire starts halfway to Mars. What does the evidence say? Explore NASA&rsquo;s combustion research and discover what partial gravity means for flame spread and extinction limits."
     }
   };
 
@@ -1807,7 +1611,8 @@ html.lenis, html.lenis body {
     }
     sky.style.backgroundImage = `url("${planets[next].still}")`;
 
-    if (title) title.textContent = planets[next].name;
+    const destName = document.querySelector('.dest-name');
+    if (destName) destName.textContent = planets[next].presetText;
     if (lede) lede.innerHTML = planets[next].lede;
     const rest = ORDER.filter(key => key !== next);
     slots.forEach((slot, index) => {
@@ -1815,8 +1620,7 @@ html.lenis, html.lenis body {
       for (const img of slot.querySelectorAll('img')) img.classList.toggle('is-shown', img.dataset.planet === key);
       slot.dataset.planet = key;
       slot.setAttribute('aria-label', `Show ${planets[key].name}`);
-      const lbl = document.querySelector(`.label-${slot.dataset.slot}`);
-      if (lbl) lbl.textContent = planets[key].name;
+      document.querySelector(`.label-${slot.dataset.slot}`).textContent = planets[key].name;
     });
   }
 
