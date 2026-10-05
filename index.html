@@ -1002,6 +1002,246 @@ html.lenis, html.lenis body {
   color:var(--cyan);
 }
 
+/* Spacecraft Flammability Telemetry Vertical Bar Graph */
+.flame-chart-card{
+  background:rgba(8,20,38,0.72);
+  border:1px solid rgba(214,239,255,0.18);
+  border-radius:24px;
+  padding:36px 32px 28px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 20px 50px rgba(0,5,15,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  position:relative;
+  overflow:hidden;
+}
+.flame-chart-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 100% 0%, rgba(121,220,232,0.08), transparent 50%);
+  pointer-events:none;
+}
+.flame-chart-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:28px;
+  padding-bottom:18px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.flame-chart-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  color:var(--cyan);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.flame-chart-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:24px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:-0.5px;
+}
+.flame-chart-sub{
+  font-size:13.5px;
+  color:rgba(234,243,250,0.7);
+  max-width:580px;
+  line-height:1.5;
+  margin-top:4px;
+}
+.flame-chart-presets{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.flame-chart-preset-lbl{
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:600;
+  color:rgba(255,255,255,0.5);
+  letter-spacing:1px;
+}
+.flame-chart-preset-btn{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:10px;
+  padding:7px 14px;
+  color:rgba(234,243,250,0.85);
+  font-family:var(--font-body);
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.flame-chart-preset-btn:hover{
+  background:rgba(121,220,232,0.15);
+  border-color:rgba(121,220,232,0.4);
+  color:#fff;
+  transform:translateY(-1px);
+}
+.flame-chart-preset-btn.active{
+  background:rgba(121,220,232,0.22);
+  border-color:var(--cyan);
+  color:var(--cyan);
+  box-shadow:0 0 14px rgba(121,220,232,0.3);
+}
+
+/* Graph Plot Area */
+.graph-stage{
+  position:relative;
+  height:390px;
+  display:flex;
+  margin:20px 0 10px 0;
+}
+.y-axis-labels{
+  width:64px;
+  height:300px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:flex-end;
+  padding-right:14px;
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:rgba(255,255,255,0.5);
+}
+.graph-plot{
+  position:relative;
+  flex:1;
+  height:300px;
+  border-left:1px solid rgba(255,255,255,0.22);
+  border-bottom:1px solid rgba(255,255,255,0.22);
+  border-radius:0 0 0 2px;
+}
+/* Horizontal Safety Bands */
+.hazard-band{
+  position:absolute;
+  left:0;
+  right:0;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:14px;
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+  border-top:1px dashed rgba(255,255,255,0.14);
+  pointer-events:none;
+}
+.hazard-band.band-critical{bottom:85%; height:15%; background:rgba(255,59,87,0.08); color:#ff3b57}
+.hazard-band.band-elevated{bottom:65%; height:20%; background:rgba(255,122,61,0.08); color:#ff7a3d}
+.hazard-band.band-moderate{bottom:35%; height:30%; background:rgba(255,170,64,0.07); color:#ffaa40}
+.hazard-band.band-safe    {bottom:0%;  height:35%; background:rgba(57,255,150,0.07); color:#39ff96}
+
+/* Vertical Bar Columns */
+.bars-track{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-end;
+  padding:0 16px;
+}
+.bar-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:80px;
+  height:100%;
+  justify-content:flex-end;
+  position:relative;
+}
+.bar-pillar-stem{
+  width:44px;
+  border-radius:6px 6px 0 0;
+  transition:height 0.6s cubic-bezier(0.2,0.9,0.3,1), background 0.4s ease, box-shadow 0.4s ease;
+  position:relative;
+  box-shadow:0 0 16px rgba(0,0,0,0.4);
+}
+.bar-pillar-stem:hover{
+  filter:brightness(1.15);
+}
+.bar-float-val{
+  position:absolute;
+  top:-26px;
+  left:50%;
+  transform:translateX(-50%);
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:700;
+  color:#fff;
+  white-space:nowrap;
+  text-shadow:0 0 8px rgba(0,0,0,0.8);
+}
+.x-axis-caption{
+  position:absolute;
+  bottom:-74px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  width:120px;
+}
+.x-axis-name{
+  font-size:12.5px;
+  font-weight:600;
+  color:#fff;
+  line-height:1.2;
+}
+.x-axis-detail{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--cyan);
+  margin-top:3px;
+  white-space:nowrap;
+}
+.x-axis-badge{
+  display:inline-block;
+  font-size:9.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  margin-top:3px;
+  letter-spacing:0.5px;
+  padding:1px 6px;
+  border-radius:4px;
+  border:1px solid currentColor;
+}
+
+/* Footer Stats Banner */
+.flame-chart-footer{
+  margin-top:72px;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:12.5px;
+  color:rgba(234,243,250,0.7);
+  flex-wrap:wrap;
+  gap:12px;
+}
+.flame-chart-footer strong{
+  color:#fff;
+}
+
+@media (max-width:768px){
+  .bar-pillar-stem{width:28px}
+  .bar-col{width:60px}
+  .x-axis-caption{width:80px}
+  .x-axis-name{font-size:11px}
+  .x-axis-detail{font-size:9.5px}
+  .y-axis-labels{width:45px; font-size:10px}
+}
+
 /* Footer */
 .ignis-footer{
   border-top:1px solid rgba(255,255,255,0.12);
@@ -1087,6 +1327,7 @@ html.lenis, html.lenis body {
           <a href="#evidence-engine">Evidence Engine</a>
           <a href="#flame-vision">Flame Vision</a>
           <a href="#explore-fire">Explore Fire</a>
+          <a href="#safety-matrix">Safety Graph</a>
           <a class="enroll" href="#ask-ignis">Ask IGNIS</a>
         </nav>
         <button class="burger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
@@ -1508,6 +1749,131 @@ html.lenis, html.lenis body {
           <span class="source-pill" id="source-1">NASA TM-2015-218820 (FLEX-2)</span>
           <span class="source-pill" id="source-2">ISS Physical Science Informatics (PSI)</span>
           <span class="source-pill" id="source-3">Saffire-I Flight Report</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SPACECRAFT FLAMMABILITY TELEMETRY BAR GRAPH (OPTION 1) -->
+  <section id="safety-matrix" class="ignis-section" style="border-top:1px solid rgba(255,255,255,0.06);">
+    <div class="section-header scroll-reveal">
+      <div class="eyebrow-pill">Telemetry &amp; Flammability Index</div>
+      <h2 class="section-title">Spacecraft Safety Telemetry Bar Graph</h2>
+      <p class="section-lead">A normalized multi-variable flammability index measuring cabin oxygen, life-support airflow, barometric pressure, and material susceptibility across NASA STD-6001 safety thresholds.</p>
+    </div>
+
+    <div class="flame-chart-card scroll-reveal">
+      <div class="flame-chart-header">
+        <div>
+          <div class="flame-chart-eyebrow">
+            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan);"></span>
+            <span>MULTI-VARIABLE SAFETY THRESHOLD BENCHMARKS</span>
+          </div>
+          <div class="flame-chart-title">Habitat Flammability Profile &amp; Risk Envelope</div>
+          <div class="flame-chart-sub">Normalized risk index per parameter cutting across NASA STD-6001 safety thresholds. Select a scenario to inspect telemetry.</div>
+        </div>
+        <div class="flame-chart-presets">
+          <span class="flame-chart-preset-lbl">BENCHMARKS:</span>
+          <button type="button" class="flame-chart-preset-btn active" id="btn-chart-iss" onclick="setChartPreset('iss', this)">ISS Nominal</button>
+          <button type="button" class="flame-chart-preset-btn" id="btn-chart-gateway" onclick="setChartPreset('gateway', this)">Artemis Gateway</button>
+          <button type="button" class="flame-chart-preset-btn" id="btn-chart-depower" onclick="setChartPreset('depower', this)">Quiescent Depower</button>
+          <button type="button" class="flame-chart-preset-btn" id="btn-chart-critical" onclick="setChartPreset('critical', this)">Vent Anomaly</button>
+        </div>
+      </div>
+
+      <div class="graph-stage">
+        <!-- Y-Axis Scale -->
+        <div class="y-axis-labels">
+          <span>100%</span>
+          <span>85%</span>
+          <span>65%</span>
+          <span>35%</span>
+          <span>0%</span>
+        </div>
+
+        <!-- Plot Area with Horizontal Bands & Bars -->
+        <div class="graph-plot">
+          <!-- Horizontal Safety Bands -->
+          <div class="hazard-band band-critical">🔴 CRITICAL RUNAWAY (&gt;85%)</div>
+          <div class="hazard-band band-elevated">🟠 ELEVATED HAZARD (65-85%)</div>
+          <div class="hazard-band band-moderate">🟡 MODERATE MARGIN (35-65%)</div>
+          <div class="hazard-band band-safe">🟢 SAFE / QUENCHED (&lt;35%)</div>
+
+          <!-- Vertical Bars Track -->
+          <div class="bars-track">
+
+            <!-- Bar 1: Oxygen Hazard -->
+            <div class="bar-col">
+              <div class="bar-pillar-stem" id="col-o2" style="height:28%; background:#39ff96; box-shadow:0 0 16px rgba(57,255,150,0.5);">
+                <span class="bar-float-val" id="fval-o2">28%</span>
+              </div>
+              <div class="x-axis-caption">
+                <div class="x-axis-name">Oxygen (O₂)</div>
+                <div class="x-axis-detail" id="xval-o2">21.0 %</div>
+                <div class="x-axis-badge" id="xbadge-o2" style="color:#39ff96;">SAFE</div>
+              </div>
+            </div>
+
+            <!-- Bar 2: Ventilation Convective Flow -->
+            <div class="bar-col">
+              <div class="bar-pillar-stem" id="col-flow" style="height:32%; background:#39ff96; box-shadow:0 0 16px rgba(57,255,150,0.5);">
+                <span class="bar-float-val" id="fval-flow">32%</span>
+              </div>
+              <div class="x-axis-caption">
+                <div class="x-axis-name">Ventilation</div>
+                <div class="x-axis-detail" id="xval-flow">0.05 m/s</div>
+                <div class="x-axis-badge" id="xbadge-flow" style="color:#39ff96;">SAFE</div>
+              </div>
+            </div>
+
+            <!-- Bar 3: Barometric Pressure -->
+            <div class="bar-col">
+              <div class="bar-pillar-stem" id="col-press" style="height:70%; background:#ffaa40; box-shadow:0 0 16px rgba(255,170,64,0.5);">
+                <span class="bar-float-val" id="fval-press">70%</span>
+              </div>
+              <div class="x-axis-caption">
+                <div class="x-axis-name">Pressure</div>
+                <div class="x-axis-detail" id="xval-press">101.3 kPa</div>
+                <div class="x-axis-badge" id="xbadge-press" style="color:#ffaa40;">MODERATE</div>
+              </div>
+            </div>
+
+            <!-- Bar 4: Material Flammability (LOC) -->
+            <div class="bar-col">
+              <div class="bar-pillar-stem" id="col-fuel" style="height:78%; background:#ff7a3d; box-shadow:0 0 16px rgba(255,122,61,0.5);">
+                <span class="bar-float-val" id="fval-fuel">78%</span>
+              </div>
+              <div class="x-axis-caption">
+                <div class="x-axis-name">Material LOC</div>
+                <div class="x-axis-detail" id="xval-fuel">PMMA Acrylic</div>
+                <div class="x-axis-badge" id="xbadge-fuel" style="color:#ff7a3d;">ELEVATED</div>
+              </div>
+            </div>
+
+            <!-- Bar 5: Composite Spacecraft Risk -->
+            <div class="bar-col">
+              <div class="bar-pillar-stem" id="col-comp" style="height:44%; background:#ffaa40; box-shadow:0 0 16px rgba(255,170,64,0.5);">
+                <span class="bar-float-val" id="fval-comp">44%</span>
+              </div>
+              <div class="x-axis-caption">
+                <div class="x-axis-name">Composite Risk</div>
+                <div class="x-axis-detail" id="xval-comp">56 / 100 Safety</div>
+                <div class="x-axis-badge" id="xbadge-comp" style="color:#ffaa40;">MODERATE</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Graph Footer Status & Evidence Citation -->
+      <div class="flame-chart-footer">
+        <div>
+          <span>FLIGHT REFERENCE:</span>
+          <strong>NASA-STD-6001B &bull; CYGNUS SAFFIRE I-VI</strong>
+        </div>
+        <div id="chart-footer-status">
+          CURRENT STATE: <strong>Controlled ISS Microgravity Propagation Margin</strong>
         </div>
       </div>
     </div>
@@ -2194,6 +2560,76 @@ function setAskPrompt(index) {
   document.getElementById('source-1').textContent = data.s1;
   document.getElementById('source-2').textContent = data.s2;
   document.getElementById('source-3').textContent = data.s3;
+}
+
+// ==========================================================================
+// SPACECRAFT FLAMMABILITY TELEMETRY BAR GRAPH (OPTION 1 SCRIPT)
+// ==========================================================================
+const chartPresets = {
+  iss: {
+    o2: { pct: 28, text: '21.0 %', tag: 'SAFE', color: '#39ff96' },
+    flow: { pct: 32, text: '0.05 m/s', tag: 'SAFE', color: '#39ff96' },
+    press: { pct: 70, text: '101.3 kPa', tag: 'MODERATE', color: '#ffaa40' },
+    fuel: { pct: 78, text: 'PMMA Acrylic', tag: 'ELEVATED', color: '#ff7a3d' },
+    comp: { pct: 44, text: '56 / 100 Safety', tag: 'MODERATE', color: '#ffaa40' },
+    status: 'Controlled ISS Microgravity Propagation Margin'
+  },
+  gateway: {
+    o2: { pct: 88, text: '34.0 %', tag: 'CRITICAL', color: '#ff3b57' },
+    flow: { pct: 45, text: '0.08 m/s', tag: 'MODERATE', color: '#ffaa40' },
+    press: { pct: 35, text: '56.0 kPa', tag: 'SAFE', color: '#39ff96' },
+    fuel: { pct: 22, text: 'Nomex Fabric', tag: 'SAFE', color: '#39ff96' },
+    comp: { pct: 52, text: '48 / 100 Safety', tag: 'MODERATE', color: '#ffaa40' },
+    status: 'High O2 offset by low pressure and flame-resistant Nomex'
+  },
+  depower: {
+    o2: { pct: 28, text: '21.0 %', tag: 'SAFE', color: '#39ff96' },
+    flow: { pct: 10, text: '0.00 m/s', tag: 'SAFE', color: '#39ff96' },
+    press: { pct: 70, text: '101.3 kPa', tag: 'MODERATE', color: '#ffaa40' },
+    fuel: { pct: 58, text: 'Cotton Blend', tag: 'MODERATE', color: '#ffaa40' },
+    comp: { pct: 18, text: '82 / 100 Safety', tag: 'SAFE', color: '#39ff96' },
+    status: 'Quiescent Starvation: Fire rapidly self-extinguishes in its own CO2 dome'
+  },
+  critical: {
+    o2: { pct: 82, text: '32.0 %', tag: 'CRITICAL', color: '#ff3b57' },
+    flow: { pct: 92, text: '0.22 m/s', tag: 'CRITICAL', color: '#ff3b57' },
+    press: { pct: 70, text: '101.3 kPa', tag: 'MODERATE', color: '#ffaa40' },
+    fuel: { pct: 88, text: 'Polyethylene', tag: 'CRITICAL', color: '#ff3b57' },
+    comp: { pct: 86, text: '14 / 100 Safety', tag: 'CRITICAL', color: '#ff3b57' },
+    status: 'High ventilation anomaly with enriched O2 creates runaway flame propagation'
+  }
+};
+
+function setChartPreset(key, btn) {
+  document.querySelectorAll('.flame-chart-preset-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const d = chartPresets[key];
+  if (!d) return;
+
+  ['o2', 'flow', 'press', 'fuel', 'comp'].forEach(varKey => {
+    const col = document.getElementById('col-' + varKey);
+    const fval = document.getElementById('fval-' + varKey);
+    const xval = document.getElementById('xval-' + varKey);
+    const xbadge = document.getElementById('xbadge-' + varKey);
+
+    if (col) {
+      col.style.height = d[varKey].pct + '%';
+      col.style.background = d[varKey].color;
+      col.style.boxShadow = '0 0 16px ' + d[varKey].color + '80';
+    }
+    if (fval) fval.textContent = d[varKey].pct + '%';
+    if (xval) xval.textContent = d[varKey].text;
+    if (xbadge) {
+      xbadge.textContent = d[varKey].tag;
+      xbadge.style.color = d[varKey].color;
+      xbadge.style.borderColor = d[varKey].color;
+    }
+  });
+
+  const footerStatus = document.getElementById('chart-footer-status');
+  if (footerStatus) {
+    footerStatus.innerHTML = 'CURRENT STATE: <strong>' + d.status + '</strong>';
+  }
 }
 </script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>

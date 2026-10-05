@@ -4,8 +4,17 @@
 > An evidence-grounded AI experience for NASA microgravity combustion research and spacecraft fire safety.
 
 [![NASA Space Apps Challenge](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0B3D91?style=for-the-badge&logo=nasa)](https://www.spaceappschallenge.org/)
+[![Project Demo](https://img.shields.io/badge/YouTube-Watch%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-79dce8?style=for-the-badge)](LICENSE)
 [![Status: Prototype](https://img.shields.io/badge/Status-Interactive%20Landing%20Page-ff7a3d?style=for-the-badge)](#)
+
+---
+
+<p align="center">
+  <img src="assets/images/Hero%20Section.png" alt="IGNIS - Mission Control Hero Section" width="100%" style="border-radius: 8px;" />
+</p>
+
+> 🎬 **Project Walkthrough & Deep-Dive:** Watch our comprehensive video presentation and demonstration on [YouTube (7gkzC_eCZo4)](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs).
 
 ---
 

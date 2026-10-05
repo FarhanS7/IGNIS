@@ -2,7 +2,9 @@
 .agents/
 docs/
 skills/
-assets/
+# Assets
+!assets/
+!assets/images/**
 
 # PRD and Framework Planning Docs
 IGNIS_PRD*
