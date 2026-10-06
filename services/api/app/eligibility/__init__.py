@@ -4,6 +4,7 @@ from .models import EligibilityCheckResult, EligibilityResult
 from .fuel_check import check_fuel_compatibility
 from .objective_check import check_objective_compatibility
 from .gravity_check import check_gravity_compatibility, GRAVITY_MISMATCH_WARNING
+from .factors_check import check_minimum_factors
 
 __all__ = [
     "EligibilityCheckResult",
@@ -12,4 +13,5 @@ __all__ = [
     "check_objective_compatibility",
     "check_gravity_compatibility",
     "GRAVITY_MISMATCH_WARNING",
+    "check_minimum_factors",
 ]
