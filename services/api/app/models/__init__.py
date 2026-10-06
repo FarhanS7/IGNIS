@@ -20,6 +20,14 @@ from .enums import (
     MATERIAL_FAMILY_COMPATIBILITY,
     GRAVITY_COMPATIBLE,
 )
+from .experiment import (
+    ExperimentBase,
+    ExperimentCreate,
+    ExperimentRead,
+    ExperimentRunBase,
+    ExperimentRunCreate,
+    ExperimentRunRead,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -40,4 +48,10 @@ __all__ = [
     "StoryType",
     "MATERIAL_FAMILY_COMPATIBILITY",
     "GRAVITY_COMPATIBLE",
+    "ExperimentBase",
+    "ExperimentCreate",
+    "ExperimentRead",
+    "ExperimentRunBase",
+    "ExperimentRunCreate",
+    "ExperimentRunRead",
 ]
