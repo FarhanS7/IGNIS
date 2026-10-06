@@ -49,6 +49,11 @@ from .data_source import (
     DataSourceCreate,
     DataSourceRead,
 )
+from .habitat_preset import (
+    HabitatPresetBase,
+    HabitatPresetCreate,
+    HabitatPresetRead,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -90,4 +95,7 @@ __all__ = [
     "DataSourceBase",
     "DataSourceCreate",
     "DataSourceRead",
+    "HabitatPresetBase",
+    "HabitatPresetCreate",
+    "HabitatPresetRead",
 ]
