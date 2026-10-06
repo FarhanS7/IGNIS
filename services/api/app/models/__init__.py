@@ -44,6 +44,11 @@ from .media import (
     CVMeasurementCreate,
     CVMeasurementRead,
 )
+from .data_source import (
+    DataSourceBase,
+    DataSourceCreate,
+    DataSourceRead,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -82,4 +87,7 @@ __all__ = [
     "CVMeasurementBase",
     "CVMeasurementCreate",
     "CVMeasurementRead",
+    "DataSourceBase",
+    "DataSourceCreate",
+    "DataSourceRead",
 ]
