@@ -18,6 +18,8 @@ import { Badge } from '../components/common/Badge';
 import { Skeleton } from '../components/common/Skeleton';
 import { FireBehaviorProfileCard } from '../components/evidence/FireBehaviorProfileCard';
 import { EvidenceMatchCard } from '../components/evidence/EvidenceMatchCard';
+import { EvidenceGuidedVisualization } from '../components/evidence/EvidenceGuidedVisualization';
+import { WhyPanel } from '../components/evidence/WhyPanel';
 import { api } from '../lib/api';
 import type { ScenarioInput, AnalysisResult } from '../types/api';
 
@@ -192,7 +194,26 @@ export const EvidenceResultsPage: React.FC = () => {
             <FireBehaviorProfileCard profile={analysis.behavior_profile} />
           </section>
 
-          {/* Section 2: Gate Statistics & Filter Results */}
+          {/* Section 2: Illustrative Habitat Visualization (PRD §16.6 / FR-EGV-001 - 004) */}
+          <section className="space-y-3">
+            <EvidenceGuidedVisualization
+              scenario={scenario}
+              comparableCount={analysis.eligible_count}
+            />
+          </section>
+
+          {/* Section 3: Why? Decomposition Panel (PRD §10.6) */}
+          {analysis.matches.length > 0 && (
+            <section className="space-y-3">
+              <WhyPanel
+                topMatch={analysis.matches[0]}
+                scenario={scenario}
+                comparableCount={analysis.eligible_count}
+              />
+            </section>
+          )}
+
+          {/* Section 4: Gate Statistics & Filter Results */}
           <section className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
             <div className="flex items-center gap-2 text-slate-300">
               <Filter className="w-4 h-4 text-orange-400" />
