@@ -1,17 +1,25 @@
-# Dependencies & Workspace Folders
+# Dependencies & Workspace Tooling
 .agents/
-docs/
 skills/
-# Assets
-!assets/
-!assets/images/**
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
 
-# PRD and Framework Planning Docs
-IGNIS_PRD*
-IGNIS_Project_Concept*
-PRD_TO_TASKS_FRAMEWORK.md
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Generated / Large Data
+data/processed/
 
 # OS & IDE temporary files
 .DS_Store
 Thumbs.db
 *.log
+
+# Project Assets (ensure tracked)
+!assets/
+!assets/images/**
