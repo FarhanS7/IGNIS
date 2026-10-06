@@ -12,6 +12,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from .api.experiments import router as experiments_router
 from .api.presets import router as presets_router
+from .api.analyze import router as analyze_router
 from .config import settings
 from .errors import ErrorCode, IgnisException
 
@@ -105,3 +106,4 @@ async def health_check():
 # Register v1 Routers
 app.include_router(experiments_router, prefix=settings.API_V1_PREFIX)
 app.include_router(presets_router, prefix=settings.API_V1_PREFIX)
+app.include_router(analyze_router, prefix=settings.API_V1_PREFIX)
