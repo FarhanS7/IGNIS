@@ -36,6 +36,14 @@ from .source import (
     SourceChunkCreate,
     SourceChunkRead,
 )
+from .media import (
+    MediaAssetBase,
+    MediaAssetCreate,
+    MediaAssetRead,
+    CVMeasurementBase,
+    CVMeasurementCreate,
+    CVMeasurementRead,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -68,4 +76,10 @@ __all__ = [
     "SourceChunkBase",
     "SourceChunkCreate",
     "SourceChunkRead",
+    "MediaAssetBase",
+    "MediaAssetCreate",
+    "MediaAssetRead",
+    "CVMeasurementBase",
+    "CVMeasurementCreate",
+    "CVMeasurementRead",
 ]
