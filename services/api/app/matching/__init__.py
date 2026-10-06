@@ -5,6 +5,8 @@ from .categorical import categorical_similarity
 from .objective import objective_overlap
 from .weights import DEFAULT_WEIGHTS, compute_weighted_similarity
 from .coverage import compute_coverage, compute_confidence
+from .models import AnalysisResult, EvidenceMatch, FactorExplanation
+from .orchestrator import run_scenario_analysis
 
 __all__ = [
     "DEFAULT_TOLERANCES",
@@ -15,4 +17,8 @@ __all__ = [
     "compute_weighted_similarity",
     "compute_coverage",
     "compute_confidence",
+    "AnalysisResult",
+    "EvidenceMatch",
+    "FactorExplanation",
+    "run_scenario_analysis",
 ]
