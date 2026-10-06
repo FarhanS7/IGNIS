@@ -1,0 +1,78 @@
+[
+  {
+    "id": "11111111-1111-1111-1111-111111111101",
+    "registry": "NASA_OPEN_DATA",
+    "source_role": "primary_scientific",
+    "provider_name": "Physical Sciences Informatics (PSI)",
+    "dataset_identifier": "PSI-COMBUSTION-ARCHIVE-V1",
+    "api_name": null,
+    "sensor_name": null,
+    "source_url": "https://psi.nasa.gov",
+    "retrieved_at": "2026-09-15T00:00:00Z",
+    "license_or_access": "Public Domain (NASA Open Science)",
+    "provenance": {
+      "sync_protocol": "open_data_harvest_v1"
+    }
+  },
+  {
+    "id": "11111111-1111-1111-1111-111111111102",
+    "registry": "NASA_API",
+    "source_role": "media",
+    "provider_name": "NASA Images and Video API",
+    "dataset_identifier": "images.nasa.gov",
+    "api_name": "NASA Imagery Search API",
+    "sensor_name": null,
+    "source_url": "https://images-api.nasa.gov",
+    "retrieved_at": "2026-09-15T00:00:00Z",
+    "license_or_access": "NASA Media Guidelines",
+    "provenance": {
+      "sync_protocol": "nasa_api_rest_v1"
+    }
+  },
+  {
+    "id": "11111111-1111-1111-1111-111111111103",
+    "registry": "NASA_EARTHDATA",
+    "source_role": "earth_observation_context",
+    "provider_name": "NASA LANCE / FIRMS",
+    "dataset_identifier": "MODIS_C6_1_THERMAL",
+    "api_name": "FIRMS Wildfire Data Stream",
+    "sensor_name": "MODIS Terra/Aqua & VIIRS",
+    "source_url": "https://firms.modaps.eosdis.nasa.gov",
+    "retrieved_at": "2026-09-15T00:00:00Z",
+    "license_or_access": "Open Access / Public Domain",
+    "provenance": {
+      "sync_protocol": "firms_area_api_v1"
+    }
+  },
+  {
+    "id": "11111111-1111-1111-1111-111111111104",
+    "registry": "NASA_PSI",
+    "source_role": "normalized_scientific",
+    "provider_name": "NASA Glenn Research Center Combustion Archives",
+    "dataset_identifier": "GRC-COMBUSTION-DB",
+    "api_name": null,
+    "sensor_name": "Thermocouple Arrays & Radiometers",
+    "source_url": "https://www1.grc.nasa.gov",
+    "retrieved_at": "2026-09-15T00:00:00Z",
+    "license_or_access": "NASA Technical Reports Access",
+    "provenance": {
+      "sync_protocol": "manual_curation_v1"
+    }
+  },
+  {
+    "id": "11111111-1111-1111-1111-111111111105",
+    "registry": "OTHER_NASA_REPOSITORY",
+    "source_role": "derived_by_ignis",
+    "provider_name": "IGNIS Computational Science Pipeline",
+    "dataset_identifier": "IGNIS-CV-METRICS-2026",
+    "api_name": null,
+    "sensor_name": "HSV Contour Tracking Pipeline",
+    "source_url": "https://github.com/FarhanS7/IGNIS",
+    "retrieved_at": "2026-09-20T00:00:00Z",
+    "license_or_access": "MIT License",
+    "provenance": {
+      "pipeline_version": "1.0.0",
+      "reproducible": true
+    }
+  }
+]

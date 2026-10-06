@@ -1,0 +1,160 @@
+[
+  {
+    "id": "22222222-2222-2222-2222-222222222201",
+    "external_id": "SAFFIRE-I",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "Saffire",
+    "title": "Spacecraft Fire Experiment I (Saffire-I)",
+    "summary": "Large-scale flame spread across solid cotton-fiberglass blend fabric aboard uncrewed Cygnus OA-6.",
+    "mission_platform": "Cygnus OA-6",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "flame_spread",
+      "extinction",
+      "flammability_limits"
+    ],
+    "source_url": "https://psi.nasa.gov/saffire-1"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222202",
+    "external_id": "SAFFIRE-II",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_family": "Saffire",
+    "title": "Spacecraft Fire Experiment II (Saffire-II)",
+    "summary": "Combustion of thick PMMA acrylic slabs and Nomex fabric under controlled ventilation aboard Cygnus OA-5.",
+    "mission_platform": "Cygnus OA-5",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "flame_spread",
+      "sustained_burning",
+      "material_response"
+    ],
+    "source_url": "https://psi.nasa.gov/saffire-2"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222203",
+    "external_id": "SAFFIRE-III",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "Saffire",
+    "title": "Spacecraft Fire Experiment III (Saffire-III)",
+    "summary": "High airflow flame propagation on fabric samples in low-pressure oxygen-enriched environment.",
+    "mission_platform": "Cygnus OA-7",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "flame_spread",
+      "flammability_limits"
+    ],
+    "source_url": "https://psi.nasa.gov/saffire-3"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222204",
+    "external_id": "SAFFIRE-IV",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_family": "Saffire",
+    "title": "Spacecraft Fire Experiment IV (Saffire-IV)",
+    "summary": "Smoke scrubbing, post-fire gas cleanup, and Nomex flammability limits at exploration pressures.",
+    "mission_platform": "Cygnus NG-13",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "smoke_detection",
+      "suppression",
+      "extinction"
+    ],
+    "source_url": "https://psi.nasa.gov/saffire-4"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222205",
+    "external_id": "BASS-I",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "BASS",
+    "title": "Burning and Suppression of Solids - I (BASS-I)",
+    "summary": "Extinction limits of solid polymer rods burned in microgravity within the ISS Microgravity Science Glovebox.",
+    "mission_platform": "ISS Columbus Module",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "extinction",
+      "suppression",
+      "flammability_limits"
+    ],
+    "source_url": "https://psi.nasa.gov/bass-1"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222206",
+    "external_id": "BASS-II",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "BASS",
+    "title": "Burning and Suppression of Solids - II (BASS-II)",
+    "summary": "Detailed ignition and flame spread over fabric and acrylic samples across varied forced flow rates.",
+    "mission_platform": "ISS Destiny Module",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "ignition",
+      "flame_spread",
+      "sustained_burning"
+    ],
+    "source_url": "https://psi.nasa.gov/bass-2"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222207",
+    "external_id": "FLEX-1",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_family": "FLEX",
+    "title": "Flame Extinction Experiment - 1 (FLEX-1)",
+    "summary": "Free and tethered isolated droplet combustion in the CIR chamber exploring spherical flame extinction.",
+    "mission_platform": "ISS CIR Rack",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "extinction",
+      "flammability_limits"
+    ],
+    "source_url": "https://psi.nasa.gov/flex-1"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222208",
+    "external_id": "FLEX-2",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "FLEX",
+    "title": "Flame Extinction Experiment - 2 (FLEX-2)",
+    "summary": "Observation of low-temperature cool flame regime and spherical diffusion boundary layer dynamics in droplets.",
+    "mission_platform": "ISS CIR Rack",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "sustained_burning",
+      "extinction",
+      "general_combustion"
+    ],
+    "source_url": "https://psi.nasa.gov/flex-2"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222209",
+    "external_id": "ACME",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_family": "ACME",
+    "title": "Advanced Combustion via Microgravity Experiments (ACME)",
+    "summary": "Gaseous and polymer boundary-layer diffusion flames investigating soot formation and extinction limits.",
+    "mission_platform": "ISS CIR Rack",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "ignition",
+      "extinction",
+      "general_combustion"
+    ],
+    "source_url": "https://psi.nasa.gov/acme"
+  },
+  {
+    "id": "22222222-2222-2222-2222-222222222210",
+    "external_id": "SOFIE",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_family": "SOFIE",
+    "title": "Solid Fuel Ignition and Extinction (SOFIE)",
+    "summary": "Testing flammability of spacecraft interior materials in exploration atmospheres (high O2, low pressure).",
+    "mission_platform": "ISS CIR Rack",
+    "gravity_environment": "microgravity",
+    "objectives": [
+      "flame_spread",
+      "extinction",
+      "flammability_limits"
+    ],
+    "source_url": "https://psi.nasa.gov/sofie"
+  }
+]
