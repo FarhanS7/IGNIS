@@ -28,6 +28,14 @@ from .experiment import (
     ExperimentRunCreate,
     ExperimentRunRead,
 )
+from .source import (
+    SourceDocumentBase,
+    SourceDocumentCreate,
+    SourceDocumentRead,
+    SourceChunkBase,
+    SourceChunkCreate,
+    SourceChunkRead,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -54,4 +62,10 @@ __all__ = [
     "ExperimentRunBase",
     "ExperimentRunCreate",
     "ExperimentRunRead",
+    "SourceDocumentBase",
+    "SourceDocumentCreate",
+    "SourceDocumentRead",
+    "SourceChunkBase",
+    "SourceChunkCreate",
+    "SourceChunkRead",
 ]
