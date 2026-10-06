@@ -131,6 +131,25 @@ const CHART_PRESETS: Record<string, ChartPreset> = {
 export const LandingPage: React.FC = () => {
   // 1. Featured environment planet state
   const [featuredPlanet, setFeaturedPlanet] = useState<string>('orbital');
+  // Lazy clip loading to avoid downloading 3 large video files at once on initial page load
+  const [loadedClips, setLoadedClips] = useState<Record<string, boolean>>({
+    orbital: true,
+  });
+
+  const warmClip = (planetKey: string) => {
+    setLoadedClips((prev) => {
+      if (prev[planetKey]) return prev;
+      return { ...prev, [planetKey]: true };
+    });
+  };
+
+  useEffect(() => {
+    // Warm non-active video clips after initial render during browser idle
+    const timer = setTimeout(() => {
+      ORDER.forEach((p) => warmClip(p));
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // 2. Habitat Simulator State
   const [simDest, setSimDest] = useState<'orbital' | 'lunar' | 'mars'>('orbital');
@@ -312,9 +331,6 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen text-white">
-      {/* Fixed Space Background */}
-      <div className="fixed-bg" aria-hidden="true" />
-
       {/* ======================================================================
           HERO STAGE (EXACT TEMPLATE ARCHITECTURE & UI)
           ====================================================================== */}
@@ -326,13 +342,14 @@ export const LandingPage: React.FC = () => {
           {ORDER.map((p) => {
             const planet = PLANETS[p];
             const isActive = featuredPlanet === p;
+            const isLoaded = !!loadedClips[p];
             return (
               <video
                 key={p}
                 className={isActive ? 'is-active' : ''}
                 autoPlay={isActive}
-                preload="auto"
-                src={planet.clip}
+                preload={isActive ? 'auto' : 'none'}
+                src={isLoaded ? planet.clip : undefined}
                 poster={planet.still}
                 muted
                 loop
@@ -374,7 +391,12 @@ export const LandingPage: React.FC = () => {
               <button
                 className="planet planet-l"
                 type="button"
-                onClick={() => setFeaturedPlanet(leftPlanetKey)}
+                onMouseEnter={() => warmClip(leftPlanetKey)}
+                onFocus={() => warmClip(leftPlanetKey)}
+                onClick={() => {
+                  warmClip(leftPlanetKey);
+                  setFeaturedPlanet(leftPlanetKey);
+                }}
                 title={`Switch environment to ${PLANETS[leftPlanetKey].name}`}
                 aria-label={`Show ${PLANETS[leftPlanetKey].name}`}
               >
@@ -389,7 +411,12 @@ export const LandingPage: React.FC = () => {
               <button
                 className="planet planet-r"
                 type="button"
-                onClick={() => setFeaturedPlanet(rightPlanetKey)}
+                onMouseEnter={() => warmClip(rightPlanetKey)}
+                onFocus={() => warmClip(rightPlanetKey)}
+                onClick={() => {
+                  warmClip(rightPlanetKey);
+                  setFeaturedPlanet(rightPlanetKey);
+                }}
                 title={`Switch environment to ${PLANETS[rightPlanetKey].name}`}
                 aria-label={`Show ${PLANETS[rightPlanetKey].name}`}
               >

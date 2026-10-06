@@ -62,16 +62,19 @@ body {
 .fixed-bg {
   position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
   width: 100vw;
   height: 100vh;
   background-color: #04101f;
   background-image: url("/space-bg.png");
+  background-image: -webkit-image-set(url("/space-bg.webp") 1x, url("/space-bg.png") 1x);
+  background-image: image-set(url("/space-bg.webp") type("image/webp"), url("/space-bg.png") type("image/png"));
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   pointer-events: none;
   transform: translateZ(0);
+  will-change: transform;
 }
 
 .stage {

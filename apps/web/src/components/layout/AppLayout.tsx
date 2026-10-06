@@ -10,7 +10,10 @@ export const AppLayout: React.FC = () => {
   const isHome = location.pathname === '/';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#04101f] text-white relative selection:bg-[#79dce8]/30 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-transparent text-white relative selection:bg-[#79dce8]/30 selection:text-white">
+      {/* Fixed Cosmic Space Background matching index.html */}
+      <div className="fixed-bg" aria-hidden="true" />
+
       {/* Ambient Canvas Cursor Particle Trail */}
       <GlowingCursor />
 
@@ -18,7 +21,7 @@ export const AppLayout: React.FC = () => {
       <Navbar />
 
       {/* Page Content */}
-      <main className={isHome ? 'flex-1 w-full' : 'flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16'}>
+      <main className={`relative z-1 ${isHome ? 'flex-1 w-full' : 'flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16'}`}>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
