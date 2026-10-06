@@ -1,0 +1,124 @@
+[
+  {
+    "id": "88888888-8888-8888-8888-888888888801",
+    "slug": "microgravity-fire",
+    "title": "Why Does Fire Burn as a Sphere in Space?",
+    "summary": "Discover why zero-gravity combustion eliminates natural buoyancy convection, creating serene spherical flames where molecular diffusion dictates life and death.",
+    "story_type": "science_explainer",
+    "source_ids": [
+      "11111111-1111-1111-1111-111111111101",
+      "11111111-1111-1111-1111-111111111104"
+    ],
+    "experiment_ids": [
+      "22222222-2222-2222-2222-222222222208",
+      "22222222-2222-2222-2222-222222222201"
+    ],
+    "earthdata_context": null,
+    "sections": [
+      {
+        "order": 0,
+        "heading": "The Force That Shapes Candle Flames",
+        "content": "On Earth, when you light a candle, hot air expands and becomes less dense than the surrounding cold air. Gravity pulls the denser cold air downward, forcing the hot air to rise. This buoyant natural convection pulls fresh oxygen into the base and stretches the flame into a teardrop shape.",
+        "media_url": "https://images.nasa.gov/details-iss040e089222.html",
+        "media_type": "image",
+        "animation_key": "earth-teardrop-flame",
+        "evidence_card": {
+          "principle": "Buoyant Convection",
+          "earth_gravity": "1.0g"
+        },
+        "suggested_question": "Why do microgravity flames form a sphere?",
+        "source_links": [
+          "NASA Glenn Research Center Drop Tower Archives"
+        ]
+      },
+      {
+        "order": 1,
+        "heading": "The Freefall Revolution",
+        "content": "In microgravity aboard the ISS, gravity is cancelled by orbital freefall. Hot combustion gases no longer rise. Without buoyancy, oxygen cannot be pulled into the flame base by convection. Instead, oxygen must slowly migrate into the reaction zone purely via molecular diffusion.",
+        "media_url": "/media/cached/flex2_droplet_combustion.mp4",
+        "media_type": "video",
+        "animation_key": "spherical-diffusion-halo",
+        "evidence_card": {
+          "experiment": "FLEX-2",
+          "observation": "Spherical blue diffusion shell"
+        },
+        "suggested_question": "How does molecular diffusion replace convection in orbit?",
+        "source_links": [
+          "NASA TM-2015-218820 (FLEX-2)"
+        ]
+      },
+      {
+        "order": 2,
+        "heading": "Suffocation and the Life-Support Paradox",
+        "content": "Because oxygen moves so slowly without convection, a zero-gravity flame in completely stagnant air quickly suffocates in its own carbon dioxide shell. However, the gentle breeze from spacecraft life-support ventilation (0.05 to 0.20 m/s) sweeps the CO2 away and feeds the flame fresh oxidizer.",
+        "media_url": null,
+        "media_type": null,
+        "animation_key": "stagnant-suffocation-graph",
+        "evidence_card": {
+          "experiment": "Saffire-I",
+          "finding": "Quenching under 0 m/s airflow"
+        },
+        "suggested_question": "What did Saffire discover about spacecraft ventilation?",
+        "source_links": [
+          "Saffire-I Flight Report (NASA/TM-2017-219500)"
+        ]
+      }
+    ],
+    "published": true
+  },
+  {
+    "id": "88888888-8888-8888-8888-888888888802",
+    "slug": "fire-from-space",
+    "title": "Fire from Space vs Fire in Space",
+    "summary": "Bridging NASA Earthdata satellite thermal anomaly detection of terrestrial wildfires with microgravity combustion inside the Cygnus spacecraft.",
+    "story_type": "earthdata_bridge",
+    "source_ids": [
+      "11111111-1111-1111-1111-111111111103",
+      "11111111-1111-1111-1111-111111111101"
+    ],
+    "experiment_ids": [
+      "22222222-2222-2222-2222-222222222202"
+    ],
+    "earthdata_context": {
+      "sensor_platform": "Terra/Aqua MODIS & Suomi NPP VIIRS",
+      "bands": "Thermal Infrared 3.9\u00b5m and 11\u00b5m",
+      "application": "Active Fire Detection & Burned Area Mapping",
+      "satellite_provider": "NASA LANCE FIRMS"
+    },
+    "sections": [
+      {
+        "order": 0,
+        "heading": "Planetary Heat Signatures",
+        "content": "From 700 kilometers above Earth, NASA satellites monitor our planet's fiery metabolism. Sensors on MODIS and VIIRS detect middle-infrared emissions, pinpointing active wildfire fronts in near real-time through the FIRMS system.",
+        "media_url": "https://firms.modaps.eosdis.nasa.gov",
+        "media_type": "data_visualization",
+        "animation_key": "satellite-earth-orbit",
+        "evidence_card": {
+          "source": "NASA FIRMS",
+          "resolution": "375-meter active fire pixel"
+        },
+        "suggested_question": "How does NASA detect wildfires from orbit?",
+        "source_links": [
+          "NASA Earthdata FIRMS Data User Guide"
+        ]
+      },
+      {
+        "order": 1,
+        "heading": "The Enclosed Cygnus Chamber",
+        "content": "While satellites gaze downward at continent-scale fires, engineers inside the Cygnus vehicle after ISS unberthing ignited the largest deliberate fires ever conducted in space. Here, the challenge is microscopic containment rather than planetary observation.",
+        "media_url": null,
+        "media_type": null,
+        "animation_key": "cygnus-burn-chamber",
+        "evidence_card": {
+          "experiment": "Saffire-II",
+          "sample_size": "Large-scale PMMA and fabric"
+        },
+        "suggested_question": "Why did NASA burn Cygnus spacecraft after departing ISS?",
+        "source_links": [
+          "AIAA 2018-0912 (Saffire-II)"
+        ]
+      }
+    ],
+    "published": true
+  }
+]
