@@ -14,6 +14,8 @@ from ..models.enums import GravityEnvironment, FuelType, MaterialFamily
 from ..models.experiment import ExperimentRead, ExperimentRunRead
 from ..models.habitat_preset import HabitatPresetRead
 from ..models.data_source import DataSourceRead
+from ..models.story import StoryRead
+from ..models.source import SourceChunkRead
 
 
 class Repository:
@@ -25,6 +27,8 @@ class Repository:
         self._runs: list[ExperimentRunRead] = []
         self._presets: list[HabitatPresetRead] = []
         self._data_sources: list[DataSourceRead] = []
+        self._stories: list[StoryRead] = []
+        self._chunks: list[SourceChunkRead] = []
         self._load_from_fixtures()
 
     def _load_from_fixtures(self) -> None:
@@ -61,6 +65,20 @@ class Repository:
             with open(presets_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 self._presets = [HabitatPresetRead.model_validate(r) for r in data]
+
+        # Load stories
+        stories_file = self.fixtures_dir / "stories.json"
+        if stories_file.exists():
+            with open(stories_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self._stories = [StoryRead.model_validate(r) for r in data]
+
+        # Load source chunks
+        chunks_file = self.fixtures_dir / "source_chunks.json"
+        if chunks_file.exists():
+            with open(chunks_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self._chunks = [SourceChunkRead.model_validate(r) for r in data]
 
     def list_experiments(
         self,
@@ -144,6 +162,62 @@ class Repository:
             if p.slug == slug:
                 return p
         return None
+
+    def list_data_sources(self) -> list[DataSourceRead]:
+        """Lists all registered NASA data sources."""
+        return list(self._data_sources)
+
+    def get_data_source(self, source_id: UUID) -> DataSourceRead | None:
+        """Retrieves a single data source by its UUID."""
+        for ds in self._data_sources:
+            if ds.id == source_id:
+                return ds
+        return None
+
+    def list_stories(self, published_only: bool = True) -> list[StoryRead]:
+        """Lists stories, optionally filtered by published status."""
+        if published_only:
+            return [s for s in self._stories if s.published]
+        return list(self._stories)
+
+    def get_story_by_slug(self, slug: str) -> StoryRead | None:
+        """Retrieves a single story with full sections by slug."""
+        for s in self._stories:
+            if s.slug == slug:
+                return s
+        return None
+
+    def list_source_chunks(self) -> list[SourceChunkRead]:
+        """Lists all source chunks in the registry."""
+        return list(self._chunks)
+
+    def search_source_chunks(
+        self,
+        query: str,
+        experiment_id: UUID | None = None,
+        limit: int = 5,
+    ) -> list[SourceChunkRead]:
+        """Keyword and token relevance search over source chunks."""
+        stop_words = {
+            "the", "and", "is", "in", "it", "of", "to", "a", "an", "what", "how",
+            "why", "that", "this", "with", "for", "on", "as", "at", "by", "from",
+            "are", "was", "were", "does", "did", "can", "will", "would",
+        }
+        words = [w.lower().strip("?,.!") for w in query.split() if len(w) > 2 and w.lower().strip("?,.!") not in stop_words]
+        if not words:
+            return self._chunks[:limit]
+
+        scored: list[tuple[int, SourceChunkRead]] = []
+        for chunk in self._chunks:
+            if experiment_id and chunk.experiment_id != experiment_id:
+                continue
+            text = chunk.content.lower()
+            score = sum(text.count(w) for w in words)
+            if score > 0:
+                scored.append((score, chunk))
+
+        scored.sort(key=lambda item: item[0], reverse=True)
+        return [item[1] for item in scored[:limit]]
 
 
 # Singleton instance

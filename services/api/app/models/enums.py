@@ -65,6 +65,13 @@ class EvidenceLevel(str, Enum):
     D_SIMILARITY = "D"        # Level D: Mathematical vector similarity interpretation
     E_AI_SYNTHESIS = "E"      # Level E: Grounded natural-language LLM synthesis strictly constrained to evidence
 
+    # Aliases
+    A = "A"
+    B = "B"
+    C = "C"
+    D = "D"
+    E = "E"
+
 
 class SourceRole(str, Enum):
     """Functional role of an ingested data source in the platform."""
