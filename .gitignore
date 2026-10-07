@@ -23,3 +23,9 @@ Thumbs.db
 # Project Assets (ensure tracked)
 !assets/
 !assets/images/**
+
+# Internal Planning, PRD & Roadmap Documents
+docs/
+IGNIS_PRD*.md
+IGNIS_Project_Concept*.md
+PRD_TO_TASKS_FRAMEWORK.md
