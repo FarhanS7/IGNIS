@@ -1,0 +1,57 @@
+[
+  {
+    "id": "33333333-3333-3333-3333-333333333301",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_id": "22222222-2222-2222-2222-222222222201",
+    "title": "Saffire-I Flight Investigation Final Report",
+    "document_type": "NASA Technical Memorandum",
+    "source_url": "https://ntrs.nasa.gov/citations/20170002195",
+    "citation_label": "NASA/TM-2017-219500",
+    "raw_text_location": "s3://ignis-archive/sources/saffire1_tm.pdf",
+    "checksum": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333302",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_id": "22222222-2222-2222-2222-222222222202",
+    "title": "Saffire-II Flammability Assessment of Solid Spacecraft Materials",
+    "document_type": "Conference Paper",
+    "source_url": "https://ntrs.nasa.gov/citations/20180004120",
+    "citation_label": "AIAA 2018-0912",
+    "raw_text_location": "s3://ignis-archive/sources/saffire2_aiaa.pdf",
+    "checksum": "sha256:ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333303",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_id": "22222222-2222-2222-2222-222222222206",
+    "title": "BASS-II Flame Spread and Extinction in Enclosed Spacecraft Environments",
+    "document_type": "Peer-Reviewed Article",
+    "source_url": "https://doi.org/10.1016/j.combustflame.2016.08.012",
+    "citation_label": "Combustion and Flame 174 (2016)",
+    "raw_text_location": "s3://ignis-archive/sources/bass2_cnf.pdf",
+    "checksum": "sha256:4e1243bd22c66e76c2ba9eddc1f91394e57f9f835f8a0029b38ec2c949c5e55e"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333304",
+    "source_id": "11111111-1111-1111-1111-111111111101",
+    "experiment_id": "22222222-2222-2222-2222-222222222208",
+    "title": "Droplet Combustion and Cool Flame Extinction in the CIR Rack",
+    "document_type": "NASA Technical Memorandum",
+    "source_url": "https://ntrs.nasa.gov/citations/20150018220",
+    "citation_label": "NASA TM-2015-218820",
+    "raw_text_location": "s3://ignis-archive/sources/flex2_tm.pdf",
+    "checksum": "sha256:88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589"
+  },
+  {
+    "id": "33333333-3333-3333-3333-333333333305",
+    "source_id": "11111111-1111-1111-1111-111111111104",
+    "experiment_id": "22222222-2222-2222-2222-222222222209",
+    "title": "ACME Diffusion Flame Dynamics and Sooting Extinction Limits",
+    "document_type": "NASA Technical Report",
+    "source_url": "https://ntrs.nasa.gov/citations/20200001140",
+    "citation_label": "NASA/CR-2020-220114",
+    "raw_text_location": "s3://ignis-archive/sources/acme_cr.pdf",
+    "checksum": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+  }
+]

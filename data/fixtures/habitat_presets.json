@@ -1,0 +1,53 @@
+[
+  {
+    "id": "55555555-5555-5555-5555-555555555501",
+    "slug": "orbital",
+    "display_name": "Orbital Spacecraft (0g Microgravity)",
+    "destination": "orbital",
+    "gravity_class": "microgravity",
+    "gravity_value_g": 0.0,
+    "external_environment_summary": "Low Earth orbit vacuum, solar radiation, thermal extremes",
+    "default_oxygen_pct": 21.0,
+    "default_pressure_kpa": 101.3,
+    "default_airflow_cm_s": 5.0,
+    "default_material": "pmma",
+    "disclaimer": "Reference scenario defaults based on ISS nominal environment, not universal mission values.",
+    "provenance": {
+      "standard": "NASA-STD-3001 Volume 2"
+    }
+  },
+  {
+    "id": "55555555-5555-5555-5555-555555555502",
+    "slug": "moon",
+    "display_name": "Lunar Base Surface Habitat (0.16g)",
+    "destination": "moon",
+    "gravity_class": "partial_gravity_lunar",
+    "gravity_value_g": 0.16,
+    "external_environment_summary": "Lunar surface vacuum, 1/6th gravity, abrasive regolith",
+    "default_oxygen_pct": 32.0,
+    "default_pressure_kpa": 56.0,
+    "default_airflow_cm_s": 8.0,
+    "default_material": "fabric_cotton",
+    "disclaimer": "Reference scenario defaults. GRAVITY TRANSFERABILITY WARNING: Microgravity flight evidence requires correction for partial buoyant convection.",
+    "provenance": {
+      "standard": "NASA Exploration Atmosphere Standards (SP-2013-4402)"
+    }
+  },
+  {
+    "id": "55555555-5555-5555-5555-555555555503",
+    "slug": "mars",
+    "display_name": "Mars Base Surface Habitat (0.38g)",
+    "destination": "mars",
+    "gravity_class": "partial_gravity_mars",
+    "gravity_value_g": 0.38,
+    "external_environment_summary": "Thin CO2 atmosphere (~0.6 kPa), 0.38g gravity, dust storms",
+    "default_oxygen_pct": 28.0,
+    "default_pressure_kpa": 70.0,
+    "default_airflow_cm_s": 10.0,
+    "default_material": "fabric_synthetic",
+    "disclaimer": "Reference scenario defaults. GRAVITY TRANSFERABILITY WARNING: Partial buoyant convection re-emerges in 0.38g.",
+    "provenance": {
+      "standard": "NASA Human Integration Design Handbook (HIDH)"
+    }
+  }
+]
