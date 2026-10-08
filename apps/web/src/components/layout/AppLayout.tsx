@@ -21,7 +21,7 @@ export const AppLayout: React.FC = () => {
       <Navbar />
 
       {/* Page Content */}
-      <main className={`relative z-1 ${isHome ? 'flex-1 w-full pt-28 pb-16' : 'flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16'}`}>
+      <main className={`relative z-1 ${isHome ? 'flex-1 w-full' : 'flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16'}`}>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
