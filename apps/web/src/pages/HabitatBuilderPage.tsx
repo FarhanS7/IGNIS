@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Orbit,
   Moon,
@@ -11,12 +10,14 @@ import {
   Flame,
   AlertTriangle,
   RotateCcw,
-  Search,
   ShieldCheck,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/common/Card';
+import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
+import { EvidenceGuidedVisualization } from '../components/evidence/EvidenceGuidedVisualization';
 import { api } from '../lib/api';
 import type {
   HabitatPreset,
@@ -34,7 +35,7 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
     destination: 'orbital',
     gravity_class: 'microgravity',
     gravity_value_g: 0.0,
-    external_environment_summary: 'Low Earth orbit vacuum, zero buoyancy, thermal extremes',
+    external_environment_summary: 'Low Earth orbit vacuum, zero buoyancy, pure molecular diffusion transport',
     default_oxygen_pct: 21.0,
     default_pressure_kpa: 101.3,
     default_airflow_cm_s: 5.0,
@@ -45,11 +46,11 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   {
     id: '55555555-5555-5555-5555-555555555502',
     slug: 'moon',
-    display_name: 'Lunar Base Surface Habitat (0.16g)',
+    display_name: 'Lunar Base Habitat (0.16g)',
     destination: 'moon',
     gravity_class: 'partial_gravity_lunar',
     gravity_value_g: 0.16,
-    external_environment_summary: 'Lunar vacuum, 1/6th gravity, abrasive regolith exterior',
+    external_environment_summary: 'Lunar surface vacuum, 1/6th gravity, weak buoyancy convection re-emerges',
     default_oxygen_pct: 32.0,
     default_pressure_kpa: 56.0,
     default_airflow_cm_s: 8.0,
@@ -60,11 +61,11 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   {
     id: '55555555-5555-5555-5555-555555555503',
     slug: 'mars',
-    display_name: 'Mars Base Surface Habitat (0.38g)',
+    display_name: 'Mars Base Habitat (0.38g)',
     destination: 'mars',
     gravity_class: 'partial_gravity_mars',
     gravity_value_g: 0.38,
-    external_environment_summary: 'Thin CO₂ atmosphere (~0.6 kPa), 0.38g gravity, dust storms',
+    external_environment_summary: 'Thin CO₂ exterior (~0.6 kPa), 0.38g gravity, moderate buoyant convection',
     default_oxygen_pct: 28.0,
     default_pressure_kpa: 70.0,
     default_airflow_cm_s: 10.0,
@@ -124,6 +125,16 @@ export const HabitatBuilderPage: React.FC = () => {
 
   const activePreset = presets.find((p) => p.slug === selectedPresetSlug) || presets[0];
 
+  // Current real-time scenario input
+  const currentScenario: ScenarioInput = useMemo(() => ({
+    material,
+    objective,
+    gravity_environment: gravityEnv,
+    oxygen_pct: Number(oxygenPct),
+    pressure_kpa: Number(pressureKpa),
+    airflow_cm_s: Number(airflowCmS),
+  }), [material, objective, gravityEnv, oxygenPct, pressureKpa, airflowCmS]);
+
   // Select destination preset
   const handleSelectPreset = (preset: HabitatPreset) => {
     setSelectedPresetSlug(preset.slug);
@@ -154,50 +165,37 @@ export const HabitatBuilderPage: React.FC = () => {
 
   const handleAnalyze = (e: React.FormEvent) => {
     e.preventDefault();
-    const scenario: ScenarioInput = {
-      material,
-      objective,
-      gravity_environment: gravityEnv,
-      oxygen_pct: Number(oxygenPct),
-      pressure_kpa: Number(pressureKpa),
-      airflow_cm_s: Number(airflowCmS),
-    };
-
-    // Save in sessionStorage as fallback and pass via router state
-    sessionStorage.setItem('ignis_current_scenario', JSON.stringify(scenario));
-    navigate('/evidence', { state: { scenario } });
+    sessionStorage.setItem('ignis_current_scenario', JSON.stringify(currentScenario));
+    navigate('/evidence', { state: { scenario: currentScenario } });
   };
 
   return (
-    <div className="space-y-10 py-2 sm:py-6 max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="space-y-2">
+    <div className="space-y-8 py-2 max-w-6xl mx-auto">
+      {/* Top Header */}
+      <div className="space-y-2 border-b border-white/10 pb-5">
         <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-orange-400">
           <Flame className="w-3.5 h-3.5 text-orange-400 animate-pulse" />
-          <span>Mode 01 · Habitat Builder</span>
-          <span className="text-slate-600">|</span>
-          <span className="text-slate-400">PRD v1.1 §10</span>
+          <span>Interactive Simulator · Habitat Fire Lab</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
-          Configure Habitat Combustion Scenario
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
+          Habitat Combustion Simulator
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-          Define space destination environment parameters and cabin atmosphere.
-          IGNIS applies NASA physical comparability filters before matching against real flight test runs.
+        <p className="text-slate-300 text-sm max-w-2xl leading-relaxed">
+          Tweak cabin atmosphere, destination gravity, and material samples. Watch how zero-gravity eliminates buoyant convection and alters flame physics in real time.
         </p>
       </div>
 
-      {/* Destination Selector (PRD v1.1 §17.2) */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-white uppercase tracking-wider text-xs font-mono flex items-center gap-2">
+      {/* Step 1: Destination Preset Tabs */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+          <span className="text-white font-bold uppercase tracking-wider flex items-center gap-1.5">
             <Orbit className="w-4 h-4 text-orange-400" />
-            <span>Step 1: Select Mission Destination Preset</span>
-          </h2>
-          <span className="text-xs text-slate-400 font-mono">Reference baselines</span>
+            <span>Select Destination & Gravity Field</span>
+          </span>
+          <span>Click a destination to apply baseline atmosphere</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {presets.map((preset) => {
             const isSelected = selectedPresetSlug === preset.slug;
             const icon =
@@ -210,354 +208,328 @@ export const HabitatBuilderPage: React.FC = () => {
               );
 
             return (
-              <motion.div
+              <button
                 key={preset.slug}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.99 }}
+                type="button"
+                onClick={() => handleSelectPreset(preset)}
+                className={`p-4 rounded-2xl cursor-pointer transition-all border text-left flex items-center justify-between gap-3 ${
+                  isSelected
+                    ? 'bg-slate-900 border-orange-500 shadow-lg shadow-orange-500/10 ring-1 ring-orange-500/50'
+                    : 'bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/80'
+                }`}
               >
-                <div
-                  onClick={() => handleSelectPreset(preset)}
-                  className={`p-5 rounded-2xl cursor-pointer transition-all border text-left flex flex-col justify-between h-full relative overflow-hidden ${
-                    isSelected
-                      ? 'bg-slate-900 border-orange-500/80 shadow-lg shadow-orange-500/10 ring-1 ring-orange-500/40'
-                      : 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/80'
-                  }`}
-                >
-                  {isSelected && (
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-orange-500/20 to-transparent pointer-events-none" />
-                  )}
-
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                          isSelected
-                            ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40'
-                            : 'bg-slate-800 text-slate-400 border border-slate-700/60'
-                        }`}
-                      >
-                        {icon}
-                      </div>
-                      <Badge
-                        variant={isSelected ? 'flame' : 'neutral'}
-                        size="xs"
-                      >
-                        {preset.gravity_value_g !== null ? `${preset.gravity_value_g}g` : '0g'}
-                      </Badge>
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-white text-base font-['Space_Grotesk',sans-serif]">
-                        {preset.display_name.split('(')[0].trim()}
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">
-                        {preset.external_environment_summary}
-                      </p>
-                    </div>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                      isSelected
+                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40'
+                        : 'bg-slate-800 text-slate-400 border border-slate-700/60'
+                    }`}
+                  >
+                    {icon}
                   </div>
-
-                  <div className="pt-4 mt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                    <span>O₂: {preset.default_oxygen_pct}%</span>
-                    <span>P: {preset.default_pressure_kpa} kPa</span>
-                    <span className="text-orange-400/90 font-medium">
-                      {isSelected ? 'ACTIVE' : 'SELECT'}
+                  <div>
+                    <h3 className="font-bold text-white text-sm">
+                      {preset.display_name.split('(')[0].trim()}
+                    </h3>
+                    <span className="text-[11px] font-mono text-slate-400 block">
+                      {preset.gravity_value_g !== null ? `${preset.gravity_value_g}g Gravity` : '0g Microgravity'}
                     </span>
                   </div>
                 </div>
-              </motion.div>
+
+                <Badge variant={isSelected ? 'flame' : 'neutral'} size="xs">
+                  {isSelected ? 'ACTIVE' : 'SELECT'}
+                </Badge>
+              </button>
             );
           })}
         </div>
       </section>
 
-      {/* Dual Panel Workspace (PRD v1.1 §17.2) */}
+      {/* Main Dual Workspace: Left Controls (6 cols) + Right Live Visualizer (6 cols) */}
       <form onSubmit={handleAnalyze} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Panel: Environment & Gravity Context (Read-Only / Contextual) - 5 cols */}
-        <div className="lg:col-span-5 space-y-6">
-          <Card variant="glass" padding="md">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-base">
-                  <ShieldCheck className="w-4 h-4 text-sky-400" />
-                  <span>Destination Context</span>
-                </CardTitle>
-                <Badge variant="plasma" size="xs">
-                  READ-ONLY
-                </Badge>
-              </div>
-              <CardDescription>
-                Environmental parameters dictated by destination astrophysics and external conditions.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-4 pt-1">
-              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800/80 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-medium">Gravitational Regime:</span>
-                  <span className="text-xs font-mono font-bold text-sky-300 uppercase">
-                    {activePreset.gravity_class?.replace(/_/g, ' ') || 'Microgravity'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-medium">Nominal Acceleration:</span>
-                  <span className="text-xs font-mono text-white">
-                    {activePreset.gravity_value_g !== null ? `${activePreset.gravity_value_g} g (m/s² scaled)` : '0.0 g'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800/80 space-y-1">
-                <span className="text-xs text-slate-400 font-medium block">External Space Environment:</span>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  {activePreset.external_environment_summary}
-                </p>
-              </div>
-
-              {/* Gravity Transfer Warning (PRD v1.1 §14.3) */}
-              {activePreset.gravity_value_g && activePreset.gravity_value_g > 0 ? (
-                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 space-y-1.5">
-                  <div className="flex items-center gap-2 font-semibold text-xs text-amber-200">
-                    <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                    <span>Gravity Transferability Rule</span>
-                  </div>
-                  <p className="text-[11px] text-amber-300/90 leading-relaxed">
-                    Most NASA flight data (Saffire, BASS, FLEX) were conducted in 0g microgravity.
-                    Comparing 0g data to {activePreset.destination.toUpperCase()} ({activePreset.gravity_value_g}g) will cap match confidence at <strong>Medium</strong> to reflect unmodeled partial buoyancy.
-                  </p>
-                </div>
-              ) : (
-                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 space-y-1">
-                  <div className="flex items-center gap-2 font-semibold text-xs text-emerald-200">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Zero-Buoyancy Flight Match</span>
-                  </div>
-                  <p className="text-[11px] text-emerald-300/90 leading-relaxed">
-                    Orbital microgravity directly matches ISS & Cygnus flight datasets without gravitational extrapolation.
-                  </p>
-                </div>
-              )}
-
-              {/* Preset Provenance Notice */}
-              <div className="pt-2 text-[11px] text-slate-400 flex items-center justify-between border-t border-slate-800/60">
-                <span>Standard Baseline:</span>
-                <span className="font-mono text-slate-300">
-                  {String((activePreset.provenance as Record<string, string>)?.standard || 'NASA-STD-3001')}
+        {/* Left Column: Atmospheric & Material Controls (6 cols) */}
+        <div className="lg:col-span-6 space-y-4">
+          <Card variant="glass" padding="md" className="border-slate-800/80 space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-orange-400" />
+                <span className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                  Atmosphere & Fuel Parameters
                 </span>
               </div>
-            </CardContent>
+              <button
+                type="button"
+                onClick={handleResetDefaults}
+                className="inline-flex items-center gap-1 text-[11px] font-mono text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset</span>
+              </button>
+            </div>
+
+            {/* Oxygen Percentage Control */}
+            <div className="space-y-2 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+              <div className="flex items-center justify-between">
+                <label htmlFor="oxygen-input" className="text-xs font-semibold text-white flex items-center gap-2">
+                  <span>Oxygen (O₂)</span>
+                  <Badge variant={oxygenPct > 28 ? 'flame' : 'plasma'} size="xs">
+                    {oxygenPct > 28 ? 'Enriched' : oxygenPct < 20 ? 'Hypoxic' : 'Nominal'}
+                  </Badge>
+                </label>
+                <div className="flex items-center gap-1 font-mono text-xs">
+                  <input
+                    id="oxygen-input"
+                    type="number"
+                    step="0.5"
+                    min="15.0"
+                    max="40.0"
+                    value={oxygenPct}
+                    onChange={(e) => setOxygenPct(parseFloat(e.target.value) || 0)}
+                    className="w-14 px-1.5 py-0.5 rounded bg-black/60 border border-slate-700 text-right text-orange-400 font-bold"
+                  />
+                  <span className="text-slate-400">%</span>
+                </div>
+              </div>
+
+              <input
+                type="range"
+                min="15.0"
+                max="40.0"
+                step="0.5"
+                value={oxygenPct}
+                onChange={(e) => setOxygenPct(parseFloat(e.target.value))}
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
+              />
+
+              <div className="flex justify-between text-[10px] font-mono text-slate-500 pt-0.5">
+                <span>15% (Low)</span>
+                <span className="text-slate-300">21% (Earth/ISS)</span>
+                <span className="text-orange-400">32% (Artemis)</span>
+                <span>40% (Max)</span>
+              </div>
+            </div>
+
+            {/* Cabin Pressure Control */}
+            <div className="space-y-2 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+              <div className="flex items-center justify-between">
+                <label htmlFor="pressure-input" className="text-xs font-semibold text-white flex items-center gap-2">
+                  <Gauge className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Cabin Pressure</span>
+                  <Badge variant="plasma" size="xs">
+                    {pressureKpa < 80 ? 'Low Pressure' : 'Sea-Level'}
+                  </Badge>
+                </label>
+                <div className="flex items-center gap-1 font-mono text-xs">
+                  <input
+                    id="pressure-input"
+                    type="number"
+                    step="0.5"
+                    min="40.0"
+                    max="120.0"
+                    value={pressureKpa}
+                    onChange={(e) => setPressureKpa(parseFloat(e.target.value) || 0)}
+                    className="w-14 px-1.5 py-0.5 rounded bg-black/60 border border-slate-700 text-right text-sky-400 font-bold"
+                  />
+                  <span className="text-slate-400">kPa</span>
+                </div>
+              </div>
+
+              <input
+                type="range"
+                min="40.0"
+                max="120.0"
+                step="0.5"
+                value={pressureKpa}
+                onChange={(e) => setPressureKpa(parseFloat(e.target.value))}
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-500"
+              />
+
+              <div className="flex justify-between text-[10px] font-mono text-slate-500 pt-0.5">
+                <span>40 kPa (Min)</span>
+                <span className="text-sky-400">56-70 kPa (Exploration)</span>
+                <span className="text-slate-300">101.3 kPa (1 atm)</span>
+                <span>120 kPa</span>
+              </div>
+            </div>
+
+            {/* Airflow Velocity Control */}
+            <div className="space-y-2 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+              <div className="flex items-center justify-between">
+                <label htmlFor="airflow-input" className="text-xs font-semibold text-white flex items-center gap-2">
+                  <Wind className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Forced Ventilation Airflow</span>
+                  {airflowCmS === 0 && (
+                    <span className="text-[10px] font-mono text-rose-400 bg-rose-950/60 px-1.5 py-0.5 rounded border border-rose-800">
+                      O₂ Starvation Risk
+                    </span>
+                  )}
+                </label>
+                <div className="flex items-center gap-1 font-mono text-xs">
+                  <input
+                    id="airflow-input"
+                    type="number"
+                    step="0.5"
+                    min="0.0"
+                    max="30.0"
+                    value={airflowCmS}
+                    onChange={(e) => setAirflowCmS(parseFloat(e.target.value) || 0)}
+                    className="w-14 px-1.5 py-0.5 rounded bg-black/60 border border-slate-700 text-right text-cyan-400 font-bold"
+                  />
+                  <span className="text-slate-400">cm/s</span>
+                </div>
+              </div>
+
+              <input
+                type="range"
+                min="0.0"
+                max="30.0"
+                step="0.5"
+                value={airflowCmS}
+                onChange={(e) => setAirflowCmS(parseFloat(e.target.value))}
+                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+              />
+
+              <div className="flex justify-between text-[10px] font-mono text-slate-500 pt-0.5">
+                <span>0 cm/s (Stagnant)</span>
+                <span className="text-cyan-400">5-10 cm/s (ISS Cabin Nominal)</span>
+                <span>30 cm/s (High Duct)</span>
+              </div>
+            </div>
+
+            {/* Material Selection */}
+            <div className="space-y-1.5">
+              <label htmlFor="material-select" className="text-xs font-semibold text-white block">
+                Combustible Fuel Sample
+              </label>
+              <select
+                id="material-select"
+                value={material}
+                onChange={(e) => setMaterial(e.target.value as MaterialFamily)}
+                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-orange-500"
+              >
+                {MATERIAL_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label} — {opt.notes}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Scientific Objective */}
+            <div className="space-y-1.5">
+              <label htmlFor="objective-select" className="text-xs font-semibold text-white block">
+                Scientific Focus
+              </label>
+              <select
+                id="objective-select"
+                value={objective}
+                onChange={(e) => setObjective(e.target.value as ScientificObjective)}
+                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-orange-500"
+              >
+                {OBJECTIVE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </Card>
         </div>
 
-        {/* Right Panel: Habitat Internal Parameters (Editable Controls) - 7 cols */}
-        <div className="lg:col-span-7 space-y-6">
-          <Card variant="default" padding="lg" className="border-slate-800">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Sliders className="w-5 h-5 text-orange-400" />
-                  <span>Cabin Atmosphere & Test Parameters</span>
-                </CardTitle>
-                <button
-                  type="button"
-                  onClick={handleResetDefaults}
-                  className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Reset Defaults</span>
-                </button>
-              </div>
-              <CardDescription>
-                Adjust atmospheric composition, pressure, forced ventilation velocity, and sample material.
-              </CardDescription>
-            </CardHeader>
+        {/* Right Column: Live Simulated Flame Reaction + Real-Time Telemetry (6 cols) */}
+        <div className="lg:col-span-6 space-y-4">
+          {/* Live Dynamic Flame Chamber */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+              <span className="text-white font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <Flame className="w-3.5 h-3.5 text-orange-400" />
+                <span>Simulated Flame Chamber</span>
+              </span>
+              <span className="text-cyan-400 text-[11px]">Reacts live to sliders</span>
+            </div>
 
-            <CardContent className="space-y-6 pt-2">
-              {/* Oxygen Percentage Control */}
-              <div className="space-y-2 p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="oxygen-input" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <span>Oxygen Concentration (O₂)</span>
-                    <Badge variant="flame" size="xs">
-                      {oxygenPct > 21 ? 'Enriched' : oxygenPct < 21 ? 'Depleted' : 'Nominal Earth'}
-                    </Badge>
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      id="oxygen-input"
-                      type="number"
-                      step="0.5"
-                      min="15.0"
-                      max="40.0"
-                      value={oxygenPct}
-                      onChange={(e) => setOxygenPct(parseFloat(e.target.value) || 0)}
-                      className="w-16 px-2 py-1 rounded bg-black/60 border border-slate-700 text-right font-mono text-sm text-orange-400 focus:outline-none focus:border-orange-500"
-                    />
-                    <span className="text-xs font-mono text-slate-400">vol %</span>
-                  </div>
-                </div>
+            {/* Visual Flame Canvas Component */}
+            <EvidenceGuidedVisualization
+              scenario={currentScenario}
+              comparableCount={10}
+            />
+          </div>
 
-                <input
-                  type="range"
-                  min="15.0"
-                  max="40.0"
-                  step="0.5"
-                  value={oxygenPct}
-                  onChange={(e) => setOxygenPct(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
-                />
+          {/* Real-time Physical Insights Bar */}
+          <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+              <span className="text-[10px] text-slate-500 block uppercase">CONVECTIVE TRANSPORT</span>
+              <span className="text-white font-bold block truncate">
+                {gravityEnv === 'microgravity'
+                  ? 'Pure Molecular Diffusion'
+                  : gravityEnv === 'partial_gravity_lunar'
+                  ? 'Weak Lunar Buoyancy (0.16g)'
+                  : 'Moderate Martian Buoyancy (0.38g)'}
+              </span>
+            </div>
 
-                <div className="flex justify-between text-[11px] font-mono text-slate-500 pt-1">
-                  <span>15% (Hypoxic)</span>
-                  <span className="text-slate-400">21% (Earth/ISS)</span>
-                  <span className="text-orange-400">32% (Artemis Cabin)</span>
-                  <span>40% (Max)</span>
-                </div>
-              </div>
+            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
+              <span className="text-[10px] text-slate-500 block uppercase">EXTINCTION BEHAVIOR</span>
+              <span className={airflowCmS === 0 ? 'text-rose-400 font-bold block truncate' : 'text-emerald-400 font-bold block truncate'}>
+                {airflowCmS === 0
+                  ? 'Self-Suffocating (0 flow)'
+                  : oxygenPct < 18
+                  ? 'Flammability Boundary'
+                  : 'Sustained Reaction'}
+              </span>
+            </div>
+          </div>
 
-              {/* Cabin Pressure Control */}
-              <div className="space-y-2 p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="pressure-input" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Gauge className="w-4 h-4 text-sky-400" />
-                    <span>Atmospheric Pressure</span>
-                    <Badge variant="plasma" size="xs">
-                      {pressureKpa < 80 ? 'Hypobaric' : 'Nominal'}
-                    </Badge>
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      id="pressure-input"
-                      type="number"
-                      step="0.5"
-                      min="40.0"
-                      max="120.0"
-                      value={pressureKpa}
-                      onChange={(e) => setPressureKpa(parseFloat(e.target.value) || 0)}
-                      className="w-16 px-2 py-1 rounded bg-black/60 border border-slate-700 text-right font-mono text-sm text-sky-400 focus:outline-none focus:border-sky-500"
-                    />
-                    <span className="text-xs font-mono text-slate-400">kPa</span>
-                  </div>
-                </div>
+          {/* Gravity Transfer Warning Card if Lunar / Mars */}
+          {activePreset.gravity_value_g && activePreset.gravity_value_g > 0 ? (
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <p className="text-[11px] leading-relaxed">
+                <strong>Gravity Transfer Warning:</strong> NASA flight experiments were conducted in 0g. Partial gravity ({activePreset.gravity_value_g}g) creates weak buoyancy that will cap match confidence at Medium.
+              </p>
+            </div>
+          ) : (
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <p className="text-[11px] leading-relaxed">
+                <strong>Direct Zero-g Match:</strong> 100% compatible with NASA Saffire, BASS, and FLEX flight datasets.
+              </p>
+            </div>
+          )}
 
-                <input
-                  type="range"
-                  min="40.0"
-                  max="120.0"
-                  step="0.5"
-                  value={pressureKpa}
-                  onChange={(e) => setPressureKpa(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-500"
-                />
+          {/* Dual Action CTAs: Full Evidence Report & Ask AI */}
+          <div className="space-y-2 pt-2">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full justify-between shadow-lg shadow-orange-500/25"
+              icon={<ArrowRight className="w-5 h-5" />}
+            >
+              <span>Synthesize NASA Evidence Match</span>
+            </Button>
 
-                <div className="flex justify-between text-[11px] font-mono text-slate-500 pt-1">
-                  <span>40 kPa (Min EVA)</span>
-                  <span className="text-sky-400">56-70 kPa (Exploration)</span>
-                  <span className="text-slate-400">101.3 kPa (1 atm)</span>
-                  <span>120 kPa</span>
-                </div>
-              </div>
-
-              {/* Airflow Velocity Control */}
-              <div className="space-y-2 p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="airflow-input" className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Wind className="w-4 h-4 text-cyan-400" />
-                    <span>Forced Ventilation Airflow</span>
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      id="airflow-input"
-                      type="number"
-                      step="0.5"
-                      min="0.0"
-                      max="30.0"
-                      value={airflowCmS}
-                      onChange={(e) => setAirflowCmS(parseFloat(e.target.value) || 0)}
-                      className="w-16 px-2 py-1 rounded bg-black/60 border border-slate-700 text-right font-mono text-sm text-cyan-400 focus:outline-none focus:border-cyan-500"
-                    />
-                    <span className="text-xs font-mono text-slate-400">cm/s</span>
-                  </div>
-                </div>
-
-                <input
-                  type="range"
-                  min="0.0"
-                  max="30.0"
-                  step="0.5"
-                  value={airflowCmS}
-                  onChange={(e) => setAirflowCmS(parseFloat(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
-                />
-
-                <div className="flex justify-between text-[11px] font-mono text-slate-500 pt-1">
-                  <span>0 cm/s (Quiescent)</span>
-                  <span className="text-cyan-400">5-10 cm/s (Cabin Nominal)</span>
-                  <span>30 cm/s (High Ducting)</span>
-                </div>
-              </div>
-
-              {/* Material Family Dropdown */}
-              <div className="space-y-1.5">
-                <label htmlFor="material-select" className="text-sm font-semibold text-white block">
-                  Combustible Test Material Family
-                </label>
-                <select
-                  id="material-select"
-                  value={material}
-                  onChange={(e) => setMaterial(e.target.value as MaterialFamily)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                >
-                  {MATERIAL_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label} — {opt.notes}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Scientific Objective Dropdown */}
-              <div className="space-y-1.5">
-                <label htmlFor="objective-select" className="text-sm font-semibold text-white block">
-                  Primary Scientific Investigation Goal
-                </label>
-                <select
-                  id="objective-select"
-                  value={objective}
-                  onChange={(e) => setObjective(e.target.value as ScientificObjective)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white font-medium text-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
-                >
-                  {OBJECTIVE_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label} ({opt.description})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Preset Disclaimer Notice (PRD v1.1 §10.3) */}
-              <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-slate-400 space-y-1">
-                <p className="font-semibold text-slate-300">Engineering Reference Notice:</p>
-                <p className="text-[11px] leading-relaxed">
-                  {activePreset.disclaimer}
-                </p>
-              </div>
-
-              {/* Submit CTA */}
-              <div className="pt-2">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  className="w-full justify-center shadow-lg shadow-orange-500/25"
-                  icon={<Search className="w-5 h-5" />}
-                >
-                  Analyze with NASA Evidence Engine
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+            <Link
+              to={`/ask?q=What+happens+to+${material}+flame+spread+at+${oxygenPct}%25+oxygen+and+${airflowCmS}+cm%2Fs+airflow+in+${gravityEnv}%3F`}
+              className="w-full block"
+            >
+              <Button
+                type="button"
+                variant="secondary"
+                size="md"
+                className="w-full justify-center gap-2"
+                icon={<Sparkles className="w-4 h-4 text-cyan-400" />}
+              >
+                <span>Ask IGNIS AI About This Scenario</span>
+              </Button>
+            </Link>
+          </div>
         </div>
       </form>
     </div>
   );
 };
+
+export default HabitatBuilderPage;
