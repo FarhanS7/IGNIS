@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -11,6 +11,7 @@ import {
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
+import { api } from '../lib/api';
 
 interface StoryMeta {
   slug: string;
@@ -24,7 +25,7 @@ interface StoryMeta {
   gradient: string;
 }
 
-const STORIES: StoryMeta[] = [
+const DEFAULT_STORIES: StoryMeta[] = [
   {
     slug: 'microgravity-fire',
     title: 'Why Does Fire Burn as a Sphere in Space?',
@@ -52,6 +53,37 @@ const STORIES: StoryMeta[] = [
 ];
 
 export const StoryIndexPage: React.FC = () => {
+  const [stories, setStories] = useState<StoryMeta[]>(DEFAULT_STORIES);
+
+  useEffect(() => {
+    let active = true;
+    api.getStories()
+      .then((remoteStories) => {
+        if (active && remoteStories && remoteStories.length > 0) {
+          const mapped: StoryMeta[] = remoteStories.map((s) => ({
+            slug: s.slug,
+            title: s.title,
+            summary: s.summary || '',
+            category: s.slug.includes('earth') || s.slug.includes('space-vs') ? 'Earthdata Bridge' : 'Physics Explainer',
+            readTime: '3 min read',
+            badgeVariant: s.slug.includes('earth') ? 'flame' : 'plasma',
+            icon: s.slug.includes('earth') ? Globe : Flame,
+            experiments: ['NASA PSI Flight Archives', 'Cygnus Saffire Series'],
+            gradient: s.slug.includes('earth')
+              ? 'from-amber-500/20 via-orange-500/10 to-transparent'
+              : 'from-cyan-500/20 via-blue-500/10 to-transparent',
+          }));
+          setStories(mapped);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not fetch stories from API, using default story index:', err);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
   return (
     <div className="space-y-10 max-w-5xl mx-auto pb-16">
       {/* Header */}
@@ -69,7 +101,7 @@ export const StoryIndexPage: React.FC = () => {
 
       {/* Story Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {STORIES.map((story) => {
+        {stories.map((story) => {
           const Icon = story.icon;
           return (
             <Card

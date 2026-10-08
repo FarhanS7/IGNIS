@@ -414,7 +414,7 @@ export const StoryPlayerPage: React.FC = () => {
               "{section.suggestedQuestion}"
             </p>
           </div>
-          <Link to="/ask">
+          <Link to={`/ask?q=${encodeURIComponent(section.suggestedQuestion)}&scope=story`}>
             <Button
               variant="outline"
               size="sm"

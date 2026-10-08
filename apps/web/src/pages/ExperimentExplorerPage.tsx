@@ -10,15 +10,14 @@ import {
   Search,
   CheckCircle2,
   XCircle,
-  Play,
-  Activity,
   ShieldCheck,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../components/common/Card';
+import { Card } from '../components/common/Card';
 import { Badge } from '../components/common/Badge';
 import { EvidenceBadge } from '../components/common/EvidenceBadge';
 import { Skeleton } from '../components/common/Skeleton';
+import { SyncVideoChart } from '../components/charts/SyncVideoChart';
 import { api } from '../lib/api';
 import type { Experiment, ExperimentRun } from '../types/api';
 
@@ -132,21 +131,20 @@ export const ExperimentExplorerPage: React.FC = () => {
   // State for Catalog View
   const [experiments, setExperiments] = useState<Experiment[]>(FALLBACK_EXPERIMENTS);
   const [searchQuery, setSearchQuery] = useState('');
-  const [catalogLoading, setCatalogLoading] = useState(false);
+  const [catalogLoading, setCatalogLoading] = useState(true);
 
   // State for Detail View
   const [selectedExperiment, setSelectedExperiment] = useState<Experiment | null>(null);
   const [runs, setRuns] = useState<ExperimentRun[]>(FALLBACK_RUNS);
   const [related, setRelated] = useState<Experiment[]>([]);
   const [detailLoading, setDetailLoading] = useState(false);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
 
   // Load Catalog
   useEffect(() => {
-    setCatalogLoading(true);
+    let active = true;
     api.getExperiments({ limit: 50 })
       .then((res) => {
-        if (res && res.experiments && res.experiments.length > 0) {
+        if (active && res && res.experiments && res.experiments.length > 0) {
           setExperiments(res.experiments);
         }
       })
@@ -154,49 +152,47 @@ export const ExperimentExplorerPage: React.FC = () => {
         console.warn('Could not load live experiments catalog, using fallback list:', err);
       })
       .finally(() => {
-        setCatalogLoading(false);
+        if (active) setCatalogLoading(false);
       });
+    return () => {
+      active = false;
+    };
   }, []);
 
   // Load Detail when ID changes
   useEffect(() => {
-    if (!id) {
-      setSelectedExperiment(null);
-      return;
-    }
+    if (!id) return;
 
-    setDetailLoading(true);
-
-    // Try finding by id or external_id in existing list
+    let active = true;
     const foundLocal = experiments.find(
       (e) => e.id === id || e.external_id?.toLowerCase() === id.toLowerCase() || e.id.startsWith(id)
     );
 
-    if (foundLocal) {
-      setSelectedExperiment(foundLocal);
-    }
-
-    // Call API for experiment, runs, and related
     Promise.all([
       api.getExperiment(id).catch(() => foundLocal || FALLBACK_EXPERIMENTS[0]),
       api.getExperimentRuns(id).catch(() => FALLBACK_RUNS),
       api.getRelatedExperiments(id).catch(() => FALLBACK_EXPERIMENTS.slice(1, 3)),
     ])
       .then(([expData, runsData, relatedData]) => {
+        if (!active) return;
         if (expData) setSelectedExperiment(expData);
         if (runsData && runsData.length > 0) setRuns(runsData);
         if (relatedData) setRelated(relatedData);
       })
       .catch((err) => {
         console.warn('Error fetching experiment details:', err);
-        if (!selectedExperiment && foundLocal) {
+        if (active && foundLocal) {
           setSelectedExperiment(foundLocal);
         }
       })
       .finally(() => {
-        setDetailLoading(false);
+        if (active) setDetailLoading(false);
       });
-  }, [id, experiments, selectedExperiment]);
+
+    return () => {
+      active = false;
+    };
+  }, [id, experiments]);
 
   // ===========================================================================
   // DETAIL VIEW (When an experiment ID is active)
@@ -313,107 +309,12 @@ export const ExperimentExplorerPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Media Asset Viewer (FR-EXP-005) & CV-Derived Metrics (FR-EXP-006) */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Media Player Card - 7 cols */}
-          <div className="lg:col-span-7">
-            <Card variant="glass" padding="none" className="overflow-hidden border-orange-500/20">
-              <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
-                <span className="text-xs font-semibold text-white flex items-center gap-2">
-                  <Play className="w-4 h-4 text-orange-400" />
-                  <span>Flight Video & Optical Telemetry (FR-EXP-005)</span>
-                </span>
-                <Badge variant="flame" size="xs">
-                  LEVEL A · OBSERVED
-                </Badge>
-              </div>
-
-              <div className="relative aspect-video bg-[#05070E] flex items-center justify-center overflow-hidden">
-                {/* Background optical simulation visualizer */}
-                <div
-                  className="absolute inset-0 opacity-20 pointer-events-none"
-                  style={{
-                    backgroundImage:
-                      'radial-gradient(circle at center, #FF5722 0%, transparent 60%)',
-                  }}
-                />
-
-                <div className="text-center p-6 space-y-3 z-10 max-w-sm">
-                  <div
-                    onClick={() => setIsPlayingVideo(!isPlayingVideo)}
-                    className="w-16 h-16 rounded-full bg-orange-500/20 border border-orange-500/50 hover:bg-orange-500/30 text-orange-400 flex items-center justify-center mx-auto cursor-pointer transition-all shadow-xl shadow-orange-500/20"
-                  >
-                    <Play className="w-7 h-7 ml-1" />
-                  </div>
-                  <h4 className="text-sm font-bold text-white font-['Space_Grotesk',sans-serif]">
-                    NASA Flight Optical Telemetry Stream
-                  </h4>
-                  <p className="text-xs text-slate-400">
-                    High-speed radiometric camera feed capturing spherical flame propagation and soot generation.
-                  </p>
-                </div>
-
-                <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded bg-black/70 border border-slate-800 text-[10px] font-mono text-slate-400">
-                  Mission: {exp.mission_platform || 'ISS Microgravity'}
-                </div>
-              </div>
-            </Card>
-          </div>
-
-          {/* Computer Vision Derived Measurements (FR-EXP-006) - 5 cols */}
-          <div className="lg:col-span-5">
-            <Card variant="default" padding="md" className="border-sky-500/30">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-sky-400" />
-                    <CardTitle className="text-base">CV Measurement Telemetry</CardTitle>
-                  </div>
-                  <EvidenceBadge level="C" size="xs" />
-                </div>
-                <CardDescription>
-                  Automated computer-vision flame metrics extracted by IGNIS image pipeline (PRD §16.7).
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-3 pt-1">
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Peak Flame Area:</span>
-                    <span className="font-mono text-sky-300 font-bold">142.8 cm²</span>
-                  </div>
-                  <span className="text-[10px] text-slate-500 block">
-                    Calculated via Otsu threshold contour segmentation
-                  </span>
-                </div>
-
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Propagation Velocity:</span>
-                    <span className="font-mono text-orange-400 font-bold">1.24 mm/s</span>
-                  </div>
-                  <span className="text-[10px] text-slate-500 block">
-                    Downstream leading-edge tracking over 45s interval
-                  </span>
-                </div>
-
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Centroid Kinematics:</span>
-                    <span className="font-mono text-white font-bold">Quasi-Stationary (±0.4 mm)</span>
-                  </div>
-                  <span className="text-[10px] text-slate-500 block">
-                    Zero buoyant vertical drift confirmed
-                  </span>
-                </div>
-
-                <div className="p-2.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-[11px] text-sky-300 flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-sky-400 shrink-0" />
-                  <span>Authority Tier: Derived by IGNIS (Level C)</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        {/* Synchronized Optical Video & Recharts CV Telemetry (FR-EXP-005, FR-EXP-006, FR-CV-005) */}
+        <section className="space-y-4">
+          <SyncVideoChart
+            missionPlatform={exp.mission_platform || 'ISS Combustion Integrated Rack (CIR)'}
+            sampleName={exp.title}
+          />
         </section>
 
         {/* Normalized Conditions & Runs Table (FR-EXP-002) */}

@@ -55,28 +55,34 @@ export const EvidenceResultsPage: React.FC = () => {
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchAnalysis = React.useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await api.analyzeHabitat(scenario);
-      setAnalysis(data);
-    } catch (err) {
-      console.error('Error running habitat analysis:', err);
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Could not connect to the IGNIS Analysis Engine. Ensure the backend service is running.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [scenario]);
+  const [retryTrigger, setRetryTrigger] = useState<number>(0);
 
   useEffect(() => {
-    fetchAnalysis();
-  }, [fetchAnalysis]);
+    let active = true;
+
+    api.analyzeHabitat(scenario)
+      .then((data) => {
+        if (active) {
+          setAnalysis(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (active) {
+          console.error('Error running habitat analysis:', err);
+          setError(
+            err instanceof Error
+              ? err.message
+              : 'Could not connect to the IGNIS Analysis Engine. Ensure the backend service is running.'
+          );
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [scenario, retryTrigger]);
 
   return (
     <div className="space-y-10 py-2 sm:py-6 max-w-6xl mx-auto">
@@ -173,7 +179,11 @@ export const EvidenceResultsPage: React.FC = () => {
           <Button
             variant="primary"
             size="sm"
-            onClick={fetchAnalysis}
+            onClick={() => {
+              setLoading(true);
+              setError(null);
+              setRetryTrigger((prev) => prev + 1);
+            }}
             icon={<RotateCcw className="w-4 h-4" />}
           >
             Retry Analysis

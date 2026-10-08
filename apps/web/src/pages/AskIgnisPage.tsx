@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { api } from '../lib/api';
 import {
   Sparkles,
   Send,
@@ -236,14 +237,25 @@ const PROMPT_SUGGESTIONS = [
   'Can I burn gasoline or uncertified polyurethane in a space station habitat?',
 ];
 
+let msgIdCounter = 0;
+const genMessageId = (prefix: string) => {
+  msgIdCounter += 1;
+  return `${prefix}-${Date.now()}-${msgIdCounter}`;
+};
+
 export const AskIgnisPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get('q');
+  const scopeParam = searchParams.get('scope');
+
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [inputQuery, setInputQuery] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedScope, setSelectedScope] = useState<string>('global');
+  const [selectedScope, setSelectedScope] = useState<string>(scopeParam || 'global');
   const [expandedFacts, setExpandedFacts] = useState<Record<string, boolean>>({});
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const initialSearchTriggered = useRef<boolean>(false);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -253,26 +265,64 @@ export const AskIgnisPage: React.FC = () => {
     setExpandedFacts((prev) => ({ ...prev, [msgId]: !prev[msgId] }));
   };
 
-  const handleSend = (queryToSend?: string) => {
+  const handleSend = useCallback(async (queryToSend?: string) => {
     const query = (queryToSend || inputQuery).trim();
     if (!query) return;
 
+    const timestampStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const userMsg: ChatMessage = {
-      id: `user-${Date.now()}`,
+      id: genMessageId('user'),
       role: 'user',
       content: query,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timestamp: timestampStr,
     };
 
     setMessages((prev) => [...prev, userMsg]);
     if (!queryToSend) setInputQuery('');
     setIsLoading(true);
 
-    // Simulate RAG retrieval with realistic NASA citation matching
-    setTimeout(() => {
+    try {
+      // 1. Attempt live API call to FastAPI backend
+      const res = await api.ask({
+        question: query,
+        conversation_history: messages.slice(-4).map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
+      });
+
+      const citations: GroundedCitation[] = (res.grounded_sources || []).map((s, idx) => ({
+        id: `cite-${idx}`,
+        experimentId: s.experiment_id || undefined,
+        title: s.title,
+        documentTitle: s.doi || 'NASA Flight Publication Archive',
+        doi: s.doi || undefined,
+        evidenceLevel: (s.evidence_level as EvidenceLevel) || 'A',
+        quote: s.quote || '',
+      }));
+
+      const asstMsg: ChatMessage = {
+        id: genMessageId('asst'),
+        role: 'assistant',
+        content: res.answer,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        confidence: res.confidence,
+        isLowEvidence:
+          res.confidence === 'low' ||
+          res.answer.includes('INSUFFICIENT NASA EMPIRICAL EVIDENCE') ||
+          res.answer.includes('INSUFFICIENT NASA EVIDENCE'),
+        citations,
+        caveats: res.caveats,
+      };
+
+      setMessages((prev) => [...prev, asstMsg]);
+    } catch (err) {
+      console.warn('Backend API ask unreachable, using embedded NASA grounded knowledge base:', err);
+
+      // 2. Offline resilient fallback
       const lower = query.toLowerCase();
 
-      // Check if it's an ungrounded or absurd question (FR-AI-005)
       const isDangerousOrUngrounded =
         lower.includes('gasoline') ||
         lower.includes('polyurethane') ||
@@ -280,13 +330,13 @@ export const AskIgnisPage: React.FC = () => {
         lower.includes('alien') ||
         lower.includes('laser weapon');
 
-      let responseItem = KNOWLEDGE_BASE.find((k) =>
+      const responseItem = KNOWLEDGE_BASE.find((k) =>
         k.keywords.some((kw) => lower.includes(kw))
       );
 
       if (isDangerousOrUngrounded) {
         const lowEvidenceMsg: ChatMessage = {
-          id: `asst-${Date.now()}`,
+          id: genMessageId('asst'),
           role: 'assistant',
           content:
             '**INSUFFICIENT NASA EMPIRICAL EVIDENCE & SAFETY EXCLUSION (FR-AI-005)**\n\nNo flight experiments in the NASA Physical Sciences Informatics (PSI) database test volatile liquid hydrocarbons like commercial gasoline or unshielded flexible polyurethane foams in human-habitable spacecraft atmospheres.\n\nNASA Standard **NASA-STD-6001B (Test 1: Upward Flame Propagation)** strictly disqualifies materials that produce toxic off-gassing or rapid runaway combustion from crewed modules before flight certification. IGNIS refuses to generate speculative fire behavior for ungrounded hazardous materials.',
@@ -305,7 +355,7 @@ export const AskIgnisPage: React.FC = () => {
         setMessages((prev) => [...prev, lowEvidenceMsg]);
       } else if (responseItem) {
         const asstMsg: ChatMessage = {
-          id: `asst-${Date.now()}`,
+          id: genMessageId('asst'),
           role: 'assistant',
           content: responseItem.answer,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -317,9 +367,8 @@ export const AskIgnisPage: React.FC = () => {
         };
         setMessages((prev) => [...prev, asstMsg]);
       } else {
-        // Generic synthesized fallback grounded in general microgravity physics
         const generalMsg: ChatMessage = {
-          id: `asst-${Date.now()}`,
+          id: genMessageId('asst'),
           role: 'assistant',
           content: `Regarding **"${query}"**:\n\nIn microgravity environments, fire behavior is decoupled from Earth-like buoyant acceleration. Oxygen transport relies entirely on forced life-support circulation (0.05 to 0.20 m/s) and slow molecular diffusion.\n\nNASA flight investigations (Saffire I–VI, BASS, FLEX) demonstrate that materials exhibit lower burning rates, rounded reaction fronts, and distinct extinction limits where flames choke in their own stagnant exhaust unless continuous airflow is provided.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -345,10 +394,18 @@ export const AskIgnisPage: React.FC = () => {
         };
         setMessages((prev) => [...prev, generalMsg]);
       }
-
+    } finally {
       setIsLoading(false);
-    }, 700);
-  };
+    }
+  }, [inputQuery, messages]);
+
+  // Handle URL prefilled query parameter (FR-AI-006 / Task H.7)
+  useEffect(() => {
+    if (!initialSearchTriggered.current && queryParam) {
+      initialSearchTriggered.current = true;
+      handleSend(queryParam);
+    }
+  }, [queryParam, handleSend]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
