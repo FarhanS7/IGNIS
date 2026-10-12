@@ -19,7 +19,7 @@ interface StoryMeta {
   summary: string;
   category: 'Physics Explainer' | 'Earthdata Bridge';
   readTime: string;
-  badgeVariant: 'flame' | 'plasma';
+  badgeVariant: 'strong' | 'moderate' | 'neutral';
   icon: typeof Flame;
   experiments: string[];
   gradient: string;
@@ -33,7 +33,7 @@ const DEFAULT_STORIES: StoryMeta[] = [
       'Discover why zero-gravity combustion eliminates natural buoyancy convection, creating serene spherical blue flames where molecular diffusion dictates ignition and extinction.',
     category: 'Physics Explainer',
     readTime: '3 min read',
-    badgeVariant: 'plasma',
+    badgeVariant: 'strong',
     icon: Flame,
     experiments: ['FLEX-2 Droplet Combustion', 'Saffire-I Spacecraft Burn'],
     gradient: 'from-cyan-500/20 via-blue-500/10 to-transparent',
@@ -45,7 +45,7 @@ const DEFAULT_STORIES: StoryMeta[] = [
       'Bridging NASA Earthdata FIRMS satellite middle-infrared thermal anomaly sensing of planetary wildfires with enclosed spacecraft combustion inside the Cygnus vehicle.',
     category: 'Earthdata Bridge',
     readTime: '4 min read',
-    badgeVariant: 'flame',
+    badgeVariant: 'strong',
     icon: Globe,
     experiments: ['NASA FIRMS (MODIS/VIIRS)', 'Saffire-II Cygnus Burn'],
     gradient: 'from-amber-500/20 via-orange-500/10 to-transparent',
@@ -66,7 +66,7 @@ export const StoryIndexPage: React.FC = () => {
             summary: s.summary || '',
             category: s.slug.includes('earth') || s.slug.includes('space-vs') ? 'Earthdata Bridge' : 'Physics Explainer',
             readTime: '3 min read',
-            badgeVariant: s.slug.includes('earth') ? 'flame' : 'plasma',
+            badgeVariant: 'strong',
             icon: s.slug.includes('earth') ? Globe : Flame,
             experiments: ['NASA PSI Flight Archives', 'Cygnus Saffire Series'],
             gradient: s.slug.includes('earth')
@@ -92,7 +92,7 @@ export const StoryIndexPage: React.FC = () => {
           <span>Mode 02 • Public Science Communication</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-['Space_Grotesk',sans-serif]">
-          Explore Fire: Guided Scientific Stories
+          Stories: Guided Scientific Narratives
         </h1>
         <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
           Interactive narrative journeys designed for students, mission planners, and the public — connecting physical intuition with peer-reviewed NASA microgravity flight observations.

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Tooltip } from './Tooltip';
 import { CheckCircle2, AlertTriangle, AlertOctagon } from 'lucide-react';
+import { countUp } from '../../visuals/anime';
 
 export type ConfidenceTier = 'high' | 'medium' | 'low';
 
@@ -24,6 +25,18 @@ export const ConfidenceBadge: React.FC<ConfidenceBadgeProps> = ({
   className = '',
 }) => {
   const normalizedLevel = (level?.toLowerCase() || 'medium') as ConfidenceTier;
+
+  const scoreRef = useRef<HTMLSpanElement>(null);
+  const targetScore = score !== undefined ? Math.round(score <= 1.0 ? score * 100 : score) : 0;
+  const prevScoreRef = useRef<number>(targetScore);
+
+  useEffect(() => {
+    if (!showScore || score === undefined || !scoreRef.current) return;
+    const from = prevScoreRef.current;
+    const to = targetScore;
+    prevScoreRef.current = to;
+    return countUp(scoreRef.current, from, to, { suffix: '%', duration: 900 });
+  }, [score, showScore, targetScore]);
 
   const config = {
     high: {
@@ -76,7 +89,7 @@ export const ConfidenceBadge: React.FC<ConfidenceBadgeProps> = ({
       <Icon className={`${iconSizes[size]} shrink-0`} />
       <span>{config.label}</span>
       {showScore && formattedScore && (
-        <span className="font-mono text-xs opacity-90 pl-1 border-l border-current/20">
+        <span ref={scoreRef} className="font-mono text-xs opacity-90 pl-1 border-l border-current/20">
           {formattedScore}
         </span>
       )}

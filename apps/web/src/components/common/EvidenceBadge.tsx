@@ -27,7 +27,8 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
     title: 'Level A — Flight Observed',
     shortLabel: 'Flight Observed',
     description: 'Directly measured in NASA microgravity flight / drop-tower telemetry (Highest Authority).',
-    badgeClasses: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-sm shadow-emerald-500/10',
+    // Semantic: strong
+    badgeClasses: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-500/10',
     icon: ShieldCheck,
   },
   B: {
@@ -35,6 +36,7 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
     title: 'Level B — Peer-Reviewed Normalized',
     shortLabel: 'Peer-Reviewed Data',
     description: 'Normalized, unit-converted metadata tables with verified NASA DOI and published paper.',
+    // Semantic: strong
     badgeClasses: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-sm shadow-cyan-500/10',
     icon: FileCheck2,
   },
@@ -43,7 +45,8 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
     title: 'Level C — Derived Scientific Metrics',
     shortLabel: 'Derived CV / Metrics',
     description: 'Computed scientific metrics (computer-vision flame area, growth curve, centroid kinematics).',
-    badgeClasses: 'bg-sky-500/15 text-sky-300 border-sky-500/40 shadow-sm shadow-sky-500/10',
+    // Semantic: neutral (metadata / derived analysis)
+    badgeClasses: 'bg-slate-900/80 text-slate-300 border-slate-700/80',
     icon: Activity,
   },
   D: {
@@ -51,7 +54,8 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
     title: 'Level D — Algorithmic Match',
     shortLabel: 'Mathematical Match',
     description: 'Normalized multi-attribute vector similarity score between test habitat and NASA experiment.',
-    badgeClasses: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40 shadow-sm shadow-indigo-500/10',
+    // Semantic: neutral (metadata / computational vector score)
+    badgeClasses: 'bg-slate-900/80 text-slate-300 border-slate-700/80',
     icon: GitFork,
   },
   E: {
@@ -59,6 +63,7 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
     title: 'Level E — Grounded Synthesis',
     shortLabel: 'Grounded AI Synthesis',
     description: 'Grounded AI synthesis strictly constrained to retrieved evidence (lowest authority tier).',
+    // Semantic: moderate (caution / lowest authority / synthesis)
     badgeClasses: 'bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-sm shadow-amber-500/10',
     icon: Sparkles,
   },

@@ -9,20 +9,22 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
+import { Term } from '../components/common/Term';
+import { useAskIgnis, useSetAskContext } from '../hooks/useAskIgnis';
 
 interface Section {
   order: number;
   heading: string;
-  content: string;
+  content: React.ReactNode;
   animationKey: string;
-  evidenceCard: Record<string, string>;
+  evidenceCard: Record<string, React.ReactNode>;
   suggestedQuestion: string;
   sourceLinks: string[];
 }
 
 interface StoryData {
   title: string;
-  summary: string;
+  summary: React.ReactNode;
   category: string;
   earthdataContext?: Record<string, string>;
   sections: Section[];
@@ -31,15 +33,21 @@ interface StoryData {
 const STORY_DATA: Record<string, StoryData> = {
   'microgravity-fire': {
     title: 'Why Does Fire Burn as a Sphere in Space?',
-    summary:
-      'Discover why zero-gravity combustion eliminates natural buoyancy convection, creating serene spherical flames where molecular diffusion dictates life and death.',
+    summary: (
+      <>
+        Discover why zero-gravity combustion eliminates natural <Term term="buoyancy">buoyancy</Term> convection, creating serene spherical flames where molecular diffusion dictates life and death.
+      </>
+    ),
     category: 'Physics Explainer',
     sections: [
       {
         order: 0,
         heading: 'The Force That Shapes Candle Flames',
-        content:
-          'On Earth, when you light a candle, hot air expands and becomes less dense than the surrounding cold air. Gravity pulls the denser cold air downward, forcing the hot air to rise. This buoyant natural convection pulls fresh oxygen into the base and stretches the flame into a teardrop shape.',
+        content: (
+          <>
+            On Earth, when you light a candle, hot air expands and becomes less dense than the surrounding cold air. Gravity pulls the denser cold air downward, forcing the hot air to rise. This <Term term="buoyancy">buoyant natural convection</Term> pulls fresh oxygen into the base and stretches the flame into a teardrop shape.
+          </>
+        ),
         animationKey: 'earth-teardrop-flame',
         evidenceCard: {
           Principle: 'Buoyant Natural Convection',
@@ -52,11 +60,14 @@ const STORY_DATA: Record<string, StoryData> = {
       {
         order: 1,
         heading: 'The Freefall Revolution',
-        content:
-          'In microgravity aboard the International Space Station, gravity is cancelled by continuous orbital freefall. Hot combustion gases no longer rise. Without buoyancy, oxygen cannot be pulled into the flame base by convection. Instead, oxygen must slowly migrate into the reaction zone purely via molecular diffusion.',
+        content: (
+          <>
+            In <Term term="microgravity">microgravity</Term> aboard the International Space Station, gravity is cancelled by continuous orbital freefall. Hot combustion gases no longer rise. Without buoyancy, oxygen cannot be pulled into the flame base by convection. Instead, oxygen must slowly migrate into the reaction zone purely via molecular diffusion.
+          </>
+        ),
         animationKey: 'spherical-diffusion-halo',
         evidenceCard: {
-          Experiment: 'FLEX-2 (Flame Extinction Experiment)',
+          Experiment: <span><Term term="flex">FLEX-2</Term> (Flame Extinction Experiment)</span>,
           Observation: 'Symmetrical blue spherical diffusion shell',
           'Transport Mode': 'Pure molecular diffusion (D ≈ 0.24 cm²/s)',
         },
@@ -70,7 +81,7 @@ const STORY_DATA: Record<string, StoryData> = {
           'Because oxygen moves so slowly without convection, a zero-gravity flame in completely stagnant air quickly suffocates in its own carbon dioxide shell. However, the gentle breeze from spacecraft life-support ventilation (0.05 to 0.20 m/s) sweeps the CO₂ away and feeds the flame fresh oxidizer.',
         animationKey: 'stagnant-suffocation-graph',
         evidenceCard: {
-          Experiment: 'Saffire-I Flight Investigation',
+          Experiment: <span><Term term="saffire">Saffire-I</Term> Flight Investigation</span>,
           Finding: 'Self-quenching under 0 m/s quiescent flow; sustained spread at 0.20 m/s',
           Platform: 'Cygnus OA-5 Cargo Spacecraft',
         },
@@ -113,7 +124,7 @@ const STORY_DATA: Record<string, StoryData> = {
         animationKey: 'cygnus-burn-chamber',
         evidenceCard: {
           Experiment: 'Saffire-II Material Flammability Assessment',
-          'Sample Dimension': 'PMMA acrylic & Nomex samples in flow duct',
+          'Sample Dimension': <span><Term term="pmma">PMMA</Term> acrylic & Nomex samples in flow duct</span>,
           Safety: 'Conducted post-unberth prior to atmospheric reentry',
         },
         suggestedQuestion: 'Why did NASA burn Cygnus spacecraft after departing ISS?',
@@ -128,11 +139,29 @@ export const StoryPlayerPage: React.FC = () => {
   const storyKey = slug && STORY_DATA[slug] ? slug : 'microgravity-fire';
   const story = STORY_DATA[storyKey];
 
+  const { openDrawer } = useAskIgnis();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const section = story.sections[currentStep] || story.sections[0];
   const totalSteps = story.sections.length;
+
+  useSetAskContext(
+    React.useMemo(
+      () => ({
+        type: 'story',
+        title: story.title,
+        storySlug: storyKey,
+        suggestedPrompts: [
+          section.suggestedQuestion,
+          'Explain the microgravity physics in this story in simple terms.',
+          'What NASA flight experiments validate this narrative?',
+          'How does spacecraft ventilation create the life-support paradox?',
+        ],
+      }),
+      [story.title, storyKey, section.suggestedQuestion]
+    )
+  );
 
   // Render animated canvas visualizer depending on animationKey
   useEffect(() => {
@@ -299,10 +328,10 @@ export const StoryPlayerPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <Link
           to="/explore"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-cyan-300 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Story Index</span>
+          <span>Back to Stories</span>
         </Link>
 
         {/* Step indicator */}
@@ -336,7 +365,7 @@ export const StoryPlayerPage: React.FC = () => {
           <span className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold">
             {story.category}
           </span>
-          <span className="text-slate-500">•</span>
+          <span className="text-slate-400">•</span>
           <span className="text-xs text-slate-400 font-mono">P0 Story Milestone</span>
         </div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white font-['Space_Grotesk',sans-serif]">
@@ -356,16 +385,23 @@ export const StoryPlayerPage: React.FC = () => {
       )}
 
       {/* Interactive Visualizer Canvas */}
-      <div className="canvas-wrapper aspect-video sm:aspect-[21/9] rounded-2xl overflow-hidden border border-white/15 shadow-2xl relative">
-        <canvas
-          ref={canvasRef}
-          width={700}
-          height={300}
-          className="w-full h-full block"
-        />
-        <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/60 border border-white/10 text-[11px] font-mono text-cyan-300">
-          <span>ANIMATION KEY: {section.animationKey}</span>
+      <div className="space-y-2">
+        <div className="canvas-wrapper aspect-video sm:aspect-[21/9] rounded-2xl overflow-hidden border border-white/15 shadow-2xl relative">
+          <canvas
+            ref={canvasRef}
+            width={700}
+            height={300}
+            role="img"
+            aria-label={`Interactive scientific visualizer for ${section.heading} (${section.animationKey})`}
+            className="w-full h-full block"
+          />
+          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/60 border border-white/10 text-[11px] font-mono text-cyan-300">
+            <span>ANIMATION KEY: {section.animationKey}</span>
+          </div>
         </div>
+        <p className="text-[11px] text-slate-400 font-mono text-center italic">
+          Illustrative rendering driven by scenario parameters, not a CFD simulation.
+        </p>
       </div>
 
       {/* Current Section Narrative Content */}
@@ -384,7 +420,7 @@ export const StoryPlayerPage: React.FC = () => {
               <ShieldCheck className="w-4 h-4" />
               <span>NASA Empirical Evidence Card</span>
             </div>
-            <span className="text-[11px] font-mono text-slate-500">Level A/B Provenance</span>
+            <span className="text-[11px] font-mono text-slate-400">Level A/B Provenance</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
             {Object.entries(section.evidenceCard).map(([key, val]) => (
@@ -414,16 +450,15 @@ export const StoryPlayerPage: React.FC = () => {
               "{section.suggestedQuestion}"
             </p>
           </div>
-          <Link to={`/ask?q=${encodeURIComponent(section.suggestedQuestion)}&scope=story`}>
-            <Button
-              variant="outline"
-              size="sm"
-              icon={<Sparkles className="w-3.5 h-3.5 text-amber-400" />}
-              className="shrink-0"
-            >
-              Ask IGNIS RAG
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            size="sm"
+            icon={<Sparkles className="w-3.5 h-3.5 text-amber-400" />}
+            className="shrink-0"
+            onClick={() => openDrawer(section.suggestedQuestion)}
+          >
+            Ask IGNIS RAG
+          </Button>
         </div>
       </div>
 

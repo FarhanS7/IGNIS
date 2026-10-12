@@ -7,3 +7,4 @@ export * from './ConfidenceBadge';
 export * from './CoverageBadge';
 export * from './Skeleton';
 export * from './ErrorBoundary';
+export * from './Term';

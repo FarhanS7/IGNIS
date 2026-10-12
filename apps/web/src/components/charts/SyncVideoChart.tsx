@@ -285,7 +285,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
               <span className="text-sm font-bold text-white font-['Space_Grotesk',sans-serif]">
                 AI Flame Vision · Synchronized Video & Telemetry
               </span>
-              <Badge variant="flame" size="xs">
+              <Badge variant="neutral" size="xs">
                 FR-CV-005
               </Badge>
             </div>
@@ -312,6 +312,8 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
               ref={canvasRef}
               width={640}
               height={360}
+              role="img"
+              aria-label={`Synchronized optical combustion video telemetry for ${sampleName || missionPlatform || 'flight run'}, elapsed time ${currentTime.toFixed(2)}s of ${maxDuration.toFixed(1)}s`}
               className="w-full h-full object-contain block"
             />
 
@@ -384,7 +386,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                       className={`px-1.5 py-0.5 rounded text-[11px] transition-colors cursor-pointer ${
                         playbackRate === rate
                           ? 'bg-orange-500/30 text-orange-300 font-bold border border-orange-500/50'
-                          : 'hover:text-slate-200 text-slate-500'
+                          : 'hover:text-slate-200 text-slate-400'
                       }`}
                     >
                       {rate}x
@@ -441,13 +443,13 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                 <XAxis
                   dataKey="timestamp_seconds"
                   unit="s"
-                  stroke="#64748b"
+                  stroke="#94a3b8"
                   fontSize={10}
                   tickLine={false}
                 />
                 <YAxis
                   domain={[0, 1.8]}
-                  stroke="#64748b"
+                  stroke="#94a3b8"
                   fontSize={10}
                   tickLine={false}
                 />
@@ -484,7 +486,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                           <div className="text-orange-400 font-bold">t = {data.timestamp_seconds.toFixed(2)}s</div>
                           <div className="text-cyan-300">Flame Area Ratio: {data.flame_area_ratio.toFixed(2)}x</div>
                           <div className="text-slate-400">Pixels: {data.flame_area_px} px</div>
-                          <div className="text-slate-500">Height: {data.flame_height_px} px</div>
+                          <div className="text-slate-400">Height: {data.flame_height_px} px</div>
                         </div>
                       );
                     }
@@ -507,21 +509,21 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
           {/* Real-time Telemetry Readout Grid */}
           <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-xs font-mono">
             <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] text-slate-500 block">CURRENT RATIO</span>
+              <span className="text-[10px] text-slate-400 block">CURRENT RATIO</span>
               <span className="text-cyan-400 font-bold text-sm">
                 {currentMeasurement ? `${currentMeasurement.flame_area_ratio.toFixed(2)}x` : '—'}
               </span>
             </div>
 
             <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] text-slate-500 block">AREA (PX)</span>
+              <span className="text-[10px] text-slate-400 block">AREA (PX)</span>
               <span className="text-sky-300 font-bold text-sm">
                 {currentMeasurement ? `${currentMeasurement.flame_area_px} px` : '—'}
               </span>
             </div>
 
             <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] text-slate-500 block">REGIME</span>
+              <span className="text-[10px] text-slate-400 block">REGIME</span>
               <span className="text-orange-400 font-bold text-[11px] truncate block">
                 {currentTime < 0.5
                   ? 'Spark'
@@ -539,7 +541,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
           {/* Provenance Footer */}
           <div className="text-[10px] text-slate-400 font-mono leading-tight pt-1">
             <strong>Algorithm:</strong> HSV thresholding + contour centroid tracking.
-            <span className="text-slate-500 block mt-0.5">
+            <span className="text-slate-400 block mt-0.5">
               Verified NASA CIR / MSG video segmentation data.
             </span>
           </div>

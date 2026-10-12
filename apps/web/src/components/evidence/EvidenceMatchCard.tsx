@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ExternalLink,
@@ -17,6 +17,7 @@ import { ConfidenceBadge } from '../common/ConfidenceBadge';
 import { CoverageBadge } from '../common/CoverageBadge';
 import { EvidenceBadge } from '../common/EvidenceBadge';
 import type { EvidenceMatch } from '../../types/api';
+import { countUp } from '../../visuals/anime';
 
 interface Props {
   match: EvidenceMatch;
@@ -28,6 +29,16 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
   const { experiment, run, similarity_score, coverage_level, confidence_level, eligibility, factor_explanations } = match;
 
   const simPercent = Math.round(similarity_score * 100);
+  const simRef = useRef<HTMLSpanElement>(null);
+  const prevSimRef = useRef<number>(simPercent);
+
+  useEffect(() => {
+    if (!simRef.current) return;
+    const from = prevSimRef.current;
+    const to = simPercent;
+    prevSimRef.current = to;
+    return countUp(simRef.current, from, to, { suffix: '%', duration: 900 });
+  }, [simPercent]);
 
   return (
     <Card
@@ -69,7 +80,7 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
           <div className="flex items-center gap-2 self-start sm:self-auto">
             <div className="text-right">
               <span className="text-xs text-slate-400 block font-mono">Similarity</span>
-              <span className="text-xl font-mono font-bold text-orange-400">{simPercent}%</span>
+              <span ref={simRef} className="text-xl font-mono font-bold text-orange-400">{simPercent}%</span>
             </div>
             <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
               <div
@@ -87,7 +98,12 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
         {/* Status badges row */}
         <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800/60">
           <CoverageBadge tier={coverage_level} size="xs" />
-          <ConfidenceBadge level={confidence_level} size="xs" />
+          <ConfidenceBadge
+            level={confidence_level}
+            score={match.coverage_score}
+            showScore={match.coverage_score !== undefined}
+            size="xs"
+          />
           {eligibility.status === 'eligible' ? (
             <Badge variant="success" size="xs" dot>
               Scientifically Comparable
@@ -156,7 +172,7 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
             {run.ignition_observed === true ? (
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
             ) : run.ignition_observed === false ? (
-              <XCircle className="w-3.5 h-3.5 text-slate-500" />
+              <XCircle className="w-3.5 h-3.5 text-slate-400" />
             ) : (
               <HelpCircle className="w-3.5 h-3.5 text-slate-600" />
             )}
@@ -167,7 +183,7 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
             {run.flame_spread_observed === true ? (
               <CheckCircle2 className="w-3.5 h-3.5 text-orange-400" />
             ) : run.flame_spread_observed === false ? (
-              <XCircle className="w-3.5 h-3.5 text-slate-500" />
+              <XCircle className="w-3.5 h-3.5 text-slate-400" />
             ) : (
               <HelpCircle className="w-3.5 h-3.5 text-slate-600" />
             )}
@@ -178,7 +194,7 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
             {run.extinction_observed === true ? (
               <CheckCircle2 className="w-3.5 h-3.5 text-sky-400" />
             ) : run.extinction_observed === false ? (
-              <XCircle className="w-3.5 h-3.5 text-slate-500" />
+              <XCircle className="w-3.5 h-3.5 text-slate-400" />
             ) : (
               <HelpCircle className="w-3.5 h-3.5 text-slate-600" />
             )}

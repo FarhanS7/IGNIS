@@ -67,6 +67,9 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
     return (await response.json()) as T;
   } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw error;
+    }
     if (error instanceof AppError) {
       throw error;
     }
@@ -127,11 +130,91 @@ export const api = {
   },
 
   // Matching & Evidence Engine
-  analyzeHabitat: (scenario: ScenarioInput): Promise<AnalysisResult> => {
-    return request<AnalysisResult>('/analyze', {
+  analyzeHabitat: async (scenario: ScenarioInput, options?: { signal?: AbortSignal }): Promise<AnalysisResult> => {
+    const payload = {
+      scenario: {
+        material: scenario.material,
+        gravityEnvironment: scenario.gravity_environment,
+        oxygenPct: scenario.oxygen_pct,
+        pressureKpa: scenario.pressure_kpa,
+        airflowCmS: scenario.airflow_cm_s,
+        objectives: scenario.objective ? [scenario.objective] : [],
+      },
+      limit: 10,
+    };
+
+    const raw = await request<any>('/analyze', {
       method: 'POST',
-      body: JSON.stringify(scenario),
+      body: JSON.stringify(payload),
+      signal: options?.signal,
     });
+
+    const bp = raw.behaviorProfile || raw.behavior_profile;
+    const mappedMatches = (raw.results || raw.matches || []).map((item: any) => {
+      const factors = item.factors || [];
+      const oxygenFactor = factors.find((f: any) => f.factor === 'oxygen');
+      const pressureFactor = factors.find((f: any) => f.factor === 'pressure');
+      const airflowFactor = factors.find((f: any) => f.factor === 'airflow');
+      const gravityFactor = factors.find((f: any) => f.factor === 'gravity');
+      const materialFactor = factors.find((f: any) => f.factor === 'material_or_fuel' || f.factor === 'material');
+
+      const expOxygen = oxygenFactor?.experiment_value != null ? Number(oxygenFactor.experiment_value) : null;
+      const expPressure = pressureFactor?.experiment_value != null ? Number(pressureFactor.experiment_value) : null;
+      const expAirflow = airflowFactor?.experiment_value != null ? Number(airflowFactor.experiment_value) : null;
+      const expGravity = gravityFactor?.experiment_value != null ? String(gravityFactor.experiment_value) : null;
+      const expMaterial = materialFactor?.experiment_value != null ? String(materialFactor.experiment_value) : null;
+
+      return {
+        run_id: String(item.runId || item.run_id),
+        experiment_id: String(item.experimentId || item.experiment_id),
+        run: {
+          id: String(item.runId || item.run_id),
+          experiment_id: String(item.experimentId || item.experiment_id),
+          run_label: item.title,
+          fuel_type: expMaterial || item.material || scenario.material,
+          material: expMaterial || item.material || scenario.material,
+          gravity_environment: expGravity || item.gravityEnvironment || scenario.gravity_environment,
+          oxygen_pct: expOxygen != null ? expOxygen : scenario.oxygen_pct,
+          pressure_kpa: expPressure != null ? expPressure : scenario.pressure_kpa,
+          airflow_cm_s: expAirflow != null ? expAirflow : scenario.airflow_cm_s,
+          observation_summary: item.title,
+        },
+      experiment: {
+        id: String(item.experimentId || item.experiment_id),
+        title: item.title,
+        experiment_family: item.experimentFamily || item.experiment_family || 'NASA Flight Campaign',
+      },
+      similarity_score: item.evidenceSimilarity ?? item.similarity_score ?? 0,
+      evidence_similarity: item.evidenceSimilarity ?? item.similarity_score ?? 0,
+      coverage_score: item.coverage ?? item.coverage_score ?? 0,
+      coverage_level: (item.coverage >= 0.8 ? 'high' : item.coverage >= 0.5 ? 'medium' : 'limited') as any,
+      confidence_level: item.confidence ?? item.confidence_level ?? 'medium',
+      eligibility: {
+        status: item.eligibility,
+        is_comparable: item.eligibility === 'eligible',
+        reasons: item.eligibilityWarnings || item.warnings || [],
+      },
+      factor_explanations: (item.factors || []).map((f: any) => ({
+        factor: f.factor,
+        factor_name: f.factor,
+        similarity_score: f.similarity_score,
+        active_weight: f.active_weight,
+        weight: f.active_weight,
+        explanation: `${f.factor}: scenario ${f.scenario_value} vs flight ${f.experiment_value}`,
+        scenario_value: f.scenario_value,
+        experiment_value: f.experiment_value,
+      })),
+    };
+  });
+
+    return {
+      scenario,
+      total_evaluated: raw.totalEvaluated ?? raw.total_evaluated ?? 0,
+      eligible_count: raw.eligibleCount ?? raw.eligible_count ?? 0,
+      excluded_count: raw.excludedCount ?? raw.excluded_count ?? 0,
+      behavior_profile: bp,
+      matches: mappedMatches,
+    };
   },
 
   // Ask IGNIS / Q&A

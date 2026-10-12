@@ -7,6 +7,11 @@ import {
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
   Cell,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
 } from 'recharts';
 import {
   HelpCircle,
@@ -16,6 +21,7 @@ import {
   ExternalLink,
   Layers,
   Database,
+  Activity,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../common/Card';
 import { Badge } from '../common/Badge';
@@ -34,6 +40,7 @@ export const WhyPanel: React.FC<Props> = ({
   comparableCount,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [viewMode, setViewMode] = useState<'bars' | 'radar'>('bars');
 
   if (!topMatch) {
     return null;
@@ -53,13 +60,20 @@ export const WhyPanel: React.FC<Props> = ({
     (f) => f.similarity_score !== null && f.similarity_score !== undefined && f.similarity_score < 0.8
   );
 
+  // Compute average active weight for weighting Radar line width & fill opacity
+  const avgWeight = chartData.length > 0
+    ? chartData.reduce((acc, c) => acc + c.weight, 0) / chartData.length
+    : 50;
+  const radarStrokeWidth = Math.max(1.5, Math.min(3.5, (avgWeight / 100) * 4));
+  const radarFillOpacity = Math.max(0.2, Math.min(0.65, (avgWeight / 100) * 0.7));
+
   return (
     <Card variant="default" padding="lg" className="border-sky-500/20 shadow-xl shadow-black/40">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <Badge variant="plasma" size="xs">
+              <Badge variant="strong" size="xs">
                 EXPLAINABILITY ENGINE (PRD §10.6)
               </Badge>
               <EvidenceBadge level="A" size="xs" />
@@ -89,15 +103,49 @@ export const WhyPanel: React.FC<Props> = ({
         <CardContent className="space-y-6 pt-2">
           {/* Top Contributing Factor Chart */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-400">
               <span className="flex items-center gap-1.5 text-white font-sans font-semibold">
-                <Layers className="w-3.5 h-3.5 text-sky-400" />
-                <span>Factor Similarity Scores (0–100%)</span>
+                {viewMode === 'radar' ? (
+                  <Activity className="w-3.5 h-3.5 text-sky-400" />
+                ) : (
+                  <Layers className="w-3.5 h-3.5 text-sky-400" />
+                )}
+                <span>
+                  {viewMode === 'radar'
+                    ? 'Multivariate Factor Correlation Profile'
+                    : 'Factor Similarity Scores (0–100%)'}
+                </span>
               </span>
-              <span>Based on normalized distance vectors</span>
+
+              {/* View Toggle */}
+              <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-900 border border-slate-800 text-[11px] font-mono">
+                <button
+                  type="button"
+                  onClick={() => setViewMode('bars')}
+                  className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
+                    viewMode === 'bars'
+                      ? 'bg-sky-500/20 text-sky-300 font-semibold border border-sky-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Bar Breakdown
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('radar')}
+                  className={`px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
+                    viewMode === 'radar'
+                      ? 'bg-sky-500/20 text-sky-300 font-semibold border border-sky-500/40 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  Radar Profile
+                </button>
+              </div>
             </div>
 
-            <div className="h-56 w-full pt-2">
+            {viewMode === 'bars' ? (
+              <div className="h-56 w-full pt-2">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={chartData}
@@ -159,7 +207,57 @@ export const WhyPanel: React.FC<Props> = ({
                 </BarChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          ) : (
+            <div className="h-64 sm:h-72 w-full pt-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartData}>
+                  <PolarGrid stroke="rgba(255, 255, 255, 0.12)" strokeDasharray="3 3" />
+                  <PolarAngleAxis
+                    dataKey="name"
+                    tick={{ fill: '#e2e8f0', fontSize: 11, fontFamily: 'sans-serif' }}
+                  />
+                  <PolarRadiusAxis
+                    angle={90}
+                    domain={[0, 100]}
+                    tick={{ fill: '#64748b', fontSize: 9, fontFamily: 'monospace' }}
+                    stroke="rgba(255, 255, 255, 0.15)"
+                  />
+                  <Radar
+                    name="Factor Similarity"
+                    dataKey="score"
+                    stroke="#38BDF8"
+                    strokeWidth={radarStrokeWidth}
+                    fill="#38BDF8"
+                    fillOpacity={radarFillOpacity}
+                  />
+                  <RechartsTooltip
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload as {
+                          name: string;
+                          score: number;
+                          weight: number;
+                          scenarioVal: string | number;
+                          expVal: string | number;
+                        };
+                        return (
+                          <div className="bg-[#0A0E1A] border border-slate-700 p-2.5 rounded-xl shadow-xl text-xs font-mono space-y-1">
+                            <p className="font-bold text-white capitalize">{data.name}</p>
+                            <p className="text-sky-300">Similarity: {data.score}%</p>
+                            <p className="text-slate-400">Factor Weight: {data.weight}%</p>
+                            <p className="text-orange-400">Your Scenario: {String(data.scenarioVal)}</p>
+                            <p className="text-emerald-400">NASA Test Value: {String(data.expVal)}</p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
 
           {/* Critical Mismatches & Extrapolation Caveats */}
           {mismatches.length > 0 && (

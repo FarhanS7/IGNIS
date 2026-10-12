@@ -11,11 +11,13 @@ import {
   ExternalLink,
   ArrowRight,
   Radio,
+  HelpCircle,
 } from 'lucide-react';
 import { EvidenceBadge } from '../components/common/EvidenceBadge';
 import { Badge } from '../components/common/Badge';
 import { Card } from '../components/common/Card';
 import { Button } from '../components/common/Button';
+import { Term } from '../components/common/Term';
 import { api } from '../lib/api';
 import type { DataSource } from '../types/api';
 
@@ -86,10 +88,10 @@ export const AboutPage: React.FC = () => {
           <span>NASA Space Apps Challenge 2026 • Flame in Freefall</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-['Space_Grotesk',sans-serif]">
-          Methodology & Provenance Policy
+          About: Methodology & Provenance Policy
         </h1>
         <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
-          How IGNIS transforms four decades of NASA microgravity combustion research into a verifiable evidence network — transparent mathematical weighting, 5-tier provenance tracking, and zero ungrounded physical hallucination.
+          How IGNIS transforms four decades of NASA <Term term="microgravity">microgravity</Term> combustion research into a verifiable evidence network — transparent mathematical weighting, 5-tier provenance tracking, and zero ungrounded physical hallucination.
         </p>
       </div>
 
@@ -100,7 +102,7 @@ export const AboutPage: React.FC = () => {
           <span>Non-Operational Research Notice & PRD v1.1 §1.1 Compliance</span>
         </div>
         <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-          <strong>IGNIS (Intelligent Guidance from NASA Ignition Studies)</strong> is explicitly an interactive research and educational evidence exploration system. Calculations, similarity ratings, and behavior profiles provided by IGNIS do <strong>NOT</strong> constitute official flight qualification, mission safety clearance, or certified life-support engineering compliance under <strong>NASA-STD-6001B</strong>.
+          <strong>IGNIS (Intelligent Guidance from NASA Ignition Studies)</strong> is explicitly an interactive research and educational evidence exploration system. Calculations, similarity ratings, and behavior profiles provided by IGNIS do <strong>NOT</strong> constitute official flight qualification, mission safety clearance, or certified life-support engineering compliance under <strong>NASA-<Term term="std-6001b">STD-6001B</Term></strong>.
         </p>
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
           The system never outputs binary "safe / unsafe" verdicts. All combustion analysis is framed as multidimensional empirical evidence. Real spacecraft mission-critical operations must follow designated NASA Flight Safety Review Boards.
@@ -136,7 +138,7 @@ export const AboutPage: React.FC = () => {
               <EvidenceBadge level="B" size="sm" />
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Standardized, unit-converted data tables extracted from published NASA Physical Sciences Informatics (PSI) archives and peer-reviewed journal papers with verified DOIs.
+              Standardized, unit-converted data tables extracted from published NASA Physical Sciences Informatics (<Term term="psi">PSI</Term>) archives and peer-reviewed journal papers with verified DOIs.
             </p>
           </Card>
 
@@ -189,7 +191,7 @@ export const AboutPage: React.FC = () => {
           <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
             <h4 className="text-xs font-semibold text-cyan-300 uppercase tracking-wide">1. Fuel Family Compatibility</h4>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Solid sheet fuels (PMMA, cotton) are separated from liquid droplets (FLEX heptane) and gaseous jets. Cross-family matches are strictly excluded.
+              Solid sheet fuels (<Term term="pmma">PMMA</Term>, cotton) are separated from liquid droplets (<Term term="flex">FLEX</Term> heptane) and gaseous jets. Cross-family matches are strictly excluded.
             </p>
           </div>
 
@@ -248,7 +250,7 @@ export const AboutPage: React.FC = () => {
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Forced Airflow Velocity</td>
                 <td className="p-3 sm:p-4 text-cyan-400 font-bold">20%</td>
                 <td>Asymmetric Exponential (v &lt; 0.2 m/s)</td>
-                <td className="font-sans text-slate-400">Controls convective oxidizer supply vs aerodynamic convective blowout.</td>
+                <td className="font-sans text-slate-400">Controls convective oxidizer supply vs aerodynamic blowout (evaluated via <Term term="richardson number">Richardson number</Term> Ri ≈ 0 in orbit).</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Cabin Total Pressure</td>
@@ -259,8 +261,8 @@ export const AboutPage: React.FC = () => {
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Scientific Objective</td>
                 <td className="p-3 sm:p-4 text-cyan-400 font-bold">10%</td>
-                <td>Jaccard Overlap</td>
-                <td className="font-sans text-slate-400">Matches target research focus (flame spread vs extinction limits).</td>
+                <td><Term term="jaccard overlap">Jaccard Overlap</Term></td>
+                <td className="font-sans text-slate-400">Matches target research focus (<Term term="flame spread">flame spread</Term> vs <Term term="extinction">extinction</Term> limits).</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Geometry & Regime</td>
@@ -291,7 +293,7 @@ export const AboutPage: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Physical Sciences Informatics (PSI) database records: Saffire I–VI Cygnus flights, BASS-I/II glovebox tests, and FLEX droplet investigations.
+              Physical Sciences Informatics (PSI) database records: <Term term="saffire">Saffire</Term> I–VI Cygnus flights, <Term term="bass">BASS</Term>-I/II glovebox tests, and FLEX droplet investigations.
             </p>
             <a
               href="https://psi.nasa.gov"
@@ -354,7 +356,7 @@ export const AboutPage: React.FC = () => {
               Registered NASA Source Catalog & Provenance (FR-NAS-006)
             </h2>
           </div>
-          <Badge variant="flame" size="xs">
+          <Badge variant="neutral" size="xs">
             {sources.length} REGISTERED SOURCES
           </Badge>
         </div>
@@ -421,6 +423,66 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Frequently Asked Scientific Questions (PRD v1.1 §10 / Migrated Q&A) */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <HelpCircle className="w-5 h-5 text-cyan-400" />
+          <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
+            Frequently Asked Scientific Questions
+          </h2>
+        </div>
+        <p className="text-sm text-slate-300 leading-relaxed">
+          Fundamental empirical insights on microgravity combustion physics, large-scale Saffire burns, and partial gravity boundaries.
+        </p>
+
+        <div className="space-y-3 pt-2">
+          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
+            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
+              <span>Why do microgravity flames form a sphere in space?</span>
+              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
+            </summary>
+            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
+              <p>
+                In Earth gravity, hot combustion gases rise due to <Term term="buoyancy">buoyancy</Term> (natural convection), drawing fresh oxygen into the base and giving flames their characteristic teardrop shape. In microgravity (0g), gravity-driven buoyancy is absent. Oxygen transport occurs almost purely via molecular diffusion, causing the reaction zone to form a symmetrical sphere around the fuel source with lower flame temperatures and a distinct blue chemiluminescent glow.
+              </p>
+              <div className="text-[11px] font-mono text-cyan-400">
+                Sources: NASA TM-2015-218820 (FLEX-2) • ISS Physical Science Informatics (PSI) • Combustion Integrated Rack (<Term term="cir">CIR</Term>) / Glovebox (<Term term="msg">MSG</Term>)
+              </div>
+            </div>
+          </details>
+
+          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
+            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
+              <span>What did the Saffire missions discover about spacecraft fire safety?</span>
+              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
+            </summary>
+            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
+              <p>
+                The Saffire (Spacecraft Fire Experiment) missions conducted inside Cygnus cargo vehicles after unberthing from the ISS revealed that large-scale materials (up to 1 meter in length) burn differently than small laboratory samples. Saffire demonstrated that low-speed cabin ventilation (0.05 to 0.20 m/s) maintains active flame propagation across fabric and PMMA, whereas complete cessation of airflow leads to rapid oxygen starvation and flame quenching.
+              </p>
+              <div className="text-[11px] font-mono text-cyan-400">
+                Sources: Saffire-I Flight Report (NASA/TM-2017-219500) • NASA Glenn Research Center Combustion Archives • Cygnus OA-6
+              </div>
+            </div>
+          </details>
+
+          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
+            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
+              <span>Does fire behave differently on the Moon (0.16g) than in orbital microgravity (0g)?</span>
+              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
+            </summary>
+            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
+              <p>
+                Yes. Lunar gravity is approximately one-sixth (0.16g) of Earth's gravity. In 0.16g, buoyancy does not entirely vanish: weak natural convection currents still develop, transporting hot combustion products upward and drawing modest amounts of fresh oxidizer. Consequently, lunar flames are not perfectly spherical like orbital flames, and materials exhibit slightly lower extinction limits than in total weightlessness.
+              </p>
+              <div className="text-[11px] font-mono text-cyan-400">
+                Sources: Zero-Gravity Facility Drop Tower 1/6g Tests • BASS-II Partial Gravity Extrapolation Studies • NASA Exploration Atmosphere Standards
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
       {/* Challenge Attribution & Next Steps */}
       <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-cyan-950/40 border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1.5 text-center md:text-left">
@@ -432,19 +494,19 @@ export const AboutPage: React.FC = () => {
             Ready to test spacecraft fire scenarios?
           </h3>
           <p className="text-xs text-slate-300 max-w-xl">
-            Configure cabin oxygen, pressure, and ventilation in the Habitat Builder to evaluate empirical NASA fire behavior.
+            Configure cabin oxygen, pressure, and ventilation in the Simulator to evaluate empirical NASA fire behavior.
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <Link to="/build">
+          <Link to="/simulator">
             <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-              Open Habitat Builder
+              Open Simulator
             </Button>
           </Link>
           <Link to="/ask">
             <Button variant="outline" size="md" icon={<FileText className="w-4 h-4" />}>
-              Ask IGNIS RAG
+              Ask IGNIS
             </Button>
           </Link>
         </div>

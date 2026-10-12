@@ -255,7 +255,10 @@ export interface DataSource {
 
 export interface AskRequest {
   question: string;
-  scenario_context?: ScenarioInput | null;
+  scope?: string;
+  experiment_id?: string | null;
+  story_slug?: string | null;
+  scenario_context?: ScenarioInput | Record<string, unknown> | null;
   conversation_history?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
 
