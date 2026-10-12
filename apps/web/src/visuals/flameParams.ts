@@ -67,6 +67,31 @@ const GRAVITY_TABLE: Record<
   earth_gravity:         { g: 1.0,  buoyancy: 1.0,  elongation: 1.8,  label: 'Convective Plume (1g)',       shape: 'buoyant teardrop' },
 };
 
+function resolveContinuousGravity(gInput: number) {
+  const g = Math.max(0, Math.min(1.0, gInput));
+  const buoyancy = g;
+  // Morph smoothly: 0g -> 1.0, 0.16g -> ~1.22, 0.38g -> ~1.43, 1.0g -> 1.80
+  const elongation = 1.0 + 0.8 * Math.pow(g, 0.8);
+
+  let label = `Simulated Gravity (${g.toFixed(2)}g)`;
+  let shape = 'interpolated flame';
+  if (g < 0.05) {
+    label = 'Spherical Diffusion (0g)';
+    shape = 'spherical';
+  } else if (g < 0.25) {
+    label = `Weak Buoyancy (${g.toFixed(2)}g)`;
+    shape = 'slightly elongated';
+  } else if (g < 0.65) {
+    label = `Partial Buoyancy (${g.toFixed(2)}g)`;
+    shape = 'moderately elongated';
+  } else {
+    label = `Convective Plume (${g.toFixed(2)}g)`;
+    shape = 'buoyant teardrop';
+  }
+
+  return { g, buoyancy, elongation, label, shape };
+}
+
 function resolveGravity(env?: GravityEnvironment | null) {
   if (!env || !(env in GRAVITY_TABLE)) {
     // Default to microgravity (the primary research context of IGNIS)
@@ -105,12 +130,16 @@ function deriveColors(o2: number) {
 // Main derivation
 // ---------------------------------------------------------------------------
 
-export function deriveFlameParams(scenario: ScenarioInput | Partial<ScenarioInput>): FlameParams {
+export type ScenarioInputWithG = ScenarioInput | (Partial<ScenarioInput> & { gravity_g?: number });
+
+export function deriveFlameParams(scenario: ScenarioInputWithG): FlameParams {
   const o2 = scenario.oxygen_pct ?? 21.0;
   const airflow = scenario.airflow_cm_s ?? 5.0;
   const pressure = scenario.pressure_kpa ?? 101.3;
 
-  const gravity = resolveGravity(scenario.gravity_environment);
+  const gravity = 'gravity_g' in scenario && typeof scenario.gravity_g === 'number'
+    ? resolveContinuousGravity(scenario.gravity_g)
+    : resolveGravity(scenario.gravity_environment);
   const colors = deriveColors(o2);
 
   // Flame scale – clamped [30, 65]

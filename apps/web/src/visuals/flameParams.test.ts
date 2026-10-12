@@ -62,3 +62,17 @@ test('deriveFlameParams - airflow tilt cap', () => {
   const highFlow = deriveFlameParams({ airflow_cm_s: 50.0 });
   assert.equal(highFlow.tiltDeg, 25.0); // capped at 25
 });
+
+test('deriveFlameParams - continuous gravity_g support', () => {
+  const zeroG = deriveFlameParams({ gravity_g: 0.0 });
+  assert.equal(zeroG.gravityG, 0.0);
+  assert.equal(zeroG.elongation, 1.0);
+
+  const halfG = deriveFlameParams({ gravity_g: 0.5 });
+  assert.equal(halfG.gravityG, 0.5);
+  assert.ok(halfG.elongation > 1.0 && halfG.elongation < 1.8);
+
+  const oneG = deriveFlameParams({ gravity_g: 1.0 });
+  assert.equal(oneG.gravityG, 1.0);
+  assert.equal(oneG.elongation, 1.8);
+});

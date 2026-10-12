@@ -16,6 +16,8 @@ export interface UseIsVisibleOptions {
   rootMargin?: string;
   /** Visibility ratio threshold – default 0.05 (5 %) */
   threshold?: number;
+  /** If true, remains visible once intersected and disconnects observer */
+  once?: boolean;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface UseIsVisibleOptions {
 export function useIsVisible<T extends HTMLElement = HTMLDivElement>(
   options: UseIsVisibleOptions = {},
 ): [RefObject<T | null>, boolean] {
-  const { rootMargin = '100px', threshold = 0.05 } = options;
+  const { rootMargin = '100px', threshold = 0.05, once = false } = options;
 
   const ref = useRef<T | null>(null);
   const [isInViewport, setIsInViewport] = useState(false);
@@ -39,13 +41,22 @@ export function useIsVisible<T extends HTMLElement = HTMLDivElement>(
     if (!el) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setIsInViewport(entry.isIntersecting),
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInViewport(true);
+          if (once) {
+            observer.disconnect();
+          }
+        } else if (!once) {
+          setIsInViewport(false);
+        }
+      },
       { rootMargin, threshold },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [rootMargin, threshold]);
+  }, [rootMargin, threshold, once]);
 
   // Page Visibility API – is the tab active?
   useEffect(() => {
