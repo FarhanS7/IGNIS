@@ -5,6 +5,9 @@ import {
   RotateCcw,
   Activity,
   Flame,
+  Zap,
+  TrendingUp,
+  Snowflake,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -15,11 +18,13 @@ import {
   Tooltip as RechartsTooltip,
   ReferenceLine,
   ReferenceArea,
+  ReferenceDot,
   CartesianGrid,
 } from 'recharts';
 import { Card } from '../common/Card';
 import { Badge } from '../common/Badge';
 import { EvidenceBadge } from '../common/EvidenceBadge';
+import { drawPath } from '../../visuals/anime';
 
 export interface CVDataPoint {
   timestamp_seconds: number;
@@ -102,6 +107,96 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
     }
     return closest;
   }, [measurements, currentTime]);
+
+  // Detect notable events present in the data (ignition, peak, extinction)
+  const notableEvents = useMemo(() => {
+    if (!measurements || measurements.length < 2) return [];
+
+    const events: Array<{
+      id: 'ignition' | 'peak' | 'extinction';
+      label: string;
+      timestamp: number;
+      color: string;
+      badgeBg: string;
+      value: number;
+    }> = [];
+
+    // 1. Ignition: first point where flame becomes active (> 0)
+    const ignitionPoint = measurements.find(
+      (m) => m.flame_area_ratio > 0.05 || m.flame_area_px > 50,
+    );
+    if (ignitionPoint && ignitionPoint.timestamp_seconds > 0) {
+      events.push({
+        id: 'ignition',
+        label: 'Ignition',
+        timestamp: ignitionPoint.timestamp_seconds,
+        color: '#38BDF8',
+        badgeBg: 'rgba(56, 189, 248, 0.15)',
+        value: ignitionPoint.flame_area_ratio,
+      });
+    }
+
+    // 2. Peak: maximum flame area ratio
+    let maxPoint = measurements[0];
+    for (const m of measurements) {
+      if (m.flame_area_ratio > maxPoint.flame_area_ratio) {
+        maxPoint = m;
+      }
+    }
+    if (maxPoint && maxPoint.flame_area_ratio > 0.2) {
+      events.push({
+        id: 'peak',
+        label: 'Peak Area',
+        timestamp: maxPoint.timestamp_seconds,
+        color: '#F97316',
+        badgeBg: 'rgba(249, 115, 22, 0.15)',
+        value: maxPoint.flame_area_ratio,
+      });
+    }
+
+    // 3. Extinction: after peak, first point that reaches 0.0 or drops below 0.02
+    const postPeakPoints = measurements.filter(
+      (m) => m.timestamp_seconds > maxPoint.timestamp_seconds,
+    );
+    const extinctionPoint = postPeakPoints.find(
+      (m) => m.flame_area_ratio <= 0.02 || m.flame_area_px <= 10,
+    );
+    if (extinctionPoint) {
+      events.push({
+        id: 'extinction',
+        label: 'Extinction',
+        timestamp: extinctionPoint.timestamp_seconds,
+        color: '#EF4444',
+        badgeBg: 'rgba(239, 68, 68, 0.15)',
+        value: extinctionPoint.flame_area_ratio,
+      });
+    }
+
+    return events;
+  }, [measurements]);
+
+  // Initial drawPath animation on first display
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const hasDrawnCurveRef = useRef(false);
+
+  useEffect(() => {
+    if (hasDrawnCurveRef.current) return;
+    const container = chartContainerRef.current;
+    if (!container) return;
+
+    const timer = setTimeout(() => {
+      const curve = container.querySelector<SVGGeometryElement>('.recharts-line-curve');
+      if (curve && !hasDrawnCurveRef.current) {
+        hasDrawnCurveRef.current = true;
+        drawPath(curve, {
+          duration: 1300,
+          easing: 'outQuad',
+        });
+      }
+    }, 120);
+
+    return () => clearTimeout(timer);
+  }, [measurements]);
 
   // Render authentic NASA microgravity optical camera visualizer
   const renderCanvasFrame = useCallback((time: number) => {
@@ -272,8 +367,48 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
     setIsPlaying(true);
   };
 
+  // Keyboard accessibility (Space to toggle, arrows to seek, R to restart)
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'INPUT' && (target as HTMLInputElement).type === 'text') {
+        return;
+      }
+
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        setIsPlaying((prev) => !prev);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const step = e.shiftKey ? 1.0 : 0.5;
+        setCurrentTime((prev) => Math.max(0, prev - step));
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const step = e.shiftKey ? 1.0 : 0.5;
+        setCurrentTime((prev) => Math.min(maxDuration, prev + step));
+      } else if (e.key === 'r' || e.key === 'R') {
+        e.preventDefault();
+        handleRestart();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        setCurrentTime(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        setCurrentTime(maxDuration);
+      }
+    },
+    [maxDuration],
+  );
+
   return (
-    <Card variant="glass" padding="none" className="overflow-hidden border-orange-500/30 shadow-2xl">
+    <Card
+      variant="glass"
+      padding="none"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="overflow-hidden border-orange-500/30 shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+      aria-label="Synchronized optical combustion video and telemetry module. Use Space to play/pause, Arrow keys to seek, R to restart."
+    >
       {/* Component Header */}
       <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
@@ -306,7 +441,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
         {/* Left Column: Optical Video Telemetry Player (7 cols) */}
         <div className="lg:col-span-7 flex flex-col justify-between bg-[#030712] p-4 sm:p-5 space-y-4">
-          {/* Canvas Optical Display */}
+          {/* Canvas Optical Display with Vignette & Progress Bar */}
           <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800/80 shadow-inner bg-black flex items-center justify-center">
             <canvas
               ref={canvasRef}
@@ -317,13 +452,25 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
               className="w-full h-full object-contain block"
             />
 
+            {/* Subtle glass vignette treatment */}
+            <div
+              className="absolute inset-0 pointer-events-none rounded-xl shadow-[inset_0_0_50px_rgba(0,0,0,0.85)] border border-sky-500/20"
+              aria-hidden="true"
+            />
+
+            {/* Optical precision corner reticles */}
+            <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
+            <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
+            <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
+
             {/* Play/Pause Overlay indicator when paused */}
             {!isPlaying && (
               <button
                 type="button"
                 onClick={() => setIsPlaying(true)}
-                className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-orange-500/30 hover:bg-orange-500/50 border border-orange-400/80 text-orange-300 flex items-center justify-center backdrop-blur-sm transition-all transform hover:scale-105 cursor-pointer shadow-lg shadow-orange-500/20"
-                aria-label="Play optical stream"
+                className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-orange-500/30 hover:bg-orange-500/50 border border-orange-400/80 text-orange-300 flex items-center justify-center backdrop-blur-sm transition-all transform hover:scale-105 cursor-pointer shadow-lg shadow-orange-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                aria-label="Play optical stream (Space)"
               >
                 <Play className="w-6 h-6 ml-0.5 text-white" />
               </button>
@@ -333,26 +480,110 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>CIR OPTICAL STREAM</span>
             </div>
+
+            {/* Slim progress bar synced to scrubber along bottom edge */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-900/80 backdrop-blur-sm pointer-events-none overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-cyan-400 transition-[width] duration-75"
+                style={{
+                  width: `${Math.min(100, Math.max(0, (currentTime / (maxDuration || 1)) * 100))}%`,
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Live Telemetry Readout Strip beside/below the video */}
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-900/90 border border-slate-800 text-xs font-mono shadow-sm">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#38bdf8] animate-pulse" />
+              <span className="text-slate-400">FLAME RATIO:</span>
+              <span className="text-cyan-300 font-bold px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-500/30">
+                {currentMeasurement ? `${currentMeasurement.flame_area_ratio.toFixed(2)}x` : '0.00x'}
+              </span>
+              <span className="text-slate-600 hidden sm:inline">|</span>
+              <span className="text-slate-400 hidden sm:inline">AREA:</span>
+              <span className="text-slate-200 font-mono hidden sm:inline">
+                {currentMeasurement ? `${currentMeasurement.flame_area_px.toFixed(0)} px` : '0 px'}
+              </span>
+            </div>
+            <div className="text-[11px] text-orange-400 font-mono flex items-center gap-1">
+              <span>T = {currentTime.toFixed(2)}s</span>
+            </div>
           </div>
 
           {/* Scrubber & Player Controls */}
           <div className="space-y-3 pt-1">
-            {/* Timeline Range Scrubber */}
-            <div className="space-y-1">
+            {/* Timeline Range Scrubber with Event Pins */}
+            <div className="space-y-1.5">
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span className="text-orange-400 font-bold">{currentTime.toFixed(2)}s</span>
                 <span>Scrub timeline to seek video & chart</span>
                 <span>{maxDuration.toFixed(1)}s</span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max={maxDuration}
-                step="0.05"
-                value={currentTime}
-                onChange={(e) => handleSeek(parseFloat(e.target.value))}
-                className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-orange-500 focus:outline-none"
-              />
+
+              <div className="relative w-full flex items-center">
+                <input
+                  type="range"
+                  min="0"
+                  max={maxDuration}
+                  step="0.05"
+                  value={currentTime}
+                  onChange={(e) => handleSeek(parseFloat(e.target.value))}
+                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-orange-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                  aria-label="Seek video and telemetry timestamp"
+                />
+                {/* Event marker pins on scrubber track */}
+                {notableEvents.map((evt) => {
+                  const leftPercent = (evt.timestamp / (maxDuration || 1)) * 100;
+                  return (
+                    <button
+                      key={evt.id}
+                      type="button"
+                      onClick={() => handleSeek(evt.timestamp)}
+                      style={{ left: `${leftPercent}%` }}
+                      className="absolute -top-1 -translate-x-1/2 w-2.5 h-4 rounded-sm flex items-center justify-center transition-transform hover:scale-125 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer z-10"
+                      title={`Jump to ${evt.label} at ${evt.timestamp.toFixed(2)}s`}
+                      aria-label={`Jump to ${evt.label} at ${evt.timestamp.toFixed(2)}s`}
+                    >
+                      <span
+                        className="w-1.5 h-3 rounded-full shadow-sm"
+                        style={{ backgroundColor: evt.color }}
+                      />
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Notable Events quick-jump pills (only shown if present in data) */}
+              {notableEvents.length > 0 && (
+                <div className="flex items-center gap-1.5 pt-1 flex-wrap" role="group" aria-label="Notable telemetry events">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slate-500 mr-1">Events:</span>
+                  {notableEvents.map((evt) => {
+                    const isCurrent = Math.abs(currentTime - evt.timestamp) < 0.3;
+                    return (
+                      <button
+                        key={evt.id}
+                        type="button"
+                        onClick={() => handleSeek(evt.timestamp)}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono border transition-all cursor-pointer hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 ${
+                          isCurrent ? 'ring-1 ring-white/60 font-bold' : ''
+                        }`}
+                        style={{
+                          backgroundColor: evt.badgeBg,
+                          borderColor: evt.color + '55',
+                          color: evt.color,
+                        }}
+                        title={`Jump video to ${evt.label} (${evt.timestamp.toFixed(2)}s)`}
+                      >
+                        {evt.id === 'ignition' && <Zap className="w-3 h-3" />}
+                        {evt.id === 'peak' && <TrendingUp className="w-3 h-3" />}
+                        {evt.id === 'extinction' && <Snowflake className="w-3 h-3" />}
+                        <span>{evt.timestamp.toFixed(1)}s {evt.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Controls Bar */}
@@ -361,8 +592,9 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-2 rounded-lg bg-orange-500/20 border border-orange-500/40 text-orange-300 hover:bg-orange-500/30 transition-colors cursor-pointer"
-                  title={isPlaying ? 'Pause' : 'Play'}
+                  className="p-2 rounded-lg bg-orange-500/20 border border-orange-500/40 text-orange-300 hover:bg-orange-500/30 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                  title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
+                  aria-label={isPlaying ? 'Pause optical playback' : 'Start optical playback'}
                 >
                   {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
                 </button>
@@ -370,8 +602,9 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                 <button
                   type="button"
                   onClick={handleRestart}
-                  className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer"
-                  title="Restart stream"
+                  className="p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                  title="Restart stream (R)"
+                  aria-label="Restart optical stream from beginning"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
@@ -383,7 +616,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                       key={rate}
                       type="button"
                       onClick={() => setPlaybackRate(rate)}
-                      className={`px-1.5 py-0.5 rounded text-[11px] transition-colors cursor-pointer ${
+                      className={`px-1.5 py-0.5 rounded text-[11px] transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 ${
                         playbackRate === rate
                           ? 'bg-orange-500/30 text-orange-300 font-bold border border-orange-500/50'
                           : 'hover:text-slate-200 text-slate-400'
@@ -420,8 +653,8 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
             </p>
           </div>
 
-          {/* Recharts Area Curve with Active Reference Cursor */}
-          <div className="w-full h-52 sm:h-60 pt-2">
+          {/* Recharts Area Curve with Active Reference Cursor and anime.js drawPath container */}
+          <div ref={chartContainerRef} className="w-full h-52 sm:h-60 pt-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 data={measurements}
@@ -462,20 +695,63 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                   fillOpacity={0.08}
                 />
 
-                {/* Active Synchronized Time Cursor Line */}
+                {/* Notable Event Reference Lines */}
+                {notableEvents.map((evt) => (
+                  <ReferenceLine
+                    key={evt.id}
+                    x={evt.timestamp}
+                    stroke={evt.color}
+                    strokeWidth={1}
+                    strokeDasharray="3 3"
+                    strokeOpacity={0.5}
+                  />
+                ))}
+
+                {/* Glowing Playhead Line: Outer glow */}
                 <ReferenceLine
                   x={Number(currentTime.toFixed(1))}
-                  stroke="#ff7a3d"
-                  strokeWidth={2}
+                  stroke="#38bdf8"
+                  strokeWidth={6}
+                  strokeOpacity={0.25}
+                />
+                {/* Glowing Playhead Line: Core crisp dashed line */}
+                <ReferenceLine
+                  x={Number(currentTime.toFixed(1))}
+                  stroke="#38bdf8"
+                  strokeWidth={1.5}
                   strokeDasharray="2 2"
                   label={{
                     value: `t=${currentTime.toFixed(1)}s`,
                     position: 'top',
-                    fill: '#ff7a3d',
+                    fill: '#38bdf8',
                     fontSize: 10,
                     fontFamily: 'monospace',
                   }}
                 />
+
+                {/* Glowing Curve Dot following the current measurement */}
+                {currentMeasurement && (
+                  <>
+                    <ReferenceDot
+                      x={currentMeasurement.timestamp_seconds}
+                      y={currentMeasurement.flame_area_ratio}
+                      r={10}
+                      fill="#38bdf8"
+                      fillOpacity={0.25}
+                      stroke="#38bdf8"
+                      strokeOpacity={0.5}
+                      strokeWidth={1}
+                    />
+                    <ReferenceDot
+                      x={currentMeasurement.timestamp_seconds}
+                      y={currentMeasurement.flame_area_ratio}
+                      r={4.5}
+                      fill="#ff7a3d"
+                      stroke="#ffffff"
+                      strokeWidth={1.5}
+                    />
+                  </>
+                )}
 
                 <RechartsTooltip
                   content={({ active, payload }) => {
@@ -499,6 +775,7 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
                   dataKey="flame_area_ratio"
                   stroke="#38bdf8"
                   strokeWidth={2.5}
+                  isAnimationActive={false}
                   dot={{ r: 2, fill: '#38bdf8' }}
                   activeDot={{ r: 5, fill: '#ff7a3d', stroke: '#fff', strokeWidth: 1.5 }}
                 />
@@ -506,10 +783,10 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
             </ResponsiveContainer>
           </div>
 
-          {/* Real-time Telemetry Readout Grid */}
+          {/* Real-time Telemetry Readout Grid with Highlighted Current Value */}
           <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-xs font-mono">
-            <div className="p-2 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-[10px] text-slate-400 block">CURRENT RATIO</span>
+            <div className="p-2 rounded-lg bg-slate-900/90 border border-cyan-500/40 shadow-[0_0_12px_rgba(56,189,248,0.15)] ring-1 ring-cyan-400/30">
+              <span className="text-[10px] text-cyan-300 font-semibold block">CURRENT RATIO</span>
               <span className="text-cyan-400 font-bold text-sm">
                 {currentMeasurement ? `${currentMeasurement.flame_area_ratio.toFixed(2)}x` : '—'}
               </span>
@@ -550,3 +827,4 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
     </Card>
   );
 };
+
