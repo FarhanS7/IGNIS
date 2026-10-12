@@ -177,3 +177,32 @@ export function deriveFlameParams(scenario: ScenarioInputWithG): FlameParams {
     coreDescription: colors.coreDescription,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Destination classification helper
+// ---------------------------------------------------------------------------
+
+export type DestinationType = 'orbital' | 'moon' | 'mars';
+
+export function resolveDestination(
+  destinationOrSlug?: string | null,
+  gravityEnv?: string | null,
+): DestinationType {
+  const d = (destinationOrSlug || '').toLowerCase();
+  if (d.includes('moon') || d.includes('lunar')) return 'moon';
+  if (d.includes('mars')) return 'mars';
+  if (
+    d.includes('orbital') ||
+    d.includes('deep_space') ||
+    d.includes('iss') ||
+    d.includes('zero')
+  ) {
+    return 'orbital';
+  }
+
+  const g = (gravityEnv || '').toLowerCase();
+  if (g.includes('lunar')) return 'moon';
+  if (g.includes('mars')) return 'mars';
+  return 'orbital';
+}
+

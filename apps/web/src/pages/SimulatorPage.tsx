@@ -683,6 +683,7 @@ export const SimulatorPage: React.FC = () => {
             comparableCount={analysis?.eligible_count ?? 0}
             compact
             label="Live Physical Reaction"
+            destination={selectedPresetSlug}
           />
         </div>
       </div>
@@ -1033,6 +1034,7 @@ export const SimulatorPage: React.FC = () => {
                 scenario={scenarioA}
                 comparableCount={analysis?.eligible_count ?? 0}
                 label="Scenario A · Physical Flame Regime"
+                destination={selectedPresetSlug}
               />
             ) : (
               <div className="space-y-4">
@@ -1042,12 +1044,14 @@ export const SimulatorPage: React.FC = () => {
                     comparableCount={analysis?.eligible_count ?? 0}
                     compact
                     label="Scenario A (Primary)"
+                    destination={selectedPresetSlug}
                   />
                   <EvidenceGuidedVisualization
                     scenario={scenarioB}
                     comparableCount={0}
                     compact
                     label="Scenario B (Comparison)"
+                    destination={selectedPresetSlugB}
                   />
                 </div>
 

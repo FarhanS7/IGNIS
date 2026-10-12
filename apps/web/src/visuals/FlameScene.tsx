@@ -31,6 +31,7 @@ import * as THREE from 'three';
 import type { ScenarioInput } from '../types/api';
 import { deriveFlameParams, type FlameParams } from './flameParams';
 import { FlameParticles } from './FlameParticles';
+import { DestinationBackdrop } from './DestinationBackdrop';
 import { useReducedMotion } from './useReducedMotion';
 import { useIsVisible } from './useIsVisible';
 import { useQualityTier } from './useQualityTier';
@@ -441,11 +442,17 @@ function CameraController({ reducedMotion }: { reducedMotion: boolean }) {
 
 export interface FlameSceneProps {
   scenario: ScenarioInput;
+  destination?: string;
   compact?: boolean;
   className?: string;
 }
 
-export function FlameScene({ scenario, compact = false, className = '' }: FlameSceneProps) {
+export function FlameScene({
+  scenario,
+  destination,
+  compact = false,
+  className = '',
+}: FlameSceneProps) {
   const params = useMemo(() => deriveFlameParams(scenario), [scenario]);
   const reducedMotion = useReducedMotion();
   const quality = useQualityTier();
@@ -473,14 +480,10 @@ export function FlameScene({ scenario, compact = false, className = '' }: FlameS
       ref={containerRef}
       className={`relative w-full ${compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'} bg-[#05070E] flex items-center justify-center overflow-hidden select-none ${className}`}
     >
-      {/* Background grid markings for laboratory context */}
-      <div
-        className="absolute inset-0 opacity-15 pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, #38BDF8 1px, transparent 1px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
+      {/* Destination-reactive visual backdrop with 500ms crossfade */}
+      <DestinationBackdrop
+        destination={destination}
+        gravityEnvironment={scenario.gravity_environment}
       />
 
       {/* HTML Overlay: Telemetry Readouts (Not in WebGL) */}

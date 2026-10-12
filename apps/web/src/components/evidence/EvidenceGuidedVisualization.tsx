@@ -7,6 +7,7 @@ import type { ScenarioInput } from '../../types/api';
 import { deriveFlameParams, type FlameParams } from '../../visuals/flameParams';
 import { useWebGLSupport } from '../../visuals/useWebGLSupport';
 import { WebGLErrorBoundary } from '../../visuals/WebGLErrorBoundary';
+import { DestinationBackdrop } from '../../visuals/DestinationBackdrop';
 
 // Lazy-load Three.js 3D flame scene to prevent bundle bloat (FR-EGV-005)
 const LazyFlameScene = lazy(() => import('../../visuals/FlameScene'));
@@ -16,10 +17,12 @@ interface Props {
   comparableCount: number;
   label?: string;
   compact?: boolean;
+  destination?: string;
 }
 
 interface SvgFlameFallbackProps {
   scenario: ScenarioInput;
+  destination?: string;
   flame: FlameParams;
   compact: boolean;
   shouldReduceMotion: boolean;
@@ -34,6 +37,7 @@ interface SvgFlameFallbackProps {
  */
 const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
   scenario,
+  destination,
   flame,
   compact,
   shouldReduceMotion,
@@ -52,14 +56,10 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
     <div
       className={`relative w-full ${compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'} bg-[#05070E] flex items-center justify-center overflow-hidden`}
     >
-      {/* Background grid markings for laboratory context */}
-      <div
-        className="absolute inset-0 opacity-15 pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, #38BDF8 1px, transparent 1px), linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)',
-          backgroundSize: '24px 24px',
-        }}
+      {/* Destination-reactive visual backdrop with 500ms crossfade */}
+      <DestinationBackdrop
+        destination={destination}
+        gravityEnvironment={scenario.gravity_environment}
       />
 
       {/* Airflow velocity vector indicator */}
@@ -209,6 +209,7 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
   comparableCount,
   label,
   compact = false,
+  destination,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const shouldReduceMotion = useReducedMotion();
@@ -236,6 +237,7 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
   const fallbackView = (
     <SvgFlameFallback
       scenario={scenario}
+      destination={destination}
       flame={flame}
       compact={compact}
       shouldReduceMotion={Boolean(shouldReduceMotion)}
@@ -293,7 +295,7 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
           {hasWebGL ? (
             <WebGLErrorBoundary fallback={fallbackView}>
               <Suspense fallback={fallbackView}>
-                <LazyFlameScene scenario={scenario} compact={compact} />
+                <LazyFlameScene scenario={scenario} compact={compact} destination={destination} />
               </Suspense>
             </WebGLErrorBoundary>
           ) : (

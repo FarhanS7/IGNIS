@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { deriveFlameParams } from './flameParams.ts';
+import { deriveFlameParams, resolveDestination } from './flameParams.ts';
 import type { ScenarioInput } from '../types/api.ts';
 
 test('deriveFlameParams - microgravity nominal scenario', () => {
@@ -75,4 +75,14 @@ test('deriveFlameParams - continuous gravity_g support', () => {
   const oneG = deriveFlameParams({ gravity_g: 1.0 });
   assert.equal(oneG.gravityG, 1.0);
   assert.equal(oneG.elongation, 1.8);
+});
+
+test('resolveDestination - maps preset slugs and gravity regimes accurately', () => {
+  assert.equal(resolveDestination('orbital'), 'orbital');
+  assert.equal(resolveDestination('moon'), 'moon');
+  assert.equal(resolveDestination('mars'), 'mars');
+  assert.equal(resolveDestination('deep_space'), 'orbital');
+  assert.equal(resolveDestination(null, 'partial_gravity_lunar'), 'moon');
+  assert.equal(resolveDestination(null, 'partial_gravity_mars'), 'mars');
+  assert.equal(resolveDestination(null, 'microgravity'), 'orbital');
 });
