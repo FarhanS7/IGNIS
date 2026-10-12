@@ -20,3 +20,7 @@ export { countUp, staggerIn, drawPath, stagger } from './anime';
 
 // Error boundary
 export { WebGLErrorBoundary } from './WebGLErrorBoundary';
+
+// 3D GPU Flame (for direct or lazy usage)
+export { FlameScene } from './FlameScene';
+export type { FlameSceneProps } from './FlameScene';
