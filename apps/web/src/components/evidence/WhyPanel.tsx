@@ -34,7 +34,7 @@ interface Props {
   comparableCount: number;
 }
 
-export const WhyPanel: React.FC<Props> = ({
+export const WhyPanel: React.FC<Props> = React.memo(({
   topMatch,
   scenario,
   comparableCount,
@@ -321,4 +321,5 @@ export const WhyPanel: React.FC<Props> = ({
       )}
     </Card>
   );
-};
+});
+

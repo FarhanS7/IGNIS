@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { QualitySelector } from '../../visuals/QualitySelector';
 
 export const Footer: React.FC = () => {
+
   return (
     <footer className="ignis-footer">
       <div className="footer-inner">
@@ -89,13 +91,16 @@ export const Footer: React.FC = () => {
         </div>
       </div>
 
-      <div className="footer-bottom">
+      <div className="footer-bottom flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="footer-legal">
           <span>NASA Space Apps Challenge 2026</span>
           <span className="sep">•</span>
           <span>Challenge: Flame in Freefall</span>
           <span className="sep">•</span>
           <span>Scientific Disclaimer: Not a certified spacecraft life safety calculation tool (PRD v1.1 §1.1).</span>
+        </div>
+        <div className="shrink-0">
+          <QualitySelector />
         </div>
       </div>
     </footer>

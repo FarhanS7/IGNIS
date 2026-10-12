@@ -1,9 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { HowItWorksSection } from '../components/landing/HowItWorksSection';
-import { SimulatorMiniDemo } from '../components/landing/SimulatorMiniDemo';
-import { ExploreMoreRow } from '../components/landing/ExploreMoreRow';
-import { TrustStrip } from '../components/landing/TrustStrip';
+import { useIsVisible } from '../visuals/useIsVisible';
+
+const HowItWorksSection = lazy(() => import('../components/landing/HowItWorksSection'));
+const SimulatorMiniDemo = lazy(() => import('../components/landing/SimulatorMiniDemo'));
+const ExploreMoreRow = lazy(() => import('../components/landing/ExploreMoreRow'));
+const TrustStrip = lazy(() => import('../components/landing/TrustStrip'));
+
+function LazySection({
+  children,
+  minHeight = '200px',
+}: {
+  children: React.ReactNode;
+  minHeight?: string;
+}) {
+  const [ref, isVisible] = useIsVisible<HTMLDivElement>({ rootMargin: '300px', once: true });
+  return (
+    <div ref={ref} style={{ minHeight: isVisible ? undefined : minHeight }}>
+      {isVisible ? children : null}
+    </div>
+  );
+}
 
 interface PlanetInfo {
   name: string;
@@ -213,10 +230,29 @@ export const LandingPage: React.FC = () => {
           STREAMLINED MODULAR SECTIONS
           ====================================================================== */}
       <div className="relative z-10 space-y-4 pb-20">
-        <HowItWorksSection />
-        <SimulatorMiniDemo />
-        <ExploreMoreRow />
-        <TrustStrip />
+        <LazySection minHeight="260px">
+          <Suspense fallback={<div className="h-64" />}>
+            <HowItWorksSection />
+          </Suspense>
+        </LazySection>
+
+        <LazySection minHeight="420px">
+          <Suspense fallback={<div className="h-96" />}>
+            <SimulatorMiniDemo />
+          </Suspense>
+        </LazySection>
+
+        <LazySection minHeight="200px">
+          <Suspense fallback={<div className="h-52" />}>
+            <ExploreMoreRow />
+          </Suspense>
+        </LazySection>
+
+        <LazySection minHeight="90px">
+          <Suspense fallback={<div className="h-24" />}>
+            <TrustStrip />
+          </Suspense>
+        </LazySection>
       </div>
     </div>
   );

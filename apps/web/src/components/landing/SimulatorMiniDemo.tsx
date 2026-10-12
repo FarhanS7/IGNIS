@@ -152,8 +152,8 @@ export const SimulatorMiniDemo: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const hasWebGL = useWebGLSupport();
 
-  // Lazy-mount WebGL once section has entered the viewport
-  const [containerRef, hasScrolledIntoView] = useIsVisible<HTMLElement>({ rootMargin: '250px', once: true });
+  // Lazy-mount WebGL when section enters viewport, unmount when far out of view
+  const [containerRef, hasScrolledIntoView] = useIsVisible<HTMLElement>({ rootMargin: '200px', once: false });
 
   // Construct scenario input reflecting continuous slider value
   const scenario = useMemo<ScenarioInput & { gravity_g: number }>(() => {
@@ -232,7 +232,7 @@ export const SimulatorMiniDemo: React.FC = () => {
         </div>
 
         {/* Controls Section: Gravity Slider & Presets */}
-        <div className="p-6 sm:p-8 space-y-6 bg-slate-950/60 backdrop-blur-md">
+        <div className="p-6 sm:p-8 space-y-6 bg-[rgba(10,20,40,0.88)] border-t border-slate-800/80">
           {/* Slider Header */}
           <div className="flex items-center justify-between">
             <label htmlFor="gravity-slider" className="text-sm font-semibold text-white flex items-center gap-2">

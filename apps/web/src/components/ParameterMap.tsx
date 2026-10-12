@@ -90,7 +90,7 @@ function getXForGravity(env?: string | null, customG?: number | null): number {
   return PADDING.left + PLOT_WIDTH * 0.90;
 }
 
-export const ParameterMap: React.FC<Props> = ({ matches, scenario, className = '' }) => {
+export const ParameterMap: React.FC<Props> = React.memo(({ matches, scenario, className = '' }) => {
   const navigate = useNavigate();
   const shouldReduceMotion = useReducedMotion();
 
@@ -545,6 +545,7 @@ export const ParameterMap: React.FC<Props> = ({ matches, scenario, className = '
       )}
     </Card>
   );
-};
+});
 
 export default ParameterMap;
+

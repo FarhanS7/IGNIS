@@ -10,6 +10,7 @@ import { StoryPlayerPage } from './pages/StoryPlayerPage';
 import { AskIgnisPage } from './pages/AskIgnisPage';
 import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { PerfOverlay } from './visuals/PerfOverlay';
 
 const RedirectToSimulator: React.FC = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ export const App: React.FC = () => {
     <MotionConfig reducedMotion="user">
       <BrowserRouter>
         <RouteTitleSync />
+        <PerfOverlay />
         <Routes>
           <Route element={<AppLayout />}>
             <Route path="/" element={<LandingPage />} />

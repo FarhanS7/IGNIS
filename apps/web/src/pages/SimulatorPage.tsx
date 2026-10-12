@@ -37,6 +37,7 @@ import { EvidenceGuidedVisualization } from '../components/evidence/EvidenceGuid
 import { WhyPanel } from '../components/evidence/WhyPanel';
 import { ParameterMap } from '../components/ParameterMap';
 import { staggerIn } from '../visuals/anime';
+import { QualitySelector } from '../visuals/QualitySelector';
 import { useAskIgnis, useSetAskContext } from '../hooks/useAskIgnis';
 import { api } from '../lib/api';
 import type {
@@ -470,23 +471,54 @@ export const SimulatorPage: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [tourStep, handleDismissTour]);
 
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true,
+  );
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Active preset details
   const activePresetA = useMemo(
     () => DEFAULT_PRESETS.find((p) => p.slug === selectedPresetSlug) || DEFAULT_PRESETS[0],
     [selectedPresetSlug]
   );
 
-  // Sync scenario A changes to URL search params
+  const urlTimerRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (urlTimerRef.current) clearTimeout(urlTimerRef.current);
+    };
+  }, []);
+
+  // Sync scenario A changes to URL search params (debounced ~400ms on drag to avoid router churn)
   const updateUrlParams = useCallback(
-    (scenario: ScenarioInput, destination: string) => {
-      const nextParams = new URLSearchParams(searchParams);
-      nextParams.set('destination', destination);
-      nextParams.set('oxygen', String(scenario.oxygen_pct));
-      nextParams.set('pressure', String(scenario.pressure_kpa));
-      nextParams.set('airflow', String(scenario.airflow_cm_s));
-      nextParams.set('material', scenario.material);
-      nextParams.set('objective', scenario.objective || 'flame_spread');
-      setSearchParams(nextParams, { replace: true });
+    (scenario: ScenarioInput, destination: string, immediate = false) => {
+      if (urlTimerRef.current) {
+        clearTimeout(urlTimerRef.current);
+        urlTimerRef.current = null;
+      }
+
+      const apply = () => {
+        const nextParams = new URLSearchParams(searchParams);
+        nextParams.set('destination', destination);
+        nextParams.set('oxygen', String(scenario.oxygen_pct));
+        nextParams.set('pressure', String(scenario.pressure_kpa));
+        nextParams.set('airflow', String(scenario.airflow_cm_s));
+        nextParams.set('material', scenario.material);
+        nextParams.set('objective', scenario.objective || 'flame_spread');
+        setSearchParams(nextParams, { replace: true });
+      };
+
+      if (immediate) {
+        apply();
+      } else {
+        urlTimerRef.current = window.setTimeout(apply, 400);
+      }
     },
     [searchParams, setSearchParams]
   );
@@ -503,7 +535,7 @@ export const SimulatorPage: React.FC = () => {
       airflow_cm_s: preset.default_airflow_cm_s,
     };
     setScenarioA(updated);
-    updateUrlParams(updated, preset.slug);
+    updateUrlParams(updated, preset.slug, true);
   };
 
   const handleResetPresetA = () => {
@@ -532,12 +564,12 @@ export const SimulatorPage: React.FC = () => {
 
   const isInitialMountRef = useRef<boolean>(true);
 
-  // Debounced API Analysis with AbortController
+  // Debounced API Analysis with AbortController (~300ms debounce)
   useEffect(() => {
     const abortController = new AbortController();
     const isFirst = isInitialMountRef.current;
     isInitialMountRef.current = false;
-    const debounceDelay = isFirst ? 0 : 250;
+    const debounceDelay = isFirst ? 0 : 300;
 
     const timer = setTimeout(() => {
       setIsUpdating(true);
@@ -632,8 +664,10 @@ export const SimulatorPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Global Toolbar: Share link, Tour replay, & Compare toggle */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Global Toolbar: Quality setting, Share link, Tour replay, & Compare toggle */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0">
+          <QualitySelector />
+
           <Button
             variant="outline"
             size="sm"
@@ -664,8 +698,8 @@ export const SimulatorPage: React.FC = () => {
         </div>
       </div>
 
-      {/* MOBILE ONLY: Sticky Compact Flame Canvas */}
-      <div className="lg:hidden sticky top-[68px] z-20 pb-3 bg-[#060813]/95 backdrop-blur-md border-b border-slate-800/80 -mx-4 px-4 sm:mx-0 sm:px-0">
+      {/* MOBILE ONLY: Sticky Compact Flame Canvas (Mounted ONLY on mobile to prevent duplicate WebGL contexts) */}
+      <div className="lg:hidden sticky top-[68px] z-20 pb-3 bg-[#060813] border-b border-slate-800/80 -mx-4 px-4 sm:mx-0 sm:px-0">
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs font-mono">
             <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
@@ -678,13 +712,17 @@ export const SimulatorPage: React.FC = () => {
               </span>
             )}
           </div>
-          <EvidenceGuidedVisualization
-            scenario={scenarioA}
-            comparableCount={analysis?.eligible_count ?? 0}
-            compact
-            label="Live Physical Reaction"
-            destination={selectedPresetSlug}
-          />
+          {!isDesktop && (
+            <EvidenceGuidedVisualization
+              scenario={scenarioA}
+              comparableCount={analysis?.eligible_count ?? 0}
+              compact
+              label={isCompareMode ? 'Live Reaction (A vs B Comparison)' : 'Live Physical Reaction'}
+              destination={selectedPresetSlug}
+              compareScenario={isCompareMode ? scenarioB : undefined}
+              compareDestination={isCompareMode ? selectedPresetSlugB : undefined}
+            />
+          )}
         </div>
       </div>
 
@@ -1028,32 +1066,25 @@ export const SimulatorPage: React.FC = () => {
 
           {/* a) EvidenceGuidedVisualization (flame) at the top, always visible */}
           {/* Desktop Single or Dual Flames (Hidden on mobile since sticky above) */}
-          <div className="hidden lg:block space-y-4">
-            {!isCompareMode ? (
-              <EvidenceGuidedVisualization
-                scenario={scenarioA}
-                comparableCount={analysis?.eligible_count ?? 0}
-                label="Scenario A · Physical Flame Regime"
-                destination={selectedPresetSlug}
-              />
-            ) : (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {isDesktop && (
+            <div className="space-y-4">
+              {!isCompareMode ? (
+                <EvidenceGuidedVisualization
+                  scenario={scenarioA}
+                  comparableCount={analysis?.eligible_count ?? 0}
+                  label="Scenario A · Physical Flame Regime"
+                  destination={selectedPresetSlug}
+                />
+              ) : (
+                <div className="space-y-4">
                   <EvidenceGuidedVisualization
                     scenario={scenarioA}
+                    compareScenario={scenarioB}
                     comparableCount={analysis?.eligible_count ?? 0}
-                    compact
-                    label="Scenario A (Primary)"
+                    label="Compare Mode · Scenario A (Left) vs Scenario B (Right)"
                     destination={selectedPresetSlug}
+                    compareDestination={selectedPresetSlugB}
                   />
-                  <EvidenceGuidedVisualization
-                    scenario={scenarioB}
-                    comparableCount={0}
-                    compact
-                    label="Scenario B (Comparison)"
-                    destination={selectedPresetSlugB}
-                  />
-                </div>
 
                 {/* Compare Mode Side-by-Side Delta Summary */}
                 <Card variant="glass" padding="md" className="border-cyan-500/30 space-y-3">
@@ -1092,6 +1123,7 @@ export const SimulatorPage: React.FC = () => {
               </div>
             )}
           </div>
+        )}
 
           {/* Initial First-Load Skeleton (Only shown before first request completes) */}
           {isInitialLoading && !analysis && !error && (

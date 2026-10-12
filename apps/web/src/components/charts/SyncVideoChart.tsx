@@ -72,7 +72,7 @@ interface SyncVideoChartProps {
   sampleName?: string;
 }
 
-export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
+export const SyncVideoChart: React.FC<SyncVideoChartProps> = React.memo(({
   measurements = DEFAULT_CV_MEASUREMENTS,
   videoUrl: _videoUrl,
   missionPlatform = 'ISS Combustion Integrated Rack (CIR)',
@@ -318,7 +318,15 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
     ctx.fillText(regimeLabel, 12, h - 14);
   }, [maxDuration]);
 
-  // Video playback clock loop
+  const currentTimeRef = useRef<number>(currentTime);
+  const lastStateUpdateRef = useRef<number>(0);
+
+  // Sync ref with state when state changes from seek/scrub
+  useEffect(() => {
+    currentTimeRef.current = currentTime;
+  }, [currentTime]);
+
+  // Video playback clock loop (throttles React state updates to avoid 60fps component re-renders)
   useEffect(() => {
     if (!isPlaying) {
       lastTimeRef.current = performance.now();
@@ -329,14 +337,24 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
       const delta = (now - lastTimeRef.current) / 1000;
       lastTimeRef.current = now;
 
-      setCurrentTime((prev) => {
-        const next = prev + delta * playbackRate;
-        if (next >= maxDuration) {
-          setIsPlaying(false);
-          return maxDuration;
-        }
-        return next;
-      });
+      const next = currentTimeRef.current + delta * playbackRate;
+      if (next >= maxDuration) {
+        currentTimeRef.current = maxDuration;
+        setCurrentTime(maxDuration);
+        renderCanvasFrame(maxDuration);
+        setIsPlaying(false);
+        return;
+      }
+
+      currentTimeRef.current = next;
+      // Render canvas at full 60fps directly
+      renderCanvasFrame(next);
+
+      // Throttle React state update to ~8Hz to prevent 60fps component re-render cascades
+      if (now - lastStateUpdateRef.current > 120) {
+        lastStateUpdateRef.current = now;
+        setCurrentTime(next);
+      }
 
       animationFrameRef.current = requestAnimationFrame(tick);
     };
@@ -349,12 +367,14 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isPlaying, playbackRate, maxDuration]);
+  }, [isPlaying, playbackRate, maxDuration, renderCanvasFrame]);
 
-  // Render canvas when currentTime changes
+  // Render canvas when seeking while paused
   useEffect(() => {
-    renderCanvasFrame(currentTime);
-  }, [currentTime, renderCanvasFrame]);
+    if (!isPlaying) {
+      renderCanvasFrame(currentTime);
+    }
+  }, [currentTime, isPlaying, renderCanvasFrame]);
 
   // Handle Scrubbing (FR-CV-005: updates within 250ms)
   const handleSeek = (newTime: number) => {
@@ -464,25 +484,25 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
             <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
             <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-sky-400/40 pointer-events-none" aria-hidden="true" />
 
-            {/* Play/Pause Overlay indicator when paused */}
+            {/* Play/Pause Overlay indicator when paused (solid dark glass, zero backdrop-filter over active canvas) */}
             {!isPlaying && (
               <button
                 type="button"
                 onClick={() => setIsPlaying(true)}
-                className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-orange-500/30 hover:bg-orange-500/50 border border-orange-400/80 text-orange-300 flex items-center justify-center backdrop-blur-sm transition-all transform hover:scale-105 cursor-pointer shadow-lg shadow-orange-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                className="absolute inset-0 m-auto w-14 h-14 rounded-full bg-orange-950/85 hover:bg-orange-900/90 border border-orange-400/80 text-orange-300 flex items-center justify-center transition-all transform hover:scale-105 cursor-pointer shadow-lg shadow-orange-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
                 aria-label="Play optical stream (Space)"
               >
                 <Play className="w-6 h-6 ml-0.5 text-white" />
               </button>
             )}
 
-            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 px-2 py-1 rounded bg-black/75 border border-slate-700/60 text-[10px] font-mono text-slate-300">
+            <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 px-2 py-1 rounded bg-black/85 border border-slate-700/60 text-[10px] font-mono text-slate-300">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>CIR OPTICAL STREAM</span>
             </div>
 
-            {/* Slim progress bar synced to scrubber along bottom edge */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-900/80 backdrop-blur-sm pointer-events-none overflow-hidden">
+            {/* Slim progress bar synced to scrubber along bottom edge (solid dark glass, zero backdrop-filter) */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-slate-950 pointer-events-none overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-orange-500 via-amber-400 to-cyan-400 transition-[width] duration-75"
                 style={{
@@ -826,5 +846,6 @@ export const SyncVideoChart: React.FC<SyncVideoChartProps> = ({
       </div>
     </Card>
   );
-};
+});
+
 

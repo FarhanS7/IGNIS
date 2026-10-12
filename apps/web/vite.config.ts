@@ -18,4 +18,28 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    modulePreload: {
+      resolveDependencies: (_filename, deps) => {
+        return deps.filter(
+          (dep) => !dep.includes('three-vendor') && !dep.includes('postprocessing-vendor'),
+        );
+      },
+    },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
+            return 'three-vendor';
+          }
+          if (
+            id.includes('node_modules/postprocessing') ||
+            id.includes('node_modules/@react-three/postprocessing')
+          ) {
+            return 'postprocessing-vendor';
+          }
+        },
+      },
+    },
+  },
 })

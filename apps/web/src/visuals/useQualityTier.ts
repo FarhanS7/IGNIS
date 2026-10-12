@@ -1,87 +1,169 @@
 /**
  * useQualityTier.ts – Classifies the device into a rendering quality tier.
  *
- * Returns 'low' | 'medium' | 'high' based on:
- *   - devicePixelRatio
- *   - navigator.hardwareConcurrency
- *   - touch/mobile UA heuristics
- *   - prefers-reduced-motion
+ * Defaults:
+ *   - 'medium' on laptops/desktops
+ *   - 'low' on mobile/touch devices or prefers-reduced-motion
  *
- * Tier guide:
- *   'low'    → fewer particles, no bloom, DPR capped at 1
- *   'medium' → moderate particles, DPR capped at 1.5
- *   'high'   → full particles, bloom enabled, DPR capped at 2
+ * User preference:
+ *   - Stored in localStorage under 'ignis_visual_quality': 'auto' | 'high' | 'medium' | 'low'
+ *   - Dispatches a custom event 'ignis:quality-change' on update for instant reactive re-renders
+ *
+ * Tier definitions:
+ *   - 'low':    DPR 1.0, 200 particles, static backdrops, no bloom, 2 noise octaves
+ *   - 'medium': DPR [1, 1.25], 700 particles, fake glow, no bloom, 3 noise octaves
+ *   - 'high':   DPR [1, 1.5], 1500 particles, bloom enabled, 3 noise octaves
  */
 
-import { useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useReducedMotion } from './useReducedMotion';
 
 export type QualityTier = 'low' | 'medium' | 'high';
+export type QualityPreference = 'auto' | 'high' | 'medium' | 'low';
 
 export interface QualityInfo {
   tier: QualityTier;
-  /** Maximum devicePixelRatio the renderer should use */
+  preference: QualityPreference;
   maxDpr: number;
-  /** Whether bloom post-processing is allowed */
   bloomEnabled: boolean;
-  /** Particle count multiplier (0..1) */
-  particleMultiplier: number;
+  particleCount: number;
+  staticBackdrop: boolean;
+  noiseOctaves: number;
 }
 
-function isMobile(): boolean {
-  if (typeof navigator === 'undefined') return false;
+export const QUALITY_STORAGE_KEY = 'ignis_visual_quality';
+const QUALITY_EVENT_NAME = 'ignis:quality-change';
 
-  // Check for touch support and narrow viewport
+export function getQualityPreference(): QualityPreference {
+  if (typeof window === 'undefined') return 'auto';
+  try {
+    const saved = localStorage.getItem(QUALITY_STORAGE_KEY);
+    if (saved === 'high' || saved === 'medium' || saved === 'low' || saved === 'auto') {
+      return saved;
+    }
+  } catch {
+    // Ignore storage errors
+  }
+  return 'auto';
+}
+
+export function setQualityPreference(pref: QualityPreference): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(QUALITY_STORAGE_KEY, pref);
+    window.dispatchEvent(new CustomEvent(QUALITY_EVENT_NAME, { detail: pref }));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
+function isMobileDevice(): boolean {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
   const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const isNarrow = window.innerWidth < 768;
-
-  // UA-based heuristic fallback
   const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent,
   );
-
   return (hasTouch && isNarrow) || mobileUA;
 }
 
-function classifyTier(reducedMotion: boolean): QualityInfo {
-  // Reduced motion always forces low tier
-  if (reducedMotion) {
-    return { tier: 'low', maxDpr: 1, bloomEnabled: false, particleMultiplier: 0 };
+export function resolveQualityTier(
+  pref: QualityPreference,
+  reducedMotion: boolean,
+): QualityTier {
+  if (reducedMotion) return 'low';
+  if (pref !== 'auto') return pref;
+
+  // 'auto' mode: default to 'low' on mobile/touch, 'medium' on mid-range laptops/desktops
+  if (isMobileDevice()) {
+    return 'low';
   }
 
   const dpr = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
   const cores = typeof navigator !== 'undefined' ? navigator.hardwareConcurrency ?? 2 : 2;
-  const mobile = isMobile();
 
-  // Scoring: higher = more capable
-  let score = 0;
-  if (dpr >= 2) score += 2;
-  else if (dpr >= 1.5) score += 1;
-
-  if (cores >= 8) score += 2;
-  else if (cores >= 4) score += 1;
-
-  if (!mobile) score += 1;
-
-  if (score >= 4) {
-    return { tier: 'high', maxDpr: 2, bloomEnabled: true, particleMultiplier: 1 };
-  }
-  if (score >= 2) {
-    return {
-      tier: 'medium',
-      maxDpr: mobile ? 1.5 : 2,
-      bloomEnabled: false,
-      particleMultiplier: 0.5,
-    };
+  // Only promote to 'high' automatically if the machine has high hardware concurrency and high dpr
+  if (cores >= 8 && dpr >= 2) {
+    return 'high';
   }
 
-  return { tier: 'low', maxDpr: 1, bloomEnabled: false, particleMultiplier: 0.2 };
+  // Standard mid-range default
+  return 'medium';
+}
+
+export function getTierInfo(tier: QualityTier, preference: QualityPreference): QualityInfo {
+  switch (tier) {
+    case 'low':
+      return {
+        tier: 'low',
+        preference,
+        maxDpr: 1.0,
+        bloomEnabled: false,
+        particleCount: 200,
+        staticBackdrop: true,
+        noiseOctaves: 2,
+      };
+    case 'high':
+      return {
+        tier: 'high',
+        preference,
+        maxDpr: 1.5,
+        bloomEnabled: true,
+        particleCount: 1500,
+        staticBackdrop: false,
+        noiseOctaves: 3,
+      };
+    case 'medium':
+    default:
+      return {
+        tier: 'medium',
+        preference,
+        maxDpr: 1.25,
+        bloomEnabled: false,
+        particleCount: 700,
+        staticBackdrop: false,
+        noiseOctaves: 3,
+      };
+  }
 }
 
 /**
- * Hook: returns the current quality classification for the device.
+ * Hook: returns current active QualityInfo and reactive setter.
  */
-export function useQualityTier(): QualityInfo {
+export function useQualityTier(): QualityInfo & {
+  setPreference: (p: QualityPreference) => void;
+} {
   const reducedMotion = useReducedMotion();
-  return useMemo(() => classifyTier(reducedMotion), [reducedMotion]);
+  const [pref, setPref] = useState<QualityPreference>(getQualityPreference);
+
+  useEffect(() => {
+    const handleQualityChange = (e: Event) => {
+      const customEvent = e as CustomEvent<QualityPreference>;
+      setPref(customEvent.detail || getQualityPreference());
+    };
+
+    window.addEventListener(QUALITY_EVENT_NAME, handleQualityChange);
+    window.addEventListener('storage', handleQualityChange);
+    return () => {
+      window.removeEventListener(QUALITY_EVENT_NAME, handleQualityChange);
+      window.removeEventListener('storage', handleQualityChange);
+    };
+  }, []);
+
+  const tier = useMemo(
+    () => resolveQualityTier(pref, reducedMotion),
+    [pref, reducedMotion],
+  );
+
+  const info = useMemo(() => getTierInfo(tier, pref), [tier, pref]);
+
+  const updatePreference = useCallback((p: QualityPreference) => {
+    setQualityPreference(p);
+    setPref(p);
+  }, []);
+
+  return {
+    ...info,
+    setPreference: updatePreference,
+  };
 }

@@ -1,32 +1,20 @@
 /**
  * FlameScene.tsx – Physically-motivated GPU Flame rendered via Three.js / R3F.
  *
- * Physics-inspired mappings (from deriveFlameParams):
- *   - Gravity/Buoyancy:
- *       • 0g (microgravity): near-spherical, calm, diffusive blob with blue halo.
- *       • >0g (Moon, Mars, Earth): elongates upward into a buoyant teardrop,
- *         with faster convective upward advection.
- *   - Airflow: tilts and shears the flame downstream with horizontal streaking.
- *   - Oxygen: low O2 = cool dim blue; high O2 = brilliant yellow-orange with white core.
- *   - Pressure:
- *       • Lower pressure (~56–70 kPa on Moon/Mars) increases molecular diffusion,
- *         softening and expanding the flame boundary.
- *       • Higher pressure sharpens the combustion reaction zone.
- *   - Soot: warm rim emission and rising soot/ember particles (near zero at 0g).
- *
- * Architecture & Constraints:
- *   - Single custom shader mesh + instanced ember particle layer.
- *   - Uniforms smoothly lerped over ~300-500ms in useFrame (no React re-renders).
- *   - Selective Bloom post-processing (disabled on 'low' tier).
- *   - Pauses rendering when offscreen or in background tab (useIsVisible).
- *   - Freezes rendering on prefers-reduced-motion.
- *   - Strict DPR caps (1.5 mobile, 2 desktop).
- *   - Full disposal of geometries, materials, and textures on unmount.
+ * Performance Architecture (Audit & Hardening):
+ *   - Step 1: Default 'medium' tier, auto-downgrade to 'low' on mobile/touch.
+ *   - Step 2: Capped DPR [1, 1.25] medium, 1.0 low, 1.5 high. Auto-steps down via PerformanceMonitor.
+ *   - Step 3: frameloop paused when offscreen (useIsVisible) or document.hidden.
+ *   - Step 4: Single WebGL context in Compare mode (renders both flames side-by-side in one Canvas).
+ *   - Step 5: Removed all backdrop-blur overlays above the motion canvas.
+ *   - Step 6: Bloom disabled on low/medium; cheap CSS radial fake glow on medium.
+ *   - Step 7: Shader noise reduced to 2 octaves on low/medium; GPU vertex particles.
  */
 
 import { useRef, useEffect, useMemo, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import { PerformanceMonitor } from '@react-three/drei';
 import * as THREE from 'three';
 import type { ScenarioInput } from '../types/api';
 import { deriveFlameParams, type FlameParams } from './flameParams';
@@ -35,6 +23,18 @@ import { DestinationBackdrop } from './DestinationBackdrop';
 import { useReducedMotion } from './useReducedMotion';
 import { useIsVisible } from './useIsVisible';
 import { useQualityTier } from './useQualityTier';
+import { reportRendererStats, isPerfModeEnabled } from './perfStore';
+
+function PerfCollector() {
+  const isPerf = isPerfModeEnabled();
+  const { gl } = useThree();
+  useFrame(() => {
+    if (isPerf) {
+      reportRendererStats(gl.info, gl.getPixelRatio());
+    }
+  });
+  return null;
+}
 
 // ---------------------------------------------------------------------------
 // GLSL Shaders
@@ -71,10 +71,9 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform float uPressure;     // kPa (softness / diffusion mapping)
   uniform float uAirflow;      // cm/s (downstream streak)
   uniform float uReducedMotion;// 0.0 or 1.0
+  uniform float uOctaves;      // 2.0 on low/med, 3.0 on high
 
-  // -------------------------------------------------------------------------
   // 3D Simplex noise
-  // -------------------------------------------------------------------------
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
@@ -140,12 +139,14 @@ const FRAGMENT_SHADER = /* glsl */ `
     return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
   }
 
-  // 3-octave FBM for organic turbulent flame contours
+  // FBM with capped iterations (Step 7: max 2-3 iterations)
   float fbm(vec3 p) {
     float v = 0.0;
     float a = 0.5;
     vec3 shift = vec3(100.0);
+    int maxOct = int(clamp(uOctaves, 1.0, 3.0));
     for (int i = 0; i < 3; ++i) {
+      if (i >= maxOct) break;
       v += a * snoise(p);
       p = p * 2.0 + shift;
       a *= 0.5;
@@ -168,8 +169,6 @@ const FRAGMENT_SHADER = /* glsl */ `
     p.x -= yHeight * tan(tiltRad) * 1.25;
 
     // 2. Buoyancy & elongation deformation
-    // In 0g (microgravity): pure spherical expansion (uBuoyancy = 0, uElongation = 1)
-    // In >0g: vertical stretch + top teardrop tapering
     float yScaled = p.y / max(0.6, uElongation);
     float taper = 1.0 - 0.48 * uBuoyancy * clamp(p.y * 1.7, 0.0, 1.25);
     float xScaled = p.x / max(0.2, taper);
@@ -179,9 +178,6 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     // 3. Advection time coordinates
     float t = uReducedMotion > 0.5 ? 0.0 : uTime * uFlickerSpeed;
-
-    // In 0g: noise moves slowly radially (quiescent diffusion)
-    // In >0g: rapid upward convective plume
     float convSpeed = (0.25 + 2.6 * uBuoyancy);
     float streakX = (uAirflow * 0.035);
 
@@ -204,28 +200,24 @@ const FRAGMENT_SHADER = /* glsl */ `
     float coreFactor = smoothstep(coreThreshold, 0.03, d);
     float outerFactor = smoothstep(outerThreshold, 0.06, d);
 
-    // 6. Microgravity blue halo (quiescent diffusive blue sheath)
+    // 6. Microgravity blue halo
     float haloFactor = smoothstep(effRadius * 1.55, effRadius * 0.35, d) * (1.0 - uBuoyancy * 0.78);
 
-    // 7. Pressure mapping: lower pressure broadens boundary softness
+    // 7. Pressure mapping
     float pressureNorm = clamp(uPressure / 101.3, 0.5, 1.6);
     float softnessMultiplier = 1.0 / pressureNorm;
 
     // Color compositing
     vec3 color = mix(uOuterColor, uCoreColor, coreFactor * 0.95);
-    
-    // Add cool oxygen blue halo
     vec3 blueHaloColor = vec3(0.12, 0.52, 0.95);
     color += blueHaloColor * haloFactor * 0.45;
 
-    // Warm soot tip glow in higher gravity
+    // Warm soot tip glow
     vec3 sootGlow = vec3(0.9, 0.25, 0.05) * uSootAmount * uBuoyancy * max(0.0, p.y) * 1.5;
     color += sootGlow;
 
-    // Brightness amplification
     color *= uBrightness;
 
-    // Alpha channel
     float alpha = clamp((outerFactor * 0.85 + coreFactor * 0.6 + haloFactor * 0.35), 0.0, 1.0);
     alpha = pow(alpha, softnessMultiplier);
 
@@ -245,13 +237,20 @@ interface FlameMeshProps {
   params: FlameParams;
   scenario: ScenarioInput;
   reducedMotion: boolean;
+  octaves: number;
+  position?: [number, number, number];
 }
 
-function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
+function FlameMesh({
+  params,
+  scenario,
+  reducedMotion,
+  octaves,
+  position = [0, 0, 0],
+}: FlameMeshProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 
-  // Parse CSS colors to Three.js RGB vectors
   const coreColorVec = useMemo(() => {
     const c = new THREE.Color();
     try {
@@ -272,7 +271,6 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
     return new THREE.Vector3(c.r, c.g, c.b);
   }, [params.outerColor]);
 
-  // Target values for lerping
   const targetRef = useRef({
     buoyancy: params.buoyancy,
     elongation: params.elongation,
@@ -303,7 +301,6 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
     };
   }, [params, scenario, coreColorVec, outerColorVec]);
 
-  // Initial uniforms created once on mount via useState (avoids ref reads in render)
   const [uniforms] = useState<{ [uniform: string]: THREE.IUniform }>(() => ({
     uTime: { value: 0 },
     uBuoyancy: { value: params.buoyancy },
@@ -318,16 +315,16 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
     uPressure: { value: scenario.pressure_kpa ?? 101.3 },
     uAirflow: { value: scenario.airflow_cm_s ?? 5.0 },
     uReducedMotion: { value: reducedMotion ? 1.0 : 0.0 },
+    uOctaves: { value: octaves },
   }));
 
-  // Update reducedMotion uniform when state changes
   useEffect(() => {
     if (materialRef.current) {
       materialRef.current.uniforms.uReducedMotion.value = reducedMotion ? 1.0 : 0.0;
+      materialRef.current.uniforms.uOctaves.value = octaves;
     }
-  }, [reducedMotion]);
+  }, [reducedMotion, octaves]);
 
-  // Clean up WebGL resources on unmount
   useEffect(() => {
     const mat = materialRef.current;
     return () => {
@@ -335,24 +332,20 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
     };
   }, []);
 
-  // Frame tick: lerp uniforms smoothly over ~300-500ms (no React re-renders)
+  // Frame tick: lerp uniforms smoothly (no React re-renders)
   useFrame((state, delta) => {
     const mat = materialRef.current;
     if (!mat) return;
 
-    // Cap delta for frame hiccups
     const dt = Math.min(delta, 0.05);
     const lerpT = Math.min(1.0, dt * 5.0);
-
     const target = targetRef.current;
     const u = mat.uniforms;
 
-    // Advance simulation time (frozen if reduced motion)
     if (!reducedMotion) {
       u.uTime.value = state.clock.elapsedTime;
     }
 
-    // Lerp physical scalars
     u.uBuoyancy.value += (target.buoyancy - u.uBuoyancy.value) * lerpT;
     u.uElongation.value += (target.elongation - u.uElongation.value) * lerpT;
     u.uTiltDeg.value += (target.tiltDeg - u.uTiltDeg.value) * lerpT;
@@ -363,14 +356,13 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
     u.uPressure.value += (target.pressure - u.uPressure.value) * lerpT;
     u.uAirflow.value += (target.airflow - u.uAirflow.value) * lerpT;
 
-    // Lerp RGB color vectors
     u.uCoreColor.value.lerp(target.coreColor, lerpT);
     u.uOuterColor.value.lerp(target.outerColor, lerpT);
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0.35, 0]}>
-      <planeGeometry args={[3.8, 4.4]} />
+    <mesh ref={meshRef} position={position}>
+      <planeGeometry args={[2.4, 2.4, 1, 1]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={VERTEX_SHADER}
@@ -378,7 +370,6 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
         side={THREE.DoubleSide}
       />
     </mesh>
@@ -386,33 +377,20 @@ function FlameMesh({ params, scenario, reducedMotion }: FlameMeshProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Laboratory Sample Substrate Plate in 3D
+// Laboratory Substrate Plate
 // ---------------------------------------------------------------------------
 
-function SubstratePlate() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useEffect(() => {
-    const mesh = meshRef.current;
-    return () => {
-      mesh?.geometry.dispose();
-      (mesh?.material as THREE.Material)?.dispose();
-    };
-  }, []);
-
+function SubstratePlate({ position = [0, 0, 0] }: { position?: [number, number, number] }) {
   return (
-    <group position={[0, -0.65, 0]}>
-      {/* Sample substrate slab */}
-      <mesh ref={meshRef}>
-        <boxGeometry args={[2.2, 0.08, 0.4]} />
-        <meshBasicMaterial color="#334155" />
+    <group position={position}>
+      <mesh position={[0, -0.65, 0]}>
+        <boxGeometry args={[1.6, 0.06, 0.8]} />
+        <meshStandardMaterial
+          color="#0f172a"
+          metalness={0.7}
+          roughness={0.3}
+        />
       </mesh>
-      {/* Fuel sample strip on top */}
-      <mesh position={[0, 0.06, 0]}>
-        <boxGeometry args={[1.6, 0.04, 0.25]} />
-        <meshBasicMaterial color="#64748b" />
-      </mesh>
-      {/* Spark ignition point indicator */}
       <mesh position={[0, 0.12, 0]}>
         <sphereGeometry args={[0.04, 8, 8]} />
         <meshBasicMaterial color="#f97316" />
@@ -425,12 +403,20 @@ function SubstratePlate() {
 // Camera Drift Controller
 // ---------------------------------------------------------------------------
 
-function CameraController({ reducedMotion }: { reducedMotion: boolean }) {
+function CameraController({
+  reducedMotion,
+  isCompare = false,
+}: {
+  reducedMotion: boolean;
+  isCompare?: boolean;
+}) {
   useFrame((state) => {
     if (reducedMotion) return;
     const t = state.clock.elapsedTime;
-    state.camera.position.x = Math.sin(t * 0.25) * 0.04;
-    state.camera.position.y = 0.35 + Math.cos(t * 0.2) * 0.02;
+    const baseZ = isCompare ? 4.2 : 3.2;
+    state.camera.position.x = Math.sin(t * 0.22) * 0.03;
+    state.camera.position.y = 0.35 + Math.cos(t * 0.18) * 0.02;
+    state.camera.position.z = baseZ;
   });
 
   return null;
@@ -445,6 +431,8 @@ export interface FlameSceneProps {
   destination?: string;
   compact?: boolean;
   className?: string;
+  compareScenario?: ScenarioInput;
+  compareDestination?: string;
 }
 
 export function FlameScene({
@@ -452,33 +440,39 @@ export function FlameScene({
   destination,
   compact = false,
   className = '',
+  compareScenario,
+  compareDestination,
 }: FlameSceneProps) {
-  const params = useMemo(() => deriveFlameParams(scenario), [scenario]);
+  const paramsA = useMemo(() => deriveFlameParams(scenario), [scenario]);
+  const paramsB = useMemo(
+    () => (compareScenario ? deriveFlameParams(compareScenario) : null),
+    [compareScenario],
+  );
+
+  const isCompare = Boolean(compareScenario && paramsB);
   const reducedMotion = useReducedMotion();
   const quality = useQualityTier();
   const [containerRef, isVisible] = useIsVisible<HTMLDivElement>({ threshold: 0.05 });
 
-  // Scaled particle counts based on QualityTier
-  const particleCount = useMemo(() => {
-    switch (quality.tier) {
-      case 'high':
-        return 3000;
-      case 'medium':
-        return 1500;
-      case 'low':
-      default:
-        return 400;
-    }
-  }, [quality.tier]);
+  // Step 2: Performance regression scale from PerformanceMonitor
+  const [dprScale, setDprScale] = useState<number>(1.0);
 
-  const o2 = scenario.oxygen_pct ?? 21.0;
-  const airflow = scenario.airflow_cm_s ?? 5.0;
-  const pressure = scenario.pressure_kpa ?? 101.3;
+  const activeDpr = useMemo<number | [number, number]>(() => {
+    if (quality.tier === 'low') return 1.0;
+    const maxTarget = quality.maxDpr * dprScale;
+    return [1.0, Math.max(1.0, maxTarget)];
+  }, [quality.tier, quality.maxDpr, dprScale]);
+
+  const o2A = scenario.oxygen_pct ?? 21.0;
+  const airflowA = scenario.airflow_cm_s ?? 5.0;
+  const pressureA = scenario.pressure_kpa ?? 101.3;
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full ${compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'} bg-[#05070E] flex items-center justify-center overflow-hidden select-none ${className}`}
+      className={`relative w-full ${
+        compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'
+      } bg-[#05070E] flex items-center justify-center overflow-hidden select-none ${className}`}
     >
       {/* Destination-reactive visual backdrop with 500ms crossfade */}
       <DestinationBackdrop
@@ -486,64 +480,155 @@ export function FlameScene({
         gravityEnvironment={scenario.gravity_environment}
       />
 
-      {/* HTML Overlay: Telemetry Readouts (Not in WebGL) */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/75 border border-slate-800/80 text-xs font-mono text-cyan-300 pointer-events-none backdrop-blur-sm">
-        <span>Airflow: {airflow} cm/s →</span>
+      {/* Step 6: Cheap fake glow on medium tier (CSS radial gradient instead of bloom) */}
+      {quality.tier === 'medium' && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(circle at 50% 55%, rgba(255, 122, 61, 0.14) 0%, rgba(56, 189, 248, 0.07) 35%, transparent 68%)',
+          }}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Step 5: Solid semi-transparent telemetry badges (NO backdrop-blur over active WebGL) */}
+      <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-cyan-300 pointer-events-none shadow-xs">
+        <span>{isCompare ? 'A: ' : ''}Airflow: {airflowA} cm/s →</span>
       </div>
 
-      <div className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-black/75 border border-slate-800/80 text-xs font-mono text-slate-300 pointer-events-none backdrop-blur-sm">
-        <span>Regime: </span>
-        <span className="text-orange-400 font-semibold">{params.regimeLabel}</span>
+      <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-slate-300 pointer-events-none shadow-xs">
+        {isCompare ? (
+          <span>B: <span className="text-orange-400 font-semibold">{compareDestination ? `${compareDestination} · ` : ''}{compareScenario?.airflow_cm_s ?? 5} cm/s</span></span>
+        ) : (
+          <>
+            <span>Regime: </span>
+            <span className="text-orange-400 font-semibold">{paramsA.regimeLabel}</span>
+          </>
+        )}
       </div>
 
-      {/* R3F WebGL Canvas */}
+      {/* Step 4: Single R3F WebGL Canvas for both Single and Compare modes */}
       <Canvas
-        camera={{ position: [0, 0.35, 3.2], fov: 46 }}
-        dpr={[1, Math.min(quality.maxDpr, 2)]}
+        camera={{ position: [0, 0.35, isCompare ? 4.2 : 3.2], fov: 46 }}
+        dpr={activeDpr}
         frameloop={isVisible ? (reducedMotion ? 'demand' : 'always') : 'never'}
         gl={{
           alpha: true,
-          antialias: true,
+          antialias: quality.tier !== 'low',
           powerPreference: 'high-performance',
         }}
         className="w-full h-full"
       >
-        <CameraController reducedMotion={reducedMotion} />
-
-        {/* 3D Flame Custom Shader Mesh */}
-        <FlameMesh params={params} scenario={scenario} reducedMotion={reducedMotion} />
-
-        {/* Instanced Soot/Ember Particles */}
-        <FlameParticles
-          buoyancy={params.buoyancy}
-          tiltDeg={params.tiltDeg}
-          airflow={airflow}
-          sootAmount={params.sootAmount}
-          particleCount={particleCount}
-          reducedMotion={reducedMotion}
+        {/* Step 2: Drei PerformanceMonitor auto-steps down DPR if FPS drops below ~45 */}
+        <PerformanceMonitor
+          factor={0.5}
+          onChange={({ factor }) => {
+            if (factor < 0.75) {
+              setDprScale(0.8);
+            } else {
+              setDprScale(1.0);
+            }
+          }}
         />
 
-        {/* Laboratory Substrate Plate */}
-        <SubstratePlate />
+        {/* Step 12: Dev-only performance telemetry collector */}
+        <PerfCollector />
 
-        {/* Bloom post-processing (disabled on 'low' tier) */}
+        <CameraController reducedMotion={reducedMotion} isCompare={isCompare} />
+
+        {/* Ambient & directional lighting for substrate plates */}
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[2, 3, 2]} intensity={0.8} />
+
+        {isCompare && paramsB && compareScenario ? (
+          <>
+            {/* Scenario A (Left) */}
+            <FlameMesh
+              params={paramsA}
+              scenario={scenario}
+              reducedMotion={reducedMotion}
+              octaves={quality.noiseOctaves}
+              position={[-0.95, 0, 0]}
+            />
+            <SubstratePlate position={[-0.95, 0, 0]} />
+            <FlameParticles
+              buoyancy={paramsA.buoyancy}
+              tiltDeg={paramsA.tiltDeg}
+              airflow={airflowA}
+              sootAmount={paramsA.sootAmount}
+              particleCount={Math.floor(quality.particleCount * 0.65)}
+              reducedMotion={reducedMotion}
+              offset={[-0.95, 0, 0]}
+            />
+
+            {/* Scenario B (Right) */}
+            <FlameMesh
+              params={paramsB}
+              scenario={compareScenario}
+              reducedMotion={reducedMotion}
+              octaves={quality.noiseOctaves}
+              position={[0.95, 0, 0]}
+            />
+            <SubstratePlate position={[0.95, 0, 0]} />
+            <FlameParticles
+              buoyancy={paramsB.buoyancy}
+              tiltDeg={paramsB.tiltDeg}
+              airflow={compareScenario.airflow_cm_s ?? 5.0}
+              sootAmount={paramsB.sootAmount}
+              particleCount={Math.floor(quality.particleCount * 0.65)}
+              reducedMotion={reducedMotion}
+              offset={[0.95, 0, 0]}
+            />
+          </>
+        ) : (
+          <>
+            {/* Single Flame Mode */}
+            <FlameMesh
+              params={paramsA}
+              scenario={scenario}
+              reducedMotion={reducedMotion}
+              octaves={quality.noiseOctaves}
+            />
+            <SubstratePlate />
+            <FlameParticles
+              buoyancy={paramsA.buoyancy}
+              tiltDeg={paramsA.tiltDeg}
+              airflow={airflowA}
+              sootAmount={paramsA.sootAmount}
+              particleCount={quality.particleCount}
+              reducedMotion={reducedMotion}
+            />
+          </>
+        )}
+
+        {/* Step 6: Bloom enabled ONLY on 'high' tier */}
         {quality.bloomEnabled && (
           <EffectComposer multisampling={0}>
             <Bloom
-              luminanceThreshold={0.32}
-              luminanceSmoothing={0.75}
-              intensity={0.85}
+              luminanceThreshold={0.5}
+              luminanceSmoothing={0.7}
+              intensity={0.45}
               mipmapBlur
             />
           </EffectComposer>
         )}
       </Canvas>
 
-      {/* HTML Overlay: Bottom Telemetry Readout */}
-      <div className="absolute bottom-3 inset-x-4 z-10 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 border-t border-slate-800/80 pt-2 pointer-events-none bg-black/40 backdrop-blur-xs px-2 rounded-b">
-        <span>O₂: {o2}% ({o2 > 21 ? 'Accelerated Growth' : 'Nominal Flux'})</span>
-        <span>Pressure: {pressure} kPa</span>
-        <span>Gravity: {params.gravityG}g ({scenario.gravity_environment ?? '0g'})</span>
+      {/* Step 5: Bottom Readout Strip with solid glass background (NO backdrop-blur) */}
+      <div className="absolute bottom-2 inset-x-3 z-10 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 border-t border-slate-800/80 pt-1.5 pointer-events-none bg-[rgba(10,20,40,0.88)] px-2 rounded-b shadow-xs">
+        {isCompare && compareScenario ? (
+          <>
+            <span className="text-cyan-300">A: {scenario.gravity_environment ?? '0g'} ({o2A}% O₂)</span>
+            <span className="text-orange-300">B: {compareScenario.gravity_environment ?? 'lunar'} ({compareScenario.oxygen_pct ?? 32}% O₂)</span>
+          </>
+        ) : (
+          <>
+            <span>O₂: {o2A}% ({o2A > 21 ? 'Accelerated' : 'Nominal'})</span>
+            <span>P: {pressureA} kPa</span>
+            <span>g: {paramsA.gravityG}g ({scenario.gravity_environment ?? '0g'})</span>
+          </>
+        )}
       </div>
     </div>
   );

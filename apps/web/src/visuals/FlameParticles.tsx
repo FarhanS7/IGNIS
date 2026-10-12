@@ -1,13 +1,12 @@
 /**
- * FlameParticles.tsx – Instanced ember and soot particle system.
+ * FlameParticles.tsx – High-performance GPU-displaced ember & soot particle system.
  *
- * Simulates micro-embers and soot particles rising from the combustion zone:
- *   - Acceleration = buoyancy * up + airflow * downstream drift
- *   - At 0g (microgravity): near-zero soot generation and isotropic slow diffusion
- *   - At 1g: convective plume with rising buoyant embers
- *   - Particle count scaled by QualityTier (high ~3000, medium ~1500, low ~400)
- *   - Respects prefers-reduced-motion (freezes motion)
- *   - Properly disposes buffers on unmount
+ * Performance Architecture (Step 7):
+ *   - Zero CPU loops per frame: positions and lifetimes calculated entirely in vertex shader
+ *   - Single draw call with no buffer re-uploads (needsUpdate is never called in useFrame)
+ *   - Particle counts: High = 1500, Medium = 700, Low = 200
+ *   - Freezes completely under prefers-reduced-motion
+ *   - Full disposal of geometries and custom ShaderMaterial on unmount
  */
 
 import { useRef, useEffect, useMemo } from 'react';
@@ -19,21 +18,89 @@ interface Props {
   tiltDeg: number; // 0..25
   airflow: number; // cm/s
   sootAmount: number; // 0..1
-  particleCount: number; // 400 .. 3000
+  particleCount: number; // 200 .. 1500
   reducedMotion: boolean;
+  offset?: [number, number, number];
 }
 
-interface ParticleState {
-  vel: Float32Array;
-  life: Float32Array;
-  maxLife: Float32Array;
-}
-
-/** Pure deterministic pseudo-random generator for render purity */
+/** Pure deterministic pseudo-random generator for buffer initialization */
 function pseudoRandom(i: number, salt: number): number {
   const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
   return x - Math.floor(x);
 }
+
+const PARTICLE_VERTEX_SHADER = /* glsl */ `
+  uniform float uTime;
+  uniform float uBuoyancy;
+  uniform float uAirflow;
+  uniform float uTiltDeg;
+  uniform float uSootAmount;
+  uniform float uReducedMotion;
+
+  attribute vec3 aVelocity;
+  attribute vec2 aTiming; // x = birthOffset, y = maxLife
+  attribute float aSize;
+
+  varying vec4 vColor;
+
+  void main() {
+    if (uReducedMotion > 0.5) {
+      gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+      gl_PointSize = 0.0;
+      return;
+    }
+
+    float birth = aTiming.x;
+    float maxLife = aTiming.y;
+    float age = mod(uTime + birth, maxLife);
+    float progress = age / maxLife;
+
+    // Convective plume physics in GPU
+    float tiltRad = radians(uTiltDeg);
+    float windX = sin(tiltRad) * (uAirflow * 0.08 + 0.1);
+    float buoyantUp = 0.15 + uBuoyancy * 1.8;
+
+    vec3 pos = position + aVelocity * age;
+    pos.x += 0.5 * windX * age * age;
+    pos.y += 0.5 * buoyantUp * age * age;
+
+    // Dynamic visibility fraction based on soot and gravity
+    float activeFraction = clamp(0.12 + uSootAmount * 0.55 + uBuoyancy * 0.40, 0.05, 1.0);
+    if ((birth / 6.0) > activeFraction) {
+      gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+      gl_PointSize = 0.0;
+      return;
+    }
+
+    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+
+    // Size attenuation
+    gl_PointSize = aSize * (1.0 - progress * 0.55) * (140.0 / -mvPosition.z);
+
+    // Warm amber -> deep red -> black fading
+    float brightness = max(0.0, 1.0 - progress);
+    float r = brightness * 1.0;
+    float g = brightness * max(0.0, 0.55 - progress * 0.55);
+    float b = brightness * 0.04;
+    vColor = vec4(r, g, b, brightness);
+  }
+`;
+
+const PARTICLE_FRAGMENT_SHADER = /* glsl */ `
+  precision mediump float;
+  varying vec4 vColor;
+
+  void main() {
+    vec2 coord = gl_PointCoord - vec2(0.5);
+    float distSq = dot(coord, coord);
+    if (distSq > 0.25) {
+      discard;
+    }
+    float alpha = smoothstep(0.25, 0.03, distSq) * vColor.a;
+    gl_FragColor = vec4(vColor.rgb, alpha);
+  }
+`;
 
 export const FlameParticles: React.FC<Props> = ({
   buoyancy,
@@ -42,64 +109,51 @@ export const FlameParticles: React.FC<Props> = ({
   sootAmount,
   particleCount,
   reducedMotion,
+  offset = [0, 0, 0],
 }) => {
   const pointsRef = useRef<THREE.Points>(null);
   const geomRef = useRef<THREE.BufferGeometry>(null);
-  const matRef = useRef<THREE.PointsMaterial>(null);
+  const matRef = useRef<THREE.ShaderMaterial>(null);
 
-  // Smooth uniform refs to prevent sudden jumps
-  const physicsRef = useRef({ buoyancy, tiltDeg, airflow, sootAmount });
-  useEffect(() => {
-    physicsRef.current = { buoyancy, tiltDeg, airflow, sootAmount };
-  }, [buoyancy, tiltDeg, airflow, sootAmount]);
+  // Purely initialize static particle attributes on count change
+  const { positions, velocities, timings, sizes } = useMemo(() => {
+    const count = Math.max(10, particleCount);
+    const pos = new Float32Array(count * 3);
+    const vel = new Float32Array(count * 3);
+    const tim = new Float32Array(count * 2);
+    const sz = new Float32Array(count);
 
-  // Purely initialize buffer arrays when particleCount changes
-  const { positions, colors, sizes, simState } = useMemo(() => {
-    const pos = new Float32Array(particleCount * 3);
-    const col = new Float32Array(particleCount * 3);
-    const sz = new Float32Array(particleCount);
-
-    const vel = new Float32Array(particleCount * 3);
-    const life = new Float32Array(particleCount);
-    const maxLife = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount; i++) {
+    for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      // Spawn near fuel base
-      const r = pseudoRandom(i, 1) * 0.35;
+      const i2 = i * 2;
+
+      // Fuel base spawning position
+      const r = pseudoRandom(i, 1) * 0.32;
       const angle = pseudoRandom(i, 2) * Math.PI * 2;
       pos[i3] = Math.cos(angle) * r;
-      pos[i3 + 1] = -0.55 + pseudoRandom(i, 3) * 0.4;
+      pos[i3 + 1] = -0.52 + pseudoRandom(i, 3) * 0.35;
       pos[i3 + 2] = Math.sin(angle) * r;
 
-      vel[i3] = (pseudoRandom(i, 4) - 0.5) * 0.15;
-      vel[i3 + 1] = 0.1 + pseudoRandom(i, 5) * 0.4;
-      vel[i3 + 2] = (pseudoRandom(i, 6) - 0.5) * 0.15;
+      // Base initial velocity jitter
+      vel[i3] = (pseudoRandom(i, 4) - 0.5) * 0.18;
+      vel[i3 + 1] = 0.12 + pseudoRandom(i, 5) * 0.35;
+      vel[i3 + 2] = (pseudoRandom(i, 6) - 0.5) * 0.18;
 
-      life[i] = pseudoRandom(i, 7) * 2.0;
-      maxLife[i] = 1.2 + pseudoRandom(i, 8) * 2.2;
+      // Timing: x = birth offset, y = maxLife
+      tim[i2] = pseudoRandom(i, 7) * 5.0;
+      tim[i2 + 1] = 1.2 + pseudoRandom(i, 8) * 2.2;
 
-      // Color: warm amber to dark ember red
-      col[i3] = 1.0;
-      col[i3 + 1] = 0.4 + pseudoRandom(i, 9) * 0.3;
-      col[i3 + 2] = 0.05;
-
-      sz[i] = 2.0 + pseudoRandom(i, 10) * 3.5;
+      // Size
+      sz[i] = 2.0 + pseudoRandom(i, 9) * 3.5;
     }
 
     return {
       positions: pos,
-      colors: col,
+      velocities: vel,
+      timings: tim,
       sizes: sz,
-      simState: { vel, life, maxLife },
     };
   }, [particleCount]);
-
-  // Simulation state ref updated outside render
-  const stateRef = useRef<ParticleState>(simState);
-  useEffect(() => {
-    stateRef.current = simState;
-  }, [simState]);
 
   // Clean up WebGL resources on unmount
   useEffect(() => {
@@ -111,109 +165,57 @@ export const FlameParticles: React.FC<Props> = ({
     };
   }, []);
 
-  // Simulation tick in useFrame
-  useFrame((_, delta) => {
-    if (reducedMotion || !geomRef.current || !stateRef.current) return;
+  // Update uniforms in useFrame: zero CPU loops, zero buffer uploads!
+  useFrame((state) => {
+    const mat = matRef.current;
+    if (!mat) return;
 
-    // Cap delta to prevent large step after tab blur
-    const dt = Math.min(delta, 0.05);
-    const pState = stateRef.current;
-    const { buoyancy: b, tiltDeg: t, airflow: af, sootAmount: soot } = physicsRef.current;
-
-    // Active particle fraction scales with soot amount and buoyancy
-    // At 0g (microgravity), almost zero soot embers are formed
-    const activeFraction = Math.max(0.08, Math.min(1.0, 0.15 + soot * 0.5 + b * 0.4));
-    const activeCount = Math.floor(particleCount * activeFraction);
-
-    const posAttr = geomRef.current.attributes.position as THREE.BufferAttribute;
-    const colAttr = geomRef.current.attributes.color as THREE.BufferAttribute;
-    if (!posAttr || !colAttr) return;
-
-    const pos = posAttr.array as Float32Array;
-    const col = colAttr.array as Float32Array;
-
-    const windX = Math.sin((t * Math.PI) / 180) * (af * 0.08 + 0.1);
-    const buoyantUp = 0.15 + b * 1.8;
-
-    for (let i = 0; i < particleCount; i++) {
-      const i3 = i * 3;
-
-      if (i > activeCount) {
-        // Hide inactive particles by fading to black
-        col[i3] = 0;
-        col[i3 + 1] = 0;
-        col[i3 + 2] = 0;
-        continue;
-      }
-
-      pState.life[i] += dt;
-
-      // Re-spawn expired particle
-      if (pState.life[i] >= pState.maxLife[i]) {
-        pState.life[i] = 0;
-        pState.maxLife[i] = 1.0 + Math.random() * 2.0;
-
-        const r = Math.random() * (0.2 + (1 - b) * 0.2);
-        const theta = Math.random() * Math.PI * 2;
-        pos[i3] = Math.cos(theta) * r;
-        pos[i3 + 1] = -0.55 + Math.random() * 0.2;
-        pos[i3 + 2] = Math.sin(theta) * r;
-
-        pState.vel[i3] = (Math.random() - 0.5) * 0.2;
-        pState.vel[i3 + 1] = 0.1 + Math.random() * 0.3;
-        pState.vel[i3 + 2] = (Math.random() - 0.5) * 0.2;
-      }
-
-      // Advect velocity
-      pState.vel[i3] += windX * dt * 0.8;
-      pState.vel[i3 + 1] += buoyantUp * dt * 0.7;
-
-      // Apply drag
-      pState.vel[i3] *= 0.98;
-      pState.vel[i3 + 1] *= 0.98;
-      pState.vel[i3 + 2] *= 0.98;
-
-      pos[i3] += pState.vel[i3] * dt;
-      pos[i3 + 1] += pState.vel[i3 + 1] * dt;
-      pos[i3 + 2] += pState.vel[i3 + 2] * dt;
-
-      // Color fade based on age (bright amber -> deep red -> black)
-      const ageNorm = pState.life[i] / pState.maxLife[i];
-      const brightness = Math.max(0, 1.0 - ageNorm);
-      col[i3] = brightness * 1.0;
-      col[i3 + 1] = brightness * Math.max(0, 0.5 - ageNorm * 0.5);
-      col[i3 + 2] = brightness * 0.05;
-    }
-
-    posAttr.needsUpdate = true;
-    colAttr.needsUpdate = true;
+    mat.uniforms.uTime.value = state.clock.elapsedTime;
+    mat.uniforms.uBuoyancy.value = buoyancy;
+    mat.uniforms.uTiltDeg.value = tiltDeg;
+    mat.uniforms.uAirflow.value = airflow;
+    mat.uniforms.uSootAmount.value = sootAmount;
+    mat.uniforms.uReducedMotion.value = reducedMotion ? 1.0 : 0.0;
   });
 
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry ref={geomRef}>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
+    <group position={offset}>
+      <points ref={pointsRef}>
+        <bufferGeometry ref={geomRef}>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[positions, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aVelocity"
+            args={[velocities, 3]}
+          />
+          <bufferAttribute
+            attach="attributes-aTiming"
+            args={[timings, 2]}
+          />
+          <bufferAttribute
+            attach="attributes-aSize"
+            args={[sizes, 1]}
+          />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={matRef}
+          vertexShader={PARTICLE_VERTEX_SHADER}
+          fragmentShader={PARTICLE_FRAGMENT_SHADER}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+          uniforms={{
+            uTime: { value: 0 },
+            uBuoyancy: { value: buoyancy },
+            uAirflow: { value: airflow },
+            uTiltDeg: { value: tiltDeg },
+            uSootAmount: { value: sootAmount },
+            uReducedMotion: { value: reducedMotion ? 1.0 : 0.0 },
+          }}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          args={[colors, 3]}
-        />
-        <bufferAttribute
-          attach="attributes-size"
-          args={[sizes, 1]}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        ref={matRef}
-        size={3.2}
-        vertexColors
-        transparent
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-        sizeAttenuation
-      />
-    </points>
+      </points>
+    </group>
   );
 };

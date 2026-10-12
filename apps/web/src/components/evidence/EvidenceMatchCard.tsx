@@ -24,7 +24,7 @@ interface Props {
   rank: number;
 }
 
-export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
+export const EvidenceMatchCard: React.FC<Props> = React.memo(({ match, rank }) => {
   const [showFactors, setShowFactors] = useState(false);
   const { experiment, run, similarity_score, coverage_level, confidence_level, eligibility, factor_explanations } = match;
 
@@ -285,4 +285,5 @@ export const EvidenceMatchCard: React.FC<Props> = ({ match, rank }) => {
       )}
     </Card>
   );
-};
+});
+

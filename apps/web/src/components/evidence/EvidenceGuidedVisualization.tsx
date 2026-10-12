@@ -18,7 +18,10 @@ interface Props {
   label?: string;
   compact?: boolean;
   destination?: string;
+  compareScenario?: ScenarioInput;
+  compareDestination?: string;
 }
+
 
 interface SvgFlameFallbackProps {
   scenario: ScenarioInput;
@@ -204,12 +207,14 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
   );
 };
 
-export const EvidenceGuidedVisualization: React.FC<Props> = ({
+export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
   scenario,
   comparableCount,
   label,
   compact = false,
   destination,
+  compareScenario,
+  compareDestination,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const shouldReduceMotion = useReducedMotion();
@@ -248,7 +253,7 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
   );
 
   return (
-    <Card variant="glass" padding="none" className="border-sky-500/20 overflow-hidden">
+    <Card variant="glass" padding="none" className="border-sky-500/20 overflow-hidden bg-[rgba(10,20,40,0.88)] backdrop-blur-none">
       {/* Top Banner with Controls and Mandatory FR-EGV-002 Label */}
       <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -295,7 +300,13 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
           {hasWebGL ? (
             <WebGLErrorBoundary fallback={fallbackView}>
               <Suspense fallback={fallbackView}>
-                <LazyFlameScene scenario={scenario} compact={compact} destination={destination} />
+                <LazyFlameScene
+                  scenario={scenario}
+                  compact={compact}
+                  destination={destination}
+                  compareScenario={compareScenario}
+                  compareDestination={compareDestination}
+                />
               </Suspense>
             </WebGLErrorBoundary>
           ) : (
@@ -312,4 +323,4 @@ export const EvidenceGuidedVisualization: React.FC<Props> = ({
       )}
     </Card>
   );
-};
+});
