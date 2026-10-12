@@ -13,7 +13,7 @@
  *   'high'   → full particles, bloom enabled, DPR capped at 2
  */
 
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useReducedMotion } from './useReducedMotion';
 
 export type QualityTier = 'low' | 'medium' | 'high';
@@ -83,11 +83,5 @@ function classifyTier(reducedMotion: boolean): QualityInfo {
  */
 export function useQualityTier(): QualityInfo {
   const reducedMotion = useReducedMotion();
-  const [info, setInfo] = useState<QualityInfo>(() => classifyTier(reducedMotion));
-
-  useEffect(() => {
-    setInfo(classifyTier(reducedMotion));
-  }, [reducedMotion]);
-
-  return info;
+  return useMemo(() => classifyTier(reducedMotion), [reducedMotion]);
 }

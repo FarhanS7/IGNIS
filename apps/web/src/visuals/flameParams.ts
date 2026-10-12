@@ -105,7 +105,7 @@ function deriveColors(o2: number) {
 // Main derivation
 // ---------------------------------------------------------------------------
 
-export function deriveFlameParams(scenario: ScenarioInput): FlameParams {
+export function deriveFlameParams(scenario: ScenarioInput | Partial<ScenarioInput>): FlameParams {
   const o2 = scenario.oxygen_pct ?? 21.0;
   const airflow = scenario.airflow_cm_s ?? 5.0;
   const pressure = scenario.pressure_kpa ?? 101.3;

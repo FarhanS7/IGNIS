@@ -6,11 +6,12 @@
  * the result is memoised for the lifetime of the component.
  */
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 
 let cachedResult: boolean | null = null;
 
 function probeWebGL(): boolean {
+  if (typeof window === 'undefined') return false;
   if (cachedResult !== null) return cachedResult;
 
   try {
@@ -31,19 +32,15 @@ function probeWebGL(): boolean {
     cachedResult = false;
   }
 
-  return cachedResult!;
+  return cachedResult;
 }
+
+const noopSubscribe = () => () => {};
 
 /**
  * Hook: returns `true` when the current browser supports WebGL.
  * Safe for SSR (returns `false` during server render).
  */
 export function useWebGLSupport(): boolean {
-  const [supported, setSupported] = useState<boolean>(false);
-
-  useEffect(() => {
-    setSupported(probeWebGL());
-  }, []);
-
-  return supported;
+  return useSyncExternalStore(noopSubscribe, probeWebGL, () => false);
 }
