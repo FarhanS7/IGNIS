@@ -1,6 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mapScrollProgressToGravity, validateChapterConfig, type ValidationFixtures } from './storyUtils.ts';
+import {
+  mapScrollProgressToGravity,
+  validateChapterConfig,
+  velocityToTilt,
+  resolveDock,
+  gravityToEmberVariant,
+  type ValidationFixtures,
+} from './storyUtils.ts';
 import { chapter1 } from './chapters/chapter1.ts';
 import { safeStorage, getChapterProgress, saveChapterProgress, clearChapterProgress } from './storage.ts';
 import experimentsFixture from '../../../../data/fixtures/experiments.json' with { type: 'json' };
@@ -133,4 +140,66 @@ test('safeStorage - corrupted data handling does not crash', () => {
   safeStorage.setItem('ignis_story_v2_corrupted-slug', '{"invalid_json: unclosed');
   const retrieved = getChapterProgress('corrupted-slug');
   assert.equal(retrieved, null, 'Should return null without throwing');
+});
+
+// -----------------------------------------------------------------------------
+// 4. Motion and Docking Helpers Tests (DELIVERABLE 6)
+// -----------------------------------------------------------------------------
+test('velocityToTilt - clamped to [-8, +8], 0 at rest, monotonic', () => {
+  // 0 at rest
+  assert.equal(velocityToTilt(0), 0, 'Velocity 0 must result in 0 tilt');
+  assert.equal(velocityToTilt(NaN), 0, 'NaN velocity must default safely to 0');
+
+  // Clamping
+  assert.equal(velocityToTilt(10000), 8, 'Large positive velocity must clamp to +8 degrees');
+  assert.equal(velocityToTilt(-10000), -8, 'Large negative velocity must clamp to -8 degrees');
+
+  // Intermediate values
+  assert.equal(velocityToTilt(500), 4, 'Moderate velocity produces proportional tilt');
+  assert.equal(velocityToTilt(-500), -4, 'Negative velocity produces negative tilt');
+
+  // Monotonicity: higher velocity -> higher or equal tilt
+  const sampleVelocities = [-2000, -1000, -500, -100, 0, 100, 500, 1000, 2000];
+  for (let i = 0; i < sampleVelocities.length - 1; i++) {
+    const t1 = velocityToTilt(sampleVelocities[i]);
+    const t2 = velocityToTilt(sampleVelocities[i + 1]);
+    assert.ok(t1 <= t2, `Monotonicity violated: velocityToTilt(${sampleVelocities[i]}) = ${t1} > velocityToTilt(${sampleVelocities[i + 1]}) = ${t2}`);
+  }
+});
+
+test('resolveDock - valid dock position and safe defaults', () => {
+  // Explicit docks on desktop
+  assert.equal(resolveDock({ avatarDock: 'left' }, { width: 1200 }), 'left');
+  assert.equal(resolveDock({ avatarDock: 'right' }, { width: 1200 }), 'right');
+  assert.equal(resolveDock({ avatarDock: 'center' }, { width: 1200 }), 'center');
+  assert.equal(resolveDock({ avatarDock: 'hidden' }, { width: 1200 }), 'hidden');
+
+  // Safe defaults
+  assert.equal(resolveDock(undefined, { width: 1200 }), 'right', 'Desktop default must be right');
+  assert.equal(resolveDock({}, { width: 1200 }), 'right', 'Desktop empty beat must default to right');
+  assert.equal(resolveDock(undefined, { width: 375 }), 'center', 'Mobile default must be center');
+  assert.equal(resolveDock({}, { width: 375 }), 'center', 'Mobile empty beat must default to center');
+
+  // Boolean mobile argument support
+  assert.equal(resolveDock(undefined, true), 'center', 'Boolean isMobile true must default to center');
+  assert.equal(resolveDock(undefined, false), 'right', 'Boolean isMobile false must default to right');
+
+  // Invalid value safe fallback
+  assert.equal(resolveDock({ avatarDock: 'invalid' as unknown as 'left' }, { width: 1200 }), 'right');
+  assert.equal(resolveDock({ avatarDock: 'invalid' as unknown as 'left' }, { width: 375 }), 'center');
+});
+
+test('gravityToEmberVariant - bounds [0.0, 1.0] and endpoints', () => {
+  // Endpoints: 0.0 at 0g, 1.0 at 1g
+  assert.equal(gravityToEmberVariant(0.0), 0.0, '0g must map to 0.0');
+  assert.equal(gravityToEmberVariant(1.0), 1.0, '1g must map to 1.0');
+
+  // Bounds clamping
+  assert.equal(gravityToEmberVariant(-0.5), 0.0, 'Negative gravity must clamp to 0.0');
+  assert.equal(gravityToEmberVariant(1.5), 1.0, 'Gravity > 1 must clamp to 1.0');
+  assert.equal(gravityToEmberVariant(NaN), 0.0, 'NaN must safely default to 0.0');
+
+  // Planetary intermediate points
+  assert.equal(gravityToEmberVariant(0.38), 0.38, 'Mars 0.38g');
+  assert.equal(gravityToEmberVariant(0.16), 0.16, 'Moon 0.16g');
 });
