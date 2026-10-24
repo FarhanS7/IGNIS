@@ -8,6 +8,7 @@ import {
   RotateCcw,
   CheckCircle,
 } from 'lucide-react';
+import { useReducedMotion } from 'framer-motion';
 import type { Chapter, StoryMode } from '../types';
 import {
   getChapterProgress,
@@ -17,12 +18,15 @@ import {
 } from '../storage';
 import { BeatRenderer } from './BeatRenderer';
 import { GlossaryModal } from './GlossaryModal';
+import { StoryParallaxStars } from './StoryParallaxStars';
+import { EmberCompanion } from '../guide/EmberCompanion';
 
 export interface StoryShellProps {
   chapter: Chapter;
 }
 
 export const StoryShell: React.FC<StoryShellProps> = ({ chapter }) => {
+  const shouldReduceMotion = useReducedMotion();
   const savedInitial = useMemo(() => getChapterProgress(chapter.slug), [chapter.slug]);
 
   const [mode, setMode] = useState<StoryMode>(() => savedInitial?.mode ?? 'full');
@@ -141,12 +145,51 @@ export const StoryShell: React.FC<StoryShellProps> = ({ chapter }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeBeats, glossaryOpen, handleNextBeat, persist]);
 
+  // Scroll detection to update active beat smoothly
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const elements = activeBeats
+      .map((b) => document.getElementById(`beat-${b.id}`))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          const id = visible[0].target.id.replace('beat-', '');
+          const index = activeBeats.findIndex((b) => b.id === id);
+          if (index !== -1 && index !== currentBeatIndex) {
+            setCurrentBeatIndex(index);
+            persist(index);
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-20% 0px -40% 0px',
+        threshold: [0.1, 0.4, 0.7],
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [activeBeats, currentBeatIndex, persist]);
+
   const progressPercentage = Math.round(
     ((currentBeatIndex + 1) / Math.max(1, activeBeats.length)) * 100
   );
 
   return (
     <div className="min-h-screen bg-[#040e1f] text-slate-100 flex flex-col relative selection:bg-cyan-500 selection:text-black">
+      {/* 2-Layer Parallax Star Layer */}
+      <StoryParallaxStars />
+
       {/* Top Sticky Navigation & Progress Bar */}
       <header className="sticky top-0 z-40 w-full bg-[#061226]/95 border-b border-white/10 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
@@ -222,18 +265,28 @@ export const StoryShell: React.FC<StoryShellProps> = ({ chapter }) => {
           </div>
         </div>
 
-        {/* Linear Progress Bar */}
+        {/* Progress rail with small flame marker (transform only) */}
         <div
-          className="w-full h-1 bg-slate-900 overflow-hidden"
+          className="relative w-full h-1.5 bg-slate-900 overflow-visible"
           role="progressbar"
           aria-valuenow={progressPercentage}
           aria-valuemin={0}
           aria-valuemax={100}
         >
           <div
-            className="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-rose-400 transition-all duration-300"
-            style={{ width: `${progressPercentage}%` }}
+            className="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-rose-400 origin-left transition-transform duration-300 ease-out"
+            style={{ transform: `scaleX(${progressPercentage / 100})` }}
           />
+          {/* Flame marker advancing with progress (transform only) */}
+          <div
+            className="absolute -top-1.5 transition-transform duration-300 ease-out pointer-events-none select-none text-xs"
+            style={{
+              transform: `translateX(calc(${Math.min(98, progressPercentage)}% - 6px))`,
+            }}
+            aria-hidden="true"
+          >
+            🔥
+          </div>
         </div>
       </header>
 
@@ -267,7 +320,7 @@ export const StoryShell: React.FC<StoryShellProps> = ({ chapter }) => {
       )}
 
       {/* Main Chapter Content Container */}
-      <main className="flex-1 w-full">
+      <main className={`flex-1 w-full relative z-10 ${shouldReduceMotion ? '' : 'snap-y snap-proximity'}`}>
         {activeBeats.map((beat, idx) => (
           <BeatRenderer
             key={beat.id}
@@ -313,6 +366,12 @@ export const StoryShell: React.FC<StoryShellProps> = ({ chapter }) => {
           </div>
         </div>
       </main>
+
+      {/* Persistent Companion Ember */}
+      <EmberCompanion
+        activeBeat={activeBeats[currentBeatIndex]}
+        onSkip={handleNextBeat}
+      />
 
       {/* Glossary Modal */}
       <GlossaryModal

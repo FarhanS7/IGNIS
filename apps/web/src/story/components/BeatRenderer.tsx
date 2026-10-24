@@ -23,8 +23,8 @@ import {
   Tooltip,
   CartesianGrid,
 } from 'recharts';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { Beat, EvidenceRef } from '../types';
-import { GuideOrb } from '../guide/GuideOrb';
 import { GravityMorphCanvas } from './GravityMorphCanvas';
 
 export interface BeatRendererProps {
@@ -55,6 +55,7 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
   const [layer2Open, setLayer2Open] = useState<boolean>(false);
   const [layer3Open, setLayer3Open] = useState<boolean>(false);
   const [copiedTakeaway, setCopiedTakeaway] = useState<boolean>(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const handleCopyTakeaway = (text: string) => {
     try {
@@ -131,9 +132,15 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
   };
 
   return (
-    <article
+    <motion.article
       id={`beat-${beat.id}`}
-      className="min-h-screen py-16 px-4 sm:px-6 max-w-4xl mx-auto flex flex-col justify-center border-b border-white/5 last:border-b-0"
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
+      whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`min-h-screen py-16 px-4 sm:px-6 max-w-4xl mx-auto flex flex-col justify-center border-b border-white/5 last:border-b-0 pb-44 sm:pb-36 ${
+        shouldReduceMotion ? '' : 'snap-start'
+      }`}
       aria-label={`Beat ${beatIndex + 1}: ${beat.title}`}
     >
       {/* Beat Header Bar */}
@@ -152,8 +159,14 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
         </button>
       </div>
 
-      {/* Main Beat Title & Subtitle */}
-      <div className="mb-6">
+      {/* Main Beat Title & Subtitle (Staggered entrance by ~80ms) */}
+      <motion.div
+        className="mb-6"
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+        whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: shouldReduceMotion ? 0 : 0.08, ease: 'easeOut' }}
+      >
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-['Space_Grotesk'] text-white tracking-tight leading-tight">
           {beat.title}
         </h2>
@@ -162,16 +175,7 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
             {beat.subtitle}
           </p>
         )}
-      </div>
-
-      {/* Guide Avatar Ember */}
-      <div className="mb-8">
-        <GuideOrb
-          expression={beat.avatar.expression}
-          speech={beat.avatar.speech}
-          intensity={beat.avatar.intensity}
-        />
-      </div>
+      </motion.div>
 
       {/* Layer 1: Story Content (Short, vivid, student-friendly) */}
       <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 shadow-lg space-y-4 text-base sm:text-lg text-slate-200 leading-relaxed font-['Hanken_Grotesk']">
@@ -525,6 +529,6 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
           </button>
         </div>
       )}
-    </article>
+    </motion.article>
   );
 };
