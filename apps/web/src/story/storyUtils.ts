@@ -141,3 +141,41 @@ export function validateChapterConfig(
     errors,
   };
 }
+
+/**
+ * Converts scroll velocity to Ember's dynamic tilt angle in degrees.
+ * Clamped strictly to [-8, +8] degrees. 0 at rest. Monotonically non-decreasing.
+ */
+export function velocityToTilt(velocity: number): number {
+  if (Number.isNaN(velocity) || velocity === 0) return 0;
+  const tilt = velocity * 0.008;
+  return Math.max(-8, Math.min(8, Number(tilt.toFixed(2))));
+}
+
+/**
+ * Resolves avatar docking position for a beat.
+ * Default is 'right' on desktop, 'center' on mobile if unspecified.
+ */
+export function resolveDock(
+  beat?: { avatarDock?: 'left' | 'right' | 'center' | 'hidden' },
+  isMobile?: boolean
+): 'left' | 'right' | 'center' | 'hidden' {
+  if (!beat || !beat.avatarDock) {
+    return isMobile ? 'center' : 'right';
+  }
+  const dock = beat.avatarDock;
+  if (dock === 'left' || dock === 'right' || dock === 'center' || dock === 'hidden') {
+    return dock;
+  }
+  return isMobile ? 'center' : 'right';
+}
+
+/**
+ * Calculates the blend factor (0..1) between Earth gravity (1g) and microgravity (0g).
+ * Clamped strictly to [0.0, 1.0].
+ * Endpoints: 0.0 at 0g, 1.0 at 1g.
+ */
+export function gravityToEmberVariant(gravityG: number): number {
+  if (Number.isNaN(gravityG)) return 0;
+  return Math.max(0.0, Math.min(1.0, Number(gravityG.toFixed(4))));
+}

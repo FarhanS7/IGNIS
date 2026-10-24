@@ -23,6 +23,8 @@ export type AvatarExpression =
   | 'proud'
   | 'serious';
 
+export type AvatarDock = 'left' | 'right' | 'center' | 'hidden';
+
 export interface AvatarCue {
   expression: AvatarExpression;
   speech: string;
@@ -141,6 +143,8 @@ export interface Beat {
   modes: StoryMode[];
   /** Avatar cue displayed for this beat */
   avatar: AvatarCue;
+  /** Avatar docking position for this beat: left | right | center | hidden (default: right) */
+  avatarDock?: AvatarDock;
   /** Layer 1: Story layer (default, short, vivid, accessible to 12-year-olds) */
   layer1: BeatContentLayer1;
   /** Layer 2: Go deeper (real physics, units, evidence references) */
