@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
+import { motion, useReducedMotion, AnimatePresence, type MotionValue } from 'framer-motion';
 import type { AvatarExpression } from '../types';
 import { useQualityTier } from '../../visuals/useQualityTier';
 
@@ -7,7 +7,7 @@ export interface GuideOrbProps {
   expression: AvatarExpression;
   speech?: string;
   intensity?: number; // 0.0 to 1.0
-  tiltDeg?: number; // External tilt from scroll velocity (-8..+8)
+  tiltDeg?: number | MotionValue<number>; // External tilt from scroll velocity (-8..+8)
   size?: number; // Pixel diameter (e.g. 160 desktop, 72 mobile)
   showBubble?: boolean;
   className?: string;
@@ -242,22 +242,25 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
           className="relative w-full h-full flex items-center justify-center cursor-pointer"
           onClick={handleSkipTyping}
           style={{ rotate: tiltDeg }}
-          animate={
-            isIdleActive
-              ? {
-                  y: [0, -6, 0],
-                  scale: [1.0, 1.03, 1.0],
-                  rotate: [tiltDeg - 2, tiltDeg + 2, tiltDeg - 2],
-                }
-              : { y: 0, scale: 1.0, rotate: tiltDeg }
-          }
-          transition={{
-            repeat: isIdleActive ? Infinity : 0,
-            duration: 5.2,
-            ease: 'easeInOut',
-          }}
         >
-          <AnimatePresence mode="wait">
+          <motion.div
+            className="w-full h-full flex items-center justify-center"
+            animate={
+              isIdleActive
+                ? {
+                    y: [0, -6, 0],
+                    scale: [1.0, 1.03, 1.0],
+                    rotate: [-2, 2, -2],
+                  }
+                : { y: 0, scale: 1.0, rotate: 0 }
+            }
+            transition={{
+              repeat: isIdleActive ? Infinity : 0,
+              duration: 5.2,
+              ease: 'easeInOut',
+            }}
+          >
+            <AnimatePresence mode="wait">
             <motion.div
               key={`${expression}-${gravityG !== undefined && gravityG <= 0.05 && !zeroGFailed ? '0g' : 'norm'}`}
               initial={shouldReduceMotion ? false : { opacity: 0.85, scale: 0.96 }}
@@ -292,6 +295,7 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
               )}
             </motion.div>
           </AnimatePresence>
+          </motion.div>
         </motion.div>
 
         {/* Layer 3: Tiny drifting spark particles (Disabled on low tier or reduced motion) */}

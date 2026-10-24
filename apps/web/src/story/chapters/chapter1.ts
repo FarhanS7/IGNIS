@@ -103,6 +103,7 @@ export const chapter1: Chapter = {
           "Hi there! I'm Ember, your space fire guide. Strike a match in your kitchen and look closely: why does the flame always stretch upward into a sharp teardrop, even if you tilt the stick?",
         intensity: 0.8,
       },
+      avatarDock: 'right',
       layer1: {
         headline: 'Every flame on Earth points to the sky',
         paragraphs: [
@@ -166,6 +167,7 @@ export const chapter1: Chapter = {
           "Before I show you the NASA flight camera footage, put on your mission scientist hat! If an astronaut lights a droplet of fuel in pure weightlessness, what shape will it make?",
         intensity: 0.7,
       },
+      avatarDock: 'left',
       layer1: {
         headline: 'Cast your vote before we reveal the flight data',
         paragraphs: [
@@ -250,6 +252,7 @@ export const chapter1: Chapter = {
           "Look at that transition! As gravity fades away, the violent upward flicker relaxes into a tranquil, spherical blue dome. Drag the slider or tap Mars, Moon, and Orbit to see the flame morph!",
         intensity: 0.95,
       },
+      avatarDock: 'right',
       layer1: {
         headline: 'From violent teardrop to tranquil sphere',
         paragraphs: [
@@ -384,6 +387,7 @@ export const chapter1: Chapter = {
           "Think of natural convection like a fast air elevator: it rushes fresh oxygen in at the bottom and shoots exhaust out at the top. When gravity vanishes, the elevator breaks down! Now, oxygen can only walk on foot by molecular diffusion.",
         intensity: 0.85,
       },
+      avatarDock: 'left',
       layer1: {
         headline: 'No elevator: air spreads like perfume in a quiet room',
         paragraphs: [
@@ -453,6 +457,7 @@ export const chapter1: Chapter = {
           "Let's see if you've mastered the core physics! What would happen if an astronaut waved a clipboard gently toward a spherical flame?",
         intensity: 0.75,
       },
+      avatarDock: 'right',
       layer1: {
         headline: 'Can you predict the effect of a gentle breeze?',
         paragraphs: [
@@ -524,6 +529,7 @@ export const chapter1: Chapter = {
           "This isn't just neat textbook physics. In an orbital habitat, spherical flames create severe life-or-death challenges for mission safety. Here is why NASA studies them so intensely.",
         intensity: 0.85,
       },
+      avatarDock: 'left',
       layer1: {
         headline: 'Why space fires are dangerously stealthy',
         paragraphs: [
@@ -603,6 +609,7 @@ export const chapter1: Chapter = {
           "Congratulations, flight researcher! You now understand the physics of orbital fire better than most aerospace engineers did when the space program began. Here is your golden takeaway rule.",
         intensity: 0.9,
       },
+      avatarDock: 'center',
       layer1: {
         headline:
           'Without gravity pulling cold air down, hot air cannot rise. Space fire spreads equally in all directions — a tranquil sphere governed by pure molecular diffusion.',

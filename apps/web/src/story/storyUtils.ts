@@ -155,11 +155,19 @@ export function velocityToTilt(velocity: number): number {
 /**
  * Resolves avatar docking position for a beat.
  * Default is 'right' on desktop, 'center' on mobile if unspecified.
+ * Accepts viewport as either { width: number } or boolean (isMobile).
  */
 export function resolveDock(
   beat?: { avatarDock?: 'left' | 'right' | 'center' | 'hidden' },
-  isMobile?: boolean
+  viewport?: { width: number } | boolean
 ): 'left' | 'right' | 'center' | 'hidden' {
+  const isMobile =
+    typeof viewport === 'boolean'
+      ? viewport
+      : typeof viewport === 'object' && viewport !== null && typeof viewport.width === 'number'
+      ? viewport.width < 640
+      : false;
+
   if (!beat || !beat.avatarDock) {
     return isMobile ? 'center' : 'right';
   }
