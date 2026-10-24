@@ -99,7 +99,49 @@ export const StoryIndexPage: React.FC = () => {
         </p>
       </div>
 
-      {/* Story Grid */}
+      {/* Featured Entry Point: Story Mode v2 */}
+      <div className="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0b1f3d] via-[#09152b] to-[#170e28] border-2 border-cyan-400/40 shadow-2xl">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+          <div className="space-y-3 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-400/20 text-cyan-300 font-mono text-xs font-semibold uppercase tracking-wider border border-cyan-400/30">
+                <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+                Featured Experience • Story Mode v2
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 font-mono text-xs font-medium border border-amber-400/20">
+                Chapter 1 Available
+              </span>
+            </div>
+
+            <h2 className="text-2xl sm:text-3xl font-bold font-['Space_Grotesk'] text-white">
+              Why is a flame round in space?
+            </h2>
+
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+              Experience our student-friendly, scroll-driven science journey. Featuring <strong>Ember</strong> (your interactive flame guide), real-time 3D gravity morphing from 1g to 0g, and verified telemetry citations from NASA FLEX and Saffire missions.
+            </p>
+          </div>
+
+          <div className="shrink-0 w-full md:w-auto">
+            <Link
+              to="/stories/v2"
+              className="inline-flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold font-['Space_Grotesk'] text-sm sm:text-base transition-all shadow-lg shadow-cyan-500/25 hover:scale-102"
+            >
+              <span>Explore Story Mode v2</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Classic Story Grid */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-bold text-white font-['Space_Grotesk'] flex items-center gap-2">
+          <BookOpen className="w-5 h-5 text-slate-400" />
+          <span>Mission Reference Stories</span>
+        </h2>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {stories.map((story) => {
           const Icon = story.icon;

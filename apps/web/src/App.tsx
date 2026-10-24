@@ -12,6 +12,8 @@ import { AboutPage } from './pages/AboutPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PerfOverlay } from './visuals/PerfOverlay';
 
+import { StoryModeV2Page } from './pages/StoryModeV2Page';
+
 const RedirectToSimulator: React.FC = () => {
   const location = useLocation();
   return <Navigate to={{ pathname: '/simulator', search: location.search }} replace />;
@@ -24,6 +26,7 @@ const ROUTE_TITLES: Record<string, string> = {
   '/evidence': 'Simulator · IGNIS',
   '/experiments': 'Flight Data & Experiments · IGNIS',
   '/explore': 'Mission Stories · IGNIS',
+  '/stories/v2': 'Story Mode v2 · Interactive Science Stories · IGNIS',
   '/ask': 'Ask IGNIS · Microgravity AI',
   '/about': 'About & Methodology · IGNIS',
 };
@@ -37,6 +40,8 @@ const RouteTitleSync: React.FC = () => {
       document.title = ROUTE_TITLES[path];
     } else if (path.startsWith('/experiment/')) {
       document.title = 'Experiment Details · IGNIS';
+    } else if (path.startsWith('/stories/v2/')) {
+      document.title = 'Story Mode v2 · Interactive Chapter · IGNIS';
     } else if (path.startsWith('/explore/')) {
       document.title = 'Mission Story · IGNIS';
     } else {
@@ -66,6 +71,8 @@ export const App: React.FC = () => {
             {/* Stories */}
             <Route path="/explore" element={<StoryIndexPage />} />
             <Route path="/explore/:slug" element={<StoryPlayerPage />} />
+            <Route path="/stories/v2" element={<StoryModeV2Page />} />
+            <Route path="/stories/v2/:chapterSlug" element={<StoryModeV2Page />} />
             {/* Ask IGNIS & About */}
             <Route path="/ask" element={<AskIgnisPage />} />
             <Route path="/about" element={<AboutPage />} />

@@ -24,13 +24,9 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
   // Typewriter effect (disabled when prefers-reduced-motion is active)
   useEffect(() => {
     if (shouldReduceMotion) {
-      setDisplayedText(speech);
-      setIsTyping(false);
       return;
     }
 
-    setDisplayedText('');
-    setIsTyping(true);
     let index = 0;
     const speed = 18; // ms per character
 
@@ -45,6 +41,9 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
 
     return () => clearInterval(interval);
   }, [speech, shouldReduceMotion]);
+
+  const effectiveText = shouldReduceMotion ? speech : displayedText;
+  const effectiveIsTyping = shouldReduceMotion ? false : isTyping;
 
   const handleSkipTyping = () => {
     setDisplayedText(speech);
@@ -228,7 +227,7 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
             </span>
           </div>
 
-          {isTyping && (
+          {effectiveIsTyping && (
             <button
               type="button"
               onClick={handleSkipTyping}
@@ -245,8 +244,8 @@ export const GuideOrb: React.FC<GuideOrbProps> = ({
           aria-live="polite"
           className="text-slate-100 text-sm sm:text-base leading-relaxed font-sans"
         >
-          {displayedText}
-          {isTyping && (
+          {effectiveText}
+          {effectiveIsTyping && (
             <span className="inline-block w-1.5 h-4 ml-1 bg-amber-400 animate-pulse align-middle" />
           )}
         </div>
