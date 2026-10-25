@@ -7,7 +7,6 @@ import {
   FileText,
   HelpCircle,
   CheckCircle2,
-  XCircle,
   ExternalLink,
   Sparkles,
   Info,
@@ -24,7 +23,8 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { motion, useReducedMotion } from 'framer-motion';
-import type { Beat, EvidenceRef } from '../types';
+import type { Beat, EvidenceRef, TextSizeSetting } from '../types';
+import { getLayerPreferences, saveLayerPreferences } from '../storage';
 import { GravityMorphCanvas } from './GravityMorphCanvas';
 
 export interface BeatRendererProps {
@@ -38,6 +38,8 @@ export interface BeatRendererProps {
   onSelectCheckAnswer?: (choiceId: string) => void;
   onNextBeat?: () => void;
   scrollProgressG?: number;
+  textSize?: TextSizeSetting;
+  showEmberCaptionsInFlow?: boolean;
 }
 
 export const BeatRenderer: React.FC<BeatRendererProps> = ({
@@ -51,11 +53,37 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
   onSelectCheckAnswer,
   onNextBeat,
   scrollProgressG,
+  textSize = 'normal',
+  showEmberCaptionsInFlow = false,
 }) => {
-  const [layer2Open, setLayer2Open] = useState<boolean>(false);
-  const [layer3Open, setLayer3Open] = useState<boolean>(false);
+  const initialLayerPrefs = getLayerPreferences();
+  const [layer2Open, setLayer2Open] = useState<boolean>(initialLayerPrefs.layer2Open);
+  const [layer3Open, setLayer3Open] = useState<boolean>(initialLayerPrefs.layer3Open);
   const [copiedTakeaway, setCopiedTakeaway] = useState<boolean>(false);
   const shouldReduceMotion = useReducedMotion();
+
+  const handleToggleLayer2 = () => {
+    setLayer2Open((prev) => {
+      const next = !prev;
+      saveLayerPreferences({ layer2Open: next });
+      return next;
+    });
+  };
+
+  const handleToggleLayer3 = () => {
+    setLayer3Open((prev) => {
+      const next = !prev;
+      saveLayerPreferences({ layer3Open: next });
+      return next;
+    });
+  };
+
+  const bodyTextClass =
+    textSize === 'xlarge'
+      ? 'text-lg sm:text-xl'
+      : textSize === 'large'
+      ? 'text-base sm:text-lg'
+      : 'text-sm sm:text-base';
 
   const handleCopyTakeaway = (text: string) => {
     try {
@@ -177,8 +205,20 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
         )}
       </motion.div>
 
+      {/* In-flow Ember speech caption when companion avatar is disabled (D8) */}
+      {showEmberCaptionsInFlow && beat.avatar.speech && (
+        <div className="mb-4 p-4 rounded-xl bg-[#071329]/90 border border-amber-500/30 flex items-start gap-3">
+          <span className="text-amber-400 font-mono font-bold text-xs uppercase px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 shrink-0">
+            Ember:
+          </span>
+          <p className="text-slate-200 text-sm leading-relaxed italic font-sans">
+            {beat.avatar.speech}
+          </p>
+        </div>
+      )}
+
       {/* Layer 1: Story Content (Short, vivid, student-friendly) */}
-      <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 shadow-lg space-y-4 text-base sm:text-lg text-slate-200 leading-relaxed font-['Hanken_Grotesk']">
+      <div className={`p-6 rounded-2xl bg-white/[0.03] border border-white/10 shadow-lg space-y-4 ${bodyTextClass} text-slate-200 leading-relaxed font-['Hanken_Grotesk']`}>
         <h3 className="text-xl sm:text-2xl font-bold font-['Space_Grotesk'] text-cyan-300">
           {beat.layer1.headline}
         </h3>
@@ -234,10 +274,32 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
             })}
           </div>
 
+          {/* D3: "Not sure, show me" option */}
+          <div className="flex items-center justify-start pt-1">
+            <button
+              type="button"
+              onClick={() => onSelectPrediction && onSelectPrediction('unsure')}
+              className="text-xs text-cyan-400 hover:text-cyan-300 underline underline-offset-2 font-mono flex items-center gap-1.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400"
+              aria-label="Not sure? Reveal hypothesis directly"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Not sure, show me</span>
+            </button>
+          </div>
+
           {/* Feedback Card after Prediction */}
           {predictedChoiceId && (
             <div className="p-4 rounded-xl bg-black/40 border border-cyan-400/30 animate-fade-in space-y-2">
-              {(() => {
+              {predictedChoiceId === 'unsure' ? (
+                <>
+                  <div className="flex items-center gap-2 text-sm font-bold text-cyan-300">
+                    <span>Exploring the Unknown</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Science begins with open curiosity! NASA researchers hypothesized that in microgravity, eliminating buoyant upward draft would allow oxygen and fuel diffusion to govern the reaction uniformly in all directions—yielding a symmetrical spherical flame.
+                  </p>
+                </>
+              ) : (() => {
                 const selected = beat.predictInteraction.choices.find(
                   (c) => c.id === predictedChoiceId
                 );
@@ -291,7 +353,7 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
                       isSelected
                         ? choice.isCorrect
                           ? 'bg-emerald-950/40 border-emerald-500 text-white'
-                          : 'bg-rose-950/40 border-rose-500 text-white'
+                          : 'bg-amber-950/40 border-amber-500 text-white'
                         : 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10'
                     }`}
                     aria-pressed={isSelected}
@@ -301,7 +363,7 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
                         choice.isCorrect ? (
                           <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                         ) : (
-                          <XCircle className="w-5 h-5 text-rose-400" />
+                          <HelpCircle className="w-5 h-5 text-amber-400" />
                         )
                       ) : (
                         <div className="w-5 h-5 rounded-full border border-slate-500" />
@@ -314,8 +376,8 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
 
                   {isSelected && (
                     <div className="p-3.5 rounded-lg bg-black/40 border border-white/10 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                      <strong className={choice.isCorrect ? 'text-emerald-400' : 'text-rose-400'}>
-                        {choice.isCorrect ? 'Correct! ' : 'Not quite. '}
+                      <strong className={choice.isCorrect ? 'text-emerald-400' : 'text-amber-400'}>
+                        {choice.isCorrect ? 'Spot on! ' : 'Great hypothesis! Let’s explore why: '}
                       </strong>
                       {choice.explanation}
                     </div>
@@ -323,6 +385,24 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
                 </div>
               );
             })}
+          </div>
+
+          {/* D3: Check "Not sure, show me" option */}
+          <div className="flex items-center justify-start pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                const correctChoice = beat.checkInteraction?.choices.find((c) => c.isCorrect);
+                if (correctChoice && onSelectCheckAnswer) {
+                  onSelectCheckAnswer(correctChoice.id);
+                }
+              }}
+              className="text-xs text-cyan-400 hover:text-cyan-300 underline underline-offset-2 font-mono flex items-center gap-1.5 cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400"
+              aria-label="Not sure? Show explanation directly"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Not sure, show me</span>
+            </button>
           </div>
 
           {checkAnswerId && (
@@ -373,10 +453,10 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
 
       {/* Layer 2: Go Deeper (Expandable Physics & Evidence) */}
       {beat.layer2 && (
-        <div className="mt-4 rounded-xl border border-cyan-500/20 bg-slate-900/60 overflow-hidden">
+        <div className="mt-4 rounded-xl border border-cyan-500/20 bg-slate-900/60 overflow-hidden w-full max-w-full">
           <button
             type="button"
-            onClick={() => setLayer2Open(!layer2Open)}
+            onClick={handleToggleLayer2}
             className="w-full px-5 py-3.5 flex items-center justify-between text-left text-sm font-semibold font-['Space_Grotesk'] text-cyan-300 hover:bg-white/5 transition-colors cursor-pointer"
             aria-expanded={layer2Open}
           >
@@ -431,10 +511,10 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
 
       {/* Layer 3: Show Data (Expandable Recharts Visualization) */}
       {beat.layer3 && (
-        <div className="mt-3 rounded-xl border border-indigo-500/20 bg-slate-900/60 overflow-hidden">
+        <div className="mt-3 rounded-xl border border-indigo-500/20 bg-slate-900/60 overflow-hidden w-full max-w-full">
           <button
             type="button"
-            onClick={() => setLayer3Open(!layer3Open)}
+            onClick={handleToggleLayer3}
             className="w-full px-5 py-3.5 flex items-center justify-between text-left text-sm font-semibold font-['Space_Grotesk'] text-indigo-300 hover:bg-white/5 transition-colors cursor-pointer"
             aria-expanded={layer3Open}
           >
@@ -460,44 +540,50 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
                 </p>
               </div>
 
-              {/* Recharts Line/Area Visualization */}
-              <div className="h-56 w-full pt-2">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={beat.layer3.data}
-                    margin={{ top: 10, right: 20, left: -10, bottom: 0 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.4} />
-                    <XAxis
-                      dataKey={beat.layer3.xAxisKey}
-                      stroke="#94a3b8"
-                      fontSize={11}
-                      tickLine={false}
-                    />
-                    <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: '#09152a',
-                        borderColor: '#38bdf8',
-                        borderRadius: '0.75rem',
-                        fontSize: '12px',
-                        color: '#f8fafc',
-                      }}
-                    />
-                    {beat.layer3.dataKeys.map((dk) => (
-                      <Line
-                        key={dk.key}
-                        type="monotone"
-                        dataKey={dk.key}
-                        stroke={dk.color}
-                        strokeWidth={2.5}
-                        dot={{ r: 3, fill: dk.color }}
-                        name={dk.label}
+              {/* Recharts Line/Area Visualization or Empty Fallback (D9) */}
+              {beat.layer3.data && beat.layer3.data.length > 0 ? (
+                <div className="h-56 w-full pt-2 min-w-0 overflow-hidden">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart
+                      data={beat.layer3.data}
+                      margin={{ top: 10, right: 20, left: -10, bottom: 0 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.4} />
+                      <XAxis
+                        dataKey={beat.layer3.xAxisKey}
+                        stroke="#94a3b8"
+                        fontSize={11}
+                        tickLine={false}
                       />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+                      <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: '#09152a',
+                          borderColor: '#38bdf8',
+                          borderRadius: '0.75rem',
+                          fontSize: '12px',
+                          color: '#f8fafc',
+                        }}
+                      />
+                      {beat.layer3.dataKeys.map((dk) => (
+                        <Line
+                          key={dk.key}
+                          type="monotone"
+                          dataKey={dk.key}
+                          stroke={dk.color}
+                          strokeWidth={2.5}
+                          dot={{ r: 3, fill: dk.color }}
+                          name={dk.label}
+                        />
+                      ))}
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="p-6 rounded-xl bg-slate-950/40 border border-white/10 text-center text-xs text-slate-400 font-mono">
+                  Telemetry flight records currently previewing in flight explorer.
+                </div>
+              )}
 
               {/* Link to Flight Explorer */}
               {beat.layer3.sourceExperimentId && (
