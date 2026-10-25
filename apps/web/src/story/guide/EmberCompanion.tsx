@@ -67,8 +67,8 @@ export const EmberCompanion: React.FC<EmberCompanionProps> = ({
 
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
-  // Scaled avatar size: 64px on mobile, 80px on tablet, 140px on desktop (D7)
-  const avatarSize = isMobile ? 64 : isTablet ? 80 : 140;
+  // Scaled avatar size: 64px on mobile, 80px on tablet, 108px on desktop
+  const avatarSize = isMobile ? 64 : isTablet ? 80 : 108;
 
   // Resolve dock for active beat
   const targetDock: AvatarDock = resolveDock(activeBeat, isMobile);
@@ -77,7 +77,7 @@ export const EmberCompanion: React.FC<EmberCompanionProps> = ({
     return null;
   }
 
-  // Minimized Floating Chip (D7: collapses into a small chip that expands on tap)
+  // Minimized Floating Chip (collapses into a small chip that expands on tap)
   if (isMinimized) {
     return (
       <div className="fixed bottom-20 right-4 sm:right-6 z-30 pointer-events-auto">
@@ -98,151 +98,96 @@ export const EmberCompanion: React.FC<EmberCompanionProps> = ({
     );
   }
 
-  // Calculate spring coordinates on horizontal axis (animating transform x & opacity only: R4)
-  const getDockPosition = () => {
-    if (isMobile) {
-      return { x: 0, y: 0, opacity: 1 };
-    }
-
-    if (isTablet) {
-      // On tablet (768px), dock cleanly to right side with compact width to avoid overlapping text/sliders
-      return {
-        x: Math.max(0, windowWidth - (avatarSize + 340) - 20),
-        y: 0,
-        opacity: 1,
-      };
-    }
-
-    switch (targetDock) {
-      case 'left':
-        return {
-          x: 24,
-          y: 0,
-          opacity: 1,
-        };
-      case 'right':
-        return {
-          x: Math.max(0, windowWidth - (avatarSize + 420) - 24),
-          y: 0,
-          opacity: 1,
-        };
-      case 'center':
-      default:
-        return {
-          x: Math.max(0, (windowWidth - (avatarSize + 420)) / 2),
-          y: 0,
-          opacity: 1,
-        };
-    }
-  };
-
-  const dockPos = getDockPosition();
   const isRightDocked = (targetDock === 'right' || isTablet) && !isMobile;
+  const isLeftDocked = targetDock === 'left' && !isMobile && !isTablet;
+
+  // Viewport-anchored positioning ensures Ember is never clipped off-screen
+  const containerClasses = isMobile
+    ? 'fixed bottom-22 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col-reverse items-center gap-2 w-full max-w-[calc(100vw-24px)]'
+    : isRightDocked
+    ? 'fixed bottom-20 sm:bottom-24 right-4 sm:right-6 lg:right-8 z-30 pointer-events-none flex flex-row-reverse items-end gap-3 max-w-[calc(100vw-32px)] sm:max-w-md md:max-w-lg'
+    : isLeftDocked
+    ? 'fixed bottom-20 sm:bottom-24 left-4 sm:left-6 lg:left-8 z-30 pointer-events-none flex flex-row items-end gap-3 max-w-[calc(100vw-32px)] sm:max-w-md md:max-w-lg'
+    : 'fixed bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex flex-col-reverse items-center gap-2 w-full max-w-lg';
 
   return (
-    <div
-      className="fixed bottom-20 sm:bottom-24 left-0 right-0 z-30 pointer-events-none px-3 sm:px-6"
-      aria-hidden="false"
-    >
-      <div className="relative w-full max-w-7xl mx-auto h-0 overflow-visible">
-        <motion.div
-          className={`absolute bottom-0 flex ${
-            isMobile
-              ? 'left-1/2 -translate-x-1/2 flex-col-reverse items-center gap-2 max-w-[calc(100vw-24px)]'
-              : isRightDocked
-              ? 'flex-row-reverse items-end gap-3 max-w-md sm:max-w-lg'
-              : targetDock === 'center'
-              ? 'flex-col-reverse items-center gap-3 max-w-xl'
-              : 'flex-row items-end gap-3 max-w-lg'
-          }`}
-          style={isMobile ? undefined : { left: 0 }}
-          animate={
-            isMobile
-              ? { opacity: 1 }
-              : {
-                  x: dockPos.x,
-                  opacity: dockPos.opacity,
-                }
-          }
-          transition={
-            shouldReduceMotion
-              ? { duration: 0 }
-              : {
-                  type: 'spring',
-                  stiffness: 120,
-                  damping: 18,
-                }
-          }
-        >
-          {/* Guide Orb Avatar with Scroll-Linked Tilt */}
-          <div className="shrink-0 pointer-events-auto">
-            <GuideOrb
-              expression={activeBeat.avatar.expression}
-              speech={activeBeat.avatar.speech}
-              intensity={activeBeat.avatar.intensity}
-              tiltDeg={tiltDeg}
-              size={avatarSize}
-              showBubble={false}
-              gravityG={gravityG}
-              onSkip={onSkip}
-            />
-          </div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={`${activeBeat.id}-${targetDock}`}
+        className={containerClasses}
+        aria-hidden="false"
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 12, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8, scale: 0.97 }}
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : {
+                type: 'spring',
+                stiffness: 140,
+                damping: 18,
+              }
+        }
+      >
+        {/* Guide Orb Avatar with Scroll-Linked Tilt */}
+        <div className="shrink-0 pointer-events-auto">
+          <GuideOrb
+            expression={activeBeat.avatar.expression}
+            speech={activeBeat.avatar.speech}
+            intensity={activeBeat.avatar.intensity}
+            tiltDeg={tiltDeg}
+            size={avatarSize}
+            showBubble={false}
+            gravityG={gravityG}
+            onSkip={onSkip}
+          />
+        </div>
 
-          {/* Speech Bubble (fades in on beat enter, typewriter text) */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeBeat.id}
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="pointer-events-auto w-full max-w-xs sm:max-w-md shadow-2xl"
-            >
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-[#071329]/95 border border-amber-500/30 backdrop-blur-md shadow-2xl space-y-1.5 text-xs sm:text-sm">
-                <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-xs tracking-wider uppercase text-amber-400 font-mono">
-                      Ember
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 capitalize">
-                      {activeBeat.avatar.expression}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setIsMinimized(true)}
-                      className="text-[11px] text-slate-400 hover:text-white font-mono flex items-center gap-1 transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white/40"
-                      aria-label="Minimize Ember guide companion"
-                      title="Minimize Ember companion"
-                    >
-                      <Minimize2 className="w-3 h-3" />
-                      <span className="hidden sm:inline">Minimize</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={onSkip}
-                      className="text-[11px] text-cyan-400 hover:text-cyan-300 font-mono underline underline-offset-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400"
-                      aria-label="Skip to next beat"
-                    >
-                      Skip
-                    </button>
-                  </div>
-                </div>
-
-                {/* Accessible dialogue text */}
-                <div
-                  aria-live="polite"
-                  className="text-slate-100 leading-relaxed font-sans"
-                >
-                  {activeBeat.avatar.speech}
-                </div>
+        {/* Speech Bubble */}
+        <div className="pointer-events-auto w-full max-w-xs sm:max-w-md shadow-2xl">
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-[#071329]/95 border border-amber-500/30 backdrop-blur-md shadow-2xl space-y-1.5 text-xs sm:text-sm">
+            <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-1.5">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs tracking-wider uppercase text-amber-400 font-mono">
+                  Ember
+                </span>
+                <span className="text-[10px] text-slate-400 font-mono px-2 py-0.5 rounded-full bg-white/5 border border-white/10 capitalize">
+                  {activeBeat.avatar.expression}
+                </span>
               </div>
-            </motion.div>
-          </AnimatePresence>
-        </motion.div>
-      </div>
-    </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsMinimized(true)}
+                  className="text-[11px] text-slate-400 hover:text-white font-mono flex items-center gap-1 transition-colors cursor-pointer px-1.5 py-0.5 rounded hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white/40"
+                  aria-label="Minimize Ember guide companion"
+                  title="Minimize Ember companion"
+                >
+                  <Minimize2 className="w-3 h-3" />
+                  <span className="hidden sm:inline">Minimize</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onSkip}
+                  className="text-[11px] text-cyan-400 hover:text-cyan-300 font-mono underline underline-offset-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400"
+                  aria-label="Skip to next beat"
+                >
+                  Skip
+                </button>
+              </div>
+            </div>
+
+            {/* Accessible dialogue text */}
+            <div
+              aria-live="polite"
+              className="text-slate-100 leading-relaxed font-sans"
+            >
+              {activeBeat.avatar.speech}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 };

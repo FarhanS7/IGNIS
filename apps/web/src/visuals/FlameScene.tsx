@@ -433,6 +433,7 @@ export interface FlameSceneProps {
   className?: string;
   compareScenario?: ScenarioInput;
   compareDestination?: string;
+  showBadges?: boolean;
 }
 
 export function FlameScene({
@@ -442,6 +443,7 @@ export function FlameScene({
   className = '',
   compareScenario,
   compareDestination,
+  showBadges = true,
 }: FlameSceneProps) {
   const paramsA = useMemo(() => deriveFlameParams(scenario), [scenario]);
   const paramsB = useMemo(
@@ -493,20 +495,24 @@ export function FlameScene({
       )}
 
       {/* Step 5: Solid semi-transparent telemetry badges (NO backdrop-blur over active WebGL) */}
-      <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-cyan-300 pointer-events-none shadow-xs">
-        <span>{isCompare ? 'A: ' : ''}Airflow: {airflowA} cm/s →</span>
-      </div>
+      {showBadges && (
+        <>
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-cyan-300 pointer-events-none shadow-xs">
+            <span>{isCompare ? 'A: ' : ''}Airflow: {airflowA} cm/s →</span>
+          </div>
 
-      <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-slate-300 pointer-events-none shadow-xs">
-        {isCompare ? (
-          <span>B: <span className="text-orange-400 font-semibold">{compareDestination ? `${compareDestination} · ` : ''}{compareScenario?.airflow_cm_s ?? 5} cm/s</span></span>
-        ) : (
-          <>
-            <span>Regime: </span>
-            <span className="text-orange-400 font-semibold">{paramsA.regimeLabel}</span>
-          </>
-        )}
-      </div>
+          <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-slate-300 pointer-events-none shadow-xs">
+            {isCompare ? (
+              <span>B: <span className="text-orange-400 font-semibold">{compareDestination ? `${compareDestination} · ` : ''}{compareScenario?.airflow_cm_s ?? 5} cm/s</span></span>
+            ) : (
+              <>
+                <span>Regime: </span>
+                <span className="text-orange-400 font-semibold">{paramsA.regimeLabel}</span>
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Step 4: Single R3F WebGL Canvas for both Single and Compare modes */}
       <Canvas

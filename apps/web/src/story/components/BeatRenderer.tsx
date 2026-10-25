@@ -166,7 +166,7 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-10% 0px' }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={`min-h-screen py-16 px-4 sm:px-6 max-w-4xl mx-auto flex flex-col justify-center border-b border-white/5 last:border-b-0 pb-44 sm:pb-36 ${
+      className={`min-h-screen pt-8 sm:pt-12 pb-56 sm:pb-64 px-4 sm:px-6 max-w-4xl mx-auto flex flex-col justify-start border-b border-white/5 last:border-b-0 ${
         shouldReduceMotion ? '' : 'snap-start'
       }`}
       aria-label={`Beat ${beatIndex + 1}: ${beat.title}`}

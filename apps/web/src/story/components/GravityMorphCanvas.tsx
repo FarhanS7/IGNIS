@@ -84,6 +84,7 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
               scenario={scenario}
               destination={activeGravityG === 0 ? 'orbital' : activeGravityG < 0.25 ? 'moon' : activeGravityG < 0.6 ? 'mars' : 'earth'}
               className="w-full h-full"
+              showBadges={false}
             />
           </Suspense>
         </WebGLErrorBoundary>

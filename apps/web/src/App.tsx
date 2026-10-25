@@ -73,6 +73,7 @@ export const App: React.FC = () => {
             <Route path="/explore/:slug" element={<StoryPlayerPage />} />
             <Route path="/stories/v2" element={<StoryModeV2Page />} />
             <Route path="/stories/v2/:chapterSlug" element={<StoryModeV2Page />} />
+            <Route path="/story/:chapterSlug" element={<StoryModeV2Page />} />
             {/* Ask IGNIS & About */}
             <Route path="/ask" element={<AskIgnisPage />} />
             <Route path="/about" element={<AboutPage />} />
