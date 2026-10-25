@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { X, BookOpen, Sparkles } from 'lucide-react';
 import type { GlossaryItem } from '../types';
 
@@ -15,24 +15,54 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({
   items,
   highlightTerm,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    // Focus close button on mount
+    const timer = setTimeout(() => {
+      closeBtnRef.current?.focus();
+    }, 50);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      clearTimeout(timer);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby="glossary-title"
+      onClick={onClose}
     >
-      <div className="relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl bg-[#09152a] border border-cyan-500/30 shadow-2xl overflow-hidden text-slate-100">
+      <div
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl max-h-[85vh] flex flex-col rounded-2xl bg-[#09152a] border border-cyan-500/30 shadow-2xl overflow-hidden text-slate-100"
+      >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#071020]">
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-white/10 bg-[#071020]">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400">
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="glossary-title" className="text-lg font-bold font-['Space_Grotesk'] text-white">
+              <h2 id="glossary-title" className="text-base sm:text-lg font-bold font-['Space_Grotesk'] text-white">
                 Space Science Glossary
               </h2>
               <p className="text-xs text-slate-400">
@@ -42,9 +72,10 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({
           </div>
 
           <button
+            ref={closeBtnRef}
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors focus-visible:outline-2 focus-visible:outline-cyan-400 cursor-pointer"
             aria-label="Close glossary"
           >
             <X className="w-5 h-5" />
@@ -52,7 +83,7 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({
         </div>
 
         {/* Modal Body / Items List */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-white/5">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 divide-y divide-white/5">
           {items.map((item) => {
             const isHighlighted = highlightTerm && item.term.toLowerCase() === highlightTerm.toLowerCase();
             return (
@@ -90,11 +121,11 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3 border-t border-white/10 bg-[#071020] flex justify-end">
+        <div className="px-5 sm:px-6 py-3 border-t border-white/10 bg-[#071020] flex justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-200 bg-white/10 hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-200 bg-white/10 hover:bg-white/20 rounded-lg transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400"
           >
             Close
           </button>

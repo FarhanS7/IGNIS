@@ -59,6 +59,9 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
       <div className="text-xs font-mono text-cyan-300 mt-2">
         {derived.regimeLabel} ({activeGravityG.toFixed(2)}g)
       </div>
+      <p className="text-[11px] text-slate-400 mt-1 max-w-xs">
+        WebGL 3D engine paused or unavailable — displaying calibrated 2D cross-section schematic.
+      </p>
     </div>
   );
 
@@ -68,6 +71,11 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
       role="region"
       aria-label="Interactive Gravity Morph Flame Simulator"
     >
+      {/* Screen Reader live announcement of gravity change */}
+      <div className="sr-only" aria-live="polite">
+        Simulated gravity set to {activeGravityG.toFixed(2)}g: {derived.regimeLabel}
+      </div>
+
       {/* 3D WebGL Canvas wrapped in Error Boundary */}
       <div className="relative w-full h-72 sm:h-84 md:h-96">
         <WebGLErrorBoundary fallback={svgFallback}>
@@ -104,11 +112,11 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
 
       {/* Control Bar: Sliders & Preset Buttons */}
       <div className="p-4 sm:p-5 bg-[#071329] border-t border-white/10 flex flex-col gap-4">
-        {/* Continuous Gravity Morph Slider */}
-        <div className="space-y-1.5">
+        {/* Continuous Gravity Morph Slider with >=44px touch target */}
+        <div className="space-y-2">
           <div className="flex justify-between items-center text-xs font-mono">
-            <label htmlFor="gravity-slider" className="text-slate-300 font-medium">
-              Dial Gravity Field (1g → 0g):
+            <label htmlFor="gravity-slider" className="text-slate-200 font-semibold">
+              Dial Gravity Field (1.0g → 0.0g):
             </label>
             <span className="text-cyan-400 font-bold">
               {activeGravityG === 0
@@ -117,17 +125,19 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
             </span>
           </div>
 
-          <input
-            id="gravity-slider"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={activeGravityG}
-            onChange={handleSliderChange}
-            aria-label="Simulated gravity slider from zero g to earth gravity"
-            className="w-full h-2 rounded-lg bg-slate-800 appearance-none cursor-pointer accent-cyan-400 focus-visible:outline-2 focus-visible:outline-cyan-400"
-          />
+          <div className="relative py-2 flex items-center">
+            <input
+              id="gravity-slider"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={activeGravityG}
+              onChange={handleSliderChange}
+              aria-label="Simulated gravity slider from zero g to earth gravity"
+              className="w-full h-3 rounded-lg bg-slate-800 appearance-none cursor-pointer accent-cyan-400 focus-visible:outline-2 focus-visible:outline-cyan-400 [&::-webkit-slider-thumb]:w-7 [&::-webkit-slider-thumb]:h-7 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-cyan-400 [&::-webkit-slider-thumb]:shadow-[0_0_12px_#38bdf8] [&::-moz-range-thumb]:w-7 [&::-moz-range-thumb]:h-7 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-cyan-400"
+            />
+          </div>
 
           <div className="flex justify-between text-[10px] font-mono text-slate-400 px-1">
             <span>0g (Orbital Sphere)</span>
@@ -137,7 +147,7 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
           </div>
         </div>
 
-        {/* Quick Planetary Regime Buttons */}
+        {/* Quick Planetary Regime Buttons with min 48px height */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
           {REGIME_PRESETS.map((preset) => {
             const Icon = preset.icon;
@@ -148,7 +158,7 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
                 key={preset.label}
                 type="button"
                 onClick={() => handleSelectPreset(preset.g)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-left border transition-all cursor-pointer ${
+                className={`min-h-[48px] flex items-center gap-2 px-3 py-2 rounded-xl text-left border transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-cyan-400 ${
                   isSelected
                     ? 'bg-cyan-500/20 border-cyan-400 text-white shadow-md'
                     : 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:border-white/20'
