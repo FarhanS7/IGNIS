@@ -6,10 +6,24 @@ import {
   velocityToTilt,
   resolveDock,
   gravityToEmberVariant,
+  calculateRemainingMinutes,
+  clampBeatIndex,
+  snapGravityPreset,
   type ValidationFixtures,
 } from './storyUtils.ts';
 import { chapter1 } from './chapters/chapter1.ts';
-import { safeStorage, getChapterProgress, saveChapterProgress, clearChapterProgress } from './storage.ts';
+import {
+  safeStorage,
+  getChapterProgress,
+  saveChapterProgress,
+  clearChapterProgress,
+  getStorySettings,
+  saveStorySettings,
+  isOnboardingDismissed,
+  setOnboardingDismissed,
+  getLayerPreferences,
+  saveLayerPreferences,
+} from './storage.ts';
 import experimentsFixture from '../../../../data/fixtures/experiments.json' with { type: 'json' };
 import experimentRunsFixture from '../../../../data/fixtures/experiment_runs.json' with { type: 'json' };
 import sourceDocsFixture from '../../../../data/fixtures/source_documents.json' with { type: 'json' };
@@ -203,3 +217,115 @@ test('gravityToEmberVariant - bounds [0.0, 1.0] and endpoints', () => {
   assert.equal(gravityToEmberVariant(0.38), 0.38, 'Mars 0.38g');
   assert.equal(gravityToEmberVariant(0.16), 0.16, 'Moon 0.16g');
 });
+
+// -----------------------------------------------------------------------------
+// 5. UX Navigation & Beat Clamping Helpers Tests (DELIVERABLE D1, D2)
+// -----------------------------------------------------------------------------
+test('clampBeatIndex - boundary and invalid input clamping', () => {
+  assert.equal(clampBeatIndex(0, 7), 0);
+  assert.equal(clampBeatIndex(3, 7), 3);
+  assert.equal(clampBeatIndex(6, 7), 6);
+  assert.equal(clampBeatIndex(10, 7), 6, 'Index above upper bound clamped to totalBeats - 1');
+  assert.equal(clampBeatIndex(-5, 7), 0, 'Negative index clamped to 0');
+  assert.equal(clampBeatIndex(NaN, 7), 0, 'NaN index defaults to 0');
+  assert.equal(clampBeatIndex(2, 0), 0, 'Zero totalBeats returns 0');
+});
+
+// -----------------------------------------------------------------------------
+// 6. Time Remaining Estimation Tests (DELIVERABLE D2)
+// -----------------------------------------------------------------------------
+test('calculateRemainingMinutes - computes realistic time based on word count and mode', () => {
+  const fullRemainingStart = calculateRemainingMinutes(chapter1.beats, 0, 'full');
+  const fullRemainingMid = calculateRemainingMinutes(chapter1.beats, 3, 'full');
+  const fullRemainingLast = calculateRemainingMinutes(chapter1.beats, chapter1.beats.length - 1, 'full');
+
+  assert.ok(fullRemainingStart >= 3 && fullRemainingStart <= 10, `Full journey at start should be ~3-10m (got ${fullRemainingStart})`);
+  assert.ok(fullRemainingMid < fullRemainingStart, 'Midway remaining must be strictly less than at start');
+  assert.equal(fullRemainingLast, 1, 'Last beat should estimate 1 min remaining');
+
+  // Quick mode should estimate less than or equal to full mode
+  const quickRemainingStart = calculateRemainingMinutes(chapter1.beats, 0, 'quick');
+  assert.ok(quickRemainingStart <= fullRemainingStart, 'Quick mode remaining time must be <= full mode');
+
+  // Empty or invalid input edge case
+  assert.equal(calculateRemainingMinutes([], 0, 'full'), 1, 'Empty beats list returns baseline 1m');
+  assert.equal(calculateRemainingMinutes(chapter1.beats, 100, 'full'), 1, 'Out of bounds index returns 1m');
+});
+
+// -----------------------------------------------------------------------------
+// 7. Slider Preset Snapping Tests (DELIVERABLE D6)
+// -----------------------------------------------------------------------------
+test('snapGravityPreset - snaps to closest preset value', () => {
+  const presets = [1.0, 0.38, 0.16, 0.0];
+
+  assert.equal(snapGravityPreset(1.0, presets), 1.0);
+  assert.equal(snapGravityPreset(0.95, presets), 1.0);
+  assert.equal(snapGravityPreset(0.40, presets), 0.38);
+  assert.equal(snapGravityPreset(0.18, presets), 0.16);
+  assert.equal(snapGravityPreset(0.04, presets), 0.0);
+  assert.equal(snapGravityPreset(-0.2, presets), 0.0, 'Negative gravity snaps to closest (0.0)');
+  assert.equal(snapGravityPreset(1.8, presets), 1.0, 'High gravity snaps to closest (1.0)');
+});
+
+// -----------------------------------------------------------------------------
+// 8. Settings & Layer Preferences Safe Storage Tests (DELIVERABLE D4, D5, D8)
+// -----------------------------------------------------------------------------
+test('safeStorage - settings persistence and corrupted data fallback', () => {
+  safeStorage.clearMemoryStoreForTesting();
+
+  // Initial default settings
+  const defaultSettings = getStorySettings();
+  assert.equal(defaultSettings.emberEnabled, true);
+  assert.equal(defaultSettings.reduceMotionOverride, 'system');
+  assert.equal(defaultSettings.textSize, 'normal');
+
+  // Save new settings
+  saveStorySettings({
+    emberEnabled: false,
+    reduceMotionOverride: 'true',
+    textSize: 'large',
+  });
+
+  const updatedSettings = getStorySettings();
+  assert.equal(updatedSettings.emberEnabled, false);
+  assert.equal(updatedSettings.reduceMotionOverride, 'true');
+  assert.equal(updatedSettings.textSize, 'large');
+
+  // Corrupted settings JSON in storage should not throw and should safely return defaults
+  safeStorage.setItem('ignis_story_settings', '{invalid_json');
+  const fallbackSettings = getStorySettings();
+  assert.equal(fallbackSettings.emberEnabled, true);
+  assert.equal(fallbackSettings.reduceMotionOverride, 'system');
+  assert.equal(fallbackSettings.textSize, 'normal');
+});
+
+test('safeStorage - layer preferences persistence and corrupted fallback', () => {
+  safeStorage.clearMemoryStoreForTesting();
+
+  // Initial layer preferences
+  const initialPrefs = getLayerPreferences();
+  assert.equal(initialPrefs.layer2Open, false);
+  assert.equal(initialPrefs.layer3Open, false);
+
+  // Save layer preferences
+  saveLayerPreferences({ layer2Open: true, layer3Open: false });
+  assert.equal(getLayerPreferences().layer2Open, true);
+  assert.equal(getLayerPreferences().layer3Open, false);
+
+  // Corrupted layer prefs JSON
+  safeStorage.setItem('ignis_story_layer_prefs', 'corrupted_string');
+  const recoveredPrefs = getLayerPreferences();
+  assert.equal(recoveredPrefs.layer2Open, false);
+  assert.equal(recoveredPrefs.layer3Open, false);
+});
+
+test('safeStorage - onboarding tour dismissal persistence', () => {
+  safeStorage.clearMemoryStoreForTesting();
+
+  assert.equal(isOnboardingDismissed(), false);
+  setOnboardingDismissed(true);
+  assert.equal(isOnboardingDismissed(), true);
+  setOnboardingDismissed(false);
+  assert.equal(isOnboardingDismissed(), false);
+});
+
