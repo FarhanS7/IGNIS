@@ -176,3 +176,18 @@ export interface Chapter {
   glossary: GlossaryItem[];
   nextChapterSlug?: string;
 }
+
+export type TextSizeSetting = 'normal' | 'large' | 'xlarge';
+export type MotionSetting = 'system' | 'true' | 'false';
+
+export interface StorySettings {
+  reduceMotionOverride: MotionSetting;
+  emberEnabled: boolean;
+  textSize: TextSizeSetting;
+}
+
+export interface LayerPreferences {
+  layer2Open: boolean;
+  layer3Open: boolean;
+}
+

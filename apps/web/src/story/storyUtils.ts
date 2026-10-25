@@ -2,7 +2,7 @@
  * Story Mode v2 - Mathematical & Validation Utilities
  */
 
-import type { Chapter } from './types';
+import type { Chapter, Beat, StoryMode } from './types';
 
 /**
  * Maps normalized scroll progress [0, 1] to physical gravity [1.0g, 0.0g].
@@ -186,4 +186,90 @@ export function resolveDock(
 export function gravityToEmberVariant(gravityG: number): number {
   if (Number.isNaN(gravityG)) return 0;
   return Math.max(0.0, Math.min(1.0, Number(gravityG.toFixed(4))));
+}
+
+/**
+ * Calculates remaining reading and interaction time in minutes based on remaining beats.
+ * Uses realistic word count (~180 WPM) plus interaction time allocation.
+ * Safe clamping: returns 0 at chapter end, at least 1 minute if beats remain.
+ */
+export function calculateRemainingMinutes(
+  beats: Beat[],
+  currentBeatIndex: number,
+  mode: StoryMode = 'full',
+  wordsPerMinute: number = 220
+): number {
+  if (!Array.isArray(beats) || beats.length === 0) return 1;
+  const modeFiltered = beats.filter((b) => !b.modes || b.modes.includes(mode));
+  if (modeFiltered.length === 0) return 1;
+
+  const safeIndex = Math.max(0, Math.min(modeFiltered.length, currentBeatIndex));
+  if (safeIndex >= modeFiltered.length) return 1;
+
+  const remainingBeats = modeFiltered.slice(safeIndex);
+  let totalWords = 0;
+  let interactionMinutes = 0;
+
+  for (const beat of remainingBeats) {
+    totalWords += (beat.title || '').split(/\s+/).filter(Boolean).length;
+    if (beat.subtitle) totalWords += beat.subtitle.split(/\s+/).filter(Boolean).length;
+    if (beat.avatar?.speech) totalWords += beat.avatar.speech.split(/\s+/).filter(Boolean).length;
+
+    if (beat.layer1) {
+      if (beat.layer1.headline) totalWords += beat.layer1.headline.split(/\s+/).filter(Boolean).length;
+      if (Array.isArray(beat.layer1.paragraphs)) {
+        for (const p of beat.layer1.paragraphs) {
+          totalWords += p.split(/\s+/).filter(Boolean).length;
+        }
+      }
+      if (beat.layer1.keyFact) totalWords += beat.layer1.keyFact.split(/\s+/).filter(Boolean).length;
+    }
+
+    if (mode === 'full' && beat.layer2) {
+      if (beat.layer2.headline) totalWords += beat.layer2.headline.split(/\s+/).filter(Boolean).length;
+      if (Array.isArray(beat.layer2.physicsExplanation)) {
+        for (const p of beat.layer2.physicsExplanation) {
+          totalWords += p.split(/\s+/).filter(Boolean).length;
+        }
+      }
+    }
+
+    if (beat.type === 'reveal' || beat.type === 'predict' || beat.type === 'check') {
+      interactionMinutes += 0.3;
+    }
+  }
+
+  const readingMinutes = totalWords / Math.max(50, wordsPerMinute);
+  const total = Math.max(1, Math.round(readingMinutes + interactionMinutes));
+  return total;
+}
+
+/**
+ * Snaps a continuous gravity value to the nearest planetary preset.
+ */
+export function snapGravityPreset(
+  currentG: number,
+  presets: number[] = [1.0, 0.38, 0.16, 0.0]
+): number {
+  if (Number.isNaN(currentG)) return 0.0;
+  let closest = presets[0];
+  let minDiff = Math.abs(currentG - closest);
+
+  for (let i = 1; i < presets.length; i++) {
+    const diff = Math.abs(currentG - presets[i]);
+    if (diff < minDiff) {
+      minDiff = diff;
+      closest = presets[i];
+    }
+  }
+  return closest;
+}
+
+/**
+ * Clamps beat index within valid bounds [0, totalBeats - 1].
+ */
+export function clampBeatIndex(requestedIndex: number, totalBeats: number): number {
+  if (totalBeats <= 0) return 0;
+  if (Number.isNaN(requestedIndex)) return 0;
+  return Math.max(0, Math.min(totalBeats - 1, Math.floor(requestedIndex)));
 }
