@@ -207,11 +207,34 @@ class RealSolidMatchResult(BaseModel):
 # Engine Implementation
 # ---------------------------------------------------------------------------
 
+def load_material_map(path: Optional[str | Path] = None) -> dict[str, Any]:
+    """Loads standardized material mapping from data/processed/material_map.json."""
+    candidates = [
+        Path("data/processed/material_map.json"),
+        Path(__file__).resolve().parents[4] / "data" / "processed" / "material_map.json",
+        Path(__file__).resolve().parents[3] / "data" / "processed" / "material_map.json",
+    ]
+    if path:
+        candidates.insert(0, Path(path))
+    for c in candidates:
+        if c.exists():
+            with open(c, "r", encoding="utf-8") as f:
+                return json.load(f)
+    return {}
+
+
 class RealSolidMatcher:
     """Matches operational scenarios against verified NASA microgravity solid combustion flight runs."""
 
-    def __init__(self, runs_path: Optional[str | Path] = None, runs: Optional[list[dict[str, Any]]] = None) -> None:
-        """Initializes matcher by loading and caching usable solid flight runs."""
+    def __init__(
+        self,
+        runs_path: Optional[str | Path] = None,
+        runs: Optional[list[dict[str, Any]]] = None,
+        material_map_path: Optional[str | Path] = None,
+    ) -> None:
+        """Initializes matcher by loading and caching usable solid flight runs and material map."""
+        self.material_map = load_material_map(material_map_path)
+
         if runs is not None:
             raw_runs = runs
         else:
@@ -235,12 +258,22 @@ class RealSolidMatcher:
         for r in self.usable_runs:
             o2_val = r["oxygen_pct"]["value"]
             flow_val = r["flow_cm_s"]["value"]
-            mat_fam = extract_material_family(r.get("material"))
-            shape, thick = extract_geometry(r.get("material"), r.get("investigation_id", ""))
+            raw_mat = r.get("material") or ""
+            
+            # Use material_map if available, otherwise fallback
+            if raw_mat in self.material_map:
+                mat_entry = self.material_map[raw_mat]
+                mat_fam = mat_entry["family"]
+                shape = mat_entry["geometry"]
+                thick = mat_entry["thickness_mm"]
+            else:
+                mat_fam = extract_material_family(raw_mat)
+                shape, thick = extract_geometry(raw_mat, r.get("investigation_id", ""))
 
             # Normalized coordinates in [0, 1] space
             u = (o2_val - TESTED_O2_MIN) / (TESTED_O2_MAX - TESTED_O2_MIN)
             v = (flow_val - TESTED_FLOW_MIN) / (TESTED_FLOW_MAX - TESTED_FLOW_MIN)
+
 
             processed = {
                 "raw": r,
@@ -292,7 +325,10 @@ class RealSolidMatcher:
         top_k: Optional[int] = None,
     ) -> RealSolidMatchResult:
         """Scores all usable solid runs against the scenario and returns ranked evidence matches."""
-        target_family = extract_material_family(scenario.material)
+        if scenario.material in self.material_map:
+            target_family = self.material_map[scenario.material]["family"]
+        else:
+            target_family = extract_material_family(scenario.material)
         has_geometry = scenario.geometry is not None or scenario.thickness_mm is not None
 
         # Determine raw weights based on active factors

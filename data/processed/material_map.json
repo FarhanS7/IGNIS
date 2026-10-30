@@ -1,0 +1,762 @@
+{
+  "0.5\" black rod": {
+    "raw_material": "0.5\" black rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 12.7,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1 cm   0.2 mm PMMA film": {
+    "raw_material": "1 cm   0.2 mm PMMA film",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.2,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 cm SIBAL": {
+    "raw_material": "1 cm SIBAL",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": true,
+    "notes": "SIBAL cotton-fiberglass blend; SIBAL fabric thickness ~0.3 mm inferred from textile spec"
+  },
+  "1 cm SIBAL   top side ign": {
+    "raw_material": "1 cm SIBAL   top side ign",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": true,
+    "notes": "SIBAL cotton-fiberglass blend; SIBAL fabric thickness ~0.3 mm inferred from textile spec"
+  },
+  "1 cm sphere": {
+    "raw_material": "1 cm sphere",
+    "family": "Other",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "1 cm sphere   wake": {
+    "raw_material": "1 cm sphere   wake",
+    "family": "Other",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "1 cm wake sphere": {
+    "raw_material": "1 cm wake sphere",
+    "family": "Other",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "1 cm wide 200 micron thick PMMA": {
+    "raw_material": "1 cm wide 200 micron thick PMMA",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.2,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 cm wide PMMA 1 mm thick": {
+    "raw_material": "1 cm wide PMMA 1 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 1.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 cm wide PMMA 2 mm thick": {
+    "raw_material": "1 cm wide PMMA 2 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 2.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 cm wide PMMA 3 mm thick": {
+    "raw_material": "1 cm wide PMMA 3 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 3.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 cm wide PMMA 5 mm thick": {
+    "raw_material": "1 cm wide PMMA 5 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 5.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 mm thick PMMA   1 sided   2 cm": {
+    "raw_material": "1 mm thick PMMA   1 sided   2 cm",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 1.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1 mm thick PMMA   2 cm wide": {
+    "raw_material": "1 mm thick PMMA   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 1.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1/2\" clear PMMA rod": {
+    "raw_material": "1/2\" clear PMMA rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 12.7,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "1/2\" clear rod": {
+    "raw_material": "1/2\" clear rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 12.7,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4 blac rod": {
+    "raw_material": "1/4 blac rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4 black rod": {
+    "raw_material": "1/4 black rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4 clear rod": {
+    "raw_material": "1/4 clear rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4\"  black rod": {
+    "raw_material": "1/4\"  black rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4\" black rod": {
+    "raw_material": "1/4\" black rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "1/4\" clear rod": {
+    "raw_material": "1/4\" clear rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 6.35,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "100 micron PMMA film   2 cm wide": {
+    "raw_material": "100 micron PMMA film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.1,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "100 micron film   2 cm wide": {
+    "raw_material": "100 micron film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.1,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "2 cm   0.1 mm PMMA film": {
+    "raw_material": "2 cm   0.1 mm PMMA film",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.1,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm   0.2 mm PMMA film": {
+    "raw_material": "2 cm   0.2 mm PMMA film",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.2,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm   0.4 mm thick film": {
+    "raw_material": "2 cm   0.4 mm thick film",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.4,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "2 cm   4 mm 1 sided PMMA slab": {
+    "raw_material": "2 cm   4 mm 1 sided PMMA slab",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 4.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm 0.1 mm PMMA film": {
+    "raw_material": "2 cm 0.1 mm PMMA film",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.1,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm 100 micron thick PMMA": {
+    "raw_material": "2 cm 100 micron thick PMMA",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.1,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm SIBAL": {
+    "raw_material": "2 cm SIBAL",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": true,
+    "notes": "SIBAL cotton-fiberglass blend; SIBAL fabric thickness ~0.3 mm inferred from textile spec"
+  },
+  "2 cm Sibal   moved igniter": {
+    "raw_material": "2 cm Sibal   moved igniter",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": true,
+    "notes": "SIBAL cotton-fiberglass blend; SIBAL fabric thickness ~0.3 mm inferred from textile spec"
+  },
+  "2 cm pmma sphere": {
+    "raw_material": "2 cm pmma sphere",
+    "family": "PMMA",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm sphere": {
+    "raw_material": "2 cm sphere",
+    "family": "Other",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "2 cm sphere   wake ign": {
+    "raw_material": "2 cm sphere   wake ign",
+    "family": "Other",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "2 cm wide   5 mm thick 1 sided PMMA": {
+    "raw_material": "2 cm wide   5 mm thick 1 sided PMMA",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 5.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm wide PMMA 2 mm thick": {
+    "raw_material": "2 cm wide PMMA 2 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 2.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 cm wide PMMA 3 mm thick": {
+    "raw_material": "2 cm wide PMMA 3 mm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 3.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2 mm thick PMMA   2 cm wide": {
+    "raw_material": "2 mm thick PMMA   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 2.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "200 micron  2 cm wide": {
+    "raw_material": "200 micron  2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.2,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "200 micron PMMA film   2 cm wide": {
+    "raw_material": "200 micron PMMA film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.2,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "2mm thick PMMA   1 sided   2 cm wide": {
+    "raw_material": "2mm thick PMMA   1 sided   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 2.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "3 mm thick PMMA   2 sided   2 cm thick": {
+    "raw_material": "3 mm thick PMMA   2 sided   2 cm thick",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 3.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "3 mm thick PMMA 1 sided    2 cm wide": {
+    "raw_material": "3 mm thick PMMA 1 sided    2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 3.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "3/8\" black rod": {
+    "raw_material": "3/8\" black rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 9.525,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "3/8\" clear rod": {
+    "raw_material": "3/8\" clear rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 9.525,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "3/8\"clear rod": {
+    "raw_material": "3/8\"clear rod",
+    "family": "PMMA",
+    "geometry": "rod",
+    "thickness_mm": 9.525,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "300 micron PMMA film   2 cm wide": {
+    "raw_material": "300 micron PMMA film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "300 micron film   2 cm wide": {
+    "raw_material": "300 micron film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.3,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "4 cm spherical section": {
+    "raw_material": "4 cm spherical section",
+    "family": "PMMA",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "4 mm thick   1 cm wide PMMA slab": {
+    "raw_material": "4 mm thick   1 cm wide PMMA slab",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 4.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "4 mm thick   2 cm 2ide PMMA slab": {
+    "raw_material": "4 mm thick   2 cm 2ide PMMA slab",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 4.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "4 mm thick PMMA   2 cm wide": {
+    "raw_material": "4 mm thick PMMA   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 4.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "400 micron film   2 cm wide": {
+    "raw_material": "400 micron film   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 0.4,
+    "guessed": true,
+    "notes": "PMMA inferred from BASS-II sample manifest / PI test matrix"
+  },
+  "5 mm thick PMMA   2 cm wide": {
+    "raw_material": "5 mm thick PMMA   2 cm wide",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": 5.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "Cotton-Fiberglass (SIBAL)": {
+    "raw_material": "Cotton-Fiberglass (SIBAL)",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 0.4,
+    "guessed": false,
+    "notes": "SIBAL cotton-fiberglass blend"
+  },
+  "Fabric / Polymer": {
+    "raw_material": "Fabric / Polymer",
+    "family": "Fabric/Polymer",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Saffire composite fabric/polymer blend"
+  },
+  "Japan Wax Candle   wake": {
+    "raw_material": "Japan Wax Candle   wake",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "Japan Wax candle": {
+    "raw_material": "Japan Wax candle",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "Nomex III Natural": {
+    "raw_material": "Nomex III Natural",
+    "family": "Nomex",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Nomex III aramid fabric"
+  },
+  "Nomex blend 2 cm": {
+    "raw_material": "Nomex blend 2 cm",
+    "family": "Nomex",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Nomex III aramid fabric"
+  },
+  "Nomex natural (nomex III)": {
+    "raw_material": "Nomex natural (nomex III)",
+    "family": "Nomex",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Nomex III aramid fabric"
+  },
+  "PMMA": {
+    "raw_material": "PMMA",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "PMMA & Nomex": {
+    "raw_material": "PMMA & Nomex",
+    "family": "PMMA & Nomex",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Dual material PMMA & Nomex composite (Saffire-II)"
+  },
+  "PMMA 1 cm": {
+    "raw_material": "PMMA 1 cm",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "PMMA 2 cm": {
+    "raw_material": "PMMA 2 cm",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "PMMA slab": {
+    "raw_material": "PMMA slab",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "PMMA sphere 1 cm": {
+    "raw_material": "PMMA sphere 1 cm",
+    "family": "PMMA",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "PMMA sphere 2 cm": {
+    "raw_material": "PMMA sphere 2 cm",
+    "family": "PMMA",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "Pre-test flow visulation data for sample 1": {
+    "raw_material": "Pre-test flow visulation data for sample 1",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "Pre-test flow visulation data for sample 2": {
+    "raw_material": "Pre-test flow visulation data for sample 2",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "Pre-test flow visulation data for sample 2-1": {
+    "raw_material": "Pre-test flow visulation data for sample 2-1",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "Pre-test flow visulation data for sample 2-2": {
+    "raw_material": "Pre-test flow visulation data for sample 2-2",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "SIBAL 1 cm": {
+    "raw_material": "SIBAL 1 cm",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "SIBAL cotton-fiberglass blend"
+  },
+  "SIBAL 2 cm": {
+    "raw_material": "SIBAL 2 cm",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "SIBAL cotton-fiberglass blend"
+  },
+  "SIBAL 2 cm   opposed flow": {
+    "raw_material": "SIBAL 2 cm   opposed flow",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "SIBAL cotton-fiberglass blend"
+  },
+  "SIBAL Fabric": {
+    "raw_material": "SIBAL Fabric",
+    "family": "SIBAL",
+    "geometry": "flat",
+    "thickness_mm": 3.7,
+    "guessed": false,
+    "notes": "SIBAL cotton-fiberglass blend"
+  },
+  "SOOT Cleaning": {
+    "raw_material": "SOOT Cleaning",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  },
+  "Silicone": {
+    "raw_material": "Silicone",
+    "family": "Silicone",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Silicone rubber sheet"
+  },
+  "candle": {
+    "raw_material": "candle",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "candle    paraffin   wake": {
+    "raw_material": "candle    paraffin   wake",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "candle   Japan wax": {
+    "raw_material": "candle   Japan wax",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "flat wax slab": {
+    "raw_material": "flat wax slab",
+    "family": "Wax",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "nomex natural III": {
+    "raw_material": "nomex natural III",
+    "family": "Nomex",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Nomex III aramid fabric"
+  },
+  "paraffin wax candle": {
+    "raw_material": "paraffin wax candle",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "paraffin wax slab": {
+    "raw_material": "paraffin wax slab",
+    "family": "Wax",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "parrafin wax candle": {
+    "raw_material": "parrafin wax candle",
+    "family": "Wax",
+    "geometry": "cylinder",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "parrafin wax slab": {
+    "raw_material": "parrafin wax slab",
+    "family": "Wax",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "Japan Wax / Paraffin candle"
+  },
+  "pmma 1 cm": {
+    "raw_material": "pmma 1 cm",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "pmma 2 cm": {
+    "raw_material": "pmma 2 cm",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "pmma slab": {
+    "raw_material": "pmma slab",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "pmma slab   oppsed": {
+    "raw_material": "pmma slab   oppsed",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "pmma slab opposed": {
+    "raw_material": "pmma slab opposed",
+    "family": "PMMA",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "pmma sphere": {
+    "raw_material": "pmma sphere",
+    "family": "PMMA",
+    "geometry": "sphere",
+    "thickness_mm": 40.0,
+    "guessed": false,
+    "notes": "PMMA (acrylic) polymer"
+  },
+  "ultem sheet": {
+    "raw_material": "ultem sheet",
+    "family": "Other",
+    "geometry": "flat",
+    "thickness_mm": null,
+    "guessed": true,
+    "notes": "Unknown material family"
+  }
+}

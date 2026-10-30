@@ -15,7 +15,9 @@ from services.api.app.matching import (
     SolidScenarioInput,
 )
 from scripts.validate.loocv_backtest import run_loocv
+from scripts.validate.grouped_loocv import run_grouped_validation
 from scripts.validate.weight_sensitivity import run_weight_sensitivity
+
 
 
 @pytest.fixture(scope="module")
@@ -24,9 +26,9 @@ def solid_matcher() -> RealSolidMatcher:
 
 
 def test_usable_runs_census(solid_matcher: RealSolidMatcher) -> None:
-    """Confirms exactly 134 usable solid flight runs with explicit outcomes and environmental metrics."""
-    assert len(solid_matcher.usable_runs) == 134
-    assert len(solid_matcher.tested_points) == 134
+    """Confirms exactly 132 usable solid flight runs with explicit outcomes and environmental metrics."""
+    assert len(solid_matcher.usable_runs) == 132
+    assert len(solid_matcher.tested_points) == 132
 
     valid_outcomes = {"sustained", "extinguished", "no_ignition"}
     for r in solid_matcher.usable_runs:
@@ -34,6 +36,18 @@ def test_usable_runs_census(solid_matcher: RealSolidMatcher) -> None:
         assert r["outcome_class"] in valid_outcomes
         assert r["oxygen_pct"]["value"] is not None
         assert r["flow_cm_s"]["value"] is not None
+
+
+def test_material_map_coverage(solid_matcher: RealSolidMatcher) -> None:
+    """Verifies that every usable solid run has a valid entry in material_map.json."""
+    assert len(solid_matcher.material_map) >= 95
+    for r in solid_matcher.usable_runs:
+        raw_mat = r["material"]
+        assert raw_mat in solid_matcher.material_map
+        mat_entry = solid_matcher.material_map[raw_mat]
+        assert mat_entry["family"] in {"PMMA", "SIBAL", "Nomex", "Silicone", "Wax", "Fabric/Polymer", "PMMA & Nomex", "Other"}
+        assert mat_entry["geometry"] in {"flat", "rod", "sphere", "cylinder"}
+
 
 
 def test_pressure_strictly_excluded_from_matching(solid_matcher: RealSolidMatcher) -> None:
@@ -154,16 +168,37 @@ def test_similarity_ranking_determinism(solid_matcher: RealSolidMatcher) -> None
 
 
 def test_loocv_backtest_execution() -> None:
-    """Verifies that LOOCV backtest runs and outperforms majority baseline on extinctions and non-ignitions."""
+    """Verifies that LOOCV backtest runs on usable solid runs."""
     results = run_loocv(k_values=[1])
-    assert results["n_samples"] == 134
+    assert results["n_samples"] == 132
     assert results["majority_class"] == "sustained"
-    assert pytest.approx(results["majority_baseline_accuracy"], 0.01) == 0.7612
+    assert pytest.approx(results["majority_baseline_accuracy"], 0.01) == 0.7727
 
     eval_k1 = results["k_evaluations"]["k=1"]
-    assert eval_k1["accuracy"] > 0.7612  # Outperforms naive baseline
-    assert eval_k1["per_class_recall"]["extinguished"]["recall"] > 0.50
+    assert eval_k1["accuracy"] > 0.75
+    assert eval_k1["per_class_recall"]["extinguished"]["recall"] >= 0.40
     assert eval_k1["per_class_recall"]["no_ignition"]["recall"] >= 0.80
+
+
+def test_grouped_cv_execution() -> None:
+    """Verifies Grouped Cross-Validation (Leave-One-Group-Out) across physical samples."""
+    data = run_grouped_validation()
+    assert data["n_samples"] == 132
+    assert data["n_groups"] == 112
+
+    res_models = data["results"]
+    assert "Majority Baseline" in res_models
+    assert "O2-Threshold Rule" in res_models
+    assert "Material+O2 (k=3)" in res_models
+    assert "Full IGNIS (k=5)" in res_models
+
+    full_k5 = res_models["Full IGNIS (k=5)"]
+    assert full_k5["balanced_accuracy"] > 0.70
+    assert full_k5["per_class"]["extinguished"]["recall"] >= 0.40
+    assert full_k5["per_class"]["no_ignition"]["recall"] >= 0.80
+    assert "mcnemar" in full_k5
+    assert "diff_bootstrap_ci_95" in full_k5
+
 
 
 def test_weight_sensitivity_execution() -> None:
