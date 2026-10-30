@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 BasisType = Literal["measured", "converted", "assumed", "missing"]
 FuelClass = Literal["solid", "droplet", "gas"]
 GravityRegime = Literal["microgravity", "lunar", "martian", "terrestrial", "hypergravity"]
-OutcomeClass = Literal["sustained", "extinguished", "no_ignition", "unknown"]
+OutcomeClass = Literal["frames_recorded", "extinguished", "no_ignition", "unknown"]
 
 T = TypeVar("T", bound=Optional[Union[float, int, bool, str]])
 

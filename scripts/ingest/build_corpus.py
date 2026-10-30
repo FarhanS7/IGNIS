@@ -194,11 +194,11 @@ def build_corpus() -> dict[str, Any]:
             "url": "https://ntrs.nasa.gov/api/citations/20120016855/downloads/20120016855.pdf",
         },
         {
-            "doc_id": "NTRS-20240013238",
-            "file": REPORTS_DIR / "20240013238.pdf",
-            "title": "NASA Exploration Atmosphere Tests 3 & 4 (Planetary EVA Prebreathe Protocols)",
-            "year": 2024,
-            "url": "https://ntrs.nasa.gov/api/citations/20240013238/downloads/20240013238.pdf",
+            "doc_id": "NTRS-20080013149",
+            "file": REPORTS_DIR / "20080013149.pdf",
+            "title": "Piloted Ignition Delay of PMMA in Space Exploration Atmospheres",
+            "year": 2008,
+            "url": "https://ntrs.nasa.gov/api/citations/20080013149/downloads/20080013149.pdf",
         },
         {
             "doc_id": "NTRS-20130014061",

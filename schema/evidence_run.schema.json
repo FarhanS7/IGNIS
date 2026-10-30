@@ -66,7 +66,7 @@
     },
     "outcome_class": {
       "type": "string",
-      "enum": ["sustained", "extinguished", "no_ignition", "unknown"],
+      "enum": ["frames_recorded", "extinguished", "no_ignition", "unknown"],
       "description": "Categorical combustion outcome derived strictly from explicit tabular columns."
     },
     "outcome_source_column": {

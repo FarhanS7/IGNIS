@@ -552,19 +552,6 @@
       "year": "2019"
     },
     {
-      "investigation_id": "NTRS-20240013238",
-      "file_name": "20240013238.pdf",
-      "saved_path": "data/raw/reports/20240013238.pdf",
-      "original_url": "https://ntrs.nasa.gov/api/citations/20240013238/downloads/ASMA_2025_EA_Garbino_v2.pdf",
-      "sha256": "727b246ec75eebcbac10b3da199bf299071c41a216f5b5324d791e1e08fbfa0e",
-      "file_size_bytes": 96473,
-      "license": "NASA-Public-Domain",
-      "distribution": "PUBLIC",
-      "ntrs_id": "20240013238",
-      "title": "Nasa Exploration Atmosphere Tests 3 & 4: Development and Validation of Planetary Extravehicular Activity Prebreathe Protocols for Alternate Atmospheres and Suit Pressures",
-      "year": "2024"
-    },
-    {
       "investigation_id": "NTRS-20130014061",
       "file_name": "20130014061.pdf",
       "saved_path": "data/raw/reports/20130014061.pdf",
@@ -576,6 +563,18 @@
       "ntrs_id": "20130014061",
       "title": "Methanol Droplet Combustion in Oxygen-Inert Environments in Microgravity",
       "year": "2019"
+    },
+    {
+      "investigation_id": "NTRS-20080013149",
+      "file_name": "20080013149.pdf",
+      "file_type": "pdf",
+      "size_bytes": 537439,
+      "sha256": "8ed3dc0c1e92134e35cb86eccc0c93e508cea74ee5c195d8b507b59ff02cf5af",
+      "saved_path": "data/raw/reports/20080013149.pdf",
+      "url": "https://ntrs.nasa.gov/api/citations/20080013149/downloads/20080013149.pdf",
+      "title": "Piloted Ignition Delay of PMMA in Space Exploration Atmospheres",
+      "year": 2008,
+      "distribution": "PUBLIC"
     }
   ]
 }

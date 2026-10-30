@@ -195,7 +195,7 @@ def parse_all_runs():
                 outcome_src_col = 'Air display / Fan display (PI note: extinction/blowoff)'
             # 2. Ambiguous cases (set to unknown)
             elif frames_lower in ['none', 'nan', '']:
-                # Frames 'none' contradicts O2 drop (Test B2 consumed 20.6% O2)
+                # Frames 'none' contradicts O2 drop (Test B2 raw final O2 recorded 1.6% due to uncalibrated sensor drift)
                 outcome_class = 'unknown'
                 outcome_src_col = 'Total Frames Shot (ambiguous: none but O2 consumed)'
             elif 'postburn' in frames_lower:
@@ -212,7 +212,7 @@ def parse_all_runs():
                         outcome_class = 'unknown'
                         outcome_src_col = f'Total Frames Shot (ambiguous: low frames={f_cnt})'
                     else:
-                        outcome_class = 'sustained'
+                        outcome_class = 'frames_recorded'
                         outcome_src_col = 'camera_frames_proxy (Total Frames Shot)'
                 except Exception:
                     outcome_class = 'unknown'
@@ -247,7 +247,7 @@ def parse_all_runs():
                 'oxygen_pct': make_evidence_val(o2_val, '%', 'measured' if o2_val is not None else 'missing', rel_bass2, 'Calibrated initial O2 % by vol', idx),
                 'pressure_kpa': make_evidence_val(101.325, 'kPa', 'assumed', rel_bass2, 'nominal_cabin_spec (1 atm)', idx),
                 'flow_cm_s': flow_ev,
-                'ignited': make_evidence_val((outcome_class in ['sustained', 'extinguished']) if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_bass2, outcome_src_col, idx),
+                'ignited': make_evidence_val((outcome_class in ['frames_recorded', 'extinguished']) if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_bass2, outcome_src_col, idx),
                 'extinguished': make_evidence_val((outcome_class == 'extinguished') if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_bass2, outcome_src_col, idx),
                 'spread_rate_mm_s': make_evidence_val(None, 'mm/s', 'missing', rel_bass2, 'Spread Rate', idx),
                 'burn_time_s': make_evidence_val(None, 's', 'missing', rel_bass2, 'Burn Time', idx),
@@ -321,7 +321,7 @@ def parse_all_runs():
                 if flow_dir.lower() == 'opposed':
                     outcome_class = 'extinguished'
                 else:
-                    outcome_class = 'sustained'
+                    outcome_class = 'frames_recorded'
                 outcome_src_col = 'Burn Time (s)'
             else:
                 outcome_class = 'unknown'
@@ -391,13 +391,13 @@ def parse_all_runs():
                 outcome_class = 'no_ignition'
                 outcome_src_col = 'Burn Time (s)'
             elif '29 cm' in burn_len_str or (burn_time is not None and burn_time >= 100):
-                outcome_class = 'sustained'
+                outcome_class = 'frames_recorded'
                 outcome_src_col = '?-g Burn Length'
             elif '5 cm' in burn_len_str or 'note 2' in burn_len_str.lower():
                 outcome_class = 'extinguished'
                 outcome_src_col = '?-g Burn Length'
             elif burn_time is not None and burn_time > 0:
-                outcome_class = 'sustained'
+                outcome_class = 'frames_recorded'
                 outcome_src_col = 'Burn Time (s)'
             else:
                 outcome_class = 'unknown'
@@ -431,7 +431,7 @@ def parse_all_runs():
                 'oxygen_pct': make_evidence_val(o2_val, '%', 'measured' if o2_val is not None else 'missing', rel_saf2, 'Percent O2 (Note 1)', idx),
                 'pressure_kpa': make_evidence_val(101.325, 'kPa', 'assumed', rel_saf2, 'nominal_cygnus_cabin_spec', idx),
                 'flow_cm_s': make_evidence_val(flow_val, 'cm/s', 'measured' if flow_val is not None else 'missing', rel_saf2, 'Air Flow (cm/s)', idx),
-                'ignited': make_evidence_val((outcome_class in ['sustained', 'extinguished']) if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_saf2, outcome_src_col, idx),
+                'ignited': make_evidence_val((outcome_class in ['frames_recorded', 'extinguished']) if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_saf2, outcome_src_col, idx),
                 'extinguished': make_evidence_val((outcome_class == 'extinguished') if outcome_class != 'unknown' else None, None, 'measured' if outcome_class != 'unknown' else 'missing', rel_saf2, outcome_src_col, idx),
                 'spread_rate_mm_s': make_evidence_val(spread_rate_mm_s, 'mm/s', 'converted' if spread_rate_mm_s is not None else 'missing', rel_saf2, '?-g Spread Length', idx),
                 'burn_time_s': make_evidence_val(burn_time, 's', 'measured' if burn_time is not None else 'missing', rel_saf2, 'Burn Time (s)', idx),
@@ -517,7 +517,7 @@ def parse_all_runs():
             if 'extinct' in end_cond.lower() or 'quench' in end_cond.lower():
                 out_class = 'extinguished'
             elif burn_time and burn_time > 0:
-                out_class = 'sustained'
+                out_class = 'frames_recorded'
             elif 'no ign' in end_cond.lower():
                 out_class = 'no_ignition'
             else:
@@ -577,7 +577,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-68'],
                 'ntrs_ids': NTRS_MAP['PSI-68'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Sample (Fuel Type)',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
@@ -622,7 +622,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-39'],
                 'ntrs_ids': NTRS_MAP['PSI-39'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Flex Number',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
@@ -665,7 +665,7 @@ def parse_all_runs():
                     bt_val = safe_float(r[15]) if len(r) > 15 else None
                     outcome = r[16].strip() if len(r) > 16 else ''
 
-                out_class = 'extinguished' if 'extinguish' in outcome.lower() else 'sustained'
+                out_class = 'extinguished' if 'extinguish' in outcome.lower() else 'frames_recorded'
 
                 all_runs.append({
                     'run_uid': f'PSI-159-RUN-{len(all_runs)+1:04d}',
@@ -721,7 +721,7 @@ def parse_all_runs():
                     'doi': DOI_MAP['PSI-10'],
                     'ntrs_ids': NTRS_MAP['PSI-10'],
                     'frames_shot': None,
-                    'outcome_class': 'sustained',
+                    'outcome_class': 'frames_recorded',
                     'outcome_source_column': 'Test',
                     'usable_for_matching': False,
                     'unusable_reasons': ['non_solid_fuel_tier'],
@@ -762,7 +762,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-20'],
                 'ntrs_ids': NTRS_MAP['PSI-20'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Burner Size (mm)',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
@@ -802,7 +802,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-21'],
                 'ntrs_ids': NTRS_MAP['PSI-21'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Test Type',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
@@ -856,7 +856,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-22'],
                 'ntrs_ids': NTRS_MAP['PSI-22'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Flames Ignited',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
@@ -897,7 +897,7 @@ def parse_all_runs():
                 'doi': DOI_MAP['PSI-23'],
                 'ntrs_ids': NTRS_MAP['PSI-23'],
                 'frames_shot': None,
-                'outcome_class': 'sustained',
+                'outcome_class': 'frames_recorded',
                 'outcome_source_column': 'Test Type',
                 'usable_for_matching': False,
                 'unusable_reasons': ['non_solid_fuel_tier'],
