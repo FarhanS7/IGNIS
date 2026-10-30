@@ -24,8 +24,8 @@ const STEPS = [
   },
   {
     num: '03',
-    title: 'Compare with real NASA flight data',
-    description: 'Evaluate your habitat scenario against peer-reviewed tests from Saffire, BASS, and FLEX.',
+    title: 'Query NASA flight evidence',
+    description: 'Evaluate your habitat scenario against 132 usable solid flight runs and 14 PSI flight investigations with full DOI provenance.',
     icon: Layers,
     accentColor: 'text-amber-300',
     borderColor: 'border-amber-500/30',

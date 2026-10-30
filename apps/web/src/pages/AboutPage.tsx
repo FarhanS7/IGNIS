@@ -1,420 +1,166 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import {
   ShieldAlert,
   Database,
   Scale,
-  Award,
   Layers,
-  FileText,
   Sliders,
   ExternalLink,
-  ArrowRight,
-  Radio,
+  CheckCircle,
   HelpCircle,
 } from 'lucide-react';
-import { EvidenceBadge } from '../components/common/EvidenceBadge';
-import { Badge } from '../components/common/Badge';
 import { Card } from '../components/common/Card';
-import { Button } from '../components/common/Button';
-import { Term } from '../components/common/Term';
-import { api } from '../lib/api';
-import type { DataSource } from '../types/api';
+import { Badge } from '../components/common/Badge';
 
-const DEFAULT_SOURCES: DataSource[] = [
-  {
-    id: '11111111-1111-1111-1111-111111111101',
-    name: 'NASA Physical Sciences Informatics (PSI)',
-    source_role: 'primary_scientific',
-    registry: 'NASA_PSI',
-    url: 'https://psi.nasa.gov',
-    description: 'Direct flight logs, thermocouple arrays, and video records for Saffire, BASS, and FLEX investigations.',
-    doi: '10.2514/1.B35421',
-  },
-  {
-    id: '11111111-1111-1111-1111-111111111102',
-    name: 'NASA Images and Video Library (CIR / MSG)',
-    source_role: 'media',
-    registry: 'NASA_OPEN_DATA',
-    url: 'https://images.nasa.gov',
-    description: 'High-speed optical camera recordings aboard the ISS Combustion Integrated Rack and Microgravity Glovebox.',
-    doi: 'NASA-PHOTO-ISS040E089222',
-  },
-  {
-    id: '11111111-1111-1111-1111-111111111103',
-    name: 'NASA Earthdata FIRMS (Active Fire System)',
-    source_role: 'earth_observation_context',
-    registry: 'NASA_EARTHDATA',
-    url: 'https://firms.modaps.eosdis.nasa.gov',
-    description: 'MODIS & VIIRS 375m thermal anomaly infrared sensor records utilized for planetary macro comparison.',
-    doi: '10.5067/FIRMS/WELD.001',
-  },
-  {
-    id: '11111111-1111-1111-1111-111111111104',
-    name: 'IGNIS Classical Computer Vision Image Pipeline',
-    source_role: 'derived_by_ignis',
-    registry: 'OTHER_NASA_REPOSITORY',
-    url: 'https://github.com/FarhanS7/IGNIS',
-    description: 'Reproducible classical OpenCV/NumPy HSV contour segmentation, flame area ratio time-series, and centroid tracking.',
-    doi: 'ignis-cv-hsv-v1.0.0',
-  },
+const PSI_INVESTIGATIONS = [
+  { id: 'PSI-25', name: 'BASS-II (Burning and Suppression of Solids II)', tier: 'Solid Fuel (Habitat)', platform: 'ISS MSG', doi: '10.60555/4qc4-de67', runs: 129 },
+  { id: 'PSI-26', name: 'BASS (Burning and Suppression of Solids)', tier: 'Solid Fuel (Habitat)', platform: 'ISS MSG', doi: '10.60555/58h4-dy80', runs: 122 },
+  { id: 'PSI-98', name: 'Saffire-I (Spacecraft Fire Experiment I)', tier: 'Solid Fuel (Habitat)', platform: 'Cygnus OA-6', doi: '10.60555/0t15-1z43', runs: 4 },
+  { id: 'PSI-99', name: 'Saffire-II (Spacecraft Fire Experiment II)', tier: 'Solid Fuel (Habitat)', platform: 'Cygnus OA-5', doi: '10.60555/2chp-m469', runs: 15 },
+  { id: 'PSI-100', name: 'Saffire-III (Spacecraft Fire Experiment III)', tier: 'Solid Fuel (Habitat)', platform: 'Cygnus OA-7', doi: '10.60555/040q-4h36', runs: 2 },
+  { id: 'PSI-69', name: 'FLEX (Flame Extinction Experiment)', tier: 'Droplet (Fundamental)', platform: 'ISS CIR', doi: '10.60555/mbq8-0451', runs: 274 },
+  { id: 'PSI-68', name: 'FLEX-2 (Flame Extinction Experiment 2)', tier: 'Droplet (Fundamental)', platform: 'ISS CIR', doi: '10.60555/byp8-h018', runs: 8 },
+  { id: 'PSI-10', name: 'Flame Design (Spherical/Inverse Diffusion)', tier: 'Gas Flame (Fundamental)', platform: 'ISS CIR', doi: '10.60555/w4zy-bt45', runs: 327 },
+  { id: 'PSI-20', name: 'ACME BRE (Burning Rate Emulator)', tier: 'Gas Flame (Fundamental)', platform: 'ISS CIR', doi: '10.60555/vb93-3y72', runs: 18 },
+  { id: 'PSI-21', name: 'ACME CLD (Coflow Laminar Diffusion)', tier: 'Gas Flame (Fundamental)', platform: 'ISS CIR', doi: '10.60555/23e1-9950', runs: 32 },
+  { id: 'PSI-22', name: 'ACME E-FIELD (Electric-Field Flames)', tier: 'Gas Flame (Fundamental)', platform: 'ISS CIR', doi: '10.60555/se5a-8c73', runs: 32 },
+  { id: 'PSI-23', name: 'ACME s-Flame (Spherical Flames)', tier: 'Gas Flame (Fundamental)', platform: 'ISS CIR', doi: '10.60555/k57n-p030', runs: 18 },
+  { id: 'PSI-39', name: 'CFI (Confined Combustion - Flat)', tier: 'Gas Flame (Fundamental)', platform: 'ISS MSG', doi: '10.60555/m6pj-a914', runs: 87 },
+  { id: 'PSI-159', name: 'CFI-G (Confined Combustion - Normal/Inverse)', tier: 'Gas Flame (Fundamental)', platform: 'ISS MSG', doi: '10.60555/cyt1-kh64', runs: 333 },
 ];
 
 export const AboutPage: React.FC = () => {
-  const [sources, setSources] = useState<DataSource[]>(DEFAULT_SOURCES);
-
-  useEffect(() => {
-    let active = true;
-    api.getDataSources()
-      .then((data) => {
-        if (active && data && data.length > 0) {
-          setSources(data);
-        }
-      })
-      .catch((err) => {
-        console.warn('Could not fetch remote NASA data sources, using baseline registry:', err);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
   return (
-    <div className="space-y-12 max-w-5xl mx-auto pb-16">
+    <div className="space-y-12 max-w-5xl mx-auto pb-16 px-4 sm:px-6">
       {/* Page Header */}
-      <div className="border-b border-white/10 pb-6">
-        <div className="eyebrow-pill mb-2">
-          <span>NASA Space Apps Challenge 2026 • Flame in Freefall</span>
+      <div className="border-b border-white/10 pb-6 pt-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-400 text-xs font-mono uppercase tracking-wider mb-3">
+          NASA Space Apps Challenge 2026 • Flame in Freefall
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-['Space_Grotesk',sans-serif]">
-          About: Methodology & Provenance Policy
+          Methodology, Provenance & Validation Policy
         </h1>
         <p className="text-slate-300 text-sm sm:text-base mt-2 max-w-3xl leading-relaxed">
-          How IGNIS transforms four decades of NASA <Term term="microgravity">microgravity</Term> combustion research into a verifiable evidence network — transparent mathematical weighting, 5-tier provenance tracking, and zero ungrounded physical hallucination.
+          IGNIS indexes 1,401 flight combustion records from 14 NASA Physical Sciences Informatics (PSI) investigations.
+          We provide transparent mathematical k-nearest-neighbor retrieval, column-level basis auditing, and zero ungrounded claims.
         </p>
       </div>
 
-      {/* Safety & Non-Operational Certification Notice */}
+      {/* Non-Operational Certification Notice */}
       <section id="disclaimers" className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
         <div className="flex items-center gap-2.5 text-amber-300 font-bold text-base">
           <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0" />
-          <span>Non-Operational Research Notice & PRD v1.1 §1.1 Compliance</span>
+          <span>Non-Operational Research Notice</span>
         </div>
         <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-          <strong>IGNIS (Intelligent Guidance from NASA Ignition Studies)</strong> is explicitly an interactive research and educational evidence exploration system. Calculations, similarity ratings, and behavior profiles provided by IGNIS do <strong>NOT</strong> constitute official flight qualification, mission safety clearance, or certified life-support engineering compliance under <strong>NASA-<Term term="std-6001b">STD-6001B</Term></strong>.
+          <strong>IGNIS (Intelligent Guidance from NASA Ignition Studies)</strong> is an interactive research and educational evidence exploration system. Calculations, similarity ratings, and flight records provided by IGNIS do <strong>NOT</strong> constitute official flight qualification, mission safety clearance, or certified life-support engineering compliance under <strong>NASA-STD-6001B</strong>.
         </p>
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-          The system never outputs binary "safe / unsafe" verdicts. All combustion analysis is framed as multidimensional empirical evidence. Real spacecraft mission-critical operations must follow designated NASA Flight Safety Review Boards.
+          The system never outputs binary verdicts or numerical clearance scores. All combustion analysis is presented strictly as empirical historical flight observations. Spacecraft mission-critical operations must follow designated NASA Flight Safety Review Boards.
         </p>
       </section>
 
-      {/* 5-Level Evidence Hierarchy */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-            The 5-Tier Evidence Hierarchy (DECISIONS.md D-001)
-          </h2>
-        </div>
-        <p className="text-sm text-slate-300 leading-relaxed">
-          To maintain strict scientific traceability, every metric, data point, and statement in IGNIS carries an explicit authority badge distinguishing directly measured physical telemetry from constrained AI synthesis.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-white text-sm">Level A: Directly Observed Telemetry</span>
-              <EvidenceBadge level="A" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Flight data recorded directly by physical instruments aboard spacecraft, the ISS, or drop towers (e.g., thermocouple readings, optical sensor time-series, pressure transducers). Maximum authority.
-            </p>
-          </Card>
-
-          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-white text-sm">Level B: Normalized Source Tables</span>
-              <EvidenceBadge level="B" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Standardized, unit-converted data tables extracted from published NASA Physical Sciences Informatics (<Term term="psi">PSI</Term>) archives and peer-reviewed journal papers with verified DOIs.
-            </p>
-          </Card>
-
-          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-white text-sm">Level C: Computer Vision Derived Metrics</span>
-              <EvidenceBadge level="C" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Quantitative measurements computed from flight optical telemetry by classical computer vision algorithms (e.g., HSV flame boundary contour extraction, centroid tracking, area growth curves). Fully reproducible.
-            </p>
-          </Card>
-
-          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-white text-sm">Level D: Mathematical Similarity Inference</span>
-              <EvidenceBadge level="D" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Empirical comparability match rankings generated by normalized multi-variable vector scoring with transparent domain weights and gravity transfer penalty caps.
-            </p>
-          </Card>
-
-          <Card variant="glass" padding="md" className="space-y-2 border-white/10 md:col-span-2">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-white text-sm">Level E: Grounded AI Synthesis</span>
-              <EvidenceBadge level="E" size="sm" />
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Natural language explanations generated by retrieval-augmented LLMs. Strictly constrained to retrieved NASA literature chunks with mandatory citation links. Zero ungrounded hallucination.
-            </p>
-          </Card>
-        </div>
-      </section>
-
-      {/* The Comparable-Evidence Gate */}
-      <section id="method" className="glass-card space-y-5 rounded-2xl border border-white/10 p-6 sm:p-8">
-        <div className="flex items-center gap-2.5 text-white font-bold text-lg sm:text-xl font-['Space_Grotesk',sans-serif]">
-          <Scale className="w-5 h-5 text-cyan-400" />
-          <span>The Comparable-Evidence Gate (PRD v1.1 §14)</span>
-        </div>
-        <p className="text-sm text-slate-300 leading-relaxed">
-          In combustion science, naively matching numerical numbers across fundamentally different physical phenomena produces dangerously unscientific conclusions (e.g., declaring a gaseous methane jet 95% similar to solid Nomex fabric simply because oxygen and pressure happen to match).
-        </p>
-        <p className="text-sm text-slate-300 leading-relaxed">
-          IGNIS enforces a mandatory multi-stage eligibility gate prior to executing similarity algorithms:
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-          <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-            <h4 className="text-xs font-semibold text-cyan-300 uppercase tracking-wide">1. Fuel Family Compatibility</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Solid sheet fuels (<Term term="pmma">PMMA</Term>, cotton) are separated from liquid droplets (<Term term="flex">FLEX</Term> heptane) and gaseous jets. Cross-family matches are strictly excluded.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-            <h4 className="text-xs font-semibold text-amber-300 uppercase tracking-wide">2. Gravity Transferability</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Matching Lunar (0.16g) or Mars (0.38g) scenarios against 0g orbital data triggers a mandatory caveat warning and caps confidence at Medium.
-            </p>
-          </div>
-
-          <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
-            <h4 className="text-xs font-semibold text-emerald-300 uppercase tracking-wide">3. Dynamic Renormalization</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              If an experiment did not record a specific parameter (e.g., missing flow velocity), it is omitted from scoring and remaining weights re-sum to 1.0.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Similarity Weighting Table */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Sliders className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-            Similarity Weighting Engine (PRD v1.1 §15)
-          </h2>
-        </div>
-        <p className="text-sm text-slate-300 leading-relaxed">
-          Vector similarity calculations use empirical sensitivity weights derived from NASA microgravity combustion literature:
-        </p>
-
-        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-900/40">
-          <table className="w-full text-left text-xs sm:text-sm">
-            <thead className="bg-white/5 text-slate-300 uppercase font-mono text-[11px] border-b border-white/10">
-              <tr>
-                <th className="p-3 sm:p-4">Parameter</th>
-                <th className="p-3 sm:p-4">Weight</th>
-                <th className="p-3 sm:p-4">Mathematical Function</th>
-                <th className="p-3 sm:p-4">Physical Justification</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5 text-slate-300 font-mono text-xs">
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Fuel / Material Family</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">30%</td>
-                <td>Categorical Exact / Taxonomy Jaccard</td>
-                <td className="font-sans text-slate-400">Primary driver of pyrolysis kinetics and limiting oxygen concentration (LOC).</td>
-              </tr>
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Oxygen Concentration (O₂)</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">20%</td>
-                <td>Bounded Gaussian Decay (σ = 4.0%)</td>
-                <td className="font-sans text-slate-400">Directly sets flame chemical reaction rate and radiative heat generation.</td>
-              </tr>
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Forced Airflow Velocity</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">20%</td>
-                <td>Asymmetric Exponential (v &lt; 0.2 m/s)</td>
-                <td className="font-sans text-slate-400">Controls convective oxidizer supply vs aerodynamic blowout (evaluated via <Term term="richardson number">Richardson number</Term> Ri ≈ 0 in orbit).</td>
-              </tr>
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Cabin Total Pressure</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">15%</td>
-                <td>Logarithmic Pressure Distance</td>
-                <td className="font-sans text-slate-400">Alters gas density, thermal conductivity, and three-body quenching.</td>
-              </tr>
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Scientific Objective</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">10%</td>
-                <td><Term term="jaccard overlap">Jaccard Overlap</Term></td>
-                <td className="font-sans text-slate-400">Matches target research focus (<Term term="flame spread">flame spread</Term> vs <Term term="extinction">extinction</Term> limits).</td>
-              </tr>
-              <tr>
-                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Geometry & Regime</td>
-                <td className="p-3 sm:p-4 text-cyan-400 font-bold">5%</td>
-                <td>Dimension Ratio Match</td>
-                <td className="font-sans text-slate-400">Sample thickness and boundary layer duct dimensions.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Multi-Channel NASA Registries */}
+      {/* Verified Dataset Scope: 1,401 Total vs 132 Usable Solid Runs */}
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Database className="w-5 h-5 text-cyan-400" />
           <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-            NASA Data Channels & Roles (PRD v1.1 §12)
+            Verified Flight Dataset Scope & Inclusion Criteria
           </h2>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="glass-card p-5 rounded-2xl border border-white/10 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-white">NASA PSI</span>
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">
-                Primary Ground Truth
-              </span>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
+            <div className="text-2xl font-bold text-cyan-400 font-mono">1,401</div>
+            <div className="text-xs font-semibold text-white uppercase tracking-wider">Total Flight Runs Ingested</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Physical Sciences Informatics (PSI) database records: <Term term="saffire">Saffire</Term> I–VI Cygnus flights, <Term term="bass">BASS</Term>-I/II glovebox tests, and FLEX droplet investigations.
+              Extracted directly from 14 official NASA PSI data tables and calibrated telemetry archives across orbital missions and Cygnus cargo vehicles.
             </p>
-            <a
-              href="https://psi.nasa.gov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-cyan-400 hover:text-white flex items-center gap-1 font-mono pt-1"
-            >
-              psi.nasa.gov <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
+          </Card>
 
-          <div className="glass-card p-5 rounded-2xl border border-white/10 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-white">NASA Earthdata</span>
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">
-                Comparative Context
-              </span>
-            </div>
+          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
+            <div className="text-2xl font-bold text-amber-400 font-mono">272</div>
+            <div className="text-xs font-semibold text-white uppercase tracking-wider">Solid Fuel Runs (BASS & Saffire)</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              FIRMS satellite active thermal anomaly sensing of terrestrial wildfires. Used exclusively in the Explore Fire module to contrast macro remote sensing with micro cabin safety.
+              Flight runs testing solid polymers (PMMA acrylic, SIBAL cotton-fiberglass blend, Nomex flight suit fabric, silicone).
             </p>
-            <a
-              href="https://firms.modaps.eosdis.nasa.gov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-amber-400 hover:text-white flex items-center gap-1 font-mono pt-1"
-            >
-              firms.modaps.eosdis.nasa.gov <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
+          </Card>
 
-          <div className="glass-card p-5 rounded-2xl border border-white/10 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-white">NASA NTRS / Open Data</span>
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
-                Peer-Reviewed Citations
-              </span>
-            </div>
+          <Card variant="glass" padding="md" className="space-y-2 border-white/10">
+            <div className="text-2xl font-bold text-emerald-400 font-mono">132</div>
+            <div className="text-xs font-semibold text-white uppercase tracking-wider">Usable for Similarity Matcher</div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              NASA Technical Reports Server (NTRS) flight documentation, conference proceedings, and DOI publications linked to individual chunks.
+              Solid runs with complete measured oxygen %, physical airflow conversions, and unambiguous material identification without sensor drift failure.
             </p>
-            <a
-              href="https://ntrs.nasa.gov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-emerald-400 hover:text-white flex items-center gap-1 font-mono pt-1"
-            >
-              ntrs.nasa.gov <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
+          </Card>
+        </div>
+
+        <div className="p-4 rounded-xl bg-slate-900/60 border border-white/10 text-xs text-slate-300 space-y-2">
+          <strong className="block text-white font-semibold">Why are 140 solid runs excluded from similarity matching?</strong>
+          <p>
+            Of the 272 solid flight runs, 140 were excluded from the mathematical kNN matcher for explicit, documented reasons:
+            (1) Test B2 and four other BASS-II runs experienced extreme initial-to-final oxygen deltas (|ΔO₂| &gt; 5%), which BASS-II ReadMe paragraph 22 explains were caused by uncalibrated paramagnetics drift or telemetry loss rather than fuel combustion;
+            (2) Runs without recorded forced flow velocity dial settings; and
+            (3) Runs with unverified or proprietary composite blends outside published taxonomy.
+          </p>
         </div>
       </section>
 
-      {/* Registered NASA Data Sources Catalog (FR-NAS-006 / Task I.5) */}
+      {/* The 14 Ingested NASA PSI Investigations */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Radio className="w-5 h-5 text-orange-400" />
+            <Layers className="w-5 h-5 text-cyan-400" />
             <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-              Registered NASA Source Catalog & Provenance (FR-NAS-006)
+              Catalog of 14 Ingested NASA PSI Flight Investigations
             </h2>
           </div>
           <Badge variant="neutral" size="xs">
-            {sources.length} REGISTERED SOURCES
+            14 PEER-REVIEWED INVESTIGATIONS
           </Badge>
         </div>
         <p className="text-sm text-slate-300 leading-relaxed">
-          Active data sources registered in the IGNIS evidence catalog with authority tier assignments, verified DOIs, and isolation roles.
+          Every record in IGNIS traces to one of these 14 primary physical investigations in the NASA Physical Sciences Informatics repository:
         </p>
 
         <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-900/60 shadow-xl">
           <table className="w-full text-left text-xs font-mono">
             <thead className="bg-white/5 text-slate-300 uppercase text-[11px] border-b border-white/10 font-sans">
               <tr>
-                <th className="p-3.5">Source / Agency</th>
-                <th className="p-3.5">Assigned Role</th>
-                <th className="p-3.5">Description & Provenance Scope</th>
-                <th className="p-3.5">Accession / DOI</th>
-                <th className="p-3.5">Repository Link</th>
+                <th className="p-3.5">Investigation</th>
+                <th className="p-3.5">Title & Platform</th>
+                <th className="p-3.5">Domain</th>
+                <th className="p-3.5">Runs</th>
+                <th className="p-3.5">DOI</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-slate-300">
-              {sources.map((s) => (
-                <tr key={s.id} className="hover:bg-white/5 transition-colors">
+              {PSI_INVESTIGATIONS.map((inv) => (
+                <tr key={inv.id} className="hover:bg-white/5 transition-colors">
                   <td className="p-3.5 font-sans font-semibold text-white whitespace-nowrap">
-                    <div>{s.name}</div>
-                    <div className="text-[10px] text-slate-400 font-mono font-normal">{s.registry}</div>
+                    {inv.id}
                   </td>
                   <td className="p-3.5 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase font-semibold ${
-                        s.source_role === 'primary_scientific'
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                          : s.source_role === 'earth_observation_context'
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                          : s.source_role === 'derived_by_ignis'
-                          ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                          : 'bg-slate-700/40 text-slate-300 border border-slate-600/40'
-                      }`}
-                    >
-                      {s.source_role.replace(/_/g, ' ')}
+                    <div className="text-slate-100">{inv.name}</div>
+                    <div className="text-[10px] text-slate-400 font-mono">{inv.platform}</div>
+                  </td>
+                  <td className="p-3.5 whitespace-nowrap">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-slate-800 text-slate-300 border border-slate-700">
+                      {inv.tier}
                     </span>
                   </td>
-                  <td className="p-3.5 font-sans text-xs text-slate-300 max-w-sm">
-                    {s.description}
-                  </td>
-                  <td className="p-3.5 text-cyan-300 whitespace-nowrap text-[11px]">
-                    {s.doi || '—'}
+                  <td className="p-3.5 text-cyan-300 font-bold whitespace-nowrap">
+                    {inv.runs}
                   </td>
                   <td className="p-3.5 whitespace-nowrap">
-                    {s.url && (
-                      <a
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-orange-400 hover:text-white flex items-center gap-1 font-mono transition-colors"
-                      >
-                        <span>Open Source</span>
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
+                    <a
+                      href={`https://doi.org/${inv.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-cyan-400 hover:text-white flex items-center gap-1 font-mono transition-colors"
+                    >
+                      <span>{inv.doi}</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
                   </td>
                 </tr>
               ))}
@@ -423,94 +169,94 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Frequently Asked Scientific Questions (PRD v1.1 §10 / Migrated Q&A) */}
-      <section className="space-y-4">
-        <div className="flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-            Frequently Asked Scientific Questions
-          </h2>
+      {/* Assumptions: Pressure & Gravity */}
+      <section className="glass-card space-y-4 rounded-2xl border border-white/10 p-6 sm:p-8">
+        <div className="flex items-center gap-2.5 text-white font-bold text-lg sm:text-xl font-['Space_Grotesk',sans-serif]">
+          <Scale className="w-5 h-5 text-cyan-400" />
+          <span>Physical Assumptions & Epistemic Boundaries</span>
         </div>
-        <p className="text-sm text-slate-300 leading-relaxed">
-          Fundamental empirical insights on microgravity combustion physics, large-scale Saffire burns, and partial gravity boundaries.
-        </p>
-
-        <div className="space-y-3 pt-2">
-          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
-            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
-              <span>Why do microgravity flames form a sphere in space?</span>
-              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
-            </summary>
-            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
-              <p>
-                In Earth gravity, hot combustion gases rise due to <Term term="buoyancy">buoyancy</Term> (natural convection), drawing fresh oxygen into the base and giving flames their characteristic teardrop shape. In microgravity (0g), gravity-driven buoyancy is absent. Oxygen transport occurs almost purely via molecular diffusion, causing the reaction zone to form a symmetrical sphere around the fuel source with lower flame temperatures and a distinct blue chemiluminescent glow.
-              </p>
-              <div className="text-[11px] font-mono text-cyan-400">
-                Sources: NASA TM-2015-218820 (FLEX-2) • ISS Physical Science Informatics (PSI) • Combustion Integrated Rack (<Term term="cir">CIR</Term>) / Glovebox (<Term term="msg">MSG</Term>)
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
+            <div className="flex items-center gap-1.5 text-amber-300 text-xs font-semibold uppercase font-mono">
+              <HelpCircle className="w-4 h-4 text-amber-400" />
+              <span>Pressure Assumption (Untested in Flight)</span>
             </div>
-          </details>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              No solid-fuel flight combustion experiment (BASS, BASS-II, Saffire) measured chamber pressure during flight runs.
+              All solid flight runs were conducted within nominal 1 atm (101.325 kPa) cabin environments.
+              Consequently, cabin pressure is marked as <code>assumed</code> across the entire dataset and excluded from mathematical distance calculations.
+            </p>
+          </div>
 
-          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
-            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
-              <span>What did the Saffire missions discover about spacecraft fire safety?</span>
-              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
-            </summary>
-            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
-              <p>
-                The Saffire (Spacecraft Fire Experiment) missions conducted inside Cygnus cargo vehicles after unberthing from the ISS revealed that large-scale materials (up to 1 meter in length) burn differently than small laboratory samples. Saffire demonstrated that low-speed cabin ventilation (0.05 to 0.20 m/s) maintains active flame propagation across fabric and PMMA, whereas complete cessation of airflow leads to rapid oxygen starvation and flame quenching.
-              </p>
-              <div className="text-[11px] font-mono text-cyan-400">
-                Sources: Saffire-I Flight Report (NASA/TM-2017-219500) • NASA Glenn Research Center Combustion Archives • Cygnus OA-6
-              </div>
+          <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-2">
+            <div className="flex items-center gap-1.5 text-cyan-300 text-xs font-semibold uppercase font-mono">
+              <CheckCircle className="w-4 h-4 text-cyan-400" />
+              <span>Gravitational Transfer Boundary</span>
             </div>
-          </details>
-
-          <details className="group rounded-xl border border-white/10 bg-slate-900/60 p-4 transition-colors open:bg-slate-900/90">
-            <summary className="flex cursor-pointer items-center justify-between font-semibold text-white text-sm list-none">
-              <span>Does fire behave differently on the Moon (0.16g) than in orbital microgravity (0g)?</span>
-              <span className="text-cyan-400 font-mono transition-transform group-open:rotate-180">▾</span>
-            </summary>
-            <div className="mt-3 text-xs text-slate-300 leading-relaxed space-y-2 border-t border-white/5 pt-3">
-              <p>
-                Yes. Lunar gravity is approximately one-sixth (0.16g) of Earth's gravity. In 0.16g, buoyancy does not entirely vanish: weak natural convection currents still develop, transporting hot combustion products upward and drawing modest amounts of fresh oxidizer. Consequently, lunar flames are not perfectly spherical like orbital flames, and materials exhibit slightly lower extinction limits than in total weightlessness.
-              </p>
-              <div className="text-[11px] font-mono text-cyan-400">
-                Sources: Zero-Gravity Facility Drop Tower 1/6g Tests • BASS-II Partial Gravity Extrapolation Studies • NASA Exploration Atmosphere Standards
-              </div>
-            </div>
-          </details>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              100% of matched flight runs were conducted in orbital microgravity (~0 g).
+              Transferring microgravity empirical data to partial gravity environments such as the Moon (0.16 g) or Mars (0.38 g) is physically untested.
+              IGNIS displays a persistent warning whenever partial gravity is selected, noting that buoyant natural convection re-emerges at partial gravity.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Challenge Attribution & Next Steps */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-cyan-950/40 border border-white/15 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-1.5 text-center md:text-left">
-          <div className="inline-flex items-center gap-1.5 text-xs text-cyan-400 font-semibold font-mono">
-            <Award className="w-4 h-4" />
-            <span>NASA Space Apps Challenge 2026</span>
-          </div>
-          <h3 className="text-xl font-bold text-white font-['Space_Grotesk',sans-serif]">
-            Ready to test spacecraft fire scenarios?
-          </h3>
-          <p className="text-xs text-slate-300 max-w-xl">
-            Configure cabin oxygen, pressure, and ventilation in the Simulator to evaluate empirical NASA fire behavior.
-          </p>
+      {/* Grouped Cross-Validation & Validation Limits */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Sliders className="w-5 h-5 text-cyan-400" />
+          <h2 className="text-xl sm:text-2xl font-bold text-white font-['Space_Grotesk',sans-serif]">
+            Validation Summary & Statistical Limits
+          </h2>
+        </div>
+        <p className="text-sm text-slate-300 leading-relaxed">
+          To evaluate whether multi-factor similarity matching provides predictive utility over simple rules, we conducted grouped leave-one-out cross-validation (Grouped LOOCV) grouped by fuel material and sample geometry (110 independent test groups across 132 usable solid runs), benchmarked against a baseline single-parameter oxygen threshold rule:
+        </p>
+
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-900/40">
+          <table className="w-full text-left text-xs sm:text-sm font-mono">
+            <thead className="bg-white/5 text-slate-300 uppercase text-[11px] border-b border-white/10">
+              <tr>
+                <th className="p-3 sm:p-4">Metric</th>
+                <th className="p-3 sm:p-4">Full Matcher (k=5)</th>
+                <th className="p-3 sm:p-4">O₂ Threshold Rule</th>
+                <th className="p-3 sm:p-4">Difference (95% Bootstrap CI)</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5 text-slate-300 text-xs">
+              <tr>
+                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Overall Accuracy</td>
+                <td className="p-3 sm:p-4 text-cyan-400">92.42% (122/132)</td>
+                <td className="p-3 sm:p-4 text-slate-300">91.67% (121/132)</td>
+                <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.000)</td>
+              </tr>
+              <tr>
+                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Balanced Accuracy</td>
+                <td className="p-3 sm:p-4 text-cyan-400">87.89%</td>
+                <td className="p-3 sm:p-4 text-slate-300">85.55%</td>
+                <td className="p-3 sm:p-4 text-slate-400">+2.34% [-5.88%, +10.85%]</td>
+              </tr>
+              <tr>
+                <td className="p-3 sm:p-4 font-sans font-semibold text-white">Extinction Recall</td>
+                <td className="p-3 sm:p-4 text-cyan-400">84.00% (21/25)</td>
+                <td className="p-3 sm:p-4 text-slate-300">76.00% (19/25)</td>
+                <td className="p-3 sm:p-4 text-slate-400">+8.00% [-16.67%, +33.33%]</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <Link to="/simulator">
-            <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-              Open Simulator
-            </Button>
-          </Link>
-          <Link to="/ask">
-            <Button variant="outline" size="md" icon={<FileText className="w-4 h-4" />}>
-              Ask IGNIS
-            </Button>
-          </Link>
+        <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-xs text-slate-300 space-y-2">
+          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding:</strong>
+          <p>
+            Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor kNN matcher demonstrates <strong>no statistically validated performance advantage</strong> over a simple oxygen threshold rule.
+            The system's true purpose and value is therefore not outcome forecasting, but <strong>epistemic provenance retrieval</strong>: instantly providing astronautical engineers with the raw flight records, physical test conditions, DOI citations, and primary data tables from real NASA missions.
+          </p>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
+
+export default AboutPage;

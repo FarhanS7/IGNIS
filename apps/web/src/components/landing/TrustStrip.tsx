@@ -15,7 +15,7 @@ export const TrustStrip: React.FC = () => {
               Built on NASA flight experiments (Saffire, BASS, FLEX).
             </p>
             <p className="text-xs text-slate-400">
-              Evidence-grounded physical analysis • Zero unverified AI hallucination.
+              1,401 flight runs across 14 NASA PSI investigations • Strict empirical provenance.
             </p>
           </div>
         </div>

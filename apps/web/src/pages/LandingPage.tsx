@@ -197,7 +197,7 @@ export const LandingPage: React.FC = () => {
                   Try the Simulator
                 </Link>
                 <Link to="/experiments" className="cta-secondary cursor-pointer">
-                  Watch real NASA flight data
+                  Explore 1,401 Flight Records
                 </Link>
               </div>
 

@@ -201,7 +201,7 @@ const INITIAL_MESSAGES: ChatMessage[] = [
     observedFacts: [
       'Grounded RAG pipeline compliant with PRD v1.1 §16.9 and §19',
       'Level A/B observed data strictly separated from Level E AI synthesis',
-      'Zero ungrounded physics hallucination policy',
+      'Strict empirical evidence grounding policy',
     ],
   },
 ];
