@@ -8,6 +8,15 @@ from .coverage import compute_coverage, compute_confidence
 from .models import AnalysisResult, EvidenceMatch, FactorExplanation
 from .orchestrator import run_scenario_analysis
 
+from .real_solid import (
+    RealSolidMatch,
+    RealSolidMatchResult,
+    RealSolidMatcher,
+    SolidEnvelopeData,
+    SolidScenarioInput,
+    TestedEnvelopePoint,
+)
+
 __all__ = [
     "DEFAULT_TOLERANCES",
     "numeric_similarity",
@@ -21,4 +30,11 @@ __all__ = [
     "EvidenceMatch",
     "FactorExplanation",
     "run_scenario_analysis",
+    "RealSolidMatcher",
+    "SolidScenarioInput",
+    "RealSolidMatch",
+    "RealSolidMatchResult",
+    "SolidEnvelopeData",
+    "TestedEnvelopePoint",
 ]
+
