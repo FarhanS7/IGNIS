@@ -60,6 +60,11 @@ from .story import (
     StoryRead,
     StorySection,
 )
+from .evidence_run import (
+    EvidenceValue,
+    EvidenceRun,
+    OutcomeClass,
+)
 
 __all__ = [
     "BehaviorLevel",
@@ -108,4 +113,8 @@ __all__ = [
     "StoryCreate",
     "StoryRead",
     "StorySection",
+    "EvidenceValue",
+    "EvidenceRun",
+    "OutcomeClass",
 ]
+

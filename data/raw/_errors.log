@@ -1,0 +1,2 @@
+[2026-10-29T23:43:01.215465+00:00] FAILED: https://psi.nasa.gov/physci/repo/data/investigations/PSI-98/PSI-98_Raw Data_Saffire-I Telemetry Data Good Process Version.xlsx | Reason: HTTP Error 404: Not Found
+[2026-10-30T13:32:55.041397+00:00] FAILED: https://psi.nasa.gov/physci/repo/data/investigations/PSI-23/PSI-23_Science Documents_s-Flame_SRD_20100125.pdf | Reason: The read operation timed out

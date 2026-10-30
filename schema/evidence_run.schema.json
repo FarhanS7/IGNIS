@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ignis.space/schemas/evidence_run.schema.json",
+  "title": "EvidenceRun",
+  "description": "Unified schema for a real NASA microgravity combustion experimental run with full epistemic provenance.",
+  "type": "object",
+  "required": [
+    "run_uid",
+    "investigation_id",
+    "platform",
+    "fuel_class",
+    "material",
+    "gravity_regime",
+    "doi",
+    "ntrs_ids",
+    "oxygen_pct",
+    "pressure_kpa",
+    "flow_cm_s",
+    "ignited",
+    "extinguished",
+    "spread_rate_mm_s",
+    "burn_time_s",
+    "outcome_class",
+    "usable_for_matching",
+    "unusable_reasons"
+  ],
+  "properties": {
+    "run_uid": {
+      "type": "string",
+      "description": "Unique identifier for this experimental run (e.g., PSI-25-RUN-001)."
+    },
+    "investigation_id": {
+      "type": "string",
+      "description": "NASA PSI investigation identifier (e.g., PSI-25, PSI-98)."
+    },
+    "platform": {
+      "type": "string",
+      "description": "Flight platform or apparatus (e.g., ISS (MSG), ISS (CIR), Cygnus OA-5)."
+    },
+    "fuel_class": {
+      "type": "string",
+      "enum": ["solid", "droplet", "gas"],
+      "description": "Physical classification of the fuel."
+    },
+    "material": {
+      "type": "string",
+      "description": "Chemical composition or sample material specification."
+    },
+    "gravity_regime": {
+      "type": "string",
+      "enum": ["microgravity", "lunar", "martian", "terrestrial", "hypergravity"],
+      "description": "Verified gravitational acceleration regime of the run."
+    },
+    "doi": {
+      "type": "string",
+      "description": "Digital Object Identifier for the investigation dataset."
+    },
+    "ntrs_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "NASA Technical Reports Server document IDs associated with this investigation."
+    },
+    "frames_shot": {
+      "type": ["integer", "null"],
+      "description": "Total camera frames shot during the run without unit conversion."
+    },
+    "outcome_class": {
+      "type": "string",
+      "enum": ["sustained", "extinguished", "no_ignition", "unknown"],
+      "description": "Categorical combustion outcome derived strictly from explicit tabular columns."
+    },
+    "outcome_source_column": {
+      "type": "string",
+      "description": "Explicit raw column from which outcome_class was derived."
+    },
+    "usable_for_matching": {
+      "type": "boolean",
+      "description": "True only if run has an explicit outcome and at least two measured/converted environmental factors (O2, flow)."
+    },
+    "unusable_reasons": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of reasons disqualifying run from matching if usable_for_matching is false."
+    },
+    "oxygen_pct": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Chamber or oxidizer flow oxygen concentration in percentage by volume."
+    },
+    "pressure_kpa": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Chamber ambient absolute pressure in kilopascals (kPa)."
+    },
+    "flow_cm_s": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Convective oxidizer flow velocity across or around fuel in cm/s."
+    },
+    "ignited": {
+      "$ref": "#/definitions/EvidenceValueBoolean",
+      "description": "Whether ignition was achieved."
+    },
+    "extinguished": {
+      "$ref": "#/definitions/EvidenceValueBoolean",
+      "description": "Whether flame extinction occurred before sample consumption or command stop."
+    },
+    "spread_rate_mm_s": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Linear flame spread rate in millimeters per second (mm/s)."
+    },
+    "burn_time_s": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Total duration of sustained visible or measured combustion in seconds."
+    },
+    "co_ppm": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Chamber carbon monoxide concentration in parts per million (ppm)."
+    },
+    "co2_pct": {
+      "$ref": "#/definitions/EvidenceValueNumber",
+      "description": "Chamber carbon dioxide concentration in percentage by volume."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional investigation-specific raw fields, notes, or calibrations.",
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "BasisEnum": {
+      "type": "string",
+      "enum": ["measured", "converted", "assumed", "missing"],
+      "description": "Epistemological basis for the value."
+    },
+    "EvidenceValueNumber": {
+      "type": "object",
+      "required": ["value", "unit", "basis", "source_file", "source_column", "source_row"],
+      "properties": {
+        "value": {
+          "type": ["number", "null"],
+          "description": "Numeric measurement, converted value, assumed constant, or null if missing."
+        },
+        "unit": {
+          "type": ["string", "null"],
+          "description": "Physical unit of measurement (e.g., kPa, %, cm/s, mm/s, s, ppm)."
+        },
+        "basis": {
+          "$ref": "#/definitions/BasisEnum"
+        },
+        "source_file": {
+          "type": "string",
+          "description": "Relative path to the source raw or calibration data file."
+        },
+        "source_column": {
+          "type": "string",
+          "description": "Exact column name in the source file, or specification description."
+        },
+        "source_row": {
+          "type": "integer",
+          "description": "1-indexed row number in the source file where this value originates."
+        }
+      },
+      "additionalProperties": false
+    },
+    "EvidenceValueBoolean": {
+      "type": "object",
+      "required": ["value", "unit", "basis", "source_file", "source_column", "source_row"],
+      "properties": {
+        "value": {
+          "type": ["boolean", "null"],
+          "description": "Boolean outcome, or null if missing/indeterminate."
+        },
+        "unit": {
+          "type": ["string", "null"],
+          "description": "Always null for boolean outcomes."
+        },
+        "basis": {
+          "$ref": "#/definitions/BasisEnum"
+        },
+        "source_file": {
+          "type": "string",
+          "description": "Relative path to the source raw or calibration data file."
+        },
+        "source_column": {
+          "type": "string",
+          "description": "Exact column name in the source file, or specification description."
+        },
+        "source_row": {
+          "type": "integer",
+          "description": "1-indexed row number in the source file where this value originates."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

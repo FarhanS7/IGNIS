@@ -13,19 +13,26 @@ __pycache__/
 .env.*.local
 
 # Generated / Large Data
-data/processed/
-
-# OS & IDE temporary files
-.DS_Store
-Thumbs.db
-*.log
+data/raw/*.zip
+data/raw/*.xlsx
+data/raw/*.tar.gz
+data/raw/*.mp4
+data/raw/*.h5
+data/raw/*.tif
+data/raw/*.pdf
+data/raw/PSI-23_metadata.json
+data/raw/PSI-39_metadata.json
 
 # Project Assets (ensure tracked)
 !assets/
 !assets/images/**
 
-# Internal Planning, PRD & Roadmap Documents
-docs/
+# Documentation & Inventories (allow core data modeling docs)
+docs/*
+!docs/DATA_INVENTORY.md
+!docs/VERIFIED_FACTS.md
+!docs/DATA_QUALITY.md
+!docs/VALIDATION.md
 IGNIS_PRD*.md
 IGNIS_Project_Concept*.md
 PRD_TO_TASKS_FRAMEWORK.md
