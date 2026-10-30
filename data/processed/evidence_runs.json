@@ -10,7 +10,7 @@
     "ntrs_ids": [],
     "frames_shot": 57,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -42,7 +42,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 2
     },
     "extinguished": {
@@ -50,7 +50,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 2
     },
     "spread_rate_mm_s": {
@@ -114,10 +114,10 @@
     "ntrs_ids": [],
     "frames_shot": null,
     "outcome_class": "unknown",
-    "outcome_source_column": "none",
+    "outcome_source_column": "Total Frames Shot (ambiguous: none but O2 consumed)",
     "usable_for_matching": false,
     "unusable_reasons": [
-      "missing_explicit_outcome"
+      "ambiguous_or_missing_outcome"
     ],
     "oxygen_pct": {
       "value": 22.2,
@@ -148,7 +148,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: none but O2 consumed)",
       "source_row": 3
     },
     "extinguished": {
@@ -156,7 +156,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: none but O2 consumed)",
       "source_row": 3
     },
     "spread_rate_mm_s": {
@@ -220,7 +220,7 @@
     "ntrs_ids": [],
     "frames_shot": 253,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -252,7 +252,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 4
     },
     "extinguished": {
@@ -260,7 +260,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 4
     },
     "spread_rate_mm_s": {
@@ -324,7 +324,7 @@
     "ntrs_ids": [],
     "frames_shot": 137,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -356,7 +356,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 5
     },
     "extinguished": {
@@ -364,7 +364,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 5
     },
     "spread_rate_mm_s": {
@@ -428,7 +428,7 @@
     "ntrs_ids": [],
     "frames_shot": 206,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -460,7 +460,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 6
     },
     "extinguished": {
@@ -468,7 +468,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 6
     },
     "spread_rate_mm_s": {
@@ -532,7 +532,7 @@
     "ntrs_ids": [],
     "frames_shot": 80,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -564,7 +564,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 7
     },
     "extinguished": {
@@ -572,7 +572,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 7
     },
     "spread_rate_mm_s": {
@@ -636,7 +636,7 @@
     "ntrs_ids": [],
     "frames_shot": 84,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -668,7 +668,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 8
     },
     "extinguished": {
@@ -676,7 +676,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 8
     },
     "spread_rate_mm_s": {
@@ -740,7 +740,7 @@
     "ntrs_ids": [],
     "frames_shot": 226,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -772,7 +772,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 9
     },
     "extinguished": {
@@ -780,7 +780,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 9
     },
     "spread_rate_mm_s": {
@@ -844,7 +844,7 @@
     "ntrs_ids": [],
     "frames_shot": 45,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -876,7 +876,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 10
     },
     "extinguished": {
@@ -884,7 +884,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 10
     },
     "spread_rate_mm_s": {
@@ -948,7 +948,7 @@
     "ntrs_ids": [],
     "frames_shot": 123,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -980,7 +980,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 11
     },
     "extinguished": {
@@ -988,7 +988,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 11
     },
     "spread_rate_mm_s": {
@@ -1052,7 +1052,7 @@
     "ntrs_ids": [],
     "frames_shot": 131,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1084,7 +1084,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 12
     },
     "extinguished": {
@@ -1092,7 +1092,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 12
     },
     "spread_rate_mm_s": {
@@ -1156,7 +1156,7 @@
     "ntrs_ids": [],
     "frames_shot": 160,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1188,7 +1188,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 13
     },
     "extinguished": {
@@ -1196,7 +1196,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 13
     },
     "spread_rate_mm_s": {
@@ -1260,7 +1260,7 @@
     "ntrs_ids": [],
     "frames_shot": 311,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1292,7 +1292,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 14
     },
     "extinguished": {
@@ -1300,7 +1300,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 14
     },
     "spread_rate_mm_s": {
@@ -1364,7 +1364,7 @@
     "ntrs_ids": [],
     "frames_shot": 44,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1396,7 +1396,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 15
     },
     "extinguished": {
@@ -1404,7 +1404,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 15
     },
     "spread_rate_mm_s": {
@@ -1468,7 +1468,7 @@
     "ntrs_ids": [],
     "frames_shot": 122,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1500,7 +1500,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 16
     },
     "extinguished": {
@@ -1508,7 +1508,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 16
     },
     "spread_rate_mm_s": {
@@ -1572,7 +1572,7 @@
     "ntrs_ids": [],
     "frames_shot": 94,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1604,7 +1604,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 17
     },
     "extinguished": {
@@ -1612,7 +1612,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 17
     },
     "spread_rate_mm_s": {
@@ -1676,7 +1676,7 @@
     "ntrs_ids": [],
     "frames_shot": 190,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1708,7 +1708,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 18
     },
     "extinguished": {
@@ -1716,7 +1716,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 18
     },
     "spread_rate_mm_s": {
@@ -1780,7 +1780,7 @@
     "ntrs_ids": [],
     "frames_shot": 152,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1812,7 +1812,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 19
     },
     "extinguished": {
@@ -1820,7 +1820,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 19
     },
     "spread_rate_mm_s": {
@@ -1884,7 +1884,7 @@
     "ntrs_ids": [],
     "frames_shot": 95,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -1916,7 +1916,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 20
     },
     "extinguished": {
@@ -1924,7 +1924,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 20
     },
     "spread_rate_mm_s": {
@@ -1988,7 +1988,7 @@
     "ntrs_ids": [],
     "frames_shot": 111,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2020,7 +2020,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 21
     },
     "extinguished": {
@@ -2028,7 +2028,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 21
     },
     "spread_rate_mm_s": {
@@ -2092,7 +2092,7 @@
     "ntrs_ids": [],
     "frames_shot": 88,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2124,7 +2124,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 22
     },
     "extinguished": {
@@ -2132,7 +2132,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 22
     },
     "spread_rate_mm_s": {
@@ -2196,7 +2196,7 @@
     "ntrs_ids": [],
     "frames_shot": 77,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2228,7 +2228,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 23
     },
     "extinguished": {
@@ -2236,7 +2236,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 23
     },
     "spread_rate_mm_s": {
@@ -2300,7 +2300,7 @@
     "ntrs_ids": [],
     "frames_shot": 208,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2332,7 +2332,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 24
     },
     "extinguished": {
@@ -2340,7 +2340,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 24
     },
     "spread_rate_mm_s": {
@@ -2404,7 +2404,7 @@
     "ntrs_ids": [],
     "frames_shot": 72,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2436,7 +2436,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 25
     },
     "extinguished": {
@@ -2444,7 +2444,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 25
     },
     "spread_rate_mm_s": {
@@ -2508,7 +2508,7 @@
     "ntrs_ids": [],
     "frames_shot": 46,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2540,7 +2540,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 26
     },
     "extinguished": {
@@ -2548,7 +2548,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 26
     },
     "spread_rate_mm_s": {
@@ -2612,7 +2612,7 @@
     "ntrs_ids": [],
     "frames_shot": 270,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2644,7 +2644,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 27
     },
     "extinguished": {
@@ -2652,7 +2652,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 27
     },
     "spread_rate_mm_s": {
@@ -2716,7 +2716,7 @@
     "ntrs_ids": [],
     "frames_shot": 304,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2748,7 +2748,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 28
     },
     "extinguished": {
@@ -2756,7 +2756,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 28
     },
     "spread_rate_mm_s": {
@@ -2820,7 +2820,7 @@
     "ntrs_ids": [],
     "frames_shot": 262,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2852,7 +2852,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 29
     },
     "extinguished": {
@@ -2860,7 +2860,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 29
     },
     "spread_rate_mm_s": {
@@ -2924,7 +2924,7 @@
     "ntrs_ids": [],
     "frames_shot": 223,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -2956,7 +2956,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 30
     },
     "extinguished": {
@@ -2964,7 +2964,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 30
     },
     "spread_rate_mm_s": {
@@ -3028,7 +3028,7 @@
     "ntrs_ids": [],
     "frames_shot": 262,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3060,7 +3060,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 31
     },
     "extinguished": {
@@ -3068,7 +3068,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 31
     },
     "spread_rate_mm_s": {
@@ -3132,7 +3132,7 @@
     "ntrs_ids": [],
     "frames_shot": 300,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3164,7 +3164,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 32
     },
     "extinguished": {
@@ -3172,7 +3172,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 32
     },
     "spread_rate_mm_s": {
@@ -3236,7 +3236,7 @@
     "ntrs_ids": [],
     "frames_shot": 269,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3268,7 +3268,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 33
     },
     "extinguished": {
@@ -3276,7 +3276,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 33
     },
     "spread_rate_mm_s": {
@@ -3340,7 +3340,7 @@
     "ntrs_ids": [],
     "frames_shot": 217,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3372,7 +3372,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 34
     },
     "extinguished": {
@@ -3380,7 +3380,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 34
     },
     "spread_rate_mm_s": {
@@ -3444,7 +3444,7 @@
     "ntrs_ids": [],
     "frames_shot": 292,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3476,7 +3476,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 35
     },
     "extinguished": {
@@ -3484,7 +3484,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 35
     },
     "spread_rate_mm_s": {
@@ -3548,7 +3548,7 @@
     "ntrs_ids": [],
     "frames_shot": 156,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3580,7 +3580,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 36
     },
     "extinguished": {
@@ -3588,7 +3588,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 36
     },
     "spread_rate_mm_s": {
@@ -3652,7 +3652,7 @@
     "ntrs_ids": [],
     "frames_shot": 209,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3684,7 +3684,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 37
     },
     "extinguished": {
@@ -3692,7 +3692,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 37
     },
     "spread_rate_mm_s": {
@@ -3756,7 +3756,7 @@
     "ntrs_ids": [],
     "frames_shot": 247,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3788,7 +3788,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 38
     },
     "extinguished": {
@@ -3796,7 +3796,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 38
     },
     "spread_rate_mm_s": {
@@ -3860,7 +3860,7 @@
     "ntrs_ids": [],
     "frames_shot": 271,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3892,7 +3892,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 39
     },
     "extinguished": {
@@ -3900,7 +3900,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 39
     },
     "spread_rate_mm_s": {
@@ -3964,7 +3964,7 @@
     "ntrs_ids": [],
     "frames_shot": 258,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -3996,7 +3996,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 40
     },
     "extinguished": {
@@ -4004,7 +4004,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 40
     },
     "spread_rate_mm_s": {
@@ -4068,7 +4068,7 @@
     "ntrs_ids": [],
     "frames_shot": 259,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4100,7 +4100,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 41
     },
     "extinguished": {
@@ -4108,7 +4108,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 41
     },
     "spread_rate_mm_s": {
@@ -4172,7 +4172,7 @@
     "ntrs_ids": [],
     "frames_shot": 153,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4204,7 +4204,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 42
     },
     "extinguished": {
@@ -4212,7 +4212,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 42
     },
     "spread_rate_mm_s": {
@@ -4276,7 +4276,7 @@
     "ntrs_ids": [],
     "frames_shot": 299,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4308,7 +4308,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 43
     },
     "extinguished": {
@@ -4316,7 +4316,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 43
     },
     "spread_rate_mm_s": {
@@ -4380,7 +4380,7 @@
     "ntrs_ids": [],
     "frames_shot": 309,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4412,7 +4412,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 44
     },
     "extinguished": {
@@ -4420,7 +4420,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 44
     },
     "spread_rate_mm_s": {
@@ -4484,7 +4484,7 @@
     "ntrs_ids": [],
     "frames_shot": 178,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4516,7 +4516,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 45
     },
     "extinguished": {
@@ -4524,7 +4524,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 45
     },
     "spread_rate_mm_s": {
@@ -4588,7 +4588,7 @@
     "ntrs_ids": [],
     "frames_shot": 201,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4620,7 +4620,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 46
     },
     "extinguished": {
@@ -4628,7 +4628,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 46
     },
     "spread_rate_mm_s": {
@@ -4692,7 +4692,7 @@
     "ntrs_ids": [],
     "frames_shot": 168,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4724,7 +4724,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 47
     },
     "extinguished": {
@@ -4732,7 +4732,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 47
     },
     "spread_rate_mm_s": {
@@ -4796,7 +4796,7 @@
     "ntrs_ids": [],
     "frames_shot": 62,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4828,7 +4828,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 48
     },
     "extinguished": {
@@ -4836,7 +4836,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 48
     },
     "spread_rate_mm_s": {
@@ -4900,7 +4900,7 @@
     "ntrs_ids": [],
     "frames_shot": 287,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -4932,7 +4932,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 49
     },
     "extinguished": {
@@ -4940,7 +4940,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 49
     },
     "spread_rate_mm_s": {
@@ -5004,7 +5004,7 @@
     "ntrs_ids": [],
     "frames_shot": 85,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5036,7 +5036,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 50
     },
     "extinguished": {
@@ -5044,7 +5044,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 50
     },
     "spread_rate_mm_s": {
@@ -5108,7 +5108,7 @@
     "ntrs_ids": [],
     "frames_shot": 306,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5140,7 +5140,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 51
     },
     "extinguished": {
@@ -5148,7 +5148,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 51
     },
     "spread_rate_mm_s": {
@@ -5212,7 +5212,7 @@
     "ntrs_ids": [],
     "frames_shot": 249,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5244,7 +5244,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 52
     },
     "extinguished": {
@@ -5252,7 +5252,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 52
     },
     "spread_rate_mm_s": {
@@ -5316,7 +5316,7 @@
     "ntrs_ids": [],
     "frames_shot": 164,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5348,7 +5348,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 53
     },
     "extinguished": {
@@ -5356,7 +5356,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 53
     },
     "spread_rate_mm_s": {
@@ -5419,10 +5419,12 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 2,
-    "outcome_class": "extinguished",
-    "outcome_source_column": "Total Frames Shot",
-    "usable_for_matching": true,
-    "unusable_reasons": [],
+    "outcome_class": "unknown",
+    "outcome_source_column": "Total Frames Shot (ambiguous: low frames=2)",
+    "usable_for_matching": false,
+    "unusable_reasons": [
+      "ambiguous_or_missing_outcome"
+    ],
     "oxygen_pct": {
       "value": 14.2,
       "unit": "%",
@@ -5448,19 +5450,19 @@
       "source_row": 54
     },
     "ignited": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: low frames=2)",
       "source_row": 54
     },
     "extinguished": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: low frames=2)",
       "source_row": 54
     },
     "spread_rate_mm_s": {
@@ -5524,7 +5526,7 @@
     "ntrs_ids": [],
     "frames_shot": 241,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5556,7 +5558,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 55
     },
     "extinguished": {
@@ -5564,7 +5566,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 55
     },
     "spread_rate_mm_s": {
@@ -5628,7 +5630,7 @@
     "ntrs_ids": [],
     "frames_shot": 254,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5660,7 +5662,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 56
     },
     "extinguished": {
@@ -5668,7 +5670,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 56
     },
     "spread_rate_mm_s": {
@@ -5732,7 +5734,7 @@
     "ntrs_ids": [],
     "frames_shot": 133,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5764,7 +5766,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 57
     },
     "extinguished": {
@@ -5772,7 +5774,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 57
     },
     "spread_rate_mm_s": {
@@ -5836,7 +5838,7 @@
     "ntrs_ids": [],
     "frames_shot": 152,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5868,7 +5870,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 58
     },
     "extinguished": {
@@ -5876,7 +5878,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 58
     },
     "spread_rate_mm_s": {
@@ -5940,7 +5942,7 @@
     "ntrs_ids": [],
     "frames_shot": 154,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -5972,7 +5974,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 59
     },
     "extinguished": {
@@ -5980,7 +5982,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 59
     },
     "spread_rate_mm_s": {
@@ -6044,7 +6046,7 @@
     "ntrs_ids": [],
     "frames_shot": 172,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6076,7 +6078,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 60
     },
     "extinguished": {
@@ -6084,7 +6086,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 60
     },
     "spread_rate_mm_s": {
@@ -6148,7 +6150,7 @@
     "ntrs_ids": [],
     "frames_shot": 271,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6180,7 +6182,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 61
     },
     "extinguished": {
@@ -6188,7 +6190,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 61
     },
     "spread_rate_mm_s": {
@@ -6252,7 +6254,7 @@
     "ntrs_ids": [],
     "frames_shot": 52,
     "outcome_class": "no_ignition",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: no ignition)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6284,7 +6286,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: no ignition)",
       "source_row": 62
     },
     "extinguished": {
@@ -6292,7 +6294,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: no ignition)",
       "source_row": 62
     },
     "spread_rate_mm_s": {
@@ -6356,7 +6358,7 @@
     "ntrs_ids": [],
     "frames_shot": 199,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6388,7 +6390,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 63
     },
     "extinguished": {
@@ -6396,7 +6398,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 63
     },
     "spread_rate_mm_s": {
@@ -6459,10 +6461,12 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 6,
-    "outcome_class": "extinguished",
-    "outcome_source_column": "Total Frames Shot",
-    "usable_for_matching": true,
-    "unusable_reasons": [],
+    "outcome_class": "unknown",
+    "outcome_source_column": "Total Frames Shot (ambiguous: low frames=6)",
+    "usable_for_matching": false,
+    "unusable_reasons": [
+      "ambiguous_or_missing_outcome"
+    ],
     "oxygen_pct": {
       "value": 14.6,
       "unit": "%",
@@ -6488,19 +6492,19 @@
       "source_row": 64
     },
     "ignited": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: low frames=6)",
       "source_row": 64
     },
     "extinguished": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: low frames=6)",
       "source_row": 64
     },
     "spread_rate_mm_s": {
@@ -6564,7 +6568,7 @@
     "ntrs_ids": [],
     "frames_shot": 279,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6596,7 +6600,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 65
     },
     "extinguished": {
@@ -6604,7 +6608,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 65
     },
     "spread_rate_mm_s": {
@@ -6668,7 +6672,7 @@
     "ntrs_ids": [],
     "frames_shot": 124,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6700,7 +6704,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 66
     },
     "extinguished": {
@@ -6708,7 +6712,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 66
     },
     "spread_rate_mm_s": {
@@ -6772,7 +6776,7 @@
     "ntrs_ids": [],
     "frames_shot": 316,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -6804,7 +6808,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 67
     },
     "extinguished": {
@@ -6812,7 +6816,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 67
     },
     "spread_rate_mm_s": {
@@ -6875,10 +6879,12 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 10,
-    "outcome_class": "extinguished",
-    "outcome_source_column": "Total Frames Shot",
-    "usable_for_matching": true,
-    "unusable_reasons": [],
+    "outcome_class": "unknown",
+    "outcome_source_column": "Total Frames Shot (ambiguous: postburn only)",
+    "usable_for_matching": false,
+    "unusable_reasons": [
+      "ambiguous_or_missing_outcome"
+    ],
     "oxygen_pct": {
       "value": 14.5,
       "unit": "%",
@@ -6904,19 +6910,19 @@
       "source_row": 68
     },
     "ignited": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: postburn only)",
       "source_row": 68
     },
     "extinguished": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: postburn only)",
       "source_row": 68
     },
     "spread_rate_mm_s": {
@@ -6980,7 +6986,7 @@
     "ntrs_ids": [],
     "frames_shot": 174,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7012,7 +7018,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 69
     },
     "extinguished": {
@@ -7020,7 +7026,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 69
     },
     "spread_rate_mm_s": {
@@ -7084,7 +7090,7 @@
     "ntrs_ids": [],
     "frames_shot": 176,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7116,7 +7122,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 70
     },
     "extinguished": {
@@ -7124,7 +7130,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 70
     },
     "spread_rate_mm_s": {
@@ -7188,7 +7194,7 @@
     "ntrs_ids": [],
     "frames_shot": 266,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7220,7 +7226,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 71
     },
     "extinguished": {
@@ -7228,7 +7234,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 71
     },
     "spread_rate_mm_s": {
@@ -7291,10 +7297,12 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": null,
-    "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
-    "usable_for_matching": true,
-    "unusable_reasons": [],
+    "outcome_class": "unknown",
+    "outcome_source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
+    "usable_for_matching": false,
+    "unusable_reasons": [
+      "ambiguous_or_missing_outcome"
+    ],
     "oxygen_pct": {
       "value": 16.5,
       "unit": "%",
@@ -7320,19 +7328,19 @@
       "source_row": 72
     },
     "ignited": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
       "source_row": 72
     },
     "extinguished": {
-      "value": false,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
       "source_row": 72
     },
     "spread_rate_mm_s": {
@@ -7395,10 +7403,12 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": null,
-    "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
-    "usable_for_matching": true,
-    "unusable_reasons": [],
+    "outcome_class": "unknown",
+    "outcome_source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
+    "usable_for_matching": false,
+    "unusable_reasons": [
+      "ambiguous_or_missing_outcome"
+    ],
     "oxygen_pct": {
       "value": 15.9,
       "unit": "%",
@@ -7424,19 +7434,19 @@
       "source_row": 73
     },
     "ignited": {
-      "value": true,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
       "source_row": 73
     },
     "extinguished": {
-      "value": false,
+      "value": null,
       "unit": null,
-      "basis": "measured",
+      "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Total Frames Shot (ambiguous: video recording, no still frames)",
       "source_row": 73
     },
     "spread_rate_mm_s": {
@@ -7500,7 +7510,7 @@
     "ntrs_ids": [],
     "frames_shot": null,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7532,7 +7542,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 74
     },
     "extinguished": {
@@ -7540,7 +7550,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 74
     },
     "spread_rate_mm_s": {
@@ -7604,7 +7614,7 @@
     "ntrs_ids": [],
     "frames_shot": 307,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7636,7 +7646,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 75
     },
     "extinguished": {
@@ -7644,7 +7654,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 75
     },
     "spread_rate_mm_s": {
@@ -7708,7 +7718,7 @@
     "ntrs_ids": [],
     "frames_shot": 303,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7740,7 +7750,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 76
     },
     "extinguished": {
@@ -7748,7 +7758,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 76
     },
     "spread_rate_mm_s": {
@@ -7812,7 +7822,7 @@
     "ntrs_ids": [],
     "frames_shot": 304,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7844,7 +7854,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 77
     },
     "extinguished": {
@@ -7852,7 +7862,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 77
     },
     "spread_rate_mm_s": {
@@ -7916,7 +7926,7 @@
     "ntrs_ids": [],
     "frames_shot": 303,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -7948,7 +7958,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 78
     },
     "extinguished": {
@@ -7956,7 +7966,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 78
     },
     "spread_rate_mm_s": {
@@ -8020,7 +8030,7 @@
     "ntrs_ids": [],
     "frames_shot": 297,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8052,7 +8062,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 79
     },
     "extinguished": {
@@ -8060,7 +8070,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 79
     },
     "spread_rate_mm_s": {
@@ -8124,7 +8134,7 @@
     "ntrs_ids": [],
     "frames_shot": 313,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8156,7 +8166,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 80
     },
     "extinguished": {
@@ -8164,7 +8174,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 80
     },
     "spread_rate_mm_s": {
@@ -8228,7 +8238,7 @@
     "ntrs_ids": [],
     "frames_shot": 162,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8260,7 +8270,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 81
     },
     "extinguished": {
@@ -8268,7 +8278,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 81
     },
     "spread_rate_mm_s": {
@@ -8331,8 +8341,8 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 66,
-    "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_class": "extinguished",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8364,15 +8374,15 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 82
     },
     "extinguished": {
-      "value": false,
+      "value": true,
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 82
     },
     "spread_rate_mm_s": {
@@ -8436,7 +8446,7 @@
     "ntrs_ids": [],
     "frames_shot": 148,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8468,7 +8478,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 83
     },
     "extinguished": {
@@ -8476,7 +8486,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 83
     },
     "spread_rate_mm_s": {
@@ -8540,7 +8550,7 @@
     "ntrs_ids": [],
     "frames_shot": 221,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Air display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8572,7 +8582,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 84
     },
     "extinguished": {
@@ -8580,7 +8590,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Air display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 84
     },
     "spread_rate_mm_s": {
@@ -8644,7 +8654,7 @@
     "ntrs_ids": [],
     "frames_shot": 273,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8676,7 +8686,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 85
     },
     "extinguished": {
@@ -8684,7 +8694,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 85
     },
     "spread_rate_mm_s": {
@@ -8748,7 +8758,7 @@
     "ntrs_ids": [],
     "frames_shot": 255,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8780,7 +8790,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 86
     },
     "extinguished": {
@@ -8788,7 +8798,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 86
     },
     "spread_rate_mm_s": {
@@ -8852,7 +8862,7 @@
     "ntrs_ids": [],
     "frames_shot": 94,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8884,7 +8894,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 87
     },
     "extinguished": {
@@ -8892,7 +8902,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 87
     },
     "spread_rate_mm_s": {
@@ -8956,7 +8966,7 @@
     "ntrs_ids": [],
     "frames_shot": 162,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -8988,7 +8998,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 88
     },
     "extinguished": {
@@ -8996,7 +9006,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 88
     },
     "spread_rate_mm_s": {
@@ -9060,7 +9070,7 @@
     "ntrs_ids": [],
     "frames_shot": 170,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9092,7 +9102,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 89
     },
     "extinguished": {
@@ -9100,7 +9110,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 89
     },
     "spread_rate_mm_s": {
@@ -9164,7 +9174,7 @@
     "ntrs_ids": [],
     "frames_shot": 129,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9196,7 +9206,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 90
     },
     "extinguished": {
@@ -9204,7 +9214,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 90
     },
     "spread_rate_mm_s": {
@@ -9268,7 +9278,7 @@
     "ntrs_ids": [],
     "frames_shot": 186,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9300,7 +9310,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 91
     },
     "extinguished": {
@@ -9308,7 +9318,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 91
     },
     "spread_rate_mm_s": {
@@ -9372,7 +9382,7 @@
     "ntrs_ids": [],
     "frames_shot": 280,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9404,7 +9414,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 92
     },
     "extinguished": {
@@ -9412,7 +9422,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 92
     },
     "spread_rate_mm_s": {
@@ -9476,7 +9486,7 @@
     "ntrs_ids": [],
     "frames_shot": 279,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9508,7 +9518,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 93
     },
     "extinguished": {
@@ -9516,7 +9526,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 93
     },
     "spread_rate_mm_s": {
@@ -9580,7 +9590,7 @@
     "ntrs_ids": [],
     "frames_shot": 311,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9612,7 +9622,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 94
     },
     "extinguished": {
@@ -9620,7 +9630,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 94
     },
     "spread_rate_mm_s": {
@@ -9684,7 +9694,7 @@
     "ntrs_ids": [],
     "frames_shot": 57,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9716,7 +9726,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 95
     },
     "extinguished": {
@@ -9724,7 +9734,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 95
     },
     "spread_rate_mm_s": {
@@ -9788,10 +9798,10 @@
     "ntrs_ids": [],
     "frames_shot": 14,
     "outcome_class": "unknown",
-    "outcome_source_column": "none",
+    "outcome_source_column": "Total Frames Shot (ambiguous: low frames=14)",
     "usable_for_matching": false,
     "unusable_reasons": [
-      "missing_explicit_outcome"
+      "ambiguous_or_missing_outcome"
     ],
     "oxygen_pct": {
       "value": 16.3,
@@ -9822,7 +9832,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: low frames=14)",
       "source_row": 96
     },
     "extinguished": {
@@ -9830,7 +9840,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: low frames=14)",
       "source_row": 96
     },
     "spread_rate_mm_s": {
@@ -9894,7 +9904,7 @@
     "ntrs_ids": [],
     "frames_shot": 83,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -9926,7 +9936,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 97
     },
     "extinguished": {
@@ -9934,7 +9944,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 97
     },
     "spread_rate_mm_s": {
@@ -9998,7 +10008,7 @@
     "ntrs_ids": [],
     "frames_shot": 155,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10030,7 +10040,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 98
     },
     "extinguished": {
@@ -10038,7 +10048,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 98
     },
     "spread_rate_mm_s": {
@@ -10102,7 +10112,7 @@
     "ntrs_ids": [],
     "frames_shot": 242,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10134,7 +10144,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 99
     },
     "extinguished": {
@@ -10142,7 +10152,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 99
     },
     "spread_rate_mm_s": {
@@ -10206,7 +10216,7 @@
     "ntrs_ids": [],
     "frames_shot": 308,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10238,7 +10248,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 100
     },
     "extinguished": {
@@ -10246,7 +10256,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 100
     },
     "spread_rate_mm_s": {
@@ -10310,7 +10320,7 @@
     "ntrs_ids": [],
     "frames_shot": 246,
     "outcome_class": "extinguished",
-    "outcome_source_column": "Fan display",
+    "outcome_source_column": "Air display / Fan display (PI note: extinction/blowoff)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10342,7 +10352,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 101
     },
     "extinguished": {
@@ -10350,7 +10360,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Fan display",
+      "source_column": "Air display / Fan display (PI note: extinction/blowoff)",
       "source_row": 101
     },
     "spread_rate_mm_s": {
@@ -10414,7 +10424,7 @@
     "ntrs_ids": [],
     "frames_shot": 85,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10446,7 +10456,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 102
     },
     "extinguished": {
@@ -10454,7 +10464,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 102
     },
     "spread_rate_mm_s": {
@@ -10518,7 +10528,7 @@
     "ntrs_ids": [],
     "frames_shot": 100,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10550,7 +10560,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 103
     },
     "extinguished": {
@@ -10558,7 +10568,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 103
     },
     "spread_rate_mm_s": {
@@ -10622,7 +10632,7 @@
     "ntrs_ids": [],
     "frames_shot": 166,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10654,7 +10664,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 104
     },
     "extinguished": {
@@ -10662,7 +10672,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 104
     },
     "spread_rate_mm_s": {
@@ -10726,7 +10736,7 @@
     "ntrs_ids": [],
     "frames_shot": 97,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10758,7 +10768,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 105
     },
     "extinguished": {
@@ -10766,7 +10776,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 105
     },
     "spread_rate_mm_s": {
@@ -10830,7 +10840,7 @@
     "ntrs_ids": [],
     "frames_shot": 100,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10862,7 +10872,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 106
     },
     "extinguished": {
@@ -10870,7 +10880,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 106
     },
     "spread_rate_mm_s": {
@@ -10934,7 +10944,7 @@
     "ntrs_ids": [],
     "frames_shot": 117,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -10966,7 +10976,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 107
     },
     "extinguished": {
@@ -10974,7 +10984,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 107
     },
     "spread_rate_mm_s": {
@@ -11038,7 +11048,7 @@
     "ntrs_ids": [],
     "frames_shot": 299,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11070,7 +11080,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 108
     },
     "extinguished": {
@@ -11078,7 +11088,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 108
     },
     "spread_rate_mm_s": {
@@ -11142,7 +11152,7 @@
     "ntrs_ids": [],
     "frames_shot": 48,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11174,7 +11184,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 109
     },
     "extinguished": {
@@ -11182,7 +11192,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 109
     },
     "spread_rate_mm_s": {
@@ -11246,7 +11256,7 @@
     "ntrs_ids": [],
     "frames_shot": 43,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11278,7 +11288,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 110
     },
     "extinguished": {
@@ -11286,7 +11296,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 110
     },
     "spread_rate_mm_s": {
@@ -11350,7 +11360,7 @@
     "ntrs_ids": [],
     "frames_shot": 109,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11382,7 +11392,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 111
     },
     "extinguished": {
@@ -11390,7 +11400,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 111
     },
     "spread_rate_mm_s": {
@@ -11453,12 +11463,10 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 39,
-    "outcome_class": "unknown",
-    "outcome_source_column": "none",
-    "usable_for_matching": false,
-    "unusable_reasons": [
-      "missing_explicit_outcome"
-    ],
+    "outcome_class": "sustained",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
+    "usable_for_matching": true,
+    "unusable_reasons": [],
     "oxygen_pct": {
       "value": 16.8,
       "unit": "%",
@@ -11484,19 +11492,19 @@
       "source_row": 112
     },
     "ignited": {
-      "value": null,
+      "value": true,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 112
     },
     "extinguished": {
-      "value": null,
+      "value": false,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 112
     },
     "spread_rate_mm_s": {
@@ -11560,7 +11568,7 @@
     "ntrs_ids": [],
     "frames_shot": 55,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11592,7 +11600,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 113
     },
     "extinguished": {
@@ -11600,7 +11608,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 113
     },
     "spread_rate_mm_s": {
@@ -11664,7 +11672,7 @@
     "ntrs_ids": [],
     "frames_shot": 119,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11696,7 +11704,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 114
     },
     "extinguished": {
@@ -11704,7 +11712,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 114
     },
     "spread_rate_mm_s": {
@@ -11768,7 +11776,7 @@
     "ntrs_ids": [],
     "frames_shot": 46,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11800,7 +11808,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 115
     },
     "extinguished": {
@@ -11808,7 +11816,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 115
     },
     "spread_rate_mm_s": {
@@ -11872,7 +11880,7 @@
     "ntrs_ids": [],
     "frames_shot": 100,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -11904,7 +11912,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 116
     },
     "extinguished": {
@@ -11912,7 +11920,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 116
     },
     "spread_rate_mm_s": {
@@ -11976,7 +11984,7 @@
     "ntrs_ids": [],
     "frames_shot": 83,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12008,7 +12016,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 117
     },
     "extinguished": {
@@ -12016,7 +12024,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 117
     },
     "spread_rate_mm_s": {
@@ -12080,7 +12088,7 @@
     "ntrs_ids": [],
     "frames_shot": 49,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12112,7 +12120,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 118
     },
     "extinguished": {
@@ -12120,7 +12128,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 118
     },
     "spread_rate_mm_s": {
@@ -12184,7 +12192,7 @@
     "ntrs_ids": [],
     "frames_shot": 73,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12216,7 +12224,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 119
     },
     "extinguished": {
@@ -12224,7 +12232,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 119
     },
     "spread_rate_mm_s": {
@@ -12288,7 +12296,7 @@
     "ntrs_ids": [],
     "frames_shot": 117,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12320,7 +12328,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 120
     },
     "extinguished": {
@@ -12328,7 +12336,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 120
     },
     "spread_rate_mm_s": {
@@ -12392,7 +12400,7 @@
     "ntrs_ids": [],
     "frames_shot": 151,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12424,7 +12432,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 121
     },
     "extinguished": {
@@ -12432,7 +12440,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 121
     },
     "spread_rate_mm_s": {
@@ -12495,12 +12503,10 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 38,
-    "outcome_class": "unknown",
-    "outcome_source_column": "none",
-    "usable_for_matching": false,
-    "unusable_reasons": [
-      "missing_explicit_outcome"
-    ],
+    "outcome_class": "sustained",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
+    "usable_for_matching": true,
+    "unusable_reasons": [],
     "oxygen_pct": {
       "value": 17.1,
       "unit": "%",
@@ -12526,19 +12532,19 @@
       "source_row": 122
     },
     "ignited": {
-      "value": null,
+      "value": true,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 122
     },
     "extinguished": {
-      "value": null,
+      "value": false,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 122
     },
     "spread_rate_mm_s": {
@@ -12602,7 +12608,7 @@
     "ntrs_ids": [],
     "frames_shot": 203,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12634,7 +12640,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 123
     },
     "extinguished": {
@@ -12642,7 +12648,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 123
     },
     "spread_rate_mm_s": {
@@ -12706,7 +12712,7 @@
     "ntrs_ids": [],
     "frames_shot": 130,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12738,7 +12744,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 124
     },
     "extinguished": {
@@ -12746,7 +12752,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 124
     },
     "spread_rate_mm_s": {
@@ -12810,7 +12816,7 @@
     "ntrs_ids": [],
     "frames_shot": 75,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12842,7 +12848,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 125
     },
     "extinguished": {
@@ -12850,7 +12856,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 125
     },
     "spread_rate_mm_s": {
@@ -12914,7 +12920,7 @@
     "ntrs_ids": [],
     "frames_shot": 87,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -12946,7 +12952,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 126
     },
     "extinguished": {
@@ -12954,7 +12960,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 126
     },
     "spread_rate_mm_s": {
@@ -13018,7 +13024,7 @@
     "ntrs_ids": [],
     "frames_shot": 58,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -13050,7 +13056,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 127
     },
     "extinguished": {
@@ -13058,7 +13064,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 127
     },
     "spread_rate_mm_s": {
@@ -13122,10 +13128,10 @@
     "ntrs_ids": [],
     "frames_shot": 19,
     "outcome_class": "unknown",
-    "outcome_source_column": "none",
+    "outcome_source_column": "Total Frames Shot (ambiguous: low frames=19)",
     "usable_for_matching": false,
     "unusable_reasons": [
-      "missing_explicit_outcome"
+      "ambiguous_or_missing_outcome"
     ],
     "oxygen_pct": {
       "value": 20.7,
@@ -13156,7 +13162,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: low frames=19)",
       "source_row": 128
     },
     "extinguished": {
@@ -13164,7 +13170,7 @@
       "unit": null,
       "basis": "missing",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "Total Frames Shot (ambiguous: low frames=19)",
       "source_row": 128
     },
     "spread_rate_mm_s": {
@@ -13227,12 +13233,10 @@
     "doi": "10.60555/4qc4-de67",
     "ntrs_ids": [],
     "frames_shot": 27,
-    "outcome_class": "unknown",
-    "outcome_source_column": "none",
-    "usable_for_matching": false,
-    "unusable_reasons": [
-      "missing_explicit_outcome"
-    ],
+    "outcome_class": "sustained",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
+    "usable_for_matching": true,
+    "unusable_reasons": [],
     "oxygen_pct": {
       "value": 20.7,
       "unit": "%",
@@ -13258,19 +13262,19 @@
       "source_row": 129
     },
     "ignited": {
-      "value": null,
+      "value": true,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 129
     },
     "extinguished": {
-      "value": null,
+      "value": false,
       "unit": null,
-      "basis": "missing",
+      "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "none",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 129
     },
     "spread_rate_mm_s": {
@@ -13334,7 +13338,7 @@
     "ntrs_ids": [],
     "frames_shot": 60,
     "outcome_class": "sustained",
-    "outcome_source_column": "Total Frames Shot",
+    "outcome_source_column": "camera_frames_proxy (Total Frames Shot)",
     "usable_for_matching": true,
     "unusable_reasons": [],
     "oxygen_pct": {
@@ -13366,7 +13370,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 130
     },
     "extinguished": {
@@ -13374,7 +13378,7 @@
       "unit": null,
       "basis": "measured",
       "source_file": "data/raw/PSI-25_Experimental table_BASS-II.csv",
-      "source_column": "Total Frames Shot",
+      "source_column": "camera_frames_proxy (Total Frames Shot)",
       "source_row": 130
     },
     "spread_rate_mm_s": {

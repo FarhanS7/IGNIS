@@ -181,25 +181,42 @@ def parse_all_runs():
             
             flow_ev, cal_meta = convert_bass_flow(air_str, fan_str, restr, rel_bass2, idx)
 
-            # Derive explicit outcome_class
-            if 'no ign' in air_str.lower() or 'no ign' in fan_str.lower() or (frames_val is not None and frames_val == 0):
+            # Derive explicit outcome_class and camera_frames_proxy
+            air_lower = air_str.lower()
+            fan_lower = fan_str.lower()
+            frames_lower = frames_raw.lower()
+
+            # 1. Explicit PI annotations in test notes (highest priority)
+            if 'no ign' in air_lower or 'no ign' in fan_lower:
                 outcome_class = 'no_ignition'
-                outcome_src_col = 'Air display' if 'no ign' in air_str.lower() else 'Total Frames Shot'
-            elif frames_val is not None and frames_val <= 10:
+                outcome_src_col = 'Air display / Fan display (PI note: no ignition)'
+            elif any(k in air_lower for k in ['ext', 'blowoff', 'would not stay lit']) or any(k in fan_lower for k in ['ext', 'blowoff', 'out at fan']):
                 outcome_class = 'extinguished'
-                outcome_src_col = 'Total Frames Shot'
-            elif 'ext' in air_str.lower() or 'ext' in fan_str.lower() or 'blowoff' in air_str.lower() or 'blowoff' in fan_str.lower():
-                outcome_class = 'extinguished'
-                outcome_src_col = 'Fan display' if ('ext' in fan_str.lower() or 'blowoff' in fan_str.lower()) else 'Air display'
-            elif frames_val is not None and frames_val >= 40:
-                outcome_class = 'sustained'
-                outcome_src_col = 'Total Frames Shot'
-            elif 'video' in frames_raw.lower():
-                outcome_class = 'sustained'
-                outcome_src_col = 'Total Frames Shot'
-            else:
+                outcome_src_col = 'Air display / Fan display (PI note: extinction/blowoff)'
+            # 2. Ambiguous cases (set to unknown)
+            elif frames_lower in ['none', 'nan', '']:
+                # Frames 'none' contradicts O2 drop (Test B2 consumed 20.6% O2)
                 outcome_class = 'unknown'
-                outcome_src_col = 'none'
+                outcome_src_col = 'Total Frames Shot (ambiguous: none but O2 consumed)'
+            elif 'postburn' in frames_lower:
+                outcome_class = 'unknown'
+                outcome_src_col = 'Total Frames Shot (ambiguous: postburn only)'
+            elif 'video' in frames_lower:
+                # Video-recorded burn without still frames count
+                outcome_class = 'unknown'
+                outcome_src_col = 'Total Frames Shot (ambiguous: video recording, no still frames)'
+            else:
+                try:
+                    f_cnt = int(float(frames_raw.replace('+', ' ').split()[0]))
+                    if f_cnt < 20:
+                        outcome_class = 'unknown'
+                        outcome_src_col = f'Total Frames Shot (ambiguous: low frames={f_cnt})'
+                    else:
+                        outcome_class = 'sustained'
+                        outcome_src_col = 'camera_frames_proxy (Total Frames Shot)'
+                except Exception:
+                    outcome_class = 'unknown'
+                    outcome_src_col = f'Total Frames Shot (ambiguous: {frames_raw})'
 
             # Environmental factors for usability check: O2 (measured/converted) and flow (measured/converted)
             has_o2 = (o2_val is not None)
@@ -207,7 +224,7 @@ def parse_all_runs():
             usable = (outcome_class != 'unknown') and has_o2 and has_flow
             unusable_reasons = []
             if outcome_class == 'unknown':
-                unusable_reasons.append('missing_explicit_outcome')
+                unusable_reasons.append('ambiguous_or_missing_outcome')
             if not has_o2:
                 unusable_reasons.append('missing_measured_oxygen')
             if not has_flow:
