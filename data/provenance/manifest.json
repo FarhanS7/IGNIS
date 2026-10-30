@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-10-30T13:33:13.023949+00:00",
-  "total_files": 44,
+  "total_files": 51,
   "files": [
     {
       "investigation_id": "PSI-25",
@@ -485,6 +485,97 @@
       "sha256": "d4d44f8b9896936728748e34d1b6ad0812032a92fa5289599b708c138e3a9b39",
       "license": "CC0-1.0",
       "saved_path": "data/raw/PSI-159_Experimental table_CFI-G_Inverse Flames.csv"
+    },
+    {
+      "investigation_id": "NTRS-20240002981",
+      "file_name": "20240002981.pdf",
+      "saved_path": "data/raw/reports/20240002981.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20240002981/downloads/Saffire-ICES-2024-ICES-365-accepted%20final.pdf",
+      "sha256": "7f875da1d6abeeeeac64aeba67d3f160074cf98430e714fe7606b34b37e0aa59",
+      "file_size_bytes": 3066759,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20240002981",
+      "title": "Preliminary Results from the Saffire VI Experiment",
+      "year": "2024"
+    },
+    {
+      "investigation_id": "NTRS-20240007488",
+      "file_name": "20240007488.pdf",
+      "saved_path": "data/raw/reports/20240007488.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20240007488/downloads/Saffire%20ICES%202024%20Saffire%20presentation072124small.pdf",
+      "sha256": "bd0bfb9819bc52514ee3531e4723d2786ef79894ce30af002b9d827b00a330f5",
+      "file_size_bytes": 4291331,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20240007488",
+      "title": "Preliminary Results from the Saffire VI Experiment",
+      "year": "2024"
+    },
+    {
+      "investigation_id": "NTRS-20210011385",
+      "file_name": "20210011385.pdf",
+      "saved_path": "data/raw/reports/20210011385.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20210011385/downloads/TM-20210011385.pdf",
+      "sha256": "5ffa911fd9b6356f204646003fb9342e341810dcdfdf5cb15756e7f01ec5f770",
+      "file_size_bytes": 48972416,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20210011385",
+      "title": "Burning and Suppression of Solids\u2013II  (BASS-II) Summary Report",
+      "year": "2021"
+    },
+    {
+      "investigation_id": "NTRS-20160000593",
+      "file_name": "20160000593.pdf",
+      "saved_path": "data/raw/reports/20160000593.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20160000593/downloads/20160000593.pdf",
+      "sha256": "9f2c89db9e1954c3c44409364ed6764f7e7466250264c28ff2d425350287546c",
+      "file_size_bytes": 2690087,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20160000593",
+      "title": "Combustion of Solids in Microgravity: Results from the BASS-II Experiment",
+      "year": "2019"
+    },
+    {
+      "investigation_id": "NTRS-20120016855",
+      "file_name": "20120016855.pdf",
+      "saved_path": "data/raw/reports/20120016855.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20120016855/downloads/20120016855.pdf",
+      "sha256": "397d849c14cf8ff3abe789456aa058f1210b7ca3e2936f6d4b8dabf9b1d85a32",
+      "file_size_bytes": 240653,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20120016855",
+      "title": "Methanol Droplet Extinction in Oxygen/Carbon-dioxide/Nitrogen Mixtures in Microgravity: Results from the International Space Station Experiments",
+      "year": "2019"
+    },
+    {
+      "investigation_id": "NTRS-20240013238",
+      "file_name": "20240013238.pdf",
+      "saved_path": "data/raw/reports/20240013238.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20240013238/downloads/ASMA_2025_EA_Garbino_v2.pdf",
+      "sha256": "727b246ec75eebcbac10b3da199bf299071c41a216f5b5324d791e1e08fbfa0e",
+      "file_size_bytes": 96473,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20240013238",
+      "title": "Nasa Exploration Atmosphere Tests 3 & 4: Development and Validation of Planetary Extravehicular Activity Prebreathe Protocols for Alternate Atmospheres and Suit Pressures",
+      "year": "2024"
+    },
+    {
+      "investigation_id": "NTRS-20130014061",
+      "file_name": "20130014061.pdf",
+      "saved_path": "data/raw/reports/20130014061.pdf",
+      "original_url": "https://ntrs.nasa.gov/api/citations/20130014061/downloads/20130014061.pdf",
+      "sha256": "1488bbb461f2ea0f97c2c2fab6ac0a01603a6837509ab6ac6d1ef02bbf72050b",
+      "file_size_bytes": 2314383,
+      "license": "NASA-Public-Domain",
+      "distribution": "PUBLIC",
+      "ntrs_id": "20130014061",
+      "title": "Methanol Droplet Combustion in Oxygen-Inert Environments in Microgravity",
+      "year": "2019"
     }
   ]
 }

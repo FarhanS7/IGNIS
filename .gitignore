@@ -20,6 +20,7 @@ data/raw/*.mp4
 data/raw/*.h5
 data/raw/*.tif
 data/raw/*.pdf
+data/raw/reports/*.pdf
 data/raw/PSI-23_metadata.json
 data/raw/PSI-39_metadata.json
 
