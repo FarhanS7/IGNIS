@@ -13,6 +13,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { PerfOverlay } from './visuals/PerfOverlay';
 
 import { StoryModeV2Page } from './pages/StoryModeV2Page';
+import { TrustLedgerProvider } from './context/TrustLedgerContext';
 
 const RedirectToSimulator: React.FC = () => {
   const location = useLocation();
@@ -54,8 +55,9 @@ const RouteTitleSync: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <MotionConfig reducedMotion="user">
-      <BrowserRouter>
+    <TrustLedgerProvider>
+      <MotionConfig reducedMotion="user">
+        <BrowserRouter>
         <RouteTitleSync />
         <PerfOverlay />
         <Routes>
@@ -83,6 +85,7 @@ export const App: React.FC = () => {
         </Routes>
       </BrowserRouter>
     </MotionConfig>
+    </TrustLedgerProvider>
   );
 };
 

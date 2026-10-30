@@ -15,7 +15,7 @@ export type GravityRegime =
   | 'hypergravity';
 
 export type OutcomeClass =
-  | 'sustained'
+  | 'frames_recorded'
   | 'extinguished'
   | 'no_ignition'
   | 'unknown';

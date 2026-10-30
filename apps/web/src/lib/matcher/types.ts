@@ -3,7 +3,7 @@
  * Ported from services/api/app/matching/real_solid.py.
  */
 
-export type OutcomeClass = "flame_spread" | "extinction" | "no_ignition" | "unknown";
+export type OutcomeClass = "frames_recorded" | "extinguished" | "no_ignition" | "unknown";
 
 export type FactorBasis = "measured" | "converted" | "assumed" | "missing" | "derived" | "transcribed";
 
