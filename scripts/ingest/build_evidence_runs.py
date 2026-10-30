@@ -253,7 +253,7 @@ def parse_all_runs():
                 'burn_time_s': make_evidence_val(None, 's', 'missing', rel_bass2, 'Burn Time', idx),
                 'co_ppm': make_evidence_val(co_val, 'ppm', 'measured' if co_val is not None else 'missing', rel_bass2, 'Final CO (ppm)', idx),
                 'co2_pct': make_evidence_val(co2_val, '%', 'measured' if co2_val is not None else 'missing', rel_bass2, 'Final CO2 % by vol', idx),
-                'metadata': {'test_id': test_id, 'calibration': cal_meta, 'raw_frames_str': frames_raw}
+                'metadata': {'test_id': test_id, 'sample_no': r[4].strip() if len(r) > 4 else '', 'pi': r[0].strip() if len(r) > 0 else '', 'calibration': cal_meta, 'raw_frames_str': frames_raw}
             })
 
     # -------------------------------------------------------------
