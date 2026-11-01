@@ -7,10 +7,22 @@ import { FileText, ChevronRight } from 'lucide-react';
 interface RealMatchCardProps {
   match: RealSolidMatch;
   rank: number;
+  scenarioFamily?: string;
+  isOutsideEnvelope?: boolean;
 }
 
-export const RealMatchCard: React.FC<RealMatchCardProps> = ({ match, rank }) => {
+export const RealMatchCard: React.FC<RealMatchCardProps> = ({
+  match,
+  rank,
+  scenarioFamily,
+  isOutsideEnvelope = false,
+}) => {
   const { openDrawer } = useTrustLedger();
+
+  const runMaterialFamily = match.metadata?.material_family || 'Unknown';
+  const isDifferentMaterial = Boolean(
+    scenarioFamily && runMaterialFamily.toLowerCase() !== scenarioFamily.toLowerCase()
+  );
 
   const getOutcomeBadge = () => {
     switch (match.outcome_class) {
@@ -93,13 +105,26 @@ export const RealMatchCard: React.FC<RealMatchCardProps> = ({ match, rank }) => 
     <div className="p-4 bg-zinc-950 rounded-xl border border-zinc-800/90 shadow-md space-y-3 font-mono hover:border-zinc-700 transition-colors">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-zinc-800/80">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="px-2 py-0.5 text-xs font-bold rounded bg-cyan-950 text-cyan-400 border border-cyan-800/60">
             #{rank}
           </span>
           <span className="text-sm font-bold text-zinc-100">{match.run_uid}</span>
           <span className="text-xs text-zinc-400">({investigationId})</span>
           <span className="text-xs text-zinc-500">• {match.metadata?.platform}</span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-zinc-900 border border-zinc-750 text-zinc-300">
+            Family: <strong className="text-zinc-200">{runMaterialFamily}</strong>
+          </span>
+          {isDifferentMaterial && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-950/90 text-amber-300 border border-amber-800/80">
+              ⚠️ different material
+            </span>
+          )}
+          {isOutsideEnvelope && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-blue-950/90 text-blue-300 border border-blue-800/80">
+              closest tested conditions
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-3">

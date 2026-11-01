@@ -35,6 +35,8 @@ docs/*
 !docs/DATA_QUALITY.md
 !docs/VALIDATION.md
 !docs/OUTCOME_DEFINITIONS.md
+!docs/screenshots/
+!docs/screenshots/**
 
 IGNIS_PRD*.md
 IGNIS_Project_Concept*.md

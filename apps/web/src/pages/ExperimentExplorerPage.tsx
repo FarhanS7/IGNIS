@@ -620,8 +620,21 @@ export const ExperimentExplorerPage: React.FC = () => {
                           investigationId={run.investigation_id}
                           showBasisBadge
                         />
+                      ) : run.fuel_class === 'solid' ? (
+                        <Fact
+                          value="101.3 kPa"
+                          basis="assumed"
+                          sourceFile={run.oxygen_pct?.source_file || 'PSI-25_Science Documents_BASS-II_ReadMe.docx'}
+                          sourceColumn="Assumed nominal atmospheric pressure"
+                          sourceRow={run.oxygen_pct?.source_row || 1}
+                          doi={run.doi}
+                          investigationId={run.investigation_id}
+                          label="Chamber Pressure (Assumed)"
+                          notes="No solid-fuel combustion flight experiment measured chamber pressure; standard 101.3 kPa nominal cabin atmosphere is assumed across all runs."
+                          showBasisBadge
+                        />
                       ) : (
-                        <span className="text-zinc-600">101.3 kPa [assumed]</span>
+                        <span className="text-zinc-600">N/A</span>
                       )}
                     </td>
 

@@ -145,7 +145,7 @@ class SolidScenarioInput(BaseModel):
     """Input parameters representing a spacecraft fire safety design or operational scenario."""
     material: str = Field(..., description="Target fuel/material name or family (e.g. 'PMMA', 'SIBAL', 'Nomex', 'Silicone')")
     oxygen_pct: float = Field(..., ge=0.0, le=100.0, description="Ambient oxygen concentration in percentage (e.g. 21.0)")
-    flow_cm_s: float = Field(..., ge=0.0, description="Forced or induced oxidizer flow velocity in cm/s (e.g. 20.0)")
+    flow_cm_s: Optional[float] = Field(default=None, ge=0.0, description="Forced or induced oxidizer flow velocity in cm/s (e.g. 20.0)")
     geometry: Optional[str] = Field(default=None, description="Geometric form factor: 'flat', 'rod', 'slab', 'film', 'sheet', 'sphere', etc.")
     thickness_mm: Optional[float] = Field(default=None, ge=0.0, description="Sample thickness or rod diameter in mm")
     pressure_kpa: Optional[float] = Field(default=None, ge=0.0, description="Ambient cabin pressure in kPa (untested in solid flight runs)")
@@ -175,7 +175,7 @@ class TestedEnvelopePoint(BaseModel):
 
 class SolidEnvelopeData(BaseModel):
     """Operational envelope analysis for the scenario against flight data."""
-    scenario_point: dict[str, float]
+    scenario_point: dict[str, Optional[float]]
     tested_range_o2: tuple[float, float] = (TESTED_O2_MIN, TESTED_O2_MAX)
     tested_range_flow: tuple[float, float] = (TESTED_FLOW_MIN, TESTED_FLOW_MAX)
     nearest_distance_norm: float
@@ -257,7 +257,7 @@ class RealSolidMatcher:
 
         for r in self.usable_runs:
             o2_val = r["oxygen_pct"]["value"]
-            flow_val = r["flow_cm_s"]["value"]
+            flow_val = r["flow_cm_s"]["value"] if r.get("flow_cm_s") else None
             raw_mat = r.get("material") or ""
             
             # Use material_map if available, otherwise fallback
@@ -272,8 +272,7 @@ class RealSolidMatcher:
 
             # Normalized coordinates in [0, 1] space
             u = (o2_val - TESTED_O2_MIN) / (TESTED_O2_MAX - TESTED_O2_MIN)
-            v = (flow_val - TESTED_FLOW_MIN) / (TESTED_FLOW_MAX - TESTED_FLOW_MIN)
-
+            v = (flow_val - TESTED_FLOW_MIN) / (TESTED_FLOW_MAX - TESTED_FLOW_MIN) if flow_val is not None else None
 
             processed = {
                 "raw": r,
@@ -286,7 +285,7 @@ class RealSolidMatcher:
                 "o2": o2_val,
                 "o2_basis": r["oxygen_pct"]["basis"],
                 "flow": flow_val,
-                "flow_basis": r["flow_cm_s"]["basis"],
+                "flow_basis": r["flow_cm_s"]["basis"] if r.get("flow_cm_s") else "missing",
                 "outcome_class": r.get("outcome_class", "unknown"),
                 "shape": shape,
                 "thickness_mm": thick,
@@ -298,7 +297,7 @@ class RealSolidMatcher:
                 TestedEnvelopePoint(
                     run_uid=r["run_uid"],
                     oxygen_pct=round(o2_val, 2),
-                    flow_cm_s=round(flow_val, 2),
+                    flow_cm_s=round(flow_val, 2) if flow_val is not None else 0.0,
                     material=r.get("material") or "",
                     material_family=mat_fam,
                     outcome_class=r.get("outcome_class", "unknown"),
@@ -345,13 +344,12 @@ class RealSolidMatcher:
 
         # Normalize scenario point into envelope space
         u_s = (scenario.oxygen_pct - TESTED_O2_MIN) / (TESTED_O2_MAX - TESTED_O2_MIN)
-        v_s = (scenario.flow_cm_s - TESTED_FLOW_MIN) / (TESTED_FLOW_MAX - TESTED_FLOW_MIN)
+        v_s = (scenario.flow_cm_s - TESTED_FLOW_MIN) / (TESTED_FLOW_MAX - TESTED_FLOW_MIN) if scenario.flow_cm_s is not None else None
 
         outside_tested_range = bool(
             scenario.oxygen_pct < TESTED_O2_MIN
             or scenario.oxygen_pct > TESTED_O2_MAX
-            or scenario.flow_cm_s < TESTED_FLOW_MIN
-            or scenario.flow_cm_s > TESTED_FLOW_MAX
+            or (scenario.flow_cm_s is not None and (scenario.flow_cm_s < TESTED_FLOW_MIN or scenario.flow_cm_s > TESTED_FLOW_MAX))
         )
 
         nearest_dist_sq = float("inf")
@@ -359,7 +357,11 @@ class RealSolidMatcher:
 
         for pr in self.processed_runs:
             # 1. 2D Euclidean envelope distance in normalized space
-            dist_sq = (u_s - pr["u"]) ** 2 + (v_s - pr["v"]) ** 2
+            if pr["v"] is not None and v_s is not None:
+                dist_sq = (u_s - pr["u"]) ** 2 + (v_s - pr["v"]) ** 2
+            else:
+                dist_sq = (u_s - pr["u"]) ** 2
+
             if dist_sq < nearest_dist_sq:
                 nearest_dist_sq = dist_sq
 
@@ -372,8 +374,11 @@ class RealSolidMatcher:
             o2_sim = max(0.0, 1.0 - (diff_o2 / TOLERANCE_O2))
 
             # Flow
-            diff_flow = abs(scenario.flow_cm_s - pr["flow"])
-            flow_sim = max(0.0, 1.0 - (diff_flow / TOLERANCE_FLOW))
+            flow_sim: Optional[float] = None
+            diff_flow = 0.0
+            if pr["flow"] is not None and scenario.flow_cm_s is not None:
+                diff_flow = abs(scenario.flow_cm_s - pr["flow"])
+                flow_sim = max(0.0, 1.0 - (diff_flow / TOLERANCE_FLOW))
 
             # Geometry (only where scenario specifies and run provides)
             geom_sim: Optional[float] = None
@@ -390,8 +395,9 @@ class RealSolidMatcher:
             factor_scores: dict[str, float] = {
                 "material": mat_sim,
                 "oxygen": o2_sim,
-                "flow": flow_sim,
             }
+            if flow_sim is not None:
+                factor_scores["flow"] = flow_sim
             if geom_sim is not None and "geometry" in raw_weights:
                 factor_scores["geometry"] = geom_sim
 
@@ -423,7 +429,9 @@ class RealSolidMatcher:
                     weight=round(norm_weights["oxygen"], 4),
                     note=f"Delta O2: {round(diff_o2, 2)}%",
                 ),
-                "flow": FactorMatchDetail(
+            }
+            if flow_sim is not None and "flow" in norm_weights:
+                factors_detail["flow"] = FactorMatchDetail(
                     factor="flow",
                     scenario_value=scenario.flow_cm_s,
                     experiment_value=pr["flow"],
@@ -431,8 +439,7 @@ class RealSolidMatcher:
                     similarity=round(flow_sim, 4),
                     weight=round(norm_weights["flow"], 4),
                     note=f"Delta flow: {round(diff_flow, 2)} cm/s",
-                ),
-            }
+                )
 
             if geom_sim is not None and "geometry" in norm_weights:
                 factors_detail["geometry"] = FactorMatchDetail(
@@ -458,6 +465,7 @@ class RealSolidMatcher:
                         "platform": pr["raw"]["platform"],
                         "frames_shot": pr["raw"].get("frames_shot"),
                         "outcome_source_column": pr["raw"].get("outcome_source_column", "none"),
+                        "material_family": pr["material_family"],
                     },
                 )
             )

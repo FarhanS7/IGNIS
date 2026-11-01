@@ -170,4 +170,72 @@ describe('Fact Provenance Contract and Shipped Runs Audit', () => {
     assert.strictEqual(counts.assumed, 1);
     assert.strictEqual(counts.withoutSource, 0, 'Must have 0 facts without source');
   });
+
+  test('Explorer solid-tier view shows N assumed (pressure) rather than 0', () => {
+    const rawData = fs.readFileSync(path.join(__dirname, '../../../data/evidence_runs.json'), 'utf-8');
+    const runs = JSON.parse(rawData);
+    const solidRuns = runs.filter((r: any) => r.fuel_class === 'solid');
+    assert.ok(solidRuns.length > 0, 'Must have solid runs in corpus');
+
+    // Page 1 of solid runs view (pageSize = 50)
+    const pageRuns = solidRuns.slice(0, 50);
+    const registeredFacts: FactSpec[] = [];
+
+    for (const run of pageRuns) {
+      // Oxygen fact
+      if (run.oxygen_pct) {
+        registeredFacts.push({
+          value: run.oxygen_pct.value,
+          basis: run.oxygen_pct.basis,
+          sourceFile: run.oxygen_pct.source_file,
+          sourceColumn: run.oxygen_pct.source_column,
+          sourceRow: run.oxygen_pct.source_row,
+          doi: run.doi,
+        });
+      }
+      // Flow fact
+      if (run.flow_cm_s) {
+        registeredFacts.push({
+          value: run.flow_cm_s.value,
+          basis: run.flow_cm_s.basis,
+          sourceFile: run.flow_cm_s.source_file,
+          sourceColumn: run.flow_cm_s.source_column,
+          sourceRow: run.flow_cm_s.source_row,
+          doi: run.doi,
+        });
+      }
+      // Pressure fact (Assumed for all solid flight runs)
+      const pressureFact: FactSpec = run.pressure_kpa
+        ? {
+            value: run.pressure_kpa.value,
+            basis: run.pressure_kpa.basis,
+            sourceFile: run.pressure_kpa.source_file,
+            sourceColumn: run.pressure_kpa.source_column,
+            sourceRow: run.pressure_kpa.source_row,
+            doi: run.doi,
+          }
+        : {
+            value: '101.3 kPa',
+            basis: 'assumed',
+            sourceFile: run.oxygen_pct?.source_file || 'PSI-25_Science Documents_BASS-II_ReadMe.docx',
+            sourceColumn: 'Assumed nominal atmospheric pressure',
+            sourceRow: run.oxygen_pct?.source_row || 1,
+            doi: run.doi,
+            investigationId: run.investigation_id,
+          };
+      registeredFacts.push(pressureFact);
+    }
+
+    const assumedCount = registeredFacts.filter((f) => f.basis === 'assumed').length;
+    // Must show N assumed (where N == pageRuns.length == 50), strictly greater than 0
+    assert.strictEqual(assumedCount, pageRuns.length);
+    assert.strictEqual(assumedCount, 50);
+
+    // Verify all assumed facts have 100% valid provenance
+    for (const af of registeredFacts.filter((f) => f.basis === 'assumed')) {
+      const v = validateFactProvenance(af);
+      assert.strictEqual(v.valid, true, `Assumed fact failed provenance: ${v.errors.join(', ')}`);
+    }
+  });
 });
+

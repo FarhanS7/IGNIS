@@ -6,6 +6,7 @@ import { GlowingCursor } from '../common/GlowingCursor';
 import { ErrorBoundary } from '../common/ErrorBoundary';
 import { AskProvider } from '../../context/AskContext';
 import { AskDrawer } from '../chat/AskDrawer';
+import { ProvenanceDrawer } from '../common/ProvenanceDrawer';
 
 export const AppLayout: React.FC = () => {
   const location = useLocation();
@@ -62,6 +63,9 @@ export const AppLayout: React.FC = () => {
 
         {/* Global Contextual Ask IGNIS Slide-over Drawer */}
         <AskDrawer />
+
+        {/* Global Epistemic Provenance Drawer */}
+        <ProvenanceDrawer />
 
         {/* Footer */}
         <Footer />

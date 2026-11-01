@@ -393,6 +393,7 @@ export class RealSolidMatcher {
           platform: pr.raw.platform,
           frames_shot: pr.raw.frames_shot,
           outcome_source_column: pr.raw.outcome_source_column || "none",
+          material_family: pr.material_family,
         },
       });
     }

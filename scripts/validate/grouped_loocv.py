@@ -21,15 +21,18 @@ from __future__ import annotations
 import json
 import math
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 
-from services.api.app.matching.real_solid import RealSolidMatcher, SolidScenarioInput
-
 ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from services.api.app.matching.real_solid import RealSolidMatcher, SolidScenarioInput
 
 
 def extract_group_id(run: dict[str, Any]) -> str:
@@ -232,10 +235,17 @@ def fit_o2_threshold_rule(train_runs: list[dict[str, Any]]) -> float:
     return best_thresh
 
 
-def run_grouped_validation(runs_path: str | Path | None = None) -> dict[str, Any]:
+def run_grouped_validation(
+    runs_path: str | Path | None = None,
+    custom_runs: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
     """Runs complete Leave-One-Group-Out Cross-Validation."""
-    matcher = RealSolidMatcher(runs_path=runs_path)
-    usable_runs = matcher.usable_runs
+    if custom_runs is not None:
+        usable_runs = custom_runs
+        matcher = RealSolidMatcher(runs=usable_runs)
+    else:
+        matcher = RealSolidMatcher(runs_path=runs_path)
+        usable_runs = matcher.usable_runs
     n_total = len(usable_runs)
 
     run_groups = [extract_group_id(r) for r in usable_runs]
@@ -285,7 +295,7 @@ def run_grouped_validation(runs_path: str | Path | None = None) -> dict[str, Any
             scen = SolidScenarioInput(
                 material=trun["material"],
                 oxygen_pct=trun["oxygen_pct"]["value"],
-                flow_cm_s=trun["flow_cm_s"]["value"],
+                flow_cm_s=trun["flow_cm_s"]["value"] if trun.get("flow_cm_s") else None,
                 geometry=sub_matcher.material_map.get(trun["material"], {}).get("geometry"),
                 thickness_mm=sub_matcher.material_map.get(trun["material"], {}).get("thickness_mm"),
             )

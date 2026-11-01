@@ -69,6 +69,7 @@ export const App: React.FC = () => {
             <Route path="/evidence" element={<RedirectToSimulator />} />
             {/* Flight Data & Experiments */}
             <Route path="/experiments" element={<ExperimentExplorerPage />} />
+            <Route path="/explorer" element={<ExperimentExplorerPage />} />
             <Route path="/experiment/:id" element={<ExperimentExplorerPage />} />
             {/* Stories */}
             <Route path="/explore" element={<StoryIndexPage />} />

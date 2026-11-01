@@ -11,7 +11,6 @@ import {
   Sparkles,
   Layers,
 } from 'lucide-react';
-import { ProvenanceDrawer } from '../components/common/ProvenanceDrawer';
 import { TrustLedgerBar } from '../components/common/TrustLedgerBar';
 import { EvidenceEnvelopePlot } from '../components/evidence/EvidenceEnvelopePlot';
 import { WhatTheRecordSays } from '../components/evidence/WhatTheRecordSays';
@@ -380,7 +379,15 @@ export const SimulatorPage: React.FC = () => {
             />
 
             {/* What the Record Says (replaces Fire Behavior Profile) */}
-            <WhatTheRecordSays matches={matchResult.matches} envelope={matchResult.envelope} topK={5} />
+            <WhatTheRecordSays
+              matches={matchResult.matches}
+              envelope={matchResult.envelope}
+              topK={5}
+              scenarioMaterial={material}
+              scenarioFamily={
+                (materialMapData as Record<string, any>)[material]?.family || material
+              }
+            />
 
             {/* Ranked Empirical Flight Match Cards */}
             <div className="space-y-4">
@@ -396,16 +403,21 @@ export const SimulatorPage: React.FC = () => {
 
               <div className="space-y-3">
                 {matchResult.matches.map((m, idx) => (
-                  <RealMatchCard key={m.run_uid} match={m} rank={idx + 1} />
+                  <RealMatchCard
+                    key={m.run_uid}
+                    match={m}
+                    rank={idx + 1}
+                    scenarioFamily={
+                      (materialMapData as Record<string, any>)[material]?.family || material
+                    }
+                    isOutsideEnvelope={matchResult.envelope.outside_tested_range}
+                  />
                 ))}
               </div>
             </div>
           </div>
         </div>
       </main>
-
-      {/* Epistemic Provenance Drawer */}
-      <ProvenanceDrawer />
     </div>
   );
 };
