@@ -56,6 +56,25 @@ body {
   overflow-y: auto;
 }
 
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .navbar, .burger, .fixed-bg, header, footer, .print\:hidden {
+    display: none !important;
+  }
+  #printable-evidence-brief {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+  }
+}
+
 /* ==========================================================================
    ACCESSIBILITY: FOCUS-VISIBLE RINGS & REDUCED MOTION
    ========================================================================== */

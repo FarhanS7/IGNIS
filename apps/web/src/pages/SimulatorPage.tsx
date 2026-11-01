@@ -10,11 +10,13 @@ import {
   RotateCcw,
   Sparkles,
   Layers,
+  FileDown,
 } from 'lucide-react';
 import { TrustLedgerBar } from '../components/common/TrustLedgerBar';
 import { EvidenceEnvelopePlot } from '../components/evidence/EvidenceEnvelopePlot';
 import { WhatTheRecordSays } from '../components/evidence/WhatTheRecordSays';
 import { RealMatchCard } from '../components/evidence/RealMatchCard';
+import { EvidenceBriefModal } from '../components/evidence/EvidenceBriefModal';
 
 import { RealSolidMatcher } from '../lib/matcher/real_solid_matcher';
 import type { SolidScenarioInput, RawEvidenceSolidRun, MaterialMap } from '../lib/matcher/types';
@@ -96,6 +98,7 @@ export const SimulatorPage: React.FC = () => {
   const [gravityG, setGravityG] = useState<number>(0.0);
   const [geometry, setGeometry] = useState<string>('flat');
   const [thicknessMm, setThicknessMm] = useState<number>(0.4);
+  const [isBriefOpen, setIsBriefOpen] = useState<boolean>(false);
 
   // Apply destination preset
   const handleApplyPreset = (preset: DestinationPreset) => {
@@ -145,6 +148,15 @@ export const SimulatorPage: React.FC = () => {
             <span className="px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">
               Active Presets: <strong className="text-cyan-400">{selectedPreset.name.split('(')[0]}</strong>
             </span>
+            <button
+              onClick={() => setIsBriefOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-cyan-950/80 text-cyan-400 border border-cyan-700/60 hover:bg-cyan-900 hover:border-cyan-400 transition-colors font-mono text-xs font-semibold cursor-pointer shadow-sm"
+              title="Export single printable HTML/PDF Evidence Brief"
+              aria-label="Export brief"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              <span>Export brief</span>
+            </button>
           </div>
         </div>
 
@@ -418,6 +430,25 @@ export const SimulatorPage: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Printable / Exportable Evidence Brief Modal */}
+      <EvidenceBriefModal
+        isOpen={isBriefOpen}
+        onClose={() => setIsBriefOpen(false)}
+        scenario={{
+          material,
+          scenarioFamily: (materialMapData as Record<string, any>)[material]?.family || material,
+          oxygenPct: Number(oxygenPct),
+          flowCmS: Number(flowCmS),
+          pressureKpa: Number(pressureKpa),
+          gravityG: Number(gravityG),
+          geometry,
+          thicknessMm: Number(thicknessMm),
+          presetName: selectedPreset.name,
+        }}
+        envelope={matchResult.envelope}
+        matches={matchResult.matches}
+      />
     </div>
   );
 };
