@@ -36,6 +36,7 @@ docs/*
 !docs/VALIDATION.md
 !docs/OUTCOME_DEFINITIONS.md
 !docs/EVALUATION.md
+!docs/IGNIS_EXPLANATION_BANGLA.md
 !docs/screenshots/
 !docs/screenshots/**
 
@@ -47,4 +48,5 @@ PRD_TO_TASKS_FRAMEWORK.md
 AUDIT_REPORT.md
 PROJECT_CONTEXT.md
 IGNIS_MASTER_GUIDE*.md
+!IGNIS_MASTER_GUIDE_BANGLA.md
 
