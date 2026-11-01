@@ -35,6 +35,7 @@ docs/*
 !docs/DATA_QUALITY.md
 !docs/VALIDATION.md
 !docs/OUTCOME_DEFINITIONS.md
+!docs/EVALUATION.md
 !docs/screenshots/
 !docs/screenshots/**
 

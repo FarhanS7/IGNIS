@@ -1,0 +1,267 @@
+[
+  {
+    "id": "qa-01",
+    "category": "answerable",
+    "question": "Why was the BASS-II oxygen sensor reading adjusted, and what instrument was used as the calibration reference?",
+    "gold_chunk_ids": ["NTRS-20210011385-p124-c002", "NTRS-20210011385-p124-c001", "NTRS-20210011385-p014-c001"],
+    "expected_answer": "The BASS-II CSA-CP oxygen sensor had drift and was adjusted using an offset determined from the ISS Major Constituent Analyzer (MCA) daily telemetry readings.",
+    "source_doc": "NTRS-20210011385",
+    "source_page": 124
+  },
+  {
+    "id": "qa-02",
+    "category": "answerable",
+    "question": "What two portable battery-powered instruments were used in the BASS-II working volume for gas measurements?",
+    "gold_chunk_ids": ["NTRS-20210011385-p014-c001"],
+    "expected_answer": "The Carbon Dioxide Monitor (CDM) and the Compound Specific Analyzer-Combustion Products (CSA-CP).",
+    "source_doc": "NTRS-20210011385",
+    "source_page": 14
+  },
+  {
+    "id": "qa-03",
+    "category": "answerable",
+    "question": "What does a value of zero Nikon frames shot indicate according to the BASS-II ReadMe?",
+    "gold_chunk_ids": ["PSI-25-BASS2-README-p001-c002"],
+    "expected_answer": "Nikon frames shot were post-burn images taken to confirm the burn; a value of 0 indicates that no burn or no ignition occurred.",
+    "source_doc": "PSI-25-BASS2-README",
+    "source_page": 1
+  },
+  {
+    "id": "qa-04",
+    "category": "answerable",
+    "question": "What is the composition of SIBAL cloth, and what forced airflow velocities were planned for Saffire-I and Saffire-III?",
+    "gold_chunk_ids": ["PSI-100-README-p001-c001"],
+    "expected_answer": "SIBAL cloth is a composite fabric of 75% cotton and 25% fiberglass by weight; Saffire-I was conducted at 20 cm/s airflow and Saffire-III at 30 cm/s.",
+    "source_doc": "PSI-100-README",
+    "source_page": 1
+  },
+  {
+    "id": "qa-05",
+    "category": "answerable",
+    "question": "What were the dimensions of the rectangular flow tunnel used in Saffire IV, V, and VI?",
+    "gold_chunk_ids": ["NTRS-20240002981-p004-c001"],
+    "expected_answer": "The flow tunnel was rectangular, measuring 30 cm high by 45 cm wide by 109 cm long.",
+    "source_doc": "NTRS-20240002981",
+    "source_page": 4
+  },
+  {
+    "id": "qa-06",
+    "category": "answerable",
+    "question": "What was the pressurized internal volume of the Cygnus vehicle used for Saffire spacecraft fire experiments?",
+    "gold_chunk_ids": ["NTRS-20240007488-p005-c001"],
+    "expected_answer": "The Cygnus spacecraft pressurized cargo volume is approximately 19 m³ (free air volumes of 17 to 19 m³).",
+    "source_doc": "NTRS-20240007488",
+    "source_page": 5
+  },
+  {
+    "id": "qa-07",
+    "category": "answerable",
+    "question": "What forced oxidizer flow velocity was supplied across the samples during Saffire-VI tests?",
+    "gold_chunk_ids": ["NTRS-20240007488-p013-c001", "NTRS-20240002981-p004-c001"],
+    "expected_answer": "The oxidizer flow was supplied at 20 cm/s in all cases.",
+    "source_doc": "NTRS-20240007488",
+    "source_page": 13
+  },
+  {
+    "id": "qa-08",
+    "category": "answerable",
+    "question": "What was the initial droplet diameter range tested in the FLEX droplet combustion experiments to observe diffusive and radiative extinction?",
+    "gold_chunk_ids": ["NTRS-20130014061-p001-c002"],
+    "expected_answer": "The initial droplet size varied between approximately 1.5 mm and 4 mm.",
+    "source_doc": "NTRS-20130014061",
+    "source_page": 1
+  },
+  {
+    "id": "qa-09",
+    "category": "answerable",
+    "question": "What effect did reducing ambient pressure while keeping 21% O2 have on the piloted ignition delay time of PMMA in McAllister et al.?",
+    "gold_chunk_ids": ["NTRS-20080013149-p002-c002"],
+    "expected_answer": "Reducing the pressure while keeping oxygen concentration at 21% reduced the piloted ignition time by 17% on average.",
+    "source_doc": "NTRS-20080013149",
+    "source_page": 2
+  },
+  {
+    "id": "qa-10",
+    "category": "answerable",
+    "question": "What thickness and sample dimensions of black PMMA were tested by McAllister et al. in the FIST apparatus?",
+    "gold_chunk_ids": ["NTRS-20080013149-p005-c002", "NTRS-20080013149-p005-c001"],
+    "expected_answer": "Type G black PMMA samples measuring 30 mm by 30 mm with a thickness of 10 mm.",
+    "source_doc": "NTRS-20080013149",
+    "source_page": 5
+  },
+  {
+    "id": "qa-11",
+    "category": "answerable",
+    "question": "What is the primary scientific goal of the ACME Flame Design experiment?",
+    "gold_chunk_ids": ["PSI-10-ACME-ISRD-p006-c003", "PSI-10-ACME-ISRD-p006-c002"],
+    "expected_answer": "To improve understanding of soot inception and control in order to enable the optimization of oxygen-enriched combustion.",
+    "source_doc": "PSI-10-ACME-ISRD",
+    "source_page": 6
+  },
+  {
+    "id": "qa-12",
+    "category": "answerable",
+    "question": "What four burner types were designated for the first set of ACME microgravity experiments?",
+    "gold_chunk_ids": ["PSI-10-ACME-ISRD-p009-c001"],
+    "expected_answer": "Porous spherical burners, axisymmetric gas-jet burners, an axisymmetric coflow burner, and a planar burner.",
+    "source_doc": "PSI-10-ACME-ISRD",
+    "source_page": 9
+  },
+  {
+    "id": "qa-13",
+    "category": "answerable",
+    "question": "What occurs when the forced air flow is stepped down incrementally on a burning PMMA rod in BASS-II microgravity tests?",
+    "gold_chunk_ids": ["NTRS-20210011385-p066-c001", "NTRS-20210011385-p074-c002", "NTRS-20210011385-p097-c002"],
+    "expected_answer": "Soot production decreases as flow is reduced until low-speed quenching extinction occurs at the extinction limit.",
+    "source_doc": "NTRS-20210011385",
+    "source_page": 66
+  },
+  {
+    "id": "qa-14",
+    "category": "answerable",
+    "question": "What does the SIBAL acronym stand for in NASA combustion research?",
+    "gold_chunk_ids": ["NTRS-20240002981-p002-c002", "PSI-100-README-p001-c001", "NTRS-20210011385-p102-c001"],
+    "expected_answer": "Solid Inflammation Boundary at Low Speed.",
+    "source_doc": "NTRS-20240002981",
+    "source_page": 2
+  },
+  {
+    "id": "qa-15",
+    "category": "answerable",
+    "question": "What range of heat release rates was observed for practical-scale fires tested in unmanned Cygnus spacecraft during Saffire?",
+    "gold_chunk_ids": ["NTRS-20240002981-p006-c001", "NTRS-20240007488-p021-c001"],
+    "expected_answer": "Fires ranged from 1.5 to 3.2 kW.",
+    "source_doc": "NTRS-20240002981",
+    "source_page": 6
+  },
+  {
+    "id": "qa-16",
+    "category": "answerable",
+    "question": "What type of igniter wire and electrical operating current was used in BASS-II to ignite solid samples?",
+    "gold_chunk_ids": ["NTRS-20210011385-p013-c002", "PSI-25-BASS2-SRD-p001-c001"],
+    "expected_answer": "A Kanthal A-1 29-gauge hot-wire igniter coil with 0.8 to 1 Ohm resistance, powered by 3.5 to 3.8 amperes.",
+    "source_doc": "NTRS-20210011385",
+    "source_page": 13
+  },
+  {
+    "id": "qa-17",
+    "category": "answerable",
+    "question": "What combustion gas threshold was exceeded during the two PMMA burns in the Saffire-VI flight test?",
+    "gold_chunk_ids": ["NTRS-20240002981-p005-c002", "NTRS-20240002981-p005-c001", "NTRS-20240007488-p018-c001"],
+    "expected_answer": "The allowable CO2 spacecraft limit was exceeded by both PMMA tests on Saffire VI, and carbon monoxide levels were well above baseline.",
+    "source_doc": "NTRS-20240002981",
+    "source_page": 5
+  },
+  {
+    "id": "qa-18",
+    "category": "answerable",
+    "question": "What range of airflow speeds was used inside the BASS-II flow duct in the Microgravity Science Glovebox?",
+    "gold_chunk_ids": ["NTRS-20210011385-p064-c002", "NTRS-20210011385-p064-c001"],
+    "expected_answer": "Opposed airflow speeds ranging from as low as 3 cm/s up to 20 cm/s.",
+    "source_doc": "NTRS-20210011385",
+    "source_page": 64
+  },
+  {
+    "id": "qa-19",
+    "category": "answerable",
+    "question": "In droplet microgravity combustion (FLEX), what two extinction regimes govern small versus large droplets?",
+    "gold_chunk_ids": ["NTRS-20130014061-p001-c002", "NTRS-20130014061-p009-c001"],
+    "expected_answer": "Diffusive extinction for small droplets (insufficient residence time at flame) and radiative extinction for large droplets (excessive heat loss from the flame zone).",
+    "source_doc": "NTRS-20130014061",
+    "source_page": 1
+  },
+  {
+    "id": "qa-20",
+    "category": "answerable",
+    "question": "What cabin pressure and oxygen concentration conditions define Space Exploration Atmospheres studied to reduce EVA prebreathe times?",
+    "gold_chunk_ids": ["NTRS-20080013149-p002-c001", "NTRS-20080013149-p004-c001"],
+    "expected_answer": "A reduced pressure of 56 kPa (8.2 psia or ~58.6 kPa) with an elevated oxygen concentration of 30% to 34% by volume (typically 32% or 34% O2).",
+    "source_doc": "NTRS-20080013149",
+    "source_page": 2
+  },
+  {
+    "id": "qa-21",
+    "category": "out_of_scope",
+    "question": "What was the battery chemistry and cell capacity of the Apollo Lunar Roving Vehicle (LRV)?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "expected_answer": "Out of scope: Question asks about Apollo rover battery systems, which are unrelated to microgravity combustion and spacecraft fire safety in the NASA corpus."
+  },
+  {
+    "id": "qa-22",
+    "category": "out_of_scope",
+    "question": "How often are the primary mirror segments of the James Webb Space Telescope aligned by ground control?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "expected_answer": "Out of scope: Question asks about optical wavefront sensing and telescope mirror control, not combustion or fire dynamics."
+  },
+  {
+    "id": "qa-23",
+    "category": "out_of_scope",
+    "question": "What type of reverse osmosis membrane material is used in the ISS Water Recovery System?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "expected_answer": "Out of scope: Question pertains to ECLSS water purification filtration, not microgravity material flammability."
+  },
+  {
+    "id": "qa-24",
+    "category": "out_of_scope",
+    "question": "What is the maximum liquid coolant flow rate in the Extravehicular Mobility Unit (EMU) spacesuit cooling garment?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "expected_answer": "Out of scope: Question concerns spacesuit thermal regulation hydraulics, not microgravity flame physics."
+  },
+  {
+    "id": "qa-25",
+    "category": "out_of_scope",
+    "question": "What was the cumulative solar proton radiation dosage measured by the Curiosity rover during transit to Mars?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "expected_answer": "Out of scope: Question asks about interplanetary radiological dosimetry, which is outside the combustion corpus."
+  },
+  {
+    "id": "qa-26",
+    "category": "untested_condition",
+    "question": "What is the flame spread rate of PMMA under Lunar partial gravity (0.16 g) at 21% O2?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "untested_axes": ["gravity (0.16 g)"],
+    "expected_answer": "Untested condition: All flight combustion experiments in the tested record (BASS-II, Saffire, FLEX) were performed in microgravity (~0 g). Lunar partial gravity (0.16 g) has not been tested in flight solid combustion data."
+  },
+  {
+    "id": "qa-27",
+    "category": "untested_condition",
+    "question": "Does cast PMMA extinguish at 15 cm/s flow in a Mars surface habitat (0.38 g, 70 kPa)?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "untested_axes": ["gravity (0.38 g)", "pressure (70 kPa)"],
+    "expected_answer": "Untested condition: Neither Martian partial gravity (0.38 g) nor sub-atmospheric 70 kPa pressure was tested in BASS-II flight runs (which were microgravity ~0 g with assumed 101.3 kPa pressure)."
+  },
+  {
+    "id": "qa-28",
+    "category": "untested_condition",
+    "question": "How does solid flammability change under hypergravity conditions (2.0 g) in an onboard centrifuge?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "untested_axes": ["gravity (2.0 g)"],
+    "expected_answer": "Untested condition: The NASA PSI flight dataset contains exclusively freefall microgravity (~0 g) data; hypergravity (2.0 g) centrifuge combustion data is absent from the flight corpus."
+  },
+  {
+    "id": "qa-29",
+    "category": "untested_condition",
+    "question": "What is the flame extinction limit of SIBAL cloth under pure oxygen (100% O2) at 300 kPa pressure in microgravity?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "untested_axes": ["O2 (100%)", "pressure (300 kPa)"],
+    "expected_answer": "Untested condition: Flight tests for SIBAL (Saffire, BASS-II) explored oxygen concentrations up to ~34% at nominal or reduced cabin pressures (56-101.3 kPa); 100% pure oxygen at 300 kPa is outside the tested envelope."
+  },
+  {
+    "id": "qa-30",
+    "category": "untested_condition",
+    "question": "What is the natural buoyant upward convection velocity of a laminar diffusion flame in zero gravity?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true,
+    "untested_axes": ["gravity (0 g buoyant flow = 0)"],
+    "expected_answer": "Untested / physical impossibility: In microgravity (~0 g), buoyant convection is suppressed to zero because buoyancy requires a gravitational body force (g = 0); all airflow in the corpus is forced ventilation."
+  }
+]
