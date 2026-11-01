@@ -13,6 +13,8 @@ import {
   AlertTriangle,
   RotateCcw,
   Compass,
+  CheckCircle2,
+  Sliders,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { EvidenceBadge } from '../components/common/EvidenceBadge';
@@ -170,17 +172,70 @@ export const AskIgnisPage: React.FC = () => {
                 </div>
               )}
 
+              {/* Verified Badge */}
+              {msg.verifiedBadge && (
+                <div className="pb-2 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 font-semibold">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    {msg.verifiedBadge}
+                  </span>
+                  {msg.mode && (
+                    <span className="text-xs font-mono uppercase text-zinc-400 px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700">
+                      {msg.mode} mode
+                    </span>
+                  )}
+                </div>
+              )}
+
               {/* Message Content */}
               <div className="text-sm leading-relaxed whitespace-pre-line space-y-2">
                 {msg.content}
               </div>
 
-              {/* 5. Visible Note on Offline Fallback Answers */}
-              {msg.isOfflineFallback && (
-                <div className="pt-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-700/80 text-xs font-mono text-slate-300">
-                    <span className="w-2 h-2 rounded-full bg-amber-400" />
-                    <span>Answered from offline knowledge base.</span>
+              {/* Structured Matcher Tool Output */}
+              {msg.structuredMatch?.matches?.[0] && (
+                <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30 font-mono text-xs space-y-1.5">
+                  <div className="text-cyan-300 font-semibold flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-cyan-400" />
+                    <span>Structured Flight Matcher Tool Output:</span>
+                  </div>
+                  <div className="text-zinc-200">
+                    Nearest Tested Flight Run: <strong className="text-white">{msg.structuredMatch.matches[0].run_uid}</strong> ({msg.structuredMatch.matches[0].material_family || msg.structuredMatch.matches[0].material})
+                  </div>
+                  <div className="text-zinc-400 text-xs">
+                    Tested Conditions: {msg.structuredMatch.matches[0].factors?.oxygen?.experiment_value}% O₂, {msg.structuredMatch.matches[0].factors?.flow?.experiment_value} cm/s • Observed Outcome: <span className="text-amber-300 font-semibold">{msg.structuredMatch.matches[0].outcome_class}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Retrieved Corpus Passages */}
+              {msg.retrievedChunks && msg.retrievedChunks.length > 0 && (
+                <div className="pt-3 border-t border-white/10 space-y-3">
+                  <div className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-2">
+                    <BookOpen className="w-4 h-4" />
+                    <span>Retrieved NASA PSI / NTRS Passages ({msg.retrievedChunks.length})</span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {msg.retrievedChunks.map((chunk) => (
+                      <div key={chunk.chunk_id} className="p-3 rounded-xl bg-black/50 border border-zinc-800 text-xs font-mono space-y-1.5">
+                        <div className="flex items-center justify-between text-zinc-300">
+                          <span className="font-bold text-white truncate max-w-md" title={chunk.title}>{chunk.title}</span>
+                          <span className="text-xs text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/60 font-semibold">Page {chunk.page}</span>
+                        </div>
+                        <p className="text-zinc-300 text-xs leading-relaxed italic">
+                          "{chunk.highlighted_snippets?.[0] || chunk.text.slice(0, 220) + '...'}"
+                        </p>
+                        <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-500">
+                          <span>Chunk ID: {chunk.chunk_id}</span>
+                          {chunk.source_url && (
+                            <a href={chunk.source_url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline flex items-center gap-1 font-semibold">
+                              <span>View Source</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

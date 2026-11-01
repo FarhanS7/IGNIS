@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "node --test --experimental-strip-types src/lib/matcher/__tests__/real_solid_matcher.test.ts src/lib/matcher/__tests__/fact_provenance.test.ts src/lib/matcher/__tests__/copy_lint.test.ts src/lib/gaps/__tests__/gap_metrics.test.ts"
+    "test": "node --test --experimental-strip-types src/lib/matcher/__tests__/real_solid_matcher.test.ts src/lib/matcher/__tests__/fact_provenance.test.ts src/lib/matcher/__tests__/copy_lint.test.ts src/lib/gaps/__tests__/gap_metrics.test.ts src/lib/assistant/__tests__/client_verifier.test.ts src/lib/assistant/__tests__/bm25_retriever.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

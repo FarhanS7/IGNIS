@@ -23,6 +23,23 @@ export interface ChatMessage {
   observedFacts?: string[];
   caveats?: string[];
   isOfflineFallback?: boolean;
+  verifiedBadge?: string;
+  verifiedSentences?: Array<{ text: string; cites: string[] }>;
+  retrievedChunks?: Array<{
+    chunk_id: string;
+    doc_id: string;
+    title: string;
+    year: string;
+    page: number;
+    text: string;
+    source_url: string;
+    score: number;
+    matching_terms?: string[];
+    highlighted_snippets?: string[];
+  }>;
+  structuredMatch?: any;
+  abstain?: boolean;
+  mode?: 'extractive' | 'llm';
 }
 
 export type AskContextType = 'general' | 'simulator' | 'experiment' | 'story';
