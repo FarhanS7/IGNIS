@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { QualitySelector } from '../../visuals/QualitySelector';
+import { TrustLedgerBar } from '../common/TrustLedgerBar';
 
 export const Footer: React.FC = () => {
 
@@ -99,7 +100,8 @@ export const Footer: React.FC = () => {
           <span className="sep">•</span>
           <span>Scientific Disclaimer: Not a certified spacecraft life safety calculation tool (PRD v1.1 §1.1).</span>
         </div>
-        <div className="shrink-0">
+        <div className="shrink-0 flex items-center gap-3">
+          <TrustLedgerBar />
           <QualitySelector />
         </div>
       </div>

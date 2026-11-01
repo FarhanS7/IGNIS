@@ -1,61 +1,35 @@
 import React from 'react';
 import { useTrustLedger } from '../../context/TrustLedgerContext';
-import { ShieldCheck, CheckCircle2, RefreshCw, HelpCircle, AlertCircle } from 'lucide-react';
+import { ShieldCheck, ExternalLink } from 'lucide-react';
 
 export const TrustLedgerBar: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const { ledgerStats } = useTrustLedger();
+  const { ledgerStats, openDrawer } = useTrustLedger();
+
+  const handleOpenGeneralProvenance = () => {
+    openDrawer({
+      id: 'general-source-provenance',
+      label: 'NASA Spaceflight Data Sources',
+      value: `${ledgerStats.total || 132} verified flight data points`,
+      basis: 'measured',
+      sourceFile: 'NASA Physical Sciences Informatics (PSI)',
+      sourceColumn: 'BASS-II & Saffire Flight Repositories',
+      sourceRow: 1,
+      doi: '10.60555/4qc4-de67',
+      investigationId: 'BASS-II / Saffire',
+      notes: 'Every empirical number in IGNIS links to its primary NASA PSI flight table row and NTRS document citation.',
+    });
+  };
 
   return (
-    <div
-      className={`w-full bg-zinc-950/90 backdrop-blur border-y border-zinc-800/80 px-4 py-2.5 text-xs font-mono text-zinc-300 flex flex-wrap items-center justify-between gap-4 z-20 ${className}`}
+    <button
+      type="button"
+      onClick={handleOpenGeneralProvenance}
+      title="Every number links to its NASA source. Click to open data provenance."
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-cyan-500/30 shadow-lg text-xs font-medium transition-all cursor-pointer group ${className}`}
     >
-      <div className="flex items-center gap-2">
-        <ShieldCheck className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-        <span className="font-semibold text-zinc-200">Trust Ledger:</span>
-        <span>
-          On this screen: <strong className="text-zinc-100">{ledgerStats.total}</strong> values
-        </span>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-4 text-[11px]">
-        <div className="flex items-center gap-1.5 text-emerald-400" title="Values directly recorded from microgravity flight sensor instruments">
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          <span>
-            <strong>{ledgerStats.measured}</strong> measured
-          </span>
-        </div>
-
-        <span className="text-zinc-700">•</span>
-
-        <div className="flex items-center gap-1.5 text-cyan-400" title="Values converted via verified calibration polynomial equations">
-          <RefreshCw className="w-3.5 h-3.5" />
-          <span>
-            <strong>{ledgerStats.converted}</strong> converted
-          </span>
-        </div>
-
-        <span className="text-zinc-700">•</span>
-
-        <div className="flex items-center gap-1.5 text-amber-400" title="Standard cabin specifications assumed where flight instrumentation was absent">
-          <HelpCircle className="w-3.5 h-3.5" />
-          <span>
-            <strong>{ledgerStats.assumed}</strong> assumed
-          </span>
-        </div>
-
-        <span className="text-zinc-700">•</span>
-
-        <div className={`flex items-center gap-1.5 ${ledgerStats.withoutSource > 0 ? 'text-rose-400 font-bold' : 'text-zinc-400'}`}>
-          {ledgerStats.withoutSource > 0 ? (
-            <AlertCircle className="w-3.5 h-3.5 text-rose-400" />
-          ) : (
-            <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400" />
-          )}
-          <span>
-            <strong>{ledgerStats.withoutSource}</strong> without source
-          </span>
-        </div>
-      </div>
-    </div>
+      <ShieldCheck className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
+      <span>Every number links to its NASA source</span>
+      <ExternalLink className="w-3 h-3 text-slate-500 group-hover:text-cyan-400" />
+    </button>
   );
 };

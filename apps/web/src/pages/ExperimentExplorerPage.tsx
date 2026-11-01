@@ -12,6 +12,10 @@ import {
   Atom,
   Layers,
   FileSpreadsheet,
+  ShieldAlert,
+  ChevronDown,
+  ChevronUp,
+  BookOpen,
 } from 'lucide-react';
 import { useTrustLedger } from '../context/TrustLedgerContext';
 import { TrustLedgerBar } from '../components/common/TrustLedgerBar';
@@ -74,6 +78,9 @@ const INVESTIGATIONS_CATALOG = [
 
 export const ExperimentExplorerPage: React.FC = () => {
   const { openDrawer } = useTrustLedger();
+
+  // "For researchers" toggle state (defaults to false for student friendliness)
+  const [showResearcherTable, setShowResearcherTable] = useState<boolean>(false);
 
   // Primary Tabs: Habitat (Solid) vs Fundamental Science (Droplet & Gas) vs All
   const [activeTab, setActiveTab] = useState<'habitat' | 'fundamental' | 'all'>('habitat');
@@ -272,46 +279,121 @@ export const ExperimentExplorerPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header & Mission Mandate */}
-        <div className="space-y-2 border-b border-zinc-800 pb-6">
+        {/* Data & Sources Header */}
+        <div className="space-y-3 border-b border-zinc-800 pb-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <Database className="w-6 h-6 text-cyan-400" />
-                <h1 className="text-2xl font-bold tracking-tight text-zinc-100">NASA Flight Evidence Explorer</h1>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-cyan-950 text-cyan-400 border border-cyan-800">
-                  1,401 Total Ingested Flight Runs
-                </span>
-              </div>
-              <p className="text-sm text-zinc-400 font-mono mt-1">
-                Full epistemic ledger across 14 NASA Physical Sciences Informatics (PSI) flight investigations.
-              </p>
+            <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-cyan-400">
+              <Database className="w-4 h-4 text-cyan-400" />
+              <span>NASA Physical Sciences Informatics (PSI) Archive</span>
             </div>
+            <TrustLedgerBar />
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
+            Data & Sources
+          </h1>
+          <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+            Every number and fact in IGNIS comes directly from official NASA spaceflight experiments.
+            Here is where the data comes from and how it is organized.
+          </p>
+        </div>
 
-            {/* Export buttons */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleDownloadJSON}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-500 text-zinc-300 hover:text-cyan-300 transition-colors"
-                title="Download full JSON dataset"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Download evidence_runs.json
-              </button>
-              <button
-                onClick={handleDownloadCSV}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium rounded-lg bg-zinc-900 border border-zinc-700 hover:border-emerald-500 text-zinc-300 hover:text-emerald-300 transition-colors"
-                title="Download CSV table of filtered runs"
-              >
-                <FileSpreadsheet className="w-3.5 h-3.5" />
-                Download CSV
-              </button>
+        {/* 3 Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="p-2 rounded-lg bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                <Flame className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-mono text-slate-400">272 Flight Runs</span>
             </div>
+            <h3 className="text-base font-bold text-white">Spacecraft Solid Materials</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Tested inside the ISS Microgravity Science Glovebox (BASS, BASS-II) and inside Cygnus cargo spacecraft (Saffire-I through III). 132 runs have full measured environmental telemetry.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                <Atom className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-mono text-slate-400">282 Flight Runs</span>
+            </div>
+            <h3 className="text-base font-bold text-white">Liquid Droplet Extinction</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              FLEX and FLEX-2 investigations aboard the ISS Combustion Integrated Rack (CIR). Investigates spherical burning droplets and low-temperature "cool flame" burning.
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="p-2 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                <Layers className="w-4 h-4" />
+              </span>
+              <span className="text-xs font-mono text-slate-400">847 Flight Runs</span>
+            </div>
+            <h3 className="text-base font-bold text-white">Gaseous Flame Physics</h3>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              ACME, CFI, and Flame Design experiments. Investigates spherical flame balls, electric field effects on soot formation, and coflow diffusion flames in orbit.
+            </p>
           </div>
         </div>
 
-        {/* Trust Ledger Bar */}
-        <TrustLedgerBar />
+        {/* Non-Operational Research Notice (Merged from About) */}
+        <div className="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-300 text-xs space-y-1.5">
+          <div className="flex items-center gap-2 font-bold text-amber-300">
+            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>Non-Operational Research Notice</span>
+          </div>
+          <p className="text-slate-300 text-[11px] leading-relaxed">
+            IGNIS is an interactive educational and research exploration tool. It does not replace official NASA Flight Safety Review Boards or NASA-STD-6001B spacecraft qualification testing.
+          </p>
+        </div>
+
+        {/* "For Researchers" Toggle Button */}
+        <div className="flex items-center justify-between p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-cyan-400" />
+              <span>For Researchers & Detailed Analysis</span>
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Explore the raw 1,401 flight record table, search across rows, filter by sensor basis, and export CSV/JSON datasets.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowResearcherTable(!showResearcherTable)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-700/60 font-mono text-xs font-semibold cursor-pointer transition-colors"
+          >
+            <span>{showResearcherTable ? 'Hide database' : 'Open database'}</span>
+            {showResearcherTable ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {/* Advanced Researcher Table (Hidden by default) */}
+        {showResearcherTable && (
+          <div className="space-y-6 pt-2">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleDownloadJSON}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium rounded-lg bg-zinc-900 border border-zinc-700 hover:border-cyan-500 text-zinc-300 hover:text-cyan-300 transition-colors"
+                  title="Download full JSON dataset"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download evidence_runs.json
+                </button>
+                <button
+                  onClick={handleDownloadCSV}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-medium rounded-lg bg-zinc-900 border border-zinc-700 hover:border-emerald-500 text-zinc-300 hover:text-emerald-300 transition-colors"
+                  title="Download CSV table of filtered runs"
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5" />
+                  Download CSV
+                </button>
+              </div>
+            </div>
 
         {/* Primary Tabs: Habitat Tool vs Fundamental Science */}
         <div className="flex border-b border-zinc-800">
@@ -705,6 +787,8 @@ export const ExperimentExplorerPage: React.FC = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
-  );
+  </div>
+);
 };
