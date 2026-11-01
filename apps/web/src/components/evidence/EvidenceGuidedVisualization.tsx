@@ -315,8 +315,8 @@ export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
 
           {/* Mandatory caption: Illustrative rendering driven by scenario parameters, not a CFD simulation */}
           <div className="px-4 py-2 bg-black/80 border-t border-slate-800/80 text-center">
-            <p className="text-[11px] text-slate-400 font-mono italic">
-              Illustrative rendering driven by scenario parameters, not a CFD simulation.
+            <p className="text-[11px] text-slate-400 font-mono">
+              Illustrative visualization, not a physics simulation.
             </p>
           </div>
         </>
