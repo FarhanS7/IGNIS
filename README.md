@@ -9,7 +9,14 @@
 
 ---
 
-## 🚀 Overview
+## 💡 What This Is (in plain English)
+
+Have you ever wondered what happens to a fire in space? Without gravity pulling down heavy cold air and pushing up light hot air, flames don't flicker or rise into tall teardrops. Instead, they form quiet, glowing spheres that can choke on their own exhaust — unless cabin fans are blowing air past them.
+
+**IGNIS** is an interactive visual simulator and evidence tool built on real NASA spaceflight tests:
+1. **Interactive 3D Flame**: Adjust gravity (space station freefall, Moon, or Mars), cabin oxygen, and ventilation airflow to see the flame morph live.
+2. **What NASA Actually Saw**: Next to the flame, see what happened in 132 real spaceflight tests aboard the International Space Station (BASS-II) and Cygnus cargo spacecraft (Saffire).
+3. **No Fake Risk Scores**: We never show fake "safety scores" or invented physics. If NASA tested conditions close to yours, we tell you whether a flame was photographed or went out. If NASA has never tested it yet (such as fires on the Moon or Mars), IGNIS tells you honestly.
 
 **IGNIS** is an empirical flight evidence system developed for the **NASA International Space Apps Challenge 2026** under Challenge #8:  
 **_Flame in Freefall: AI-Powered Fire Safety Insights from Microgravity Combustion Data_**.
