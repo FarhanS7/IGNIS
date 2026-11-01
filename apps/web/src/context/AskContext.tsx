@@ -23,12 +23,10 @@ import materialMapData from '../data/material_map.json';
 export type { ChatMessage, GroundedCitation, AskPageContext, AskContextValue };
 
 export const DEFAULT_CORPUS_PROMPTS = [
-  'Why was the BASS-II O2 sensor recalibrated using ISS MCA data?',
-  'How did SIBAL fabric burn in Saffire-I compared to normal gravity?',
-  'What was the flammability limit of PMMA rods in BASS-II?',
-  'What happened during flow step-down quenching tests?',
-  'Can current flight data verify fire safety in Lunar 0.16 g partial gravity?',
-  'What did FLEX experiments discover about methanol droplet extinction in microgravity?',
+  'What happens to a flame when there is no gravity?',
+  'Why does blowing air make a space flame burn instead of going out?',
+  'Has NASA ever tested fires on the Moon or Mars?',
+  'What materials did NASA burn in the space station experiments?',
 ];
 
 export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -160,8 +158,7 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             assistantMessage = {
               id: `assistant-${Date.now()}`,
               role: 'assistant',
-              content:
-                'Not enough evidence in the NASA corpus to support a verified claim for this scenario. Consult the closest retrieved flight passages below:',
+              content: "I couldn't find that in the NASA reports I have.",
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               verifiedBadge: verification.badge,
               abstain: true,
@@ -188,11 +185,19 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const primaryChunk = topChunks[0];
           let extractiveContent = '';
 
-          if (topChunks.length === 0 || (primaryChunk && primaryChunk.score < 0.5)) {
-            extractiveContent =
-              'Not enough evidence in the corpus. The physical science flammability archive does not contain matching test runs for this specific query.';
+          if (topChunks.length === 0 || (primaryChunk && primaryChunk.score < 0.35)) {
+            extractiveContent = "I couldn't find that in the NASA reports I have.";
           } else {
-            extractiveContent = primaryChunk.highlighted_snippets.join(' ');
+            const rawText = primaryChunk.highlighted_snippets?.length > 0
+              ? primaryChunk.highlighted_snippets.join(' ')
+              : primaryChunk.text;
+            const sentences = rawText
+              .replace(/\s+/g, ' ')
+              .split(/(?<=[.?!])\s+/)
+              .map((s) => s.trim())
+              .filter((s) => s.length > 20 && !s.startsWith('#') && !s.startsWith('http'));
+            const selected = sentences.slice(0, Math.min(4, Math.max(2, sentences.length)));
+            extractiveContent = selected.length > 0 ? selected.join(' ') : rawText.slice(0, 260);
           }
 
           assistantMessage = {
@@ -200,13 +205,13 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             role: 'assistant',
             content: extractiveContent,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            verifiedBadge: primaryChunk
-              ? `Passage from ${primaryChunk.title} (Page ${primaryChunk.page})`
-              : '0 matching chunks',
+            verifiedBadge: primaryChunk && primaryChunk.score >= 0.35
+              ? `[1] ${primaryChunk.title.replace('.pdf', '')}, p.${primaryChunk.page}`
+              : undefined,
             mode: 'extractive',
-            retrievedChunks: topChunks,
+            retrievedChunks: primaryChunk && primaryChunk.score >= 0.35 ? topChunks.slice(0, 3) : [],
             structuredMatch: matcherResult,
-            abstain: topChunks.length === 0,
+            abstain: topChunks.length === 0 || (primaryChunk && primaryChunk.score < 0.35),
           };
         }
 

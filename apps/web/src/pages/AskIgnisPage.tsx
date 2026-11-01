@@ -208,33 +208,27 @@ export const AskIgnisPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Retrieved Corpus Passages */}
+              {/* Retrieved NASA Source Chips */}
               {msg.retrievedChunks && msg.retrievedChunks.length > 0 && (
-                <div className="pt-3 border-t border-white/10 space-y-3">
-                  <div className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-2">
-                    <BookOpen className="w-4 h-4" />
-                    <span>Retrieved NASA PSI / NTRS Passages ({msg.retrievedChunks.length})</span>
+                <div className="pt-3 border-t border-white/10 space-y-2">
+                  <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
+                    <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>NASA Sources:</span>
                   </div>
-                  <div className="grid grid-cols-1 gap-2.5">
-                    {msg.retrievedChunks.map((chunk) => (
-                      <div key={chunk.chunk_id} className="p-3 rounded-xl bg-black/50 border border-zinc-800 text-xs font-mono space-y-1.5">
-                        <div className="flex items-center justify-between text-zinc-300">
-                          <span className="font-bold text-white truncate max-w-md" title={chunk.title}>{chunk.title}</span>
-                          <span className="text-xs text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/60 font-semibold">Page {chunk.page}</span>
-                        </div>
-                        <p className="text-zinc-300 text-xs leading-relaxed italic">
-                          "{chunk.highlighted_snippets?.[0] || chunk.text.slice(0, 220) + '...'}"
-                        </p>
-                        <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-500">
-                          <span>Chunk ID: {chunk.chunk_id}</span>
-                          {chunk.source_url && (
-                            <a href={chunk.source_url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline flex items-center gap-1 font-semibold">
-                              <span>View Source</span>
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
+                  <div className="flex flex-wrap gap-2">
+                    {msg.retrievedChunks.map((chunk, cIdx) => (
+                      <a
+                        key={chunk.chunk_id}
+                        href={chunk.source_url || `https://ntrs.nasa.gov/search?q=${encodeURIComponent(chunk.title)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-cyan-950/70 hover:bg-cyan-900 border border-cyan-500/40 text-cyan-300 hover:text-white transition-colors"
+                        title={chunk.highlighted_snippets?.[0] || chunk.text.slice(0, 180)}
+                      >
+                        <span className="font-bold text-white">[{cIdx + 1}]</span>
+                        <span className="truncate max-w-xs">{chunk.title.replace(/\.pdf$/i, '')}, p.{chunk.page}</span>
+                        <ExternalLink className="w-3 h-3 text-cyan-400 opacity-80" />
+                      </a>
                     ))}
                   </div>
                 </div>
