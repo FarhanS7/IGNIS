@@ -17,6 +17,7 @@ export const Navbar: React.FC = () => {
   const isFlightDataActive = location.pathname.startsWith('/experiment');
   const isStoriesActive = location.pathname.startsWith('/explore');
   const isAboutActive = location.pathname === '/about';
+  const isGapsActive = location.pathname === '/gaps';
   const isAskActive = location.pathname === '/ask';
 
   const handleAskClick = () => {
@@ -52,6 +53,13 @@ export const Navbar: React.FC = () => {
             onClick={closeMenu}
           >
             Stories
+          </Link>
+          <Link
+            to="/gaps"
+            aria-current={isGapsActive ? 'page' : undefined}
+            onClick={closeMenu}
+          >
+            Research Gaps
           </Link>
           <Link
             to="/about"

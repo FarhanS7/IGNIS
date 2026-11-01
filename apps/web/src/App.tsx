@@ -9,6 +9,7 @@ import { StoryIndexPage } from './pages/StoryIndexPage';
 import { StoryPlayerPage } from './pages/StoryPlayerPage';
 import { AskIgnisPage } from './pages/AskIgnisPage';
 import { AboutPage } from './pages/AboutPage';
+import { ResearchGapsPage } from './pages/ResearchGapsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PerfOverlay } from './visuals/PerfOverlay';
 
@@ -29,6 +30,7 @@ const ROUTE_TITLES: Record<string, string> = {
   '/explore': 'Mission Stories · IGNIS',
   '/stories/v2': 'Story Mode v2 · Interactive Science Stories · IGNIS',
   '/ask': 'Ask IGNIS · Microgravity AI',
+  '/gaps': 'Research Gaps & Mission Ranking · IGNIS',
   '/about': 'About & Methodology · IGNIS',
 };
 
@@ -79,6 +81,7 @@ export const App: React.FC = () => {
             <Route path="/story/:chapterSlug" element={<StoryModeV2Page />} />
             {/* Ask IGNIS & About */}
             <Route path="/ask" element={<AskIgnisPage />} />
+            <Route path="/gaps" element={<ResearchGapsPage />} />
             <Route path="/about" element={<AboutPage />} />
             {/* 404 Actionable State */}
             <Route path="*" element={<NotFoundPage />} />

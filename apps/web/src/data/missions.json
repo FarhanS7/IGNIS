@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Exploration mission operational atmospheres with parameter-level provenance citations from flight corpus or verified user assumptions.",
+  "version": "2.0.0",
+  "scenarios": [
+    {
+      "id": "iss_cabin",
+      "title": "ISS Cabin",
+      "description": "Nominal International Space Station pressurized module atmosphere at sea-level pressure.",
+      "parameters": {
+        "oxygen_pct": {
+          "value": 21.0,
+          "unit": "%",
+          "source_type": "corpus_citation",
+          "doc_id": "PSI-25-BASS2-README",
+          "chunk_id": "PSI-25-BASS2-README-p001-c002",
+          "citation_text": "MCA ISS reading was used to correct the initial ISS 'air' reading of the sensor for the day via a constant offset (nominal 21.0% O2).",
+          "editable": true
+        },
+        "pressure_kpa": {
+          "value": 101.3,
+          "unit": "kPa",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p004-c001",
+          "citation_text": "Ignition tests performed subject to atmospheric pressure (101 kPa) baseline.",
+          "editable": true
+        },
+        "flow_cm_s": {
+          "value": 5.0,
+          "unit": "cm/s",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed nominal ISS crew cabin forced ventilation flow rate (5.0 to 20.0 cm/s specification).",
+          "editable": true
+        },
+        "gravity_g": {
+          "value": 0.0,
+          "unit": "g",
+          "source_type": "corpus_citation",
+          "doc_id": "PSI-25-BASS2-README",
+          "chunk_id": "PSI-25-BASS2-README-p002-c002",
+          "citation_text": "Microgravity forced flow flight environment aboard the ISS Microgravity Science Glovebox.",
+          "editable": false
+        },
+        "material_family": {
+          "value": "PMMA",
+          "unit": "",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Standard flight test reference polymer (polymethylmethacrylate slabs, rods, and films).",
+          "editable": true
+        }
+      }
+    },
+    {
+      "id": "gateway_like",
+      "title": "Gateway-like Habitat",
+      "description": "Lunar Gateway orbital habitat intermediate exploration atmosphere for EVA pre-breathe mitigation.",
+      "parameters": {
+        "oxygen_pct": {
+          "value": 21.0,
+          "unit": "%",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Low pressure with normal oxygen (21%) to isolate individual effects of pressure on piloted ignition.",
+          "editable": true
+        },
+        "pressure_kpa": {
+          "value": 70.3,
+          "unit": "kPa",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Intermediate exploration pressure baseline (10.2 psia / 70.3 kPa) used in next-generation exploration vehicle design.",
+          "editable": true
+        },
+        "flow_cm_s": {
+          "value": 5.0,
+          "unit": "cm/s",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed habitat interior environmental control and life support system (ECLSS) air velocity.",
+          "editable": true
+        },
+        "gravity_g": {
+          "value": 0.0,
+          "unit": "g",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20240002981",
+          "chunk_id": "NTRS-20240002981-p006-c002",
+          "citation_text": "Orbital microgravity environment (0 g).",
+          "editable": false
+        },
+        "material_family": {
+          "value": "PMMA",
+          "unit": "",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Reference structural / transparent thermoplastic.",
+          "editable": true
+        }
+      }
+    },
+    {
+      "id": "exploration_atmosphere",
+      "title": "Exploration Atmosphere (34% / 56 kPa)",
+      "description": "NASA Exploration Atmosphere (SEA) specified for Artemis / Orion / surface habitat missions to eliminate decompression sickness during frequent EVAs.",
+      "parameters": {
+        "oxygen_pct": {
+          "value": 34.0,
+          "unit": "%",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Proposed exploration environment uses an oxygen concentration of 30 to 34% by volume chosen with material flammability in mind.",
+          "editable": true
+        },
+        "pressure_kpa": {
+          "value": 56.0,
+          "unit": "kPa",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Total cabin pressure of 52.7 to 58.6 kPa (nominal 56.0 kPa / 8.2 psia) to reduce decompression sickness risk.",
+          "editable": true
+        },
+        "flow_cm_s": {
+          "value": 10.0,
+          "unit": "cm/s",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed nominal ventilation duct and crew cabin forced convection velocity (10.0 cm/s).",
+          "editable": true
+        },
+        "gravity_g": {
+          "value": 0.0,
+          "unit": "g",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Transit vehicle microgravity flight regime.",
+          "editable": false
+        },
+        "material_family": {
+          "value": "PMMA",
+          "unit": "",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Standard flammability characterization polymer PMMA.",
+          "editable": true
+        }
+      }
+    },
+    {
+      "id": "lunar_surface_habitat",
+      "title": "Lunar Surface Habitat",
+      "description": "Pressurized surface base on the Moon operating at Exploration Atmosphere in 1/6-g partial gravity.",
+      "parameters": {
+        "oxygen_pct": {
+          "value": 34.0,
+          "unit": "%",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Exploration atmosphere baseline (34% O2 by volume) for EVA airlock compatibility.",
+          "editable": true
+        },
+        "pressure_kpa": {
+          "value": 56.0,
+          "unit": "kPa",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20080013149",
+          "chunk_id": "NTRS-20080013149-p002-c001",
+          "citation_text": "Total cabin pressure of 52.7 to 58.6 kPa (nominal 56.0 kPa / 8.2 psia).",
+          "editable": true
+        },
+        "flow_cm_s": {
+          "value": 10.0,
+          "unit": "cm/s",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Habitat ventilation airflow velocity (10.0 cm/s).",
+          "editable": true
+        },
+        "gravity_g": {
+          "value": 0.16,
+          "unit": "g",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20240002981",
+          "chunk_id": "NTRS-20240002981-p006-c002",
+          "citation_text": "Partial gravity environment expected on future mission to the moon (0.16 g).",
+          "editable": false
+        },
+        "material_family": {
+          "value": "PMMA",
+          "unit": "",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Standard reference polymer.",
+          "editable": true
+        }
+      }
+    },
+    {
+      "id": "mars_surface_habitat",
+      "title": "Mars Surface Habitat",
+      "description": "Surface outpost on Mars operating at normoxic intermediate pressure in 3/8-g partial gravity.",
+      "parameters": {
+        "oxygen_pct": {
+          "value": 28.0,
+          "unit": "%",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed Mars surface habitat normoxic hypobaric mixture (28.0% O2).",
+          "editable": true
+        },
+        "pressure_kpa": {
+          "value": 70.3,
+          "unit": "kPa",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed 10.2 psia (70.3 kPa) intermediate pressure habitat design.",
+          "editable": true
+        },
+        "flow_cm_s": {
+          "value": 10.0,
+          "unit": "cm/s",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Assumed forced ventilation airflow velocity (10.0 cm/s).",
+          "editable": true
+        },
+        "gravity_g": {
+          "value": 0.38,
+          "unit": "g",
+          "source_type": "corpus_citation",
+          "doc_id": "NTRS-20240002981",
+          "chunk_id": "NTRS-20240002981-p006-c002",
+          "citation_text": "Gravity environment expected on future mission to Mars (0.38 g).",
+          "editable": false
+        },
+        "material_family": {
+          "value": "Nomex",
+          "unit": "",
+          "source_type": "user_assumption",
+          "doc_id": null,
+          "chunk_id": null,
+          "citation_text": "Aramid protective flight suit and habitat textiles.",
+          "editable": true
+        }
+      }
+    }
+  ]
+}
