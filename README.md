@@ -99,6 +99,23 @@ The value of IGNIS is not automated decision-making or outcome forecasting, but 
 
 ---
 
+## 🛡️ Assistant Abstention & Benchmark Validation
+
+To prevent hallucinations and out-of-distribution speculation, the assistant enforces strict abstention rules (`score < 12.0` or `groundedness < 5.0`, plus `detectUntestedCondition`). Complete evaluation methodology and per-question logs are in [`docs/EVALUATION.md`](docs/EVALUATION.md):
+
+- **Development Set (30 Questions, rule calibrated on it)**:
+  - Answerable retrieval: 55.0% Recall@1, 85.0% Recall@5, MRR 0.677, 0.0% false abstentions (0/20)
+  - Out-of-scope abstention rate: **100.0%** (5/5)
+  - Untested environmental boundary flagging rate: **100.0%** (5/5)
+- **Held-Out Test Set (26 Questions, unseen evaluation)**:
+  - Answerable false-abstention rate: **0.00% (0/14)** (scores 19.03–46.07, all answered with verified chunks)
+  - Out-of-scope abstention rate: **83.33% (5/6)** — Failed on `holdout-20` (*"What was the Apollo 13 oxygen tank failure?"*, score 14.15) due to lexical overlap with legitimate BASS-II oxygen sensor calibration logs
+  - Untested regime keyword flag rate: **16.67% (1/6)** — Exposes keyword brittleness when questions use novel phrasing (*"Moon base"*, *"spinning habitat with artificial gravity"*, *"one-third Earth gravity"*)
+  - Untested regime composite abstention rate: **100.00% (6/6)** — Groundedness safety floor ($\text{score} \times \text{coverage} < 5.0$) safely caught all ungrounded queries missed by keywords
+- **Cross-Engine Parity**: Shipped TypeScript client and Python offline pipeline achieve **100.0% decision agreement** across all 56 benchmark questions (0 decision disagreements, 0.00 BM25 score gap). Continuous integration validates parity via `npm test`.
+
+---
+
 ## 💻 Tech Stack & Local Execution
 
 - **Frontend**: React 19, TypeScript, Vite, TailwindCSS, Framer Motion, Lucide icons.
