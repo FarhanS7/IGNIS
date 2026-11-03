@@ -167,3 +167,4 @@ export function localizeSmokeSource(habitat: HabitatGraph, steps: SimStepResult[
   const localizer = new ZoneLocalizer();
   return localizer.localize(habitat, steps);
 }
+

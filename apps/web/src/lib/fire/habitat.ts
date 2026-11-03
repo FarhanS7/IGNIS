@@ -55,3 +55,4 @@ export function getDetectorsForZone(habitat: HabitatGraph, zoneId: string): stri
   if (!zone) return [];
   return zone.detectorIds;
 }
+

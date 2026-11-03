@@ -116,6 +116,20 @@ To prevent hallucinations and out-of-distribution speculation, the assistant enf
 
 ---
 
+## 🚒 Fire Response Console (`/response`)
+
+The **Fire Response Console** simulates multi-sensor fire detection, time-of-arrival smoke localization, and emergency response sequencing across microgravity habitat modules (ISS-like, uncrewed payload carrier, or lunar surface habitat):
+
+- **Multi-Sensor Heuristic Fusion**: Combines optical obscuration (%/m), carbon monoxide (ppm), and thermal rate-of-rise (°C/min) across a persistence window to discriminate true smoldering/flaming combustion from non-fire cabin dust or aerosol nuisance events.
+- **Ventilation Transport & Mixing**: Advection along forced ventilation duct networks accounts for zero-buoyancy dispersion, grounded in qualitative findings from NASA SAME (NTRS-20130000422).
+- **Categorical Localization**: Smoke origin inference reports discrete categories (`CLEAR`, `CLOSE`, `AMBIGUOUS`, `INSUFFICIENT_EVIDENCE`) based on inter-zone arrival delays rather than misleading pseudo-probabilities.
+- **Emergency Containment Sequencing**: Progresses through `ALARM` → `REMOVE_POWER` → `ISOLATE_VENTILATION` → `INHIBIT_MAKEUP` → `SUPPRESSION` → `POST_FIRE_RECOVERY`. In crewed modules, suppression requires explicit human confirmation to safeguard astronaut breathing volumes, warning against CO2 flooding without breathing apparatus (NTRS-20130011664).
+- **Flight Data Provenance**: For each response action (e.g. flow cutoff), queries real NASA BASS-II flight runs to inspect empirical extinction behavior, accompanied by validation circularity caveats and environmental envelope warnings.
+- **Parameter Registry & Sweep**: All simulation parameters reside in a single registry (`sim_params.ts`), each tagged with engineering rationale and plausible ranges (`[min, max]`) evaluated by a built-in Monte Carlo design-consistency sweep.
+- **Persistent Honesty Banner**: Displays *"Simulated sensor data. Not flight software."* Extinction outcomes come solely from NASA flight evidence; the simulator never predicts flame extinction.
+
+---
+
 ## 💻 Tech Stack & Local Execution
 
 - **Frontend**: React 19, TypeScript, Vite, TailwindCSS, Framer Motion, Lucide icons.

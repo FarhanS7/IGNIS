@@ -7,7 +7,7 @@ import type {
   DetectorOutput,
 } from './types.ts';
 import { SIM_PARAMS } from './sim_params.ts';
-import { getHabitatById, getZoneById, calculateDuctTransportTime_s } from './habitat.ts';
+import { getHabitatById, calculateDuctTransportTime_s } from './habitat.ts';
 
 /**
  * Seeded pseudo-random number generator (Mulberry32)
@@ -241,3 +241,4 @@ export class FireSimulator {
     return results;
   }
 }
+

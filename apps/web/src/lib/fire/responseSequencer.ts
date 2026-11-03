@@ -6,7 +6,6 @@ import type {
   SequencerPolicy,
   SequencerState,
   StepStatus,
-  SuppressionAgent,
 } from './types.ts';
 import { SIM_PARAMS } from './sim_params.ts';
 
@@ -93,6 +92,14 @@ export class ResponseSequencer {
       eventLog: [...this.state.eventLog],
       crewSafetyAlerts: [...this.state.crewSafetyAlerts],
     };
+  }
+
+  getHabitat(): HabitatGraph {
+    return this.habitat;
+  }
+
+  getAlarmTime(): number | undefined {
+    return this.alarmTriggeredTimestamp_s;
   }
 
   private logEvent(
@@ -376,3 +383,4 @@ export class ResponseSequencer {
     );
   }
 }
+

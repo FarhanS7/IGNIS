@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   ShieldAlert,
   Database,
@@ -258,6 +259,33 @@ export const AboutPage: React.FC = () => {
           <p>
             The system's true purpose and value is therefore not outcome forecasting, but <strong>epistemic provenance retrieval</strong>: instantly providing astronautical engineers with the raw flight records, physical test conditions, DOI citations, and primary data tables from real NASA missions.
           </p>
+        </div>
+      </section>
+
+      {/* Fire Response Console Methodology */}
+      <section className="space-y-4 pt-4 border-t border-slate-800">
+        <h2 className="text-xl font-bold font-serif text-white flex items-center gap-2">
+          <ShieldAlert className="w-5 h-5 text-rose-400" />
+          Fire Response & Smoke Containment Simulation
+        </h2>
+        <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-xs text-slate-300 space-y-3">
+          <p>
+            The <strong>Fire Response Console</strong> (<code>/response</code>) demonstrates emergency response containment, multi-sensor alarm discrimination, and ventilation isolation in microgravity habitats.
+          </p>
+          <ul className="list-disc pl-5 space-y-1 text-slate-400">
+            <li><strong>Transport Modeling:</strong> Microgravity smoke transport along duct networks is grounded in qualitative findings from NASA SAME (NTRS-20130000422). Absence of buoyant convection means smoke disperses via forced ventilation and duct mixing rather than rising.</li>
+            <li><strong>Multi-Channel Heuristic Fusion:</strong> Evaluates coincident obscuration, carbon monoxide (ppm), and thermal rate-of-rise over a sustained persistence window to reject transient non-fire dust and cleaning aerosols.</li>
+            <li><strong>Emergency Sequencing:</strong> Progression follows NASA ISS procedures (NTRS-20030053429) and water mist extinguishing research (NTRS-20130011664). In crewed mode, fire suppression agent discharge strictly requires human verification to safeguard cabin breathing volumes.</li>
+          </ul>
+          <div className="pt-2">
+            <Link
+              to="/response"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium transition-colors text-xs"
+            >
+              <span>Explore Fire Response Console</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -13,6 +13,7 @@ import {
   RotateCcw,
   Sparkles,
   ShieldCheck,
+  Shield,
   Check,
   Share2,
   GitCompare,
@@ -521,6 +522,15 @@ export const SimulatorPage: React.FC = () => {
           >
             Export Brief
           </Button>
+
+          <Link
+            to="/response"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/40 bg-rose-950/20 hover:bg-rose-950/40 text-rose-300 text-xs font-semibold transition-colors"
+            title="Launch Fire Response Console"
+          >
+            <Shield className="w-3.5 h-3.5 text-rose-400" />
+            <span>Fire Response</span>
+          </Link>
         </div>
       </div>
 

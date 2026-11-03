@@ -1,7 +1,6 @@
 import { RealSolidMatcher } from '../matcher/real_solid_matcher.ts';
 import type { RawEvidenceSolidRun, MaterialMap, RealSolidMatch, SolidScenarioInput } from '../matcher/types.ts';
 import type { ActionEvidenceChip, FuelType, HabitatGraph, SequenceStepId } from './types.ts';
-import { VERIFIED_SOURCES } from './verified_sources.ts';
 import solidRunsData from '../../data/evidence_solid.json' with { type: 'json' };
 import materialMapData from '../../data/material_map.json' with { type: 'json' };
 
@@ -99,7 +98,7 @@ export function bindActionEvidence(
       };
 
       try {
-        const matchResult = matcher.match(input, 4);
+        const matchResult = matcher.match(input, null, 4);
         matchedFlightRuns = matchResult.matches;
         if (matchResult.envelope.outside_tested_range) {
           isWithinFlightEnvelope = false;

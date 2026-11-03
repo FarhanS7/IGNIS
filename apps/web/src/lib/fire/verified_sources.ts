@@ -79,3 +79,4 @@ export function isValidLiteratureTag(tag: string): boolean {
   const sourceId = tag.replace('literature:', '');
   return Boolean(VERIFIED_SOURCES[sourceId]);
 }
+
