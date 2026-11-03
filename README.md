@@ -5,6 +5,11 @@
 
 [![NASA Space Apps Challenge](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0B3D91?style=for-the-badge&logo=nasa)](https://www.spaceappschallenge.org/)
 [![Project Demo](https://img.shields.io/badge/YouTube-Watch%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs)
+
+## 🚀 Live Demo
+- **Hosted Web Application**: `<ADD LIVE URL>`
+- **Video Walkthrough**: [YouTube Demo](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-79dce8?style=for-the-badge)](LICENSE)
 
 ---
@@ -113,7 +118,18 @@ npm run build
 
 # Preview locally
 npm run preview
+# or: npm --prefix apps/web run preview
 ```
+
+---
+
+## 🤖 AI Tool Usage Disclosure
+
+In compliance with NASA Space Apps Challenge guidance, we disclose the use of artificial intelligence tools in this project:
+- **Coding & Scaffolding**: AI coding assistants (including Google Antigravity / Claude Code) were used for code drafting, refactoring, and test writing under strict human architectural supervision.
+- **Microgravity Flight Evidence**: All physical flight tables, fuel properties, and DOI references are extracted directly from primary NASA PSI files and NTRS publications without generative fabrication.
+- **In-Browser Determinism**: The client-side application runs 100% deterministically in the user's browser using bundled JSON corpora without mandatory external LLM calls.
+- **Optional API Assistant**: The companion backend (`services/api`) contains optional endpoints interfacing with Gemini `<CONFIRM API MODEL>` for natural language synthesis, guarded by client-side verbatim citation verifiers (`apps/web/src/lib/assistant/client_verifier.ts`).
 
 ---
 
