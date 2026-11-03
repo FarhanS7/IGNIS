@@ -263,7 +263,7 @@ def main():
         f.write("| ID | Question | Gold Chunk(s) | Top-1 Chunk | Rank | Score |\n")
         f.write("| :--- | :--- | :--- | :--- | :---: | :---: |\n")
         for r in ans_results:
-            gold_str = ", ".join([f"`{g}`" for g in r['gold']])
+            gold_str = ", ".join([f"`{g}`" for g in sorted(r['gold'])])
             top1_str = f"`{r['retrieved_top3'][0]}`" if r['retrieved_top3'] else "None"
             f.write(f"| {r['id']} | {r['question']} | {gold_str} | {top1_str} | **{r['rank']}** | {r['top_score']} |\n")
 

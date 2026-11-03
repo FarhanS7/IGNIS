@@ -17,26 +17,26 @@ Generated from [`data/eval/qa_set.json`](file:///e:/IGNIS/data/eval/qa_set.json)
 
 | ID | Question | Gold Chunk(s) | Top-1 Chunk | Rank | Score |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| qa-01 | Why was the BASS-II oxygen sensor reading adjusted, and what instrument was used as the calibration reference? | `NTRS-20210011385-p124-c002`, `NTRS-20210011385-p014-c001`, `NTRS-20210011385-p124-c001` | `PSI-25-BASS2-README-p001-c002` | **4** | 21.5 |
+| qa-01 | Why was the BASS-II oxygen sensor reading adjusted, and what instrument was used as the calibration reference? | `NTRS-20210011385-p014-c001`, `NTRS-20210011385-p124-c001`, `NTRS-20210011385-p124-c002` | `PSI-25-BASS2-README-p001-c002` | **4** | 21.5 |
 | qa-02 | What two portable battery-powered instruments were used in the BASS-II working volume for gas measurements? | `NTRS-20210011385-p014-c001` | `NTRS-20210011385-p014-c001` | **1** | 26.56 |
 | qa-03 | What does a value of zero Nikon frames shot indicate according to the BASS-II ReadMe? | `PSI-25-BASS2-README-p001-c002` | `PSI-25-BASS2-README-p001-c002` | **1** | 17.32 |
 | qa-04 | What is the composition of SIBAL cloth, and what forced airflow velocities were planned for Saffire-I and Saffire-III? | `PSI-100-README-p001-c001` | `PSI-100-README-p001-c001` | **1** | 39.77 |
 | qa-05 | What were the dimensions of the rectangular flow tunnel used in Saffire IV, V, and VI? | `NTRS-20240002981-p004-c001` | `NTRS-20240002981-p002-c002` | **3** | 25.46 |
 | qa-06 | What was the pressurized internal volume of the Cygnus vehicle used for Saffire spacecraft fire experiments? | `NTRS-20240007488-p005-c001` | `NTRS-20240007488-p005-c001` | **1** | 29.55 |
-| qa-07 | What forced oxidizer flow velocity was supplied across the samples during Saffire-VI tests? | `NTRS-20240007488-p013-c001`, `NTRS-20240002981-p004-c001` | `NTRS-20160000593-p003-c001` | **>5** | 22.75 |
+| qa-07 | What forced oxidizer flow velocity was supplied across the samples during Saffire-VI tests? | `NTRS-20240002981-p004-c001`, `NTRS-20240007488-p013-c001` | `NTRS-20160000593-p003-c001` | **>5** | 22.75 |
 | qa-08 | What was the initial droplet diameter range tested in the FLEX droplet combustion experiments to observe diffusive and radiative extinction? | `NTRS-20130014061-p001-c002` | `NTRS-20130014061-p009-c001` | **3** | 29.49 |
 | qa-09 | What effect did reducing ambient pressure while keeping 21% O2 have on the piloted ignition delay time of PMMA in McAllister et al.? | `NTRS-20080013149-p002-c002` | `NTRS-20080013149-p002-c002` | **1** | 41.19 |
-| qa-10 | What thickness and sample dimensions of black PMMA were tested by McAllister et al. in the FIST apparatus? | `NTRS-20080013149-p005-c002`, `NTRS-20080013149-p005-c001` | `NTRS-20080013149-p005-c001` | **1** | 17.17 |
+| qa-10 | What thickness and sample dimensions of black PMMA were tested by McAllister et al. in the FIST apparatus? | `NTRS-20080013149-p005-c001`, `NTRS-20080013149-p005-c002` | `NTRS-20080013149-p005-c001` | **1** | 17.17 |
 | qa-11 | What is the primary scientific goal of the ACME Flame Design experiment? | `PSI-10-ACME-ISRD-p006-c002`, `PSI-10-ACME-ISRD-p006-c003` | `PSI-10-ACME-ISRD-p006-c002` | **1** | 17.71 |
 | qa-12 | What four burner types were designated for the first set of ACME microgravity experiments? | `PSI-10-ACME-ISRD-p009-c001` | `PSI-10-ACME-ISRD-p009-c001` | **1** | 19.13 |
-| qa-13 | What occurs when the forced air flow is stepped down incrementally on a burning PMMA rod in BASS-II microgravity tests? | `NTRS-20210011385-p097-c002`, `NTRS-20210011385-p066-c001`, `NTRS-20210011385-p074-c002` | `NTRS-20210011385-p064-c001` | **4** | 18.6 |
-| qa-14 | What does the SIBAL acronym stand for in NASA combustion research? | `NTRS-20240002981-p002-c002`, `PSI-100-README-p001-c001`, `NTRS-20210011385-p102-c001` | `NTRS-20210011385-p102-c001` | **1** | 22.89 |
+| qa-13 | What occurs when the forced air flow is stepped down incrementally on a burning PMMA rod in BASS-II microgravity tests? | `NTRS-20210011385-p066-c001`, `NTRS-20210011385-p074-c002`, `NTRS-20210011385-p097-c002` | `NTRS-20210011385-p064-c001` | **4** | 18.6 |
+| qa-14 | What does the SIBAL acronym stand for in NASA combustion research? | `NTRS-20210011385-p102-c001`, `NTRS-20240002981-p002-c002`, `PSI-100-README-p001-c001` | `NTRS-20210011385-p102-c001` | **1** | 22.89 |
 | qa-15 | What range of heat release rates was observed for practical-scale fires tested in unmanned Cygnus spacecraft during Saffire? | `NTRS-20240002981-p006-c001`, `NTRS-20240007488-p021-c001` | `NTRS-20240007488-p021-c001` | **1** | 30.35 |
 | qa-16 | What type of igniter wire and electrical operating current was used in BASS-II to ignite solid samples? | `NTRS-20210011385-p013-c002`, `PSI-25-BASS2-SRD-p001-c001` | `PSI-25-BASS2-SRD-p001-c001` | **1** | 14.07 |
-| qa-17 | What combustion gas threshold was exceeded during the two PMMA burns in the Saffire-VI flight test? | `NTRS-20240007488-p018-c001`, `NTRS-20240002981-p005-c002`, `NTRS-20240002981-p005-c001` | `NTRS-20240002981-p005-c001` | **1** | 14.56 |
-| qa-18 | What range of airflow speeds was used inside the BASS-II flow duct in the Microgravity Science Glovebox? | `NTRS-20210011385-p064-c002`, `NTRS-20210011385-p064-c001` | `NTRS-20160000593-p003-c001` | **2** | 29.69 |
-| qa-19 | In droplet microgravity combustion (FLEX), what two extinction regimes govern small versus large droplets? | `NTRS-20130014061-p009-c001`, `NTRS-20130014061-p001-c002` | `NTRS-20130014061-p009-c001` | **1** | 32.63 |
-| qa-20 | What cabin pressure and oxygen concentration conditions define Space Exploration Atmospheres studied to reduce EVA prebreathe times? | `NTRS-20080013149-p004-c001`, `NTRS-20080013149-p002-c001` | `NTRS-20080013149-p002-c001` | **1** | 40.42 |
+| qa-17 | What combustion gas threshold was exceeded during the two PMMA burns in the Saffire-VI flight test? | `NTRS-20240002981-p005-c001`, `NTRS-20240002981-p005-c002`, `NTRS-20240007488-p018-c001` | `NTRS-20240002981-p005-c001` | **1** | 14.56 |
+| qa-18 | What range of airflow speeds was used inside the BASS-II flow duct in the Microgravity Science Glovebox? | `NTRS-20210011385-p064-c001`, `NTRS-20210011385-p064-c002` | `NTRS-20160000593-p003-c001` | **2** | 29.69 |
+| qa-19 | In droplet microgravity combustion (FLEX), what two extinction regimes govern small versus large droplets? | `NTRS-20130014061-p001-c002`, `NTRS-20130014061-p009-c001` | `NTRS-20130014061-p009-c001` | **1** | 32.63 |
+| qa-20 | What cabin pressure and oxygen concentration conditions define Space Exploration Atmospheres studied to reduce EVA prebreathe times? | `NTRS-20080013149-p002-c001`, `NTRS-20080013149-p004-c001` | `NTRS-20080013149-p002-c001` | **1** | 40.42 |
 
 ## 3. Out-of-Scope Questions Abstention Evaluation (5 Questions)
 
