@@ -51,3 +51,9 @@ PROJECT_CONTEXT.md
 IGNIS_MASTER_GUIDE*.md
 !IGNIS_MASTER_GUIDE_BANGLA.md
 
+
+# ML Raw Data & Cache
+data/raw_ml/
+data/ml_cache/
+*.parquet
+*.pkl
