@@ -1,0 +1,235 @@
+[
+  {
+    "id": "iss_like_module",
+    "name": "ISS-like module (illustrative)",
+    "environment": "microgravity",
+    "gravity_g": 0.0,
+    "isCrewed": true,
+    "zones": [
+      {
+        "id": "zone_1",
+        "name": "Avionics Bay (illustrative)",
+        "module": "ISS-like module",
+        "volume_m3": 25.0,
+        "equipmentPower_kW": 4.5,
+        "detectorIds": ["det_1"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_2",
+        "name": "Science Glovebox Rack (illustrative)",
+        "module": "ISS-like module",
+        "volume_m3": 30.0,
+        "equipmentPower_kW": 6.0,
+        "detectorIds": ["det_2"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_3",
+        "name": "Crew Quarters (illustrative)",
+        "module": "ISS-like module",
+        "volume_m3": 20.0,
+        "equipmentPower_kW": 2.0,
+        "detectorIds": ["det_3"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_4",
+        "name": "Aft Vestibule (illustrative)",
+        "module": "ISS-like module",
+        "volume_m3": 25.0,
+        "equipmentPower_kW": 3.0,
+        "detectorIds": ["det_4"],
+        "powerState": "ON",
+        "isIsolated": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge_1_2",
+        "fromZone": "zone_1",
+        "toZone": "zone_2",
+        "ductLength_m": 6.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.20,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_2_4",
+        "fromZone": "zone_2",
+        "toZone": "zone_4",
+        "ductLength_m": 8.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.25,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_4_3",
+        "fromZone": "zone_4",
+        "toZone": "zone_3",
+        "ductLength_m": 7.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.15,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_3_1",
+        "fromZone": "zone_3",
+        "toZone": "zone_1",
+        "ductLength_m": 5.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.18,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      }
+    ]
+  },
+  {
+    "id": "uncrewed_habitat",
+    "name": "Uncrewed habitat (illustrative)",
+    "environment": "microgravity",
+    "gravity_g": 0.0,
+    "isCrewed": false,
+    "zones": [
+      {
+        "id": "zone_core",
+        "name": "Core Avionics (illustrative)",
+        "module": "Uncrewed habitat",
+        "volume_m3": 35.0,
+        "equipmentPower_kW": 8.0,
+        "detectorIds": ["det_core"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_power",
+        "name": "Power Distribution Bay (illustrative)",
+        "module": "Uncrewed habitat",
+        "volume_m3": 25.0,
+        "equipmentPower_kW": 12.0,
+        "detectorIds": ["det_power"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_docking",
+        "name": "Docking Node (illustrative)",
+        "module": "Uncrewed habitat",
+        "volume_m3": 20.0,
+        "equipmentPower_kW": 2.0,
+        "detectorIds": ["det_docking"],
+        "powerState": "ON",
+        "isIsolated": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge_core_power",
+        "fromZone": "zone_core",
+        "toZone": "zone_power",
+        "ductLength_m": 5.0,
+        "ductDiameter_m": 0.30,
+        "flowVelocity_m_s": 0.22,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_power_docking",
+        "fromZone": "zone_power",
+        "toZone": "zone_docking",
+        "ductLength_m": 6.5,
+        "ductDiameter_m": 0.30,
+        "flowVelocity_m_s": 0.18,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_docking_core",
+        "fromZone": "zone_docking",
+        "toZone": "zone_core",
+        "ductLength_m": 4.5,
+        "ductDiameter_m": 0.30,
+        "flowVelocity_m_s": 0.20,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      }
+    ]
+  },
+  {
+    "id": "lunar_habitat",
+    "name": "Lunar habitat (illustrative)",
+    "environment": "lunar_partial_g",
+    "gravity_g": 0.16,
+    "isCrewed": true,
+    "zones": [
+      {
+        "id": "zone_hab",
+        "name": "Habitation Quarters (illustrative)",
+        "module": "Lunar habitat",
+        "volume_m3": 40.0,
+        "equipmentPower_kW": 5.0,
+        "detectorIds": ["det_hab"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_airlock",
+        "name": "Regolith Airlock (illustrative)",
+        "module": "Lunar habitat",
+        "volume_m3": 20.0,
+        "equipmentPower_kW": 3.0,
+        "detectorIds": ["det_airlock"],
+        "powerState": "ON",
+        "isIsolated": false
+      },
+      {
+        "id": "zone_eclss",
+        "name": "ECLSS Utility Bay (illustrative)",
+        "module": "Lunar habitat",
+        "volume_m3": 30.0,
+        "equipmentPower_kW": 7.0,
+        "detectorIds": ["det_eclss"],
+        "powerState": "ON",
+        "isIsolated": false
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge_hab_airlock",
+        "fromZone": "zone_hab",
+        "toZone": "zone_airlock",
+        "ductLength_m": 7.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.15,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_airlock_eclss",
+        "fromZone": "zone_airlock",
+        "toZone": "zone_eclss",
+        "ductLength_m": 8.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.18,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      },
+      {
+        "id": "edge_eclss_hab",
+        "fromZone": "zone_eclss",
+        "toZone": "zone_hab",
+        "ductLength_m": 6.0,
+        "ductDiameter_m": 0.25,
+        "flowVelocity_m_s": 0.16,
+        "hasIsolationDamper": true,
+        "damperState": "OPEN"
+      }
+    ]
+  }
+]
