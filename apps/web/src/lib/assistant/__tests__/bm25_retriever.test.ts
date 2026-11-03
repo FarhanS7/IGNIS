@@ -4,8 +4,11 @@ import {
   BM25Retriever,
   tokenize,
   extractScenarioFromQuestion,
+  shouldAbstain,
+  detectUntestedCondition,
   type CorpusChunk,
 } from '../bm25_retriever.ts';
+import rawChunks from '../../../data/corpus/chunks.json' with { type: 'json' };
 
 describe('BM25 Retriever and Domain Synonyms', () => {
   const sampleChunks: CorpusChunk[] = [
@@ -84,5 +87,43 @@ describe('BM25 Retriever and Domain Synonyms', () => {
     const mars = extractScenarioFromQuestion('What is fire spread rate in Mars habitat?');
     assert.ok(mars);
     assert.strictEqual(mars.gravity_g, 0.38);
+  });
+
+  it('abstains on out-of-scope questions with insufficient grounding on real corpus', () => {
+    const retriever = new BM25Retriever(rawChunks as unknown as CorpusChunk[]);
+    // Apollo battery question
+    const oosQuery = 'What was the battery chemistry and cell capacity of the Apollo Lunar Roving Vehicle?';
+    const top = retriever.search(oosQuery, 1)[0];
+    const abstention = shouldAbstain(oosQuery, top);
+    assert.strictEqual(abstention.abstain, true);
+    assert.ok(abstention.reason);
+  });
+
+  it('does NOT abstain on answerable questions with strong grounding on real corpus', () => {
+    const retriever = new BM25Retriever(rawChunks as unknown as CorpusChunk[]);
+    const ansQuery = 'What is the composition of SIBAL cloth, and what forced airflow velocities were planned for Saffire-I?';
+    const top = retriever.search(ansQuery, 1)[0];
+    const abstention = shouldAbstain(ansQuery, top);
+    assert.strictEqual(abstention.abstain, false);
+    assert.ok(top.score >= 12.0);
+  });
+
+  it('detects untested environmental boundary conditions', () => {
+    const lunar = detectUntestedCondition('What is the flame spread rate of PMMA under Lunar partial gravity (0.16 g)?');
+    assert.strictEqual(lunar.isUntested, true);
+    assert.ok(lunar.axes.includes('gravity (0.16 g)'));
+
+    const mars = detectUntestedCondition('Does cast PMMA extinguish in a Mars surface habitat (0.38 g, 70 kPa)?');
+    assert.strictEqual(mars.isUntested, true);
+    assert.ok(mars.axes.includes('gravity (0.38 g)'));
+    assert.ok(mars.axes.includes('pressure (70 kPa)'));
+
+    const pureO2 = detectUntestedCondition('Flame extinction under pure oxygen (100% O2) at 300 kPa');
+    assert.strictEqual(pureO2.isUntested, true);
+    assert.ok(pureO2.axes.includes('O2 (100%)'));
+    assert.ok(pureO2.axes.includes('pressure (300 kPa)'));
+
+    const normal = detectUntestedCondition('What happens to a PMMA flame in microgravity?');
+    assert.strictEqual(normal.isUntested, false);
   });
 });

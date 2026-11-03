@@ -3,10 +3,11 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { RealSolidMatcher } from '../real_solid_matcher.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, '../../../../..');
+const repoRoot = path.resolve(__dirname, '../../../../../..');
 const webSrcRoot = path.resolve(__dirname, '../../..');
 
 function getSourceFiles(dir: string, fileList: string[] = []): string[] {
@@ -180,5 +181,92 @@ describe('Honesty Guards & Copy Lint Test', () => {
       0,
       `Found uncomputed "real NASA data" claim:\n${JSON.stringify(violations, null, 2)}`
     );
+  });
+  test('No retracted accuracy numbers outside explicit retraction context', () => {
+    const retractedNumbers = ['92.42', '87.89', '84.4%', '77.5%'];
+    const violations: { file: string; line: number; text: string }[] = [];
+
+    for (const file of sourceFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
+      lines.forEach((line, idx) => {
+        if (
+          line.includes('Retraction') ||
+          line.includes('retraction') ||
+          line.includes('retracted') ||
+          line.includes('taylorInvSqrt')
+        ) {
+          return;
+        }
+        for (const num of retractedNumbers) {
+          if (line.includes(num)) {
+            violations.push({
+              file: path.relative(repoRoot, file),
+              line: idx + 1,
+              text: line.trim(),
+            });
+          }
+        }
+      });
+    }
+
+    assert.strictEqual(
+      violations.length,
+      0,
+      `Found retracted accuracy numbers outside retraction context:\n${JSON.stringify(violations, null, 2)}`
+    );
+  });
+
+  test('No use of "Live Physical Reaction"', () => {
+    const violations: { file: string; line: number; text: string }[] = [];
+    for (const file of sourceFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
+      lines.forEach((line, idx) => {
+        if (/live physical reaction/i.test(line)) {
+          violations.push({
+            file: path.relative(repoRoot, file),
+            line: idx + 1,
+            text: line.trim(),
+          });
+        }
+      });
+    }
+    assert.strictEqual(
+      violations.length,
+      0,
+      `Found forbidden phrase "Live Physical Reaction":\n${JSON.stringify(violations, null, 2)}`
+    );
+  });
+
+  test('Every item in data/eval/qa_set.json has a valid category', () => {
+    const qaSetPath = path.join(repoRoot, 'data/eval/qa_set.json');
+    const qaSet = JSON.parse(fs.readFileSync(qaSetPath, 'utf8'));
+    const validCategories = new Set(['answerable', 'out_of_scope', 'untested_condition']);
+
+    for (const item of qaSet) {
+      assert.ok(
+        validCategories.has(item.category),
+        `Item ${item.id} has invalid category "${item.category}"`
+      );
+    }
+  });
+
+  test('Usable runs reported in README matches usable runs in matcher (132)', () => {
+    const readmeContent = fs.readFileSync(readmePath, 'utf8');
+    assert.ok(
+      readmeContent.includes('132 usable solid') ||
+      readmeContent.includes('132 real spaceflight tests') ||
+      readmeContent.includes('106/132'),
+      'README does not mention 132 usable solid runs'
+    );
+    const solidData = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, 'apps/web/src/data/evidence_solid.json'), 'utf8')
+    );
+    const materialMap = JSON.parse(
+      fs.readFileSync(path.join(repoRoot, 'apps/web/src/data/material_map.json'), 'utf8')
+    );
+    const matcher = new RealSolidMatcher(solidData, materialMap);
+    assert.strictEqual(matcher.usableRuns.length, 132);
   });
 });

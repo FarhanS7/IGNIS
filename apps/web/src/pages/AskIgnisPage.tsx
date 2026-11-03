@@ -94,27 +94,36 @@ export const AskIgnisPage: React.FC = () => {
       </div>
 
       {/* Scope Selector Tabs */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs">
-        <span className="text-slate-400 font-mono px-3 py-1 font-semibold">EVIDENCE SCOPE:</span>
-        {[
-          { id: 'global', label: 'All NASA PSI Records' },
-          { id: 'saffire', label: 'Saffire Spacecraft Burns' },
-          { id: 'glovebox', label: 'BASS & FLEX Microgravity' },
-          { id: 'earthdata', label: 'NASA Earthdata FIRMS' },
-        ].map((scope) => (
-          <button
-            key={scope.id}
-            type="button"
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
-              selectedScope === scope.id
-                ? 'bg-cyan-500/20 text-[#79dce8] border border-cyan-400/40 shadow-sm'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
-            }`}
-            onClick={() => setSelectedScope(scope.id)}
-          >
-            {scope.label}
-          </button>
-        ))}
+      <div className="space-y-1.5">
+        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs">
+          <span className="text-slate-400 font-mono px-3 py-1 font-semibold">EVIDENCE SCOPE:</span>
+          {[
+            { id: 'global', label: 'All NASA PSI Records', connected: true },
+            { id: 'saffire', label: 'Saffire Spacecraft Burns (not connected)', connected: false },
+            { id: 'glovebox', label: 'BASS & FLEX Microgravity (not connected)', connected: false },
+            { id: 'earthdata', label: 'NASA Earthdata FIRMS (not connected)', connected: false },
+          ].map((scope) => (
+            <button
+              key={scope.id}
+              type="button"
+              disabled={!scope.connected}
+              title={!scope.connected ? 'Only NASA Physical Sciences Informatics (PSI) flight data and bundled NTRS technical reports are searched in this build.' : undefined}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                !scope.connected
+                  ? 'text-slate-500 bg-white/[0.02] border border-white/5 cursor-not-allowed opacity-60'
+                  : selectedScope === scope.id
+                  ? 'bg-cyan-500/20 text-[#79dce8] border border-cyan-400/40 shadow-sm cursor-pointer'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5 cursor-pointer'
+              }`}
+              onClick={() => scope.connected && setSelectedScope(scope.id)}
+            >
+              {scope.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[11px] text-slate-400 px-1 font-mono">
+          Note: Only NASA Physical Sciences Informatics (PSI) flight data and bundled NTRS technical reports are searched in this build.
+        </p>
       </div>
 
       {/* Suggested Prompt Chips */}

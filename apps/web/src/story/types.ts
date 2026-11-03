@@ -31,7 +31,7 @@ export interface AvatarCue {
   intensity?: number; // 0.0 (dim/quenched) to 1.0 (flaring/excited)
 }
 
-export type EvidenceTagType = 'measured' | 'simplified';
+export type EvidenceTagType = 'measured' | 'simplified' | 'illustrative';
 
 export interface EvidenceRef {
   type: EvidenceTagType;

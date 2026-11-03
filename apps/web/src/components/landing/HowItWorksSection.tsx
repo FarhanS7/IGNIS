@@ -16,7 +16,7 @@ const STEPS = [
   {
     num: '02',
     title: 'See how fire behaves',
-    description: 'Watch the physical flame geometry, reaction dome, and ignition stability adapt in real time.',
+    description: 'Watch the illustrative 3D flame geometry, reaction dome, and ignition stability adapt in real time.',
     icon: Flame,
     accentColor: 'text-orange-400',
     borderColor: 'border-orange-500/30',

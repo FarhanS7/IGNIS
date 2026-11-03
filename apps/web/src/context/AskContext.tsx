@@ -9,6 +9,8 @@ import {
 import {
   BM25Retriever,
   extractScenarioFromQuestion,
+  shouldAbstain,
+  detectUntestedCondition,
   type CorpusChunk,
   type RetrievedChunk,
 } from '../lib/assistant/bm25_retriever';
@@ -183,10 +185,33 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         } else {
           // Default Extractive Mode (No LLM required, 100% deterministic & verifiable)
           const primaryChunk = topChunks[0];
-          let extractiveContent = '';
+          const untestedCheck = detectUntestedCondition(q);
+          const abstentionCheck = shouldAbstain(q, primaryChunk);
 
-          if (topChunks.length === 0 || (primaryChunk && primaryChunk.score < 0.35)) {
-            extractiveContent = "I couldn't find that in the NASA reports I have.";
+          if (untestedCheck.isUntested) {
+            assistantMessage = {
+              id: `assistant-${Date.now()}`,
+              role: 'assistant',
+              content: untestedCheck.explanation || `Untested condition: Environmental parameters [${untestedCheck.axes.join(', ')}] were not tested in NASA microgravity combustion flight experiments.`,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              verifiedBadge: undefined,
+              mode: 'extractive',
+              retrievedChunks: [],
+              structuredMatch: matcherResult,
+              abstain: true,
+            };
+          } else if (abstentionCheck.abstain) {
+            assistantMessage = {
+              id: `assistant-${Date.now()}`,
+              role: 'assistant',
+              content: "I couldn't find that in the NASA reports I have.",
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              verifiedBadge: undefined,
+              mode: 'extractive',
+              retrievedChunks: [],
+              structuredMatch: matcherResult,
+              abstain: true,
+            };
           } else {
             const rawText = primaryChunk.highlighted_snippets?.length > 0
               ? primaryChunk.highlighted_snippets.join(' ')
@@ -197,22 +222,20 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               .map((s) => s.trim())
               .filter((s) => s.length > 20 && !s.startsWith('#') && !s.startsWith('http'));
             const selected = sentences.slice(0, Math.min(4, Math.max(2, sentences.length)));
-            extractiveContent = selected.length > 0 ? selected.join(' ') : rawText.slice(0, 260);
-          }
+            const extractiveContent = selected.length > 0 ? selected.join(' ') : rawText.slice(0, 260);
 
-          assistantMessage = {
-            id: `assistant-${Date.now()}`,
-            role: 'assistant',
-            content: extractiveContent,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            verifiedBadge: primaryChunk && primaryChunk.score >= 0.35
-              ? `[1] ${primaryChunk.title.replace('.pdf', '')}, p.${primaryChunk.page}`
-              : undefined,
-            mode: 'extractive',
-            retrievedChunks: primaryChunk && primaryChunk.score >= 0.35 ? topChunks.slice(0, 3) : [],
-            structuredMatch: matcherResult,
-            abstain: topChunks.length === 0 || (primaryChunk && primaryChunk.score < 0.35),
-          };
+            assistantMessage = {
+              id: `assistant-${Date.now()}`,
+              role: 'assistant',
+              content: extractiveContent,
+              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+              verifiedBadge: `[1] ${primaryChunk.title.replace('.pdf', '')}, p.${primaryChunk.page}`,
+              mode: 'extractive',
+              retrievedChunks: topChunks.slice(0, 3),
+              structuredMatch: matcherResult,
+              abstain: false,
+            };
+          }
         }
 
         setMessages((prev) => [...prev, assistantMessage]);

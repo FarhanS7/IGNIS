@@ -329,3 +329,39 @@ test('safeStorage - onboarding tour dismissal persistence', () => {
   assert.equal(isOnboardingDismissed(), false);
 });
 
+
+test('provenance integrity - no story item with a fixture UUID is typed measured or level A', () => {
+  chapter1.beats.forEach((beat) => {
+    if (beat.layer2?.evidenceRefs) {
+      beat.layer2.evidenceRefs.forEach((ref) => {
+        const hasFixtureUuid =
+          Boolean(ref.experimentId && ref.experimentId.includes('22222222')) ||
+          Boolean(ref.runId && ref.runId.includes('22222222')) ||
+          Boolean(ref.sourceDocId && ref.sourceDocId.includes('33333333'));
+
+        assert.ok(
+          !hasFixtureUuid,
+          `Beat "${beat.id}" cites synthetic fixture UUID as a NASA source: ${ref.experimentId || ref.runId || ref.sourceDocId}`
+        );
+        assert.notEqual(
+          ref.type,
+          'measured',
+          `Beat "${beat.id}" evidence ref is typed 'measured' without real flight connection`
+        );
+        assert.notEqual(
+          ref.provenanceLevel,
+          'A',
+          `Beat "${beat.id}" evidence ref claims Level A provenance on synthetic content`
+        );
+      });
+    }
+
+    if (beat.layer3) {
+      const l3 = beat.layer3 as any;
+      const hasFixtureUuid =
+        Boolean(l3.sourceExperimentId && l3.sourceExperimentId.includes('22222222')) ||
+        Boolean(l3.sourceRunId && l3.sourceRunId.includes('22222222'));
+      assert.ok(!hasFixtureUuid, `Beat "${beat.id}" layer3 cites synthetic fixture UUID`);
+    }
+  });
+});

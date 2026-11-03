@@ -39,8 +39,8 @@ const STOP_WORDS = new Set([
 const DOMAIN_SYNONYMS: Record<string, string[]> = {
   o2: ['oxygen', 'concentration', 'oxidizer', 'vol%'],
   oxygen: ['o2', 'concentration', 'oxidizer', 'vol%'],
-  flow: ['velocity', 'airflow', 'forced', 'convection', 'air display'],
-  velocity: ['flow', 'speed', 'forced', 'convection'],
+  flow: ['velocity', 'airflow', 'speed'],
+  velocity: ['flow', 'speed', 'airflow'],
   pmma: ['acrylic', 'plexiglas', 'rod', 'slab', 'polymethylmethacrylate'],
   acrylic: ['pmma', 'plexiglas'],
   sibal: ['cotton', 'fiberglass', 'fabric'],
@@ -256,4 +256,101 @@ export function extractScenarioFromQuestion(text: string): StructuredScenarioMat
   }
 
   return null;
+}
+
+/**
+ * Honest Abstention Check:
+ * Determines if a query has insufficient grounding in the NASA flight corpus.
+ * Uses a groundedness score = BM25 score * query term coverage in document.
+ * Requires minimum score >= 12.0 and composite groundedness >= 5.0.
+ */
+export function shouldAbstain(
+  query: string,
+  topChunk: RetrievedChunk | undefined,
+  scoreFloor = 12.0,
+  groundednessThreshold = 5.0
+): { abstain: boolean; reason?: string } {
+  if (!topChunk || topChunk.score < scoreFloor) {
+    return {
+      abstain: true,
+      reason: 'Top retrieval score below evidence floor (insufficient grounding in flight corpus).',
+    };
+  }
+
+  const qTokens = tokenize(query);
+  if (qTokens.length === 0) {
+    return { abstain: true, reason: 'Empty query tokens.' };
+  }
+
+  const docText = (topChunk.text + ' ' + (topChunk.title || '')).toLowerCase();
+  const matchedTokens = qTokens.filter((t) => docText.includes(t));
+  const cov = matchedTokens.length / qTokens.length;
+  const groundedness = topChunk.score * cov;
+
+  if (groundedness < groundednessThreshold) {
+    return {
+      abstain: true,
+      reason: `Low groundedness score (${groundedness.toFixed(2)} < ${groundednessThreshold}): query concepts not sufficiently matched in NASA flight records.`,
+    };
+  }
+
+  return { abstain: false };
+}
+
+/**
+ * Untested Environmental Boundary Recognition:
+ * Flags queries requesting conditions never tested in NASA microgravity flight experiments
+ * (e.g. Lunar 0.16 g, Mars 0.38 g, hypergravity 2.0 g, pure 100% O2, high pressure >101.3 kPa).
+ */
+export function detectUntestedCondition(text: string): {
+  isUntested: boolean;
+  axes: string[];
+  explanation?: string;
+} {
+  const lower = text.toLowerCase();
+  const axes: string[] = [];
+
+  // Check gravity axes
+  if (lower.includes('lunar') || lower.includes('0.16 g') || lower.includes('0.16g')) {
+    axes.push('gravity (0.16 g)');
+  }
+  if (lower.includes('mars') || lower.includes('0.38 g') || lower.includes('0.38g')) {
+    axes.push('gravity (0.38 g)');
+  }
+  if (
+    lower.includes('hypergravity') ||
+    lower.includes('centrifuge') ||
+    lower.includes('2.0 g') ||
+    lower.includes('2 g')
+  ) {
+    axes.push('gravity (2.0 g)');
+  }
+  if (
+    (lower.includes('buoyant') || lower.includes('buoyancy')) &&
+    (lower.includes('zero gravity') || lower.includes('microgravity') || lower.includes('0 g'))
+  ) {
+    axes.push('gravity (0 g buoyant flow = 0)');
+  }
+
+  // Check oxygen axes
+  if (lower.includes('100%') || lower.includes('pure oxygen')) {
+    axes.push('O2 (100%)');
+  }
+
+  // Check pressure axes
+  if (lower.includes('300 kpa') || lower.includes('300kpa')) {
+    axes.push('pressure (300 kPa)');
+  } else if (lower.includes('70 kpa') || lower.includes('70kpa')) {
+    axes.push('pressure (70 kPa)');
+  }
+
+  if (axes.length > 0) {
+    return {
+      isUntested: true,
+      axes,
+      explanation: `Untested flight regime: Environmental conditions along [${axes.join(', ')}] were not tested in NASA microgravity solid combustion flight experiments. All usable flight runs in the archive were conducted in freefall microgravity (~0 g).`,
+    };
+  }
+
+  return { isUntested: false, axes: [] };
 }

@@ -9,6 +9,7 @@
     "build": "npm --prefix apps/web run build",
     "dev": "npm --prefix apps/web run dev",
     "lint": "npm --prefix apps/web run lint",
+    "preview": "npm --prefix apps/web run preview",
     "test": "npm --prefix apps/web test"
   }
 }
