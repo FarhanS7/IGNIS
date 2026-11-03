@@ -1,0 +1,81 @@
+/**
+ * Verified NASA Literature Sources Registry
+ *
+ * Rules:
+ * 1. Only documents with verified NTRS ID or DOI actually inspected and read may be registered.
+ * 2. Literature tags in sim_params.ts MUST reference an entry in this registry: 'literature:<id>'.
+ * 3. Literature tags support QUALITATIVE physical behaviors only (e.g. photoelectric sensitivity drop
+ *    for sub-micron particles, CO2 breathing apparatus incompatibility), NEVER exact simulated numbers.
+ */
+
+export interface VerifiedSource {
+  id: string;
+  ntrsId_or_doi: string;
+  title: string;
+  authors: string;
+  year: number;
+  pageRef: string;
+  supports: string;
+}
+
+export const VERIFIED_SOURCES: Record<string, VerifiedSource> = {
+  'NTRS-20130000422': {
+    id: 'NTRS-20130000422',
+    ntrsId_or_doi: '20130000422',
+    title: 'Particle Morphology and Size Results from the Smoke Aerosol Measurement Experiment-2 (SAME-2)',
+    authors: 'Urban, D. L., Ruff, G. A., Greenberg, P. S., Meyer, M. E., Mulholland, G. W.',
+    year: 2012,
+    pageRef: 'pp. 1-8',
+    supports:
+      'Qualitative finding: Microgravity alters smoke agglomeration. Smoldering Teflon and Kapton generate fine sub-micron particulates with lower optical scattering compared to cotton or silicone; forced duct aging (11 to 1800 s) models transport delays from hidden sources.',
+  },
+  'NTRS-20140006579': {
+    id: 'NTRS-20140006579',
+    ntrsId_or_doi: '20140006579',
+    title: 'Characterization of Smoke Particulate for Spacecraft Fire Detection',
+    authors: 'Urban, D. L., Ruff, G. A., Mulholland, G. W., Yuan, Z.-G.',
+    year: 2014,
+    pageRef: 'pp. 1-6',
+    supports:
+      'Qualitative finding: Terrestrial 1-g smoke detectors can suffer delayed or degraded response to small particulate smoke in low-g because the absence of buoyancy alters particle coagulation dynamics.',
+  },
+  'NTRS-20030053429': {
+    id: 'NTRS-20030053429',
+    ntrsId_or_doi: '20030053429',
+    title: 'Overview of ISS US Fire Detection and Suppression System Outline',
+    authors: 'Whitaker, A.',
+    year: 2003,
+    pageRef: 'pp. 1-14',
+    supports:
+      'Qualitative finding: Photoelectric smoke detectors deployed on ventilation filter intake ducts / return air registers in ISS US modules (smoke does not rise); relies on consecutive threshold crossings and confirmation tests before signaling FIRE.',
+  },
+  'NTRS-20130011664': {
+    id: 'NTRS-20130011664',
+    ntrsId_or_doi: '20130011664',
+    title: 'Development of the International Space Station Fine Water Mist Portable Fire Extinguisher',
+    authors: 'Rodriguez, B., Young, G.',
+    year: 2013,
+    pageRef: 'pp. 1-7',
+    supports:
+      'Qualitative finding: Fine Water Mist (FWM) PFE developed because CO2 extinguishers pose crew toxicity and asphyxiation risks (station emergency breathing masks do not filter CO2); water mist provides non-toxic suppression for habitable cabin volumes.',
+  },
+  'NTRS-20210022143': {
+    id: 'NTRS-20210022143',
+    ntrsId_or_doi: '20210022143',
+    title: 'Research Questions and Challenges for Improved Spacecraft Fire Detection',
+    authors: 'Fortenberry, C., Dietrich, D., Urban, D. L., Ruff, G. A.',
+    year: 2021,
+    pageRef: 'pp. 1-7',
+    supports:
+      'Qualitative finding: Multi-parameter detection integrating optical particle obscuration with gas-phase monitoring (CO) is required to eliminate false alarms from cabin dust/aerosols; partial-gravity and exploration atmosphere smoke transport remain unvalidated research gaps.',
+  },
+};
+
+/**
+ * Validates that any 'literature:<id>' tag is registered in the verified sources catalog.
+ */
+export function isValidLiteratureTag(tag: string): boolean {
+  if (!tag.startsWith('literature:')) return true;
+  const sourceId = tag.replace('literature:', '');
+  return Boolean(VERIFIED_SOURCES[sourceId]);
+}
