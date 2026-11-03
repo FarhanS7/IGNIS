@@ -29,6 +29,7 @@ interface PlanetInfo {
   still: string;
   cutout: string;
   lede: string;
+  fallbackGradient: string;
 }
 
 const PLANETS: Record<string, PlanetInfo> = {
@@ -39,6 +40,7 @@ const PLANETS: Record<string, PlanetInfo> = {
     still: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png',
     cutout: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202005_3346cc4d-ec3b-44ab-825c-b18e49f5021a.png',
     lede: 'Build a habitat in microgravity. Adjust cabin oxygen, pressure, and airflow — discover what NASA’s real microgravity combustion experiments reveal about fire behavior in your scenario.',
+    fallbackGradient: 'radial-gradient(circle at 60% 40%, #0e2a47 0%, #061121 55%, #02050b 100%)',
   },
   moon: {
     name: 'LUNAR',
@@ -47,6 +49,7 @@ const PLANETS: Record<string, PlanetInfo> = {
     still: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_cf55d1d8-7b59-4a64-80da-d72052ae974e.png',
     cutout: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202012_640b239a-d08a-4200-adb2-741bbe129ac8.png',
     lede: 'Design a lunar base habitat. 0.16g partial gravity alters flame dynamics — evidence from microgravity experiments carries an explicit gravity-transfer warning. Discover what the science actually shows.',
+    fallbackGradient: 'radial-gradient(circle at 60% 40%, #252b36 0%, #11151c 55%, #050608 100%)',
   },
   mars: {
     name: 'MARS',
@@ -55,6 +58,7 @@ const PLANETS: Record<string, PlanetInfo> = {
     still: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_0ba6de7c-285d-43dc-b7ab-8c54c73707cb.png',
     cutout: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202018_3d559490-f613-4ed7-a3bb-3b7e9fc90fb8.png',
     lede: 'A fire starts halfway to Mars. What does the evidence say? Explore NASA’s combustion research and discover what partial gravity means for flame spread and extinction limits.',
+    fallbackGradient: 'radial-gradient(circle at 60% 40%, #4a2116 0%, #210c07 55%, #090302 100%)',
   },
 };
 
@@ -101,7 +105,10 @@ export const LandingPage: React.FC = () => {
       <section className="stage">
         <div
           className="sky"
-          style={{ backgroundImage: `url("${PLANETS[featuredPlanet].still}")` }}
+          style={{
+            backgroundColor: '#060813',
+            backgroundImage: `url("${PLANETS[featuredPlanet].still}"), ${PLANETS[featuredPlanet].fallbackGradient}`,
+          }}
         >
           {ORDER.map((p) => {
             const planet = PLANETS[p];
@@ -119,6 +126,14 @@ export const LandingPage: React.FC = () => {
                 loop
                 playsInline
                 aria-hidden="true"
+                style={{
+                  backgroundColor: '#060813',
+                  backgroundImage: planet.fallbackGradient,
+                }}
+                onError={(e) => {
+                  // Offline fallback: hide video and let CSS gradient/poster render gracefully
+                  (e.currentTarget as HTMLElement).style.display = 'none';
+                }}
               />
             );
           })}
