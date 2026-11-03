@@ -139,6 +139,37 @@ export const BeatRenderer: React.FC<BeatRendererProps> = ({
       );
     }
 
+    if (ref.type === 'illustrative') {
+      return (
+        <div
+          key={idx}
+          className="flex flex-col gap-1 p-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-purple-200 text-xs"
+        >
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold text-[10px] uppercase tracking-wider font-mono">
+              <Sparkles className="w-3 h-3" />
+              Illustrative Reference
+            </span>
+          </div>
+          {ref.citationLabel && (
+            <div className="font-medium text-white text-xs mt-1">
+              {ref.citationLabel}
+            </div>
+          )}
+          {ref.telemetryNote && (
+            <p className="text-purple-100/90 text-[11px] leading-relaxed mt-1">
+              {ref.telemetryNote}
+            </p>
+          )}
+          {ref.simplificationNote && (
+            <p className="text-slate-400 text-[10px] leading-relaxed mt-0.5 italic">
+              {ref.simplificationNote}
+            </p>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div
         key={idx}

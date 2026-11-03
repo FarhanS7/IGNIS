@@ -225,13 +225,11 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            experimentId: '22222222-2222-2222-2222-222222222207',
-            runId: '22222222-2222-2222-2222-222222330022',
-            citationLabel: 'FLEX-1 Run 01 (n-Heptane Droplet Standard)',
-            provenanceLevel: 'A',
+            type: 'illustrative',
+            citationLabel: 'FLEX-1 (n-Heptane Droplet Reference)',
             telemetryNote:
-              'NASA Glenn CIR chamber telemetry: single heptane droplet burns with spherical symmetry for 12.4s.',
+              'Typical CIR chamber observation: single heptane droplet burns with spherical symmetry for ~12.4s.',
+            simplificationNote: 'Illustrative reference to historical droplet test regimes (not live flight telemetry).',
           },
         ],
       },
@@ -338,20 +336,18 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            experimentId: '22222222-2222-2222-2222-222222222208',
-            runId: '22222222-2222-2222-2222-222222330025',
-            citationLabel: 'FLEX-2 Run 01 Benchmark',
-            provenanceLevel: 'A',
+            type: 'illustrative',
+            citationLabel: 'FLEX-2 Benchmark Reference',
             telemetryNote:
-              'ISS CIR radiometer logs: flame diameter stabilized at 24 mm spherical shell before second-stage cool flame transition.',
+              'ISS CIR radiometer observation: flame diameter stabilized at ~24 mm spherical shell before second-stage cool flame transition.',
+            simplificationNote: 'Illustrative reference to published CIR droplet experiments.',
           },
         ],
       },
       layer3: {
-        headline: 'FLEX-1 Flight Telemetry: Flame Diameter Over Time',
+        headline: 'Illustrative droplet-burning curve (not flight data)',
         chartDescription:
-          'Actual flame shell expansion and quasi-steady d² burning rate from NASA FLEX-1 Run 01.',
+          'Conceptual flame shell expansion curve and quasi-steady d² burning rate modeled after NASA FLEX-1 typical profiles.',
         xAxisKey: 'timeSec',
         data: [
           { timeSec: '0.0s', diameterMm: 6.0, sootDensity: 0.1 },
@@ -366,9 +362,7 @@ export const chapter1: Chapter = {
           { key: 'diameterMm', color: '#38bdf8', label: 'Flame Diameter (mm)', unit: 'mm' },
           { key: 'sootDensity', color: '#f59e0b', label: 'Relative Soot Optical Index' },
         ],
-        sourceExperimentId: '22222222-2222-2222-2222-222222222207',
-        sourceRunId: '22222222-2222-2222-2222-222222330022',
-        citationLabel: 'NASA TM-2015-218820 (FLEX-1 Telemetry)',
+        citationLabel: 'Conceptual curve modeled after NASA TM-2015-218820 (FLEX-1)',
       },
     },
 
@@ -413,10 +407,8 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            sourceDocId: '33333333-3333-3333-3333-333333333304',
+            type: 'illustrative',
             citationLabel: 'NASA TM-2015-218820 (CIR Flight Studies)',
-            provenanceLevel: 'B',
             telemetryNote:
               'Radial radiometer profiles confirm pure isotropic 1/r temperature and species gradients across FLEX droplet burns.',
           },
@@ -502,11 +494,8 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            experimentId: '22222222-2222-2222-2222-222222222201',
-            runId: '22222222-2222-2222-2222-222222330001',
-            citationLabel: 'Saffire-I Run 01 Telemetry',
-            provenanceLevel: 'A',
+            type: 'illustrative',
+            citationLabel: 'Saffire-I Flight Campaign Reference',
             telemetryNote:
               'At 0 cm/s flow, cotton fabric self-extinguished. At 5 cm/s flow (Run 02), steady propagation was sustained.',
           },
@@ -554,20 +543,14 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            experimentId: '22222222-2222-2222-2222-222222222201',
-            sourceDocId: '33333333-3333-3333-3333-333333333301',
+            type: 'illustrative',
             citationLabel: 'NASA/TM-2017-219500 (Saffire-I Final Report)',
-            provenanceLevel: 'A',
             telemetryNote:
               'Large fabric sample burned for over 480 seconds under 20 cm/s forced flow after ISS departure.',
           },
           {
-            type: 'measured',
-            experimentId: '22222222-2222-2222-2222-222222222208',
-            runId: '22222222-2222-2222-2222-222222330025',
-            citationLabel: 'FLEX-2 Cool Flame Benchmark',
-            provenanceLevel: 'A',
+            type: 'illustrative',
+            citationLabel: 'FLEX-2 Cool Flame Benchmark Reference',
             telemetryNote:
               'Radiometer telemetry recorded continuous fuel consumption past visible luminosity extinction.',
           },
@@ -589,8 +572,7 @@ export const chapter1: Chapter = {
           { key: 'burnDurationSec', color: '#ffaa40', label: 'Burn Duration (s)', unit: 's' },
           { key: 'flameLengthCm', color: '#38bdf8', label: 'Flame Spread Length (cm)', unit: 'cm' },
         ],
-        sourceExperimentId: '22222222-2222-2222-2222-222222222201',
-        citationLabel: 'NASA/TM-2017-219500 (Saffire-I Telemetry)',
+        citationLabel: 'NASA/TM-2017-219500 (Saffire-I Flight Findings)',
       },
     },
 
@@ -632,10 +614,8 @@ export const chapter1: Chapter = {
         ],
         evidenceRefs: [
           {
-            type: 'measured',
-            sourceDocId: '33333333-3333-3333-3333-333333333303',
+            type: 'illustrative',
             citationLabel: 'Combustion and Flame 174 (2016) (BASS-II Research)',
-            provenanceLevel: 'B',
             telemetryNote:
               'Identifies uncharacterized soot agglomeration behavior in low-speed enclosed ISS duct flows.',
           },
