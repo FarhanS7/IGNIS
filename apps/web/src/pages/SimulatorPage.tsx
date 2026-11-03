@@ -475,7 +475,7 @@ export const SimulatorPage: React.FC = () => {
             Habitat Simulator & Live Evidence
           </h1>
           <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-            Interactively configure space destination atmosphere parameters. The physical flame responds
+            Interactively configure space destination atmosphere parameters. The illustrative 3D flame visualization responds
             instantly while IGNIS continuously evaluates comparable NASA <Term term="microgravity">microgravity</Term> flight datasets.
           </p>
         </div>
@@ -530,7 +530,7 @@ export const SimulatorPage: React.FC = () => {
           <div className="flex items-center justify-between text-xs font-mono">
             <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
               <Flame className="w-3.5 h-3.5 text-orange-400" />
-              <span>Live Flame Reaction</span>
+              <span>Illustrative Flame</span>
             </span>
           </div>
           {!isDesktop && (
@@ -538,7 +538,7 @@ export const SimulatorPage: React.FC = () => {
               scenario={scenarioA}
               comparableCount={matchResult.total_evaluated}
               compact
-              label={isCompareMode ? 'Live Reaction (A vs B Comparison)' : 'Live Physical Reaction'}
+              label={isCompareMode ? 'Live Reaction (A vs B Comparison)' : 'Illustrative Flame Visualization'}
               destination={selectedPresetSlug}
               compareScenario={isCompareMode ? scenarioB : undefined}
               compareDestination={isCompareMode ? selectedPresetSlugB : undefined}
@@ -888,7 +888,7 @@ export const SimulatorPage: React.FC = () => {
                 <EvidenceGuidedVisualization
                   scenario={scenarioA}
                   comparableCount={matchResult.total_evaluated}
-                  label="Scenario A · Physical Flame Regime"
+                  label="Scenario A · Illustrative Flame Regime"
                   destination={selectedPresetSlug}
                 />
               ) : (
