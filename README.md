@@ -81,12 +81,14 @@ To evaluate whether multi-factor similarity matching provides predictive utility
 
 | Metric | Full Matcher ($k=5$) | $O_2$ Threshold Rule | Difference (95% Bootstrap CI) |
 | :--- | :---: | :---: | :---: |
-| **Overall Accuracy** | 92.42% (122/132) | 91.67% (121/132) | +0.76% [-4.55%, +6.82%] ($p = 1.0000$) |
-| **Balanced Accuracy** | 87.89% | 85.55% | +2.34% [-5.88%, +10.85%] |
-| **Extinction Recall** | 84.00% (21/25) | 76.00% (19/25) | +8.00% [-16.67%, +33.33%] |
+| **Overall Accuracy** | 80.30% (106/132) | 79.55% (105/132) | +0.76% [-4.55%, +6.82%] ($p = 1.0000$) |
+| **Balanced Accuracy** | 46.72% | 44.38% | +2.34% [-5.88%, +10.85%] |
+| **Extinction Recall** | 48.00% (12/25) | 40.00% (10/25) | +8.00% [-16.67%, +33.33%] |
 
-### Honest Finding:
-Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor matcher demonstrates **no statistically validated performance advantage** over a simple oxygen threshold rule.
+### Honest Finding & Retraction of Leaked Figures:
+Because every 95% bootstrap confidence interval for the performance difference spans zero and exact McNemar test yields $p = 1.0000$, the multi-factor matcher demonstrates **no statistically validated performance advantage** over a single oxygen threshold rule.
+
+**Retraction of Ungrouped Cross-Validation:** Earlier project snapshots reported 92.42% overall accuracy, 87.89% balanced accuracy, and 84.00% extinction recall. As documented in `docs/VALIDATION.md`, those figures were an artifact of ungrouped sample-level cross-validation, where repeated burns of the same physical hardware sample (e.g. sample tag 133 tested 3 times) leaked between training and test folds. Under strict grouped leave-one-group-out cross-validation across all 110 independent hardware groups, performance is **80.30% overall accuracy (106/132)**, **46.72% balanced accuracy**, and **48.00% extinction recall (12/25)**.
 
 The value of IGNIS is not automated decision-making or outcome forecasting, but **epistemic provenance retrieval**: allowing engineers to inspect the 5 closest actual flight tests in parameter space, examine their raw CSV rows, check calibrated airflow formulas, and review primary NASA publications.
 

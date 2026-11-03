@@ -227,20 +227,20 @@ export const AboutPage: React.FC = () => {
             <tbody className="divide-y divide-white/5 text-slate-300 text-xs">
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Overall Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">92.42% (122/132)</td>
-                <td className="p-3 sm:p-4 text-slate-300">91.67% (121/132)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">80.30% (106/132)</td>
+                <td className="p-3 sm:p-4 text-slate-300">79.55% (105/132)</td>
                 <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.000)</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Balanced Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">87.89%</td>
-                <td className="p-3 sm:p-4 text-slate-300">85.55%</td>
+                <td className="p-3 sm:p-4 text-cyan-400">46.72%</td>
+                <td className="p-3 sm:p-4 text-slate-300">44.38%</td>
                 <td className="p-3 sm:p-4 text-slate-400">+2.34% [-5.88%, +10.85%]</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Extinction Recall</td>
-                <td className="p-3 sm:p-4 text-cyan-400">84.00% (21/25)</td>
-                <td className="p-3 sm:p-4 text-slate-300">76.00% (19/25)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">48.00% (12/25)</td>
+                <td className="p-3 sm:p-4 text-slate-300">40.00% (10/25)</td>
                 <td className="p-3 sm:p-4 text-slate-400">+8.00% [-16.67%, +33.33%]</td>
               </tr>
             </tbody>
@@ -248,9 +248,14 @@ export const AboutPage: React.FC = () => {
         </div>
 
         <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-xs text-slate-300 space-y-2">
-          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding:</strong>
+          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding & Retraction:</strong>
           <p>
-            Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor kNN matcher demonstrates <strong>no statistically validated performance advantage</strong> over a simple oxygen threshold rule.
+            Under strict grouped leave-one-group-out cross-validation across all 110 independent hardware groups, the multi-factor kNN matcher achieves <strong>80.30% overall accuracy (106/132)</strong>, <strong>46.72% balanced accuracy</strong>, and <strong>48.00% extinction recall (12/25)</strong>. Because every 95% bootstrap confidence interval for the performance difference spans zero and exact McNemar test yields p = 1.0000, multi-factor matching demonstrates <strong>no statistically validated performance advantage</strong> over a single oxygen threshold rule.
+          </p>
+          <p className="text-slate-400">
+            <strong>Retraction of Ungrouped Figures:</strong> Earlier development snapshots reported 92.42% overall accuracy, 87.89% balanced accuracy, and 84.00% extinction recall. As proven in our validation audit (<code>docs/VALIDATION.md</code>), those figures were an artifact of ungrouped sample-level cross-validation, where repeated burns of identical physical samples leaked between training and test folds.
+          </p>
+          <p>
             The system's true purpose and value is therefore not outcome forecasting, but <strong>epistemic provenance retrieval</strong>: instantly providing astronautical engineers with the raw flight records, physical test conditions, DOI citations, and primary data tables from real NASA missions.
           </p>
         </div>
