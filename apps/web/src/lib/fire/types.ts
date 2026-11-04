@@ -200,6 +200,11 @@ export interface MonteCarloMetrics {
     fusionBeatsBaselineOnLocalization: boolean;
     rankingHoldsAcrossSweep: boolean;
     sweepDiscrepancyNotes?: string;
+    delayHoldsFraction?: string;
+    falseAlarmHoldsFraction?: string;
+    localizationHoldsFraction?: string;
+    rankingFlipsDetected?: boolean;
+    rankingFlipDetails?: string[];
   };
   label: 'design-consistency check, not validation';
   honestyDisclaimer: string;

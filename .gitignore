@@ -3,6 +3,9 @@
 skills/
 node_modules/
 dist/
+playwright-report/
+test-results/
+New features/
 .venv/
 __pycache__/
 *.pyc

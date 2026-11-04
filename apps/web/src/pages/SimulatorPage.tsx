@@ -529,7 +529,7 @@ export const SimulatorPage: React.FC = () => {
             title="Launch Fire Response Console"
           >
             <Shield className="w-3.5 h-3.5 text-rose-400" />
-            <span>Fire Response</span>
+            <span>Run Fire Response</span>
           </Link>
         </div>
       </div>
