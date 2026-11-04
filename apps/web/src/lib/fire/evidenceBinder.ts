@@ -51,7 +51,7 @@ export function bindActionEvidence(
   if (habitat.environment === 'lunar_partial_g' || habitat.environment === 'martian_partial_g') {
     isWithinFlightEnvelope = false;
     warnings.push(
-      'Scenario environment (fractional gravity) is outside tested flight envelope (microgravity BASS-II / Saffire only).'
+      "Scenario environment (fractional gravity) is outside NASA's tested range (microgravity BASS-II / Saffire only)."
     );
   }
 
@@ -87,7 +87,7 @@ export function bindActionEvidence(
         'NASA BASS-II microgravity solid combustion flight test archive'
       );
       circularityCaveat =
-        'Matches derived from BASS-II flight runs. Note circularity caveat: tests where flow was intentionally shut off verify extinction under zero forced convection, but quiescent burning limits depend heavily on ambient O2 concentration.';
+        "BASS-II circularity caveat: 25 BASS-II flight runs have flow velocity and extinction outcome parsed from operator step-down test notes (e.g. '5.0 ext'). Ventilation shutoff reduces forced convection but does not guarantee extinction across all materials or elevated oxygen levels.";
 
       // Query real flight matcher with zero forced convection (flow = 0 cm/s)
       const input: SolidScenarioInput = {
@@ -148,7 +148,9 @@ export function bindActionEvidence(
   const o2 = scenarioInput?.oxygen_pct ?? 21.0;
   if (o2 > 22.2) {
     isWithinFlightEnvelope = false;
-    warnings.push(`Scenario oxygen (${o2.toFixed(1)}%) is above nominal spacecraft cabin limits (21-22%).`);
+    warnings.push(
+      `Scenario oxygen (${o2.toFixed(1)}%) is above nominal spacecraft cabin limits and outside NASA's tested range (nominal flight tests capped at 21-22% O2).`
+    );
   }
 
   return {
