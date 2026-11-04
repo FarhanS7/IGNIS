@@ -77,3 +77,4 @@ class ThresholdBaselineDetector:
         elif self.mode == "B3":
             return ((smoke_vals >= self.threshold_smoke) & (co_vals >= self.threshold_co)).astype(int)
         return np.zeros(len(X), dtype=int)
+

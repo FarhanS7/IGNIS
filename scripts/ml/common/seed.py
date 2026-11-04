@@ -10,3 +10,4 @@ def set_seed(seed: int = DEFAULT_SEED):
     """Seed python random and numpy."""
     random.seed(seed)
     np.random.seed(seed)
+
