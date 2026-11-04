@@ -92,3 +92,4 @@ All candidate features must be measurable in flight or produced by the habitat s
    - Evaluated by Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) with 95% bootstrap CIs (2000 resamples).
 3. **Acceptance Rule for Simulator Calibration:**
    Only if Model 1 or Model 2 beats Baseline G on held-out materials under LOMO may the parameter be tagged `calibrated:m1-same-r`. If it fails to generalize across materials, the result must be honestly reported and the tag kept as `illustrative`.
+

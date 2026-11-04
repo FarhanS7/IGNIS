@@ -106,3 +106,4 @@ def test_response_curve_json_integrity():
         assert np.isfinite(pt['ci_lower_95'])
         assert np.isfinite(pt['ci_upper_95'])
         assert pt['ci_lower_95'] <= pt['ci_upper_95'] + 1e-6
+

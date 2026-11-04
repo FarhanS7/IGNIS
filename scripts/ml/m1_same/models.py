@@ -159,3 +159,4 @@ class RidgeResponseModel(BaseResponseModel):
         feats = self._transform(X)
         preds = self.ridge_.predict(feats)
         return np.maximum(0.0, preds)
+

@@ -1,0 +1,147 @@
+{
+  "evaluation_date": "2026-11-04T16:28:30.461812+00:00",
+  "dataset": "NASA PSI-69 (FLEX) Droplet Combustion Experiments",
+  "total_runs": 262,
+  "total_groups": 82,
+  "models": [
+    "Majority_Baseline",
+    "CO2_Threshold_Baseline",
+    "Logistic_Regression_M4"
+  ],
+  "evaluations": {
+    "Grouped_5Fold_CV": {
+      "Majority_Baseline": {
+        "metrics": {
+          "accuracy": 0.6870229007633588,
+          "false_extinction_rate": 1.0,
+          "false_extinction_count": 82,
+          "actual_sustained_count": 82,
+          "extinction_recall": 1.0,
+          "true_extinction_count": 180,
+          "actual_extinction_count": 180,
+          "sustained_recall": 0.0
+        },
+        "false_extinction_rate_ci": {
+          "point": 1.0,
+          "ci_lower": 1.0,
+          "ci_upper": 1.0
+        },
+        "accuracy_ci": {
+          "point": 0.6870229007633588,
+          "ci_lower": 0.6020974531398919,
+          "ci_upper": 0.7751972134002664
+        }
+      },
+      "CO2_Threshold_Baseline": {
+        "metrics": {
+          "accuracy": 0.31297709923664124,
+          "false_extinction_rate": 0.0,
+          "false_extinction_count": 0,
+          "actual_sustained_count": 82,
+          "extinction_recall": 0.0,
+          "true_extinction_count": 0,
+          "actual_extinction_count": 180,
+          "sustained_recall": 1.0
+        },
+        "false_extinction_rate_ci": {
+          "point": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0
+        },
+        "accuracy_ci": {
+          "point": 0.31297709923664124,
+          "ci_lower": 0.22480278659973366,
+          "ci_upper": 0.39790254686010795
+        }
+      },
+      "Logistic_Regression_M4": {
+        "metrics": {
+          "accuracy": 0.8244274809160306,
+          "false_extinction_rate": 0.35365853658536583,
+          "false_extinction_count": 29,
+          "actual_sustained_count": 82,
+          "extinction_recall": 0.9055555555555556,
+          "true_extinction_count": 163,
+          "actual_extinction_count": 180,
+          "sustained_recall": 0.6463414634146342
+        },
+        "false_extinction_rate_ci": {
+          "point": 0.35365853658536583,
+          "ci_lower": 0.21620649426404823,
+          "ci_upper": 0.5278186274509802
+        },
+        "accuracy_ci": {
+          "point": 0.8244274809160306,
+          "ci_lower": 0.7581640989729225,
+          "ci_upper": 0.887605252606255
+        }
+      }
+    },
+    "Leave_One_Fuel_Out": {
+      "Train_Methanol_Test_Heptane": {
+        "Majority_Baseline": {
+          "accuracy": 0.5277777777777778,
+          "false_extinction_rate": 1.0,
+          "false_extinction_count": 51,
+          "actual_sustained_count": 51,
+          "extinction_recall": 1.0,
+          "true_extinction_count": 57,
+          "actual_extinction_count": 57,
+          "sustained_recall": 0.0
+        },
+        "CO2_Threshold_Baseline": {
+          "accuracy": 0.4722222222222222,
+          "false_extinction_rate": 0.0,
+          "false_extinction_count": 0,
+          "actual_sustained_count": 51,
+          "extinction_recall": 0.0,
+          "true_extinction_count": 0,
+          "actual_extinction_count": 57,
+          "sustained_recall": 1.0
+        },
+        "Logistic_Regression_M4": {
+          "accuracy": 0.6018518518518519,
+          "false_extinction_rate": 0.7647058823529411,
+          "false_extinction_count": 39,
+          "actual_sustained_count": 51,
+          "extinction_recall": 0.9298245614035088,
+          "true_extinction_count": 53,
+          "actual_extinction_count": 57,
+          "sustained_recall": 0.23529411764705882
+        }
+      },
+      "Train_Heptane_Test_Methanol": {
+        "Majority_Baseline": {
+          "accuracy": 0.7987012987012987,
+          "false_extinction_rate": 1.0,
+          "false_extinction_count": 31,
+          "actual_sustained_count": 31,
+          "extinction_recall": 1.0,
+          "true_extinction_count": 123,
+          "actual_extinction_count": 123,
+          "sustained_recall": 0.0
+        },
+        "CO2_Threshold_Baseline": {
+          "accuracy": 0.2012987012987013,
+          "false_extinction_rate": 0.0,
+          "false_extinction_count": 0,
+          "actual_sustained_count": 31,
+          "extinction_recall": 0.0,
+          "true_extinction_count": 0,
+          "actual_extinction_count": 123,
+          "sustained_recall": 1.0
+        },
+        "Logistic_Regression_M4": {
+          "accuracy": 0.7597402597402597,
+          "false_extinction_rate": 0.41935483870967744,
+          "false_extinction_count": 13,
+          "actual_sustained_count": 31,
+          "extinction_recall": 0.8048780487804879,
+          "true_extinction_count": 99,
+          "actual_extinction_count": 123,
+          "sustained_recall": 0.5806451612903226
+        }
+      }
+    }
+  }
+}
