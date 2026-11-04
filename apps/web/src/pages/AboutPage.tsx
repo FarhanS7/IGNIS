@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   ShieldAlert,
   Database,
@@ -227,20 +228,20 @@ export const AboutPage: React.FC = () => {
             <tbody className="divide-y divide-white/5 text-slate-300 text-xs">
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Overall Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">92.42% (122/132)</td>
-                <td className="p-3 sm:p-4 text-slate-300">91.67% (121/132)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">80.30% (106/132)</td>
+                <td className="p-3 sm:p-4 text-slate-300">79.55% (105/132)</td>
                 <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.000)</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Balanced Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">87.89%</td>
-                <td className="p-3 sm:p-4 text-slate-300">85.55%</td>
+                <td className="p-3 sm:p-4 text-cyan-400">46.72%</td>
+                <td className="p-3 sm:p-4 text-slate-300">44.38%</td>
                 <td className="p-3 sm:p-4 text-slate-400">+2.34% [-5.88%, +10.85%]</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Extinction Recall</td>
-                <td className="p-3 sm:p-4 text-cyan-400">84.00% (21/25)</td>
-                <td className="p-3 sm:p-4 text-slate-300">76.00% (19/25)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">48.00% (12/25)</td>
+                <td className="p-3 sm:p-4 text-slate-300">40.00% (10/25)</td>
                 <td className="p-3 sm:p-4 text-slate-400">+8.00% [-16.67%, +33.33%]</td>
               </tr>
             </tbody>
@@ -248,11 +249,43 @@ export const AboutPage: React.FC = () => {
         </div>
 
         <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-xs text-slate-300 space-y-2">
-          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding:</strong>
+          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding & Retraction:</strong>
           <p>
-            Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor kNN matcher demonstrates <strong>no statistically validated performance advantage</strong> over a simple oxygen threshold rule.
+            Under strict grouped leave-one-group-out cross-validation across all 110 independent hardware groups, the multi-factor kNN matcher achieves <strong>80.30% overall accuracy (106/132)</strong>, <strong>46.72% balanced accuracy</strong>, and <strong>48.00% extinction recall (12/25)</strong>. Because every 95% bootstrap confidence interval for the performance difference spans zero and exact McNemar test yields p = 1.0000, multi-factor matching demonstrates <strong>no statistically validated performance advantage</strong> over a single oxygen threshold rule.
+          </p>
+          <p className="text-slate-400">
+            <strong>Retraction of Ungrouped Figures:</strong> Earlier development snapshots reported 92.42% overall accuracy, 87.89% balanced accuracy, and 84.00% extinction recall. As proven in our validation audit (<code>docs/VALIDATION.md</code>), those figures were an artifact of ungrouped sample-level cross-validation, where repeated burns of identical physical samples leaked between training and test folds.
+          </p>
+          <p>
             The system's true purpose and value is therefore not outcome forecasting, but <strong>epistemic provenance retrieval</strong>: instantly providing astronautical engineers with the raw flight records, physical test conditions, DOI citations, and primary data tables from real NASA missions.
           </p>
+        </div>
+      </section>
+
+      {/* Fire Response Console Methodology */}
+      <section className="space-y-4 pt-4 border-t border-slate-800">
+        <h2 className="text-xl font-bold font-serif text-white flex items-center gap-2">
+          <ShieldAlert className="w-5 h-5 text-rose-400" />
+          Fire Response & Smoke Containment Simulation
+        </h2>
+        <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-xs text-slate-300 space-y-3">
+          <p>
+            The <strong>Fire Response Console</strong> (<code>/response</code>) demonstrates emergency response containment, multi-sensor alarm discrimination, and ventilation isolation in microgravity habitats.
+          </p>
+          <ul className="list-disc pl-5 space-y-1 text-slate-400">
+            <li><strong>Transport Modeling:</strong> Microgravity smoke transport along duct networks is grounded in qualitative findings from NASA SAME (NTRS-20130000422). Absence of buoyant convection means smoke disperses via forced ventilation and duct mixing rather than rising.</li>
+            <li><strong>Multi-Channel Heuristic Fusion:</strong> Evaluates coincident obscuration, carbon monoxide (ppm), and thermal rate-of-rise over a sustained persistence window to reject transient non-fire dust and cleaning aerosols.</li>
+            <li><strong>Emergency Sequencing:</strong> Progression follows NASA ISS procedures (NTRS-20030053429) and water mist extinguishing research (NTRS-20130011664). In crewed mode, fire suppression agent discharge strictly requires human verification to safeguard cabin breathing volumes.</li>
+          </ul>
+          <div className="pt-2">
+            <Link
+              to="/response"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium transition-colors text-xs"
+            >
+              <span>Explore Fire Response Console</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

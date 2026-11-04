@@ -137,6 +137,8 @@ textarea:focus-visible,
   position: absolute;
   inset: 0;
   z-index: 0;
+  background-color: #060813;
+  background-image: radial-gradient(circle at 60% 40%, #0d2137 0%, #060b18 60%, #020409 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

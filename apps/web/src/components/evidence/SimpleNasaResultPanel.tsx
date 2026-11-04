@@ -310,7 +310,7 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
             <div className="p-3 rounded-xl bg-slate-950/60 border border-white/10 text-[11px] text-slate-400 space-y-1">
               <span className="font-semibold text-slate-300">Validation & Accuracy</span>
               <p className="leading-relaxed">
-                Evaluated across 132 microgravity flight runs. Leave-one-group-out cross-validation yields 77.5% balanced accuracy and 84.4% extinction recall.
+                Evaluated across 132 microgravity flight runs in 110 hardware groups. Grouped leave-one-group-out cross-validation yields 80.30% overall accuracy, 46.72% balanced accuracy, and 48.00% extinction recall. Multi-factor matching demonstrates no statistically significant advantage over a single O₂-threshold rule (p = 1.0000; earlier higher figures from ungrouped CV had sample leakage and were retracted).
               </p>
             </div>
           </div>

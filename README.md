@@ -5,6 +5,11 @@
 
 [![NASA Space Apps Challenge](https://img.shields.io/badge/NASA%20Space%20Apps-2026-0B3D91?style=for-the-badge&logo=nasa)](https://www.spaceappschallenge.org/)
 [![Project Demo](https://img.shields.io/badge/YouTube-Watch%20Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs)
+
+## 🚀 Live Demo
+- **Hosted Web Application**: `<ADD LIVE URL>`
+- **Video Walkthrough**: [YouTube Demo](https://youtu.be/7gkzC_eCZo4?si=LSB5FS33oEKB6Tgs)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-79dce8?style=for-the-badge)](LICENSE)
 
 ---
@@ -16,7 +21,7 @@ Have you ever wondered what happens to a fire in space? Without gravity pulling 
 **IGNIS** is an interactive visual simulator and evidence tool built on real NASA spaceflight tests:
 1. **Interactive 3D Flame**: Adjust gravity (space station freefall, Moon, or Mars), cabin oxygen, and ventilation airflow to see the flame morph live.
 2. **What NASA Actually Saw**: Next to the flame, see what happened in 132 real spaceflight tests aboard the International Space Station (BASS-II) and Cygnus cargo spacecraft (Saffire).
-3. **No Fake Risk Scores**: We never show fake "safety scores" or invented physics. If NASA tested conditions close to yours, we tell you whether a flame was photographed or went out. If NASA has never tested it yet (such as fires on the Moon or Mars), IGNIS tells you honestly.
+3. **No Fake Risk Scores**: We never show fabricated risk scores or invented physics. If NASA tested conditions close to yours, we tell you whether a flame was photographed or went out. If NASA has never tested it yet (such as fires on the Moon or Mars), IGNIS tells you honestly.
 
 **IGNIS** is an empirical flight evidence system developed for the **NASA International Space Apps Challenge 2026** under Challenge #8:  
 **_Flame in Freefall: AI-Powered Fire Safety Insights from Microgravity Combustion Data_**.
@@ -81,14 +86,47 @@ To evaluate whether multi-factor similarity matching provides predictive utility
 
 | Metric | Full Matcher ($k=5$) | $O_2$ Threshold Rule | Difference (95% Bootstrap CI) |
 | :--- | :---: | :---: | :---: |
-| **Overall Accuracy** | 92.42% (122/132) | 91.67% (121/132) | +0.76% [-4.55%, +6.82%] ($p = 1.0000$) |
-| **Balanced Accuracy** | 87.89% | 85.55% | +2.34% [-5.88%, +10.85%] |
-| **Extinction Recall** | 84.00% (21/25) | 76.00% (19/25) | +8.00% [-16.67%, +33.33%] |
+| **Overall Accuracy** | 80.30% (106/132) | 79.55% (105/132) | +0.76% [-4.55%, +6.82%] ($p = 1.0000$) |
+| **Balanced Accuracy** | 46.72% | 44.38% | +2.34% [-5.88%, +10.85%] |
+| **Extinction Recall** | 48.00% (12/25) | 40.00% (10/25) | +8.00% [-16.67%, +33.33%] |
 
-### Honest Finding:
-Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor matcher demonstrates **no statistically validated performance advantage** over a simple oxygen threshold rule.
+### Honest Finding & Retraction of Leaked Figures:
+Because every 95% bootstrap confidence interval for the performance difference spans zero and exact McNemar test yields $p = 1.0000$, the multi-factor matcher demonstrates **no statistically validated performance advantage** over a single oxygen threshold rule.
+
+**Retraction of Ungrouped Cross-Validation:** Earlier project snapshots reported 92.42% overall accuracy, 87.89% balanced accuracy, and 84.00% extinction recall. As documented in `docs/VALIDATION.md`, those figures were an artifact of ungrouped sample-level cross-validation, where repeated burns of the same physical hardware sample (e.g. sample tag 133 tested 3 times) leaked between training and test folds. Under strict grouped leave-one-group-out cross-validation across all 110 independent hardware groups, performance is **80.30% overall accuracy (106/132)**, **46.72% balanced accuracy**, and **48.00% extinction recall (12/25)**.
 
 The value of IGNIS is not automated decision-making or outcome forecasting, but **epistemic provenance retrieval**: allowing engineers to inspect the 5 closest actual flight tests in parameter space, examine their raw CSV rows, check calibrated airflow formulas, and review primary NASA publications.
+
+---
+
+## 🛡️ Assistant Abstention & Benchmark Validation
+
+To prevent hallucinations and out-of-distribution speculation, the assistant enforces strict abstention rules (`score < 12.0` or `groundedness < 5.0`, plus `detectUntestedCondition`). Complete evaluation methodology and per-question logs are in [`docs/EVALUATION.md`](docs/EVALUATION.md):
+
+- **Development Set (30 Questions, rule calibrated on it)**:
+  - Answerable retrieval: 55.0% Recall@1, 85.0% Recall@5, MRR 0.677, 0.0% false abstentions (0/20)
+  - Out-of-scope abstention rate: **100.0%** (5/5)
+  - Untested environmental boundary flagging rate: **100.0%** (5/5)
+- **Held-Out Test Set (26 Questions, unseen evaluation)**:
+  - Answerable false-abstention rate: **0.00% (0/14)** (scores 19.03–46.07, all answered with verified chunks)
+  - Out-of-scope abstention rate: **83.33% (5/6)** — Failed on `holdout-20` (*"What was the Apollo 13 oxygen tank failure?"*, score 14.15) due to lexical overlap with legitimate BASS-II oxygen sensor calibration logs
+  - Untested regime keyword flag rate: **16.67% (1/6)** — Exposes keyword brittleness when questions use novel phrasing (*"Moon base"*, *"spinning habitat with artificial gravity"*, *"one-third Earth gravity"*)
+  - Untested regime composite abstention rate: **100.00% (6/6)** — Groundedness safety floor ($\text{score} \times \text{coverage} < 5.0$) safely caught all ungrounded queries missed by keywords
+- **Cross-Engine Parity**: Shipped TypeScript client and Python offline pipeline achieve **100.0% decision agreement** across all 56 benchmark questions (0 decision disagreements, 0.00 BM25 score gap). Continuous integration validates parity via `npm test`.
+
+---
+
+## 🚒 Fire Response Console (`/response`)
+
+The **Fire Response Console** simulates multi-sensor fire detection, time-of-arrival smoke localization, and emergency response sequencing across microgravity habitat modules (ISS-like, uncrewed payload carrier, or lunar surface habitat):
+
+- **Multi-Sensor Heuristic Fusion**: Combines optical obscuration (%/m), carbon monoxide (ppm), and thermal rate-of-rise (°C/min) across a persistence window to discriminate true smoldering/flaming combustion from non-fire cabin dust or aerosol nuisance events.
+- **Ventilation Transport & Mixing**: Advection along forced ventilation duct networks accounts for zero-buoyancy dispersion, grounded in qualitative findings from NASA SAME (NTRS-20130000422).
+- **Categorical Localization**: Smoke origin inference reports discrete categories (`CLEAR`, `CLOSE`, `AMBIGUOUS`, `INSUFFICIENT_EVIDENCE`) based on inter-zone arrival delays rather than misleading pseudo-probabilities.
+- **Emergency Containment Sequencing**: Progresses through `ALARM` → `REMOVE_POWER` → `ISOLATE_VENTILATION` → `INHIBIT_MAKEUP` → `SUPPRESSION` → `POST_FIRE_RECOVERY`. In crewed modules, suppression requires explicit human confirmation to safeguard astronaut breathing volumes, warning against CO2 flooding without breathing apparatus (NTRS-20130011664).
+- **Flight Data Provenance**: For each response action (e.g. flow cutoff), queries real NASA BASS-II flight runs to inspect empirical extinction behavior, accompanied by validation circularity caveats and environmental envelope warnings.
+- **Parameter Registry & Sweep**: All simulation parameters reside in a single registry (`sim_params.ts`), each tagged with engineering rationale and plausible ranges (`[min, max]`) evaluated by a built-in Monte Carlo design-consistency sweep.
+- **Persistent Honesty Banner**: Displays *"Simulated sensor data. Not flight software."* Extinction outcomes come solely from NASA flight evidence; the simulator never predicts flame extinction.
 
 ---
 
@@ -111,7 +149,18 @@ npm run build
 
 # Preview locally
 npm run preview
+# or: npm --prefix apps/web run preview
 ```
+
+---
+
+## 🤖 AI Tool Usage Disclosure
+
+In compliance with NASA Space Apps Challenge guidance, we disclose the use of artificial intelligence tools in this project:
+- **Coding & Scaffolding**: AI coding assistants (including Google Antigravity / Claude Code) were used for code drafting, refactoring, and test writing under strict human architectural supervision.
+- **Microgravity Flight Evidence**: All physical flight tables, fuel properties, and DOI references are extracted directly from primary NASA PSI files and NTRS publications without generative fabrication.
+- **In-Browser Determinism**: The client-side application runs 100% deterministically in the user's browser using bundled JSON corpora without mandatory external LLM calls.
+- **Optional API Assistant**: The companion backend (`services/api`) contains optional endpoints interfacing with Gemini `<CONFIRM API MODEL>` for natural language synthesis, guarded by client-side verbatim citation verifiers (`apps/web/src/lib/assistant/client_verifier.ts`).
 
 ---
 

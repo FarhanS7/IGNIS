@@ -10,6 +10,7 @@ import { StoryPlayerPage } from './pages/StoryPlayerPage';
 import { AskIgnisPage } from './pages/AskIgnisPage';
 import { AboutPage } from './pages/AboutPage';
 import { ResearchGapsPage } from './pages/ResearchGapsPage';
+import { ResponseConsolePage } from './pages/ResponseConsolePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PerfOverlay } from './visuals/PerfOverlay';
 
@@ -32,6 +33,7 @@ const ROUTE_TITLES: Record<string, string> = {
   '/ask': 'Ask IGNIS · Microgravity AI',
   '/gaps': 'Research Gaps & Mission Ranking · IGNIS',
   '/about': 'About & Methodology · IGNIS',
+  '/response': 'Fire Response Console · IGNIS',
 };
 
 const RouteTitleSync: React.FC = () => {
@@ -83,6 +85,7 @@ export const App: React.FC = () => {
             <Route path="/ask" element={<AskIgnisPage />} />
             <Route path="/gaps" element={<ResearchGapsPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/response" element={<ResponseConsolePage />} />
             {/* 404 Actionable State */}
             <Route path="*" element={<NotFoundPage />} />
           </Route>

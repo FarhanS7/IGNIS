@@ -246,6 +246,23 @@ export const ResearchGapsPage: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Fire Response Console Link */}
+        <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div>
+            <div className="font-semibold text-rose-300">Spacecraft Fire Response Research & Containment</div>
+            <div className="text-slate-400 mt-0.5">
+              Explore how ventilation isolation, power cold-soak, and multi-sensor fusion contain smoke propagation in microgravity modules.
+            </div>
+          </div>
+          <Link
+            to="/response"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium transition-colors"
+          >
+            <span>Open Fire Response Console</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
     </div>
   );
