@@ -6,8 +6,16 @@
     "doi": "10.17632/npk2zcm85h.2",
     "license": "CC BY 4.0",
     "license_url": "https://creativecommons.org/licenses/by/4.0/",
-    "access_date": "2026-11-04T13:55:06.511926+00:00",
-    "files": [],
+    "access_date": "2026-11-04T14:03:58.672075+00:00",
+    "files": [
+      {
+        "name": "Indoor Fire Dataset with Distributed Multi-Sensor Nodes.csv",
+        "relative_path": "data/raw_ml/d1_en54/Indoor Fire Dataset with Distributed Multi-Sensor Nodes.csv",
+        "bytes": 44149547,
+        "sha256": "65a568cf84bf17c0e7d25fe89f3547c93a097a18c65b9f357eab3c7104c97c1a",
+        "rows": 305304
+      }
+    ],
     "notes": "Multi-sensor EN54 fire and nuisance experiments by Pascal Vorwerk et al. (MDPI Fire 2023, 6, 323). Used for M2 sensor fusion detector training/validation."
   },
   {
@@ -17,8 +25,16 @@
     "doi": "10.17632/yghykzm4km.1",
     "license": "CC BY 4.0",
     "license_url": "https://creativecommons.org/licenses/by/4.0/",
-    "access_date": "2026-11-04T13:55:06.512011+00:00",
-    "files": [],
+    "access_date": "2026-11-04T14:03:58.766724+00:00",
+    "files": [
+      {
+        "name": "Indoor Fire Dataset with Distributed Multi-Sensor Nodes_Industrial Hall.csv",
+        "relative_path": "data/raw_ml/d2_hall/Indoor Fire Dataset with Distributed Multi-Sensor Nodes_Industrial Hall.csv",
+        "bytes": 35800222,
+        "sha256": "b431b611a44e4282510bd53158aaa71512554481433d8f3a90f9475c17134839",
+        "rows": 248502
+      }
+    ],
     "notes": "Distributed multi-sensor nodes in 10x22x8 m3 industrial hall by Otto von Guericke University Magdeburg. Used for M2 cross-site generalization testing."
   },
   {
@@ -28,8 +44,16 @@
     "doi": "10.17632/m85f9h6g9j.1",
     "license": "CC BY 4.0",
     "license_url": "https://creativecommons.org/licenses/by/4.0/",
-    "access_date": "2026-11-04T13:55:06.512068+00:00",
-    "files": [],
+    "access_date": "2026-11-04T14:03:58.843641+00:00",
+    "files": [
+      {
+        "name": "Laboratory Fire Dataset containing Multi Sensor Data.csv",
+        "relative_path": "data/raw_ml/d3_chamber/Laboratory Fire Dataset containing Multi Sensor Data.csv",
+        "bytes": 719595,
+        "sha256": "11083fa8db6c4dc96abaa11b4e92b3bb28361945702f0543df194e155726958b",
+        "rows": 2900
+      }
+    ],
     "notes": "Multi-sensor chamber fire test dataset. Optional benchmark evaluation."
   },
   {
@@ -39,7 +63,7 @@
     "doi": "10.60555/gd4k-8h62",
     "license": "CC0-1.0",
     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "access_date": "2026-11-04T13:55:06.512132+00:00",
+    "access_date": "2026-11-04T14:03:58.846978+00:00",
     "files": [
       {
         "name": "PSI-102_Experimental table_SAME.csv",
@@ -65,7 +89,7 @@
     "doi": "10.60555/2np7-jv14",
     "license": "CC0-1.0",
     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "access_date": "2026-11-04T13:55:06.513740+00:00",
+    "access_date": "2026-11-04T14:03:58.849641+00:00",
     "files": [
       {
         "name": "PSI-101_Analyzed Data_SAME, SAME-R_Results.xlsx",
@@ -98,7 +122,7 @@
     "doi": "10.60555/psi-69-flex",
     "license": "CC0-1.0",
     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "access_date": "2026-11-04T13:55:09.099242+00:00",
+    "access_date": "2026-11-04T14:04:01.264005+00:00",
     "files": [
       {
         "name": "evidence_runs.json",

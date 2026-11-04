@@ -2,8 +2,8 @@
 
 Downloads open-access NASA microgravity telemetry (D4: SAME / PSI-102, D5: SAME-R / PSI-101)
 via official NASA PSI presigned S3 URLs (CC0-1.0).
-Verifies presence and hashes of Mendeley benchmark datasets (D1: EN54, D2: Industrial Hall,
-D3: Test Chamber) under CC BY 4.0 license, and records D6 (FLEX droplet runs).
+Downloads Mendeley benchmark datasets (D1: EN54, D2: Industrial Hall, D3: Test Chamber)
+via official Mendeley Data public endpoints under CC BY 4.0 license, and records D6 (FLEX droplet runs).
 Maintains data/provenance/ml_manifest.json.
 """
 
@@ -24,7 +24,8 @@ PROVENANCE_DIR = os.path.join(BASE_DIR, 'data', 'provenance')
 MANIFEST_PATH = os.path.join(PROVENANCE_DIR, 'ml_manifest.json')
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) IGNIS-NASA-SpaceApps/2.0'
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'application/json, text/csv, */*'
 }
 
 DATASET_CONFIGS = {
@@ -36,7 +37,15 @@ DATASET_CONFIGS = {
         'license': 'CC BY 4.0',
         'license_url': 'https://creativecommons.org/licenses/by/4.0/',
         'dir_name': 'd1_en54',
-        'expected_patterns': ['.csv', '.xlsx', '.zip'],
+        'mendeley_id': 'npk2zcm85h',
+        'version': 2,
+        'files_to_download': [
+            {
+                'name': 'Indoor Fire Dataset with Distributed Multi-Sensor Nodes.csv',
+                'file_id': '0c5ed6b5-d59a-4e09-ada2-6f58e34b7666',
+                'url': 'https://data.mendeley.com/public-files/datasets/npk2zcm85h/files/0c5ed6b5-d59a-4e09-ada2-6f58e34b7666/file_downloaded'
+            }
+        ],
         'notes': 'Multi-sensor EN54 fire and nuisance experiments by Pascal Vorwerk et al. (MDPI Fire 2023, 6, 323). Used for M2 sensor fusion detector training/validation.'
     },
     'D2': {
@@ -47,7 +56,15 @@ DATASET_CONFIGS = {
         'license': 'CC BY 4.0',
         'license_url': 'https://creativecommons.org/licenses/by/4.0/',
         'dir_name': 'd2_hall',
-        'expected_patterns': ['.csv', '.xlsx', '.zip'],
+        'mendeley_id': 'yghykzm4km',
+        'version': 1,
+        'files_to_download': [
+            {
+                'name': 'Indoor Fire Dataset with Distributed Multi-Sensor Nodes_Industrial Hall.csv',
+                'file_id': 'ac22049a-6c73-4276-8583-05b2cf735601',
+                'url': 'https://data.mendeley.com/public-files/datasets/yghykzm4km/files/ac22049a-6c73-4276-8583-05b2cf735601/file_downloaded'
+            }
+        ],
         'notes': 'Distributed multi-sensor nodes in 10x22x8 m3 industrial hall by Otto von Guericke University Magdeburg. Used for M2 cross-site generalization testing.'
     },
     'D3': {
@@ -58,7 +75,15 @@ DATASET_CONFIGS = {
         'license': 'CC BY 4.0',
         'license_url': 'https://creativecommons.org/licenses/by/4.0/',
         'dir_name': 'd3_chamber',
-        'expected_patterns': ['.csv', '.xlsx', '.zip'],
+        'mendeley_id': 'm85f9h6g9j',
+        'version': 1,
+        'files_to_download': [
+            {
+                'name': 'Laboratory Fire Dataset containing Multi Sensor Data.csv',
+                'file_id': '29a2fde9-469a-4ed6-add7-006f8edd8c2c',
+                'url': 'https://data.mendeley.com/public-files/datasets/m85f9h6g9j/files/29a2fde9-469a-4ed6-add7-006f8edd8c2c/file_downloaded'
+            }
+        ],
         'notes': 'Multi-sensor chamber fire test dataset. Optional benchmark evaluation.'
     },
     'D4': {
@@ -116,7 +141,6 @@ def count_rows(filepath: str) -> int:
     if ext == '.csv':
         try:
             with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
-                # subtract header line
                 lines = sum(1 for _ in f)
                 return max(0, lines - 1)
         except Exception:
@@ -143,6 +167,25 @@ def count_rows(filepath: str) -> int:
         except Exception:
             return 0
     return 0
+
+
+def download_mendeley_file(download_url: str, filename: str, target_dir: str) -> bool:
+    """Download a file directly from Mendeley's public download endpoint."""
+    ctx = ssl.create_default_context()
+    target_path = os.path.join(target_dir, filename)
+
+    print(f"Downloading Mendeley dataset file: {filename} ...")
+    try:
+        req = urllib.request.Request(download_url, headers=HEADERS)
+        with urllib.request.urlopen(req, context=ctx, timeout=120) as resp:
+            content = resp.read()
+            with open(target_path, 'wb') as f:
+                f.write(content)
+        print(f"  -> SUCCESS ({len(content)} bytes saved to {os.path.relpath(target_path, BASE_DIR)})")
+        return True
+    except Exception as e:
+        print(f"  ERROR downloading {filename} from {download_url}: {e}")
+        return False
 
 
 def download_nasa_psi_file(accession: str, filename: str, target_dir: str) -> bool:
@@ -284,7 +327,7 @@ def build_manifest(check_mode: bool = False):
 
 
 def run_download():
-    """Download NASA PSI datasets D4 and D5 automatically."""
+    """Download NASA PSI datasets (D4, D5) and Mendeley datasets (D1, D2, D3)."""
     print("=== Downloading NASA PSI Telemetry Datasets (D4 & D5) ===")
 
     # D4: PSI-102 (SAME)
@@ -300,6 +343,18 @@ def run_download():
     download_nasa_psi_metadata('PSI-101', d5_dir)
     for fname in DATASET_CONFIGS['D5']['files_to_download']:
         download_nasa_psi_file('PSI-101', fname, d5_dir)
+
+    print("\n=== Downloading Mendeley Datasets (D1, D2, D3) ===")
+    for ds_id in ['D1', 'D2', 'D3']:
+        cfg = DATASET_CONFIGS[ds_id]
+        t_dir = os.path.join(RAW_ML_DIR, cfg['dir_name'])
+        os.makedirs(t_dir, exist_ok=True)
+        for item in cfg.get('files_to_download', []):
+            dest_file = os.path.join(t_dir, item['name'])
+            if not os.path.exists(dest_file):
+                download_mendeley_file(item['url'], item['name'], t_dir)
+            else:
+                print(f"File {item['name']} already exists in {cfg['dir_name']}.")
 
     print("\n=== Updating Manifest ===")
     return build_manifest(check_mode=False)
