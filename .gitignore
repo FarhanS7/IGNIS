@@ -41,6 +41,10 @@ docs/*
 !docs/IGNIS_EXPLANATION_BANGLA.md
 !docs/screenshots/
 !docs/screenshots/**
+!docs/agent_plan/
+!docs/agent_plan/**
+!docs/models/
+!docs/models/**
 
 IGNIS_PRD*.md
 IGNIS_Project_Concept*.md
