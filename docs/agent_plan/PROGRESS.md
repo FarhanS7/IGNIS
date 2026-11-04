@@ -25,8 +25,8 @@
 - [x] 06 M4 FLEX extinction threshold
 - [x] 07 M5 abstention
 - [x] 08 Export + TS inference + parity
-- [ ] 09 Integrate into console
-- [ ] 10 Held-out abstention evaluation
+- [x] 09 Integrate into console
+- [x] 10 Held-out abstention evaluation
 - [ ] 11 QA and hardening
 - [ ] 12 Docs and disclosure
 - [ ] 13 Merge, CI, deploy
@@ -42,3 +42,5 @@
 - 2026-11-04 | Step 06 M4 FLEX extinction threshold | ml: e4d2dc3 | npm: 190 pass; ml py: 16 pass; py: 200 pass | Trained & evaluated M4 droplet flame extinction model on 262 NASA FLEX (PSI-69) runs across 82 physical mixture groups; evaluated under Grouped 5-Fold CV and Leave-One-Fuel-Out (Methanol vs Heptane); Logistic Regression achieves 82.4% accuracy vs 68.7% majority baseline and cuts False Extinction Rate from 100.0% to 35.4% [21.6%, 52.8%]; LOFO reveals 76.5% - 41.9% FER across fuel families; exported params.json & metrics.json with discrete category outputs; written m4_inspection.md and m4_flex_extinction.md model card.
 - 2026-11-04 | Step 07 M5 abstention | ml: 8929ea1 | npm: 190 pass; ml py: 21 pass; py: 200 pass | Implemented conformal prediction sets & margin-based abstention for M2 and M4 on group-disjoint calibration splits; for M4, abstaining on ambiguous flammability boundaries boosts confident accuracy from 82.5% to 94.9% (38.1% abstention, 96.8% coverage vs 90% target); for M2, disciplined abstention handles cross-site domain shift (D1 to D2, 8.2% abstention, 84.8% non-abstained acc); evaluated Brier score (0.1158 for M4, 0.1968 for M2) and ECE; exported params.json & metrics.json; updated M2 and M4 model cards.
 - 2026-11-04 | Step 08 Export + TS inference + parity | ml: bb59506 | npm: 199 pass; ml py: 27 pass; build: exit 0 | Exported m2-fusion-v1.json (2.48 KB), m4-extinction-v1.json (2.36 KB), and m1-response-curve-v1.json (7.33 KB); generated 345 golden vectors across all models (>= 100 each); implemented pure TypeScript browser inference in apps/web/src/lib/fire/ml/ (zero runtime dependencies, no Math.random, fully deterministic); achieved exact TS vs Python mathematical parity (max observed error: M2 features/score 5.09e-11, M4 score 4.96e-11, M1 multiplier 0.00e+0); implemented TrainedMLDetector conforming to DetectorEngine; added model export freshness and schema validation tests.
+- 2026-11-05 | Step 09 Integrate into console | ml: 67f0771 | npm: 200 pass; e2e: 23 pass; ml py: 27 pass; build: exit 0 | Integrated M2 TrainedMLDetector, M1 calibrated SAME-R response, and M4 FLEX extinction insight into /response console; added ModelCardModal, 3-arm Monte Carlo sweep with honest caveats, 4-row epistemic transparency table on /about and /gaps; updated parameter registry tests and copy-lint; all e2e tests green.
+- 2026-11-05 | Step 10 Held-out abstention evaluation | ml: 67f0771 | npm: 200 pass; py eval_qa: pass; holdout: 0.00% false-abstain, 83.33% OOS, 100% untested abstain | Evaluated shipped TS and Python BM25 engines against 26-question unseen held-out benchmark data/eval/qa_holdout.json; confirmed 100.0% cross-engine parity (56/56); documented real failure modes (holdout-20 Apollo 13 lexical overlap, keyword brittleness on novel phrasing caught by groundedness < 5.0) in docs/EVALUATION.md and README.md; no post-hoc rule changes.
