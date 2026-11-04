@@ -18,7 +18,7 @@
 ## Steps
 - [x] 00 Sync and baseline
 - [x] 01 Console audit and fixes
-- [ ] 02 Console e2e + Monte Carlo hardening (+ merge into ml)
+- [x] 02 Console e2e + Monte Carlo hardening (+ merge into ml)
 - [ ] 03 ML data acquisition
 - [ ] 04 M2 fusion detector
 - [ ] 05 M1 SAME detector response
@@ -35,3 +35,5 @@
 ## Log (date, step, commit, test counts, notes)
 - 2026-11-04 | Step 00 Sync and baseline | HEAD 657bd02 | npm: 157 pass / 0 fail; py: 194 pass; loocv: 80.30% | Verified baselines, added agent_plan to docs/, updated .gitignore negations.
 - 2026-11-04 | Step 01 Console audit and fixes | HEAD ced8870 | npm: 186 pass / 0 fail; build: exit 0; lint: 0 errors | Added test registry & evidence binder tests; re-pointed literature to PMC7918997; verified honest UX & circularity caveats; captured 3 state screenshots.
+
+- 2026-11-04 | Step 02 Console e2e + MC hardening | console: 988d28c, ml: 44b4a32 | npm: 190 pass; e2e: 22 pass; py: 200 pass; loocv: 80.30% | Playwright e2e setup (12 routes, console flow, integration, offline CDN fallback); async chunked Monte Carlo with selectable N (100/200/500) and robustness sweep with plain-words flip reporting; CI e2e job added; clean merge into ml branch.
