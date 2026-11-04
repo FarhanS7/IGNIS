@@ -19,7 +19,7 @@
 - [x] 00 Sync and baseline
 - [x] 01 Console audit and fixes
 - [x] 02 Console e2e + Monte Carlo hardening (+ merge into ml)
-- [ ] 03 ML data acquisition
+- [x] 03 ML data acquisition
 - [ ] 04 M2 fusion detector
 - [ ] 05 M1 SAME detector response
 - [ ] 06 M4 FLEX extinction threshold
@@ -37,3 +37,4 @@
 - 2026-11-04 | Step 01 Console audit and fixes | HEAD ced8870 | npm: 186 pass / 0 fail; build: exit 0; lint: 0 errors | Added test registry & evidence binder tests; re-pointed literature to PMC7918997; verified honest UX & circularity caveats; captured 3 state screenshots.
 
 - 2026-11-04 | Step 02 Console e2e + MC hardening | console: 988d28c, ml: 44b4a32 | npm: 190 pass; e2e: 22 pass; py: 200 pass; loocv: 80.30% | Playwright e2e setup (12 routes, console flow, integration, offline CDN fallback); async chunked Monte Carlo with selectable N (100/200/500) and robustness sweep with plain-words flip reporting; CI e2e job added; clean merge into ml branch.
+- 2026-11-04 | Step 03 ML data acquisition | ml: b6ca655 | npm: 190 pass; ml py: 3 pass; py: 200 pass | Acquired NASA SAME/SAME-R flight datasets D4 & D5 via official presigned S3 URLs; confirmed CC BY 4.0 licenses for D1-D3; created requirements-ml.txt, ml_manifest.json, and data_inspection.md with channel mapping & SAME response derivability; added CI ml job; raw data safely gitignored.
