@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type {
   FuelType,
@@ -60,14 +60,6 @@ export const ResponseConsolePage: React.FC = () => {
   );
   const [selectedZoneId, setSelectedZoneId] = useState<string>(sourceZoneId);
 
-  // Sync sourceZoneId when habitat changes
-  useEffect(() => {
-    if (!currentHabitat.zones.some((z) => z.id === sourceZoneId)) {
-      const firstZ = currentHabitat.zones[0]?.id || 'zone_1';
-      setSourceZoneId(firstZ);
-      setSelectedZoneId(firstZ);
-    }
-  }, [currentHabitat, sourceZoneId]);
 
   // Simulation execution state
   const [currentTime_s, setCurrentTime_s] = useState<number>(0);
@@ -120,15 +112,15 @@ export const ResponseConsolePage: React.FC = () => {
   >(null);
 
   // Re-initialize sequencer when habitat, mode, or simulation resets
-  const initSequencer = () => {
+  const initSequencer = useCallback(() => {
     const seq = new ResponseSequencer(currentHabitat, mode);
     sequencerRef.current = seq;
     setSequencerState(seq.getState());
-  };
+  }, [currentHabitat, mode]);
 
   useEffect(() => {
     initSequencer();
-  }, [currentHabitat, mode]);
+  }, [initSequencer]);
 
   // Track sequencer progression as currentTime_s advances
   useEffect(() => {
@@ -246,6 +238,7 @@ export const ResponseConsolePage: React.FC = () => {
                     : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30'
                 }`}
                 title={isPlaying ? 'Pause' : 'Play Simulation'}
+                aria-label={isPlaying ? 'Pause Simulation' : 'Play Simulation'}
               >
                 {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
               </button>
@@ -254,6 +247,7 @@ export const ResponseConsolePage: React.FC = () => {
                 onClick={handleReset}
                 className="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-colors"
                 title="Reset simulation to t=0"
+                aria-label="Reset simulation to t=0"
               >
                 <RotateCcw className="h-4 w-4" />
               </button>
@@ -286,7 +280,13 @@ export const ResponseConsolePage: React.FC = () => {
               <select
                 value={habitatId}
                 onChange={(e) => {
-                  setHabitatId(e.target.value);
+                  const newHabId = e.target.value;
+                  setHabitatId(newHabId);
+                  const newHab = getHabitatById(newHabId);
+                  if (newHab && newHab.zones.length > 0) {
+                    setSourceZoneId(newHab.zones[0].id);
+                    setSelectedZoneId(newHab.zones[0].id);
+                  }
                   handleReset();
                 }}
                 className="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-1.5 text-slate-200"

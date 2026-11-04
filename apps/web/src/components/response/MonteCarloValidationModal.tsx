@@ -48,6 +48,7 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
           </div>
           <button
             onClick={onClose}
+            aria-label="Close Inspector"
             className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
           >
             <X className="h-5 w-5" />

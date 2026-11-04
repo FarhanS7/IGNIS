@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { FireSimulator, SeededPRNG } from '../sim.ts';
-import { getHabitatPresets, calculateDuctTransportTime_s } from '../habitat.ts';
+import { FireSimulator } from '../sim.ts';
+import { getHabitatPresets } from '../habitat.ts';
 import type { FireScenario } from '../types.ts';
 
 describe('Habitat Topology & Deterministic Smoke Transport Simulator', () => {

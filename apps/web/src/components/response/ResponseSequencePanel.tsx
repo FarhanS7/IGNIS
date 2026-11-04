@@ -174,6 +174,7 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
                   <button
                     onClick={() => setOverrideModalStep(sId)}
                     title="Engage manual override"
+                    aria-label={`Engage manual override for ${sId.replace(/_/g, ' ')}`}
                     className="p-1 text-slate-500 hover:text-amber-400 transition-colors"
                   >
                     <Sliders className="h-3.5 w-3.5" />

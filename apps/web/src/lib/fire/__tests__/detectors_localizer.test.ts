@@ -8,7 +8,7 @@ import {
 import { ZoneLocalizer, localizeSmokeSource } from '../localizer.ts';
 import { FireSimulator } from '../sim.ts';
 import { getHabitatById } from '../habitat.ts';
-import type { HabitatGraph, SensorReadingWindow, SimStepResult } from '../types.ts';
+import type { SensorReadingWindow, SimStepResult } from '../types.ts';
 
 test('BaselineSmokeDetector Behavior', async (t) => {
   const detector = new BaselineSmokeDetector();

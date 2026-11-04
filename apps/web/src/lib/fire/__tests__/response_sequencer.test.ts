@@ -14,8 +14,13 @@ test('ResponseSequencer - Crewed Mode Progression & Safety Guards', async (t) =>
     assert.equal(state.currentStep, 'ALARM');
     assert.equal(state.steps.ALARM.status, 'PENDING');
     assert.equal(state.suppressionAgentRecommendation, 'WATER_MIST');
+    assert.equal(state.policy.uncrewedSuppressionTimeout_s, DEFAULT_SEQUENCER_POLICY.uncrewedSuppressionTimeout_s);
     assert.ok(state.crewSafetyAlerts.some((a) => a.includes('NTRS-20130011664')));
     assert.ok(state.crewSafetyAlerts.some((a) => a.toLowerCase().includes('water mist')));
+    assert.ok(
+      state.crewSafetyAlerts.some((a) => a.includes('Portable Breathing Apparatus') && a.includes('asphyxiation')),
+      'Crewed mode must include CO2 asphyxiation and Portable Breathing Apparatus alert'
+    );
   });
 
   await t.test('auto-progresses ALARM -> REMOVE_POWER -> ISOLATE_VENTILATION -> INHIBIT_MAKEUP, and pauses at SUPPRESSION: ARMED', () => {
