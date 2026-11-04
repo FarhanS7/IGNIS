@@ -147,3 +147,4 @@ class FLEXExtinctionLogisticModel(BaseExtinctionModel):
         with open(target_path, 'w', encoding='utf-8') as f:
             json.dump(self.to_dict(), f, indent=2)
         print(f"Saved M4 model parameters to {os.path.relpath(target_path, BASE_DIR)}")
+

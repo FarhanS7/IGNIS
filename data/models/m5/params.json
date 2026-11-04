@@ -1,0 +1,12 @@
+{
+  "generated_date": "2026-11-04T16:35:31.678649+00:00",
+  "m4_droplet_extinction": {
+    "conformal_q_hat_90": 0.6993804932690765,
+    "margin_threshold": 0.02
+  },
+  "m2_sensor_fusion": {
+    "conformal_q_hat_90": 0.6710141897201538,
+    "margin_threshold": 0.05
+  },
+  "notes": "Plain JSON abstention parameters for client-side TS inference. Output INSUFFICIENT_EVIDENCE if set size != 1."
+}

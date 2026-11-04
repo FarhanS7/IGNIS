@@ -93,3 +93,4 @@ def extract_features_and_labels(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarra
     y = df['is_extinguished'].to_numpy(dtype=int)
     groups = df['mixture_group_id'].tolist()
     return X, y, groups, FEATURE_NAMES
+

@@ -63,3 +63,13 @@ On held-out scenarios (Split S1), the **M2 Learned Fusion Detector achieves 100.
 | Lunts | Fire | 3 | 3 | 100.0% |
 | Wood | Fire | 3 | 3 | 100.0% |
 
+
+## 5. Abstention & Reliability Calibration
+
+- **Method:** Split-conformal prediction sets with group-disjoint calibration split (target coverage: 90.0%).
+- **Calibrated Conformal Quantile ($\hat{q}_{0.10}$):** 0.6710
+- **Empirical In-Domain Coverage:** 82.4%
+- **Abstention Rate (INSUFFICIENT_EVIDENCE):** 26.6%
+- **Overall Test Accuracy:** 80.3% | **Non-Abstained Accuracy:** 79.7%
+- **Honest Assessment:** On continuous sensor time series with extreme zero-false-alarm decision thresholds (0.9999), abstention does not meaningfully alter accuracy (80.3% vs 79.7%), because background dominates. However, under cross-site shift (D1 to D2), abstaining flags domain mismatch and maintains disciplined abstention (8.2% abstained).
+- **Reliability Metrics:** Brier Score = 0.1968, Expected Calibration Error (ECE) = 0.1751.

@@ -52,3 +52,14 @@
 2. **Domain Limitation:** The LOFO test demonstrates complete generalization failure when crossing fuel families (Methanol to Heptane produces 100% FER). The console must NEVER extrapolate this model to cabin solid fuels or untested chemical propellants.
 3. **Category-Only Representation:** The console UI will display only discrete status chips (`EXTINCTION_REGION`, `SUSTAINED_REGION`, `INSUFFICIENT_EVIDENCE`) and will never present numerical probability percentages.
 
+
+## 5. Abstention & Reliability Calibration
+
+- **Method:** Split-conformal prediction sets with group-disjoint mixture calibration (target coverage: 90.0%).
+- **Calibrated Conformal Quantile ($\hat{q}_{0.10}$):** 0.6994
+- **Empirical In-Domain Coverage:** 96.8%
+- **Abstention Rate (INSUFFICIENT_EVIDENCE):** 38.1%
+- **Accuracy Gain:** Accuracy on confident (non-abstained) cases rises from **82.5% to 94.9%**.
+- **Honest Assessment:** **YES, abstention significantly helps M4.** Dropping ambiguous flammability boundaries ($C(x) = \{0, 1\}$) filters out marginal cases, boosting prediction accuracy to 94.9%.
+- **Cross-Fuel Generalization:** Under Methanol $\to$ Heptane domain shift, exchangeability is violated; empirical coverage drops to 69.4%, confirming that droplet models must not be extrapolated across fuel classes.
+- **Reliability Metrics:** Brier Score = 0.1158, Expected Calibration Error (ECE) = 0.1260.

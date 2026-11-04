@@ -1,0 +1,202 @@
+{
+  "evaluation_date": "2026-11-04T16:35:31.678591+00:00",
+  "target_coverage": 0.9,
+  "m4_results": {
+    "model": "M4_FLEX_Extinction",
+    "calibrated_thresholds": {
+      "conformal_q_hat": 0.6993804932690765,
+      "margin_threshold": 0.02
+    },
+    "in_domain_evaluation": {
+      "target_coverage": 0.9,
+      "conformal_coverage": 0.9682539682539683,
+      "conformal_abstention_rate": 0.38095238095238093,
+      "overall_accuracy": 0.8253968253968254,
+      "conformal_non_abstained_accuracy": 0.9487179487179487,
+      "margin_abstention_rate": 0.031746031746031744,
+      "margin_non_abstained_accuracy": 0.8360655737704918
+    },
+    "reliability": {
+      "brier_score": 0.1158,
+      "ece": 0.126,
+      "reliability_table": [
+        {
+          "bin_range": "[0.00, 0.10)",
+          "sample_count": 3,
+          "mean_confidence": 0.009,
+          "empirical_frequency": 0.0,
+          "calibration_gap": 0.009
+        },
+        {
+          "bin_range": "[0.10, 0.20)",
+          "sample_count": 0,
+          "mean_confidence": 0.15,
+          "empirical_frequency": 0.0,
+          "calibration_gap": 0.0
+        },
+        {
+          "bin_range": "[0.20, 0.30)",
+          "sample_count": 2,
+          "mean_confidence": 0.2676,
+          "empirical_frequency": 0.5,
+          "calibration_gap": 0.2324
+        },
+        {
+          "bin_range": "[0.30, 0.40)",
+          "sample_count": 7,
+          "mean_confidence": 0.3276,
+          "empirical_frequency": 0.4286,
+          "calibration_gap": 0.101
+        },
+        {
+          "bin_range": "[0.40, 0.50)",
+          "sample_count": 4,
+          "mean_confidence": 0.4642,
+          "empirical_frequency": 0.75,
+          "calibration_gap": 0.2858
+        },
+        {
+          "bin_range": "[0.50, 0.60)",
+          "sample_count": 8,
+          "mean_confidence": 0.5577,
+          "empirical_frequency": 0.875,
+          "calibration_gap": 0.3173
+        },
+        {
+          "bin_range": "[0.60, 0.70)",
+          "sample_count": 5,
+          "mean_confidence": 0.6658,
+          "empirical_frequency": 0.6,
+          "calibration_gap": 0.0658
+        },
+        {
+          "bin_range": "[0.70, 0.80)",
+          "sample_count": 5,
+          "mean_confidence": 0.7554,
+          "empirical_frequency": 0.8,
+          "calibration_gap": 0.0446
+        },
+        {
+          "bin_range": "[0.80, 0.90)",
+          "sample_count": 9,
+          "mean_confidence": 0.8531,
+          "empirical_frequency": 1.0,
+          "calibration_gap": 0.1469
+        },
+        {
+          "bin_range": "[0.90, 1.00]",
+          "sample_count": 20,
+          "mean_confidence": 0.9407,
+          "empirical_frequency": 1.0,
+          "calibration_gap": 0.0593
+        }
+      ]
+    },
+    "cross_fuel_shift": {
+      "note": "Exchangeability violated across chemical fuel families.",
+      "conformal_coverage": 0.6944444444444444,
+      "abstention_rate": 0.14814814814814814,
+      "overall_accuracy": 0.5833333333333334,
+      "non_abstained_accuracy": 0.6413043478260869
+    }
+  },
+  "m2_results": {
+    "model": "M2_MultiSensor_Fusion",
+    "calibrated_thresholds": {
+      "conformal_q_hat": 0.6710141897201538,
+      "margin_threshold": 0.05
+    },
+    "in_domain_evaluation": {
+      "target_coverage": 0.9,
+      "conformal_coverage": 0.8243226447924434,
+      "conformal_abstention_rate": 0.2662192393736018,
+      "overall_accuracy": 0.8032562764106388,
+      "conformal_non_abstained_accuracy": 0.7974254742547425,
+      "margin_abstention_rate": 0.06232910763112105,
+      "margin_non_abstained_accuracy": 0.8015110345284644
+    },
+    "reliability": {
+      "brier_score": 0.1968,
+      "ece": 0.1751,
+      "reliability_table": [
+        {
+          "bin_range": "[0.00, 0.10)",
+          "sample_count": 170,
+          "mean_confidence": 0.0689,
+          "empirical_frequency": 0.3471,
+          "calibration_gap": 0.2781
+        },
+        {
+          "bin_range": "[0.10, 0.20)",
+          "sample_count": 1394,
+          "mean_confidence": 0.1719,
+          "empirical_frequency": 0.4735,
+          "calibration_gap": 0.3016
+        },
+        {
+          "bin_range": "[0.20, 0.30)",
+          "sample_count": 2427,
+          "mean_confidence": 0.2486,
+          "empirical_frequency": 0.2522,
+          "calibration_gap": 0.0035
+        },
+        {
+          "bin_range": "[0.30, 0.40)",
+          "sample_count": 2409,
+          "mean_confidence": 0.3543,
+          "empirical_frequency": 0.1631,
+          "calibration_gap": 0.1912
+        },
+        {
+          "bin_range": "[0.40, 0.50)",
+          "sample_count": 1628,
+          "mean_confidence": 0.4439,
+          "empirical_frequency": 0.1542,
+          "calibration_gap": 0.2897
+        },
+        {
+          "bin_range": "[0.50, 0.60)",
+          "sample_count": 553,
+          "mean_confidence": 0.5386,
+          "empirical_frequency": 0.2568,
+          "calibration_gap": 0.2818
+        },
+        {
+          "bin_range": "[0.60, 0.70)",
+          "sample_count": 253,
+          "mean_confidence": 0.6455,
+          "empirical_frequency": 0.3794,
+          "calibration_gap": 0.2661
+        },
+        {
+          "bin_range": "[0.70, 0.80)",
+          "sample_count": 329,
+          "mean_confidence": 0.7502,
+          "empirical_frequency": 0.3739,
+          "calibration_gap": 0.3763
+        },
+        {
+          "bin_range": "[0.80, 0.90)",
+          "sample_count": 514,
+          "mean_confidence": 0.8532,
+          "empirical_frequency": 0.2918,
+          "calibration_gap": 0.5613
+        },
+        {
+          "bin_range": "[0.90, 1.00]",
+          "sample_count": 6415,
+          "mean_confidence": 0.9944,
+          "empirical_frequency": 0.8737,
+          "calibration_gap": 0.1207
+        }
+      ]
+    },
+    "cross_site_shift": {
+      "note": "Exchangeability violated across test sites (EN54 room vs Industrial Hall).",
+      "conformal_coverage": 0.8402056819014584,
+      "abstention_rate": 0.08209769483189616,
+      "overall_accuracy": 0.8425792477872504,
+      "non_abstained_accuracy": 0.8484234244223954
+    }
+  }
+}

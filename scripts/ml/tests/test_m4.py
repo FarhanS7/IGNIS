@@ -125,3 +125,4 @@ def test_json_artifacts_schema_and_mandatory_lines():
     assert 'evaluations' in metrics
     assert 'Grouped_5Fold_CV' in metrics['evaluations']
     assert 'Leave_One_Fuel_Out' in metrics['evaluations']
+

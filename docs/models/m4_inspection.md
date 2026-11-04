@@ -69,3 +69,4 @@ The experimental grouping unit is defined as:
 $$\text{Group ID} = f(\text{Fuel},\ X_{O2},\ X_{CO2},\ X_{He},\ \text{Round}(P_{\text{amb}} / 50\text{ mmHg}))$$
 
 Across the 274 PSI-69 runs, this produces exactly **90 distinct physical mixture groups**. Group-level cross-validation and Leave-One-Fuel-Out (holding out Methanol or Heptane) strictly partition on these 90 groups.
+
