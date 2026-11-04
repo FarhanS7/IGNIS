@@ -113,11 +113,11 @@ export const SIM_PARAMS: Record<string, SimParam> = {
     rationale: 'Nominal optical sensitivity multiplier for large agglomerated smoke particles (>1 um). Illustrative baseline.',
   },
   photoelectric_small_particle_penalty: {
-    value: 0.35,
+    value: 0.257,
     min: 0.15,
     max: 0.60,
-    tag: 'literature:PMC7918997',
-    rationale: 'Photoelectric detectors exhibit reduced optical response to sub-micron smoke particles characteristic of smoldering Kapton/Teflon, as demonstrated in ISS low-gravity experiments by Meyer et al. (2018, Fire Safety Journal 100: 46-55, PMC7918997). The 0.35 multiplier itself is illustrative.',
+    tag: 'calibrated:m1-same-r',
+    rationale: 'Photoelectric detectors exhibit reduced optical response to sub-micron smoke particles characteristic of smoldering Kapton/Teflon, as demonstrated in ISS low-gravity experiments by Meyer et al. (PMC7918997). Calibrated on 130 NASA SAME/SAME-R ISS microgravity flight runs (PSI-101/102), yielding an empirical 0.257 mean multiplier for overheated Teflon.',
   },
 
   // --- Detector Alarm Thresholds ---

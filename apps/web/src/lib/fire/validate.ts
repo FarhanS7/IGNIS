@@ -5,18 +5,22 @@ import type {
 } from './types.ts';
 import { getHabitatById } from './habitat.ts';
 import { FireSimulator, SeededPRNG } from './sim.ts';
-import { BaselineSmokeDetector, HeuristicFusionDetector, attachDetectorOutputs } from './detectors.ts';
+import { BaselineSmokeDetector, HeuristicFusionDetector, createTrainedDetector, attachDetectorOutputs } from './detectors.ts';
+import type { DetectorEngine } from './types.ts';
 import { localizeSmokeSource } from './localizer.ts';
 import { SIM_PARAMS } from './sim_params.ts';
 
 export interface RunBatchEvaluation {
   baselineDelays: number[];
   fusionDelays: number[];
+  trainedDelays: number[];
   baselineFalseAlarms: number;
   fusionFalseAlarms: number;
+  trainedFalseAlarms: number;
   totalNuisanceRuns: number;
   baselineTop1Matches: number;
   fusionTop1Matches: number;
+  trainedTop1Matches: number;
   totalRuns: number;
 }
 
@@ -25,7 +29,8 @@ function evaluateSingleRun(
   habitat: ReturnType<typeof getHabitatById> extends infer H ? NonNullable<H> : never,
   prng: SeededPRNG,
   baselineDetector: BaselineSmokeDetector,
-  fusionDetector: HeuristicFusionDetector
+  fusionDetector: HeuristicFusionDetector,
+  trainedDetector: DetectorEngine
 ) {
   const fuels: FuelType[] = ['cellulose', 'silicone', 'kapton', 'teflon'];
   const fuel = fuels[Math.floor(prng.next() * fuels.length)];
@@ -94,14 +99,38 @@ function evaluateSingleRun(
     fusionLoc.rankedZones.length > 0 && fusionLoc.rankedZones[0].zoneId === sourceZone.id
   );
 
+  // Evaluate Trained
+  const trainedSteps = steps.map((s) => ({
+    ...s,
+    detectorOutputs: {} as Record<string, DetectorOutput>,
+  }));
+  attachDetectorOutputs(trainedDetector, trainedSteps, habitat);
+
+  let trainedAlarmTime: number | undefined;
+  for (const step of trainedSteps) {
+    if (Object.values(step.detectorOutputs).some((o) => o.state === 'FIRE_ALARM')) {
+      trainedAlarmTime = step.timestamp_s;
+      break;
+    }
+  }
+
+  const trainedFalseAlarm = Boolean(hasNuisance && trainedAlarmTime !== undefined && trainedAlarmTime <= 14.0);
+  const trainedLoc = localizeSmokeSource(habitat, trainedSteps);
+  const trainedTop1 = Boolean(
+    trainedLoc.rankedZones.length > 0 && trainedLoc.rankedZones[0].zoneId === sourceZone.id
+  );
+
   return {
     baselineAlarmTime,
     fusionAlarmTime,
+    trainedAlarmTime,
     hasNuisance,
     baselineFalseAlarm,
     fusionFalseAlarm,
+    trainedFalseAlarm,
     baselineTop1,
     fusionTop1,
+    trainedTop1,
   };
 }
 
@@ -112,27 +141,34 @@ function runBatchOnly(
 ): RunBatchEvaluation {
   const baselineDetector = new BaselineSmokeDetector();
   const fusionDetector = new HeuristicFusionDetector();
+  const trainedDetector = createTrainedDetector();
 
   const batch: RunBatchEvaluation = {
     baselineDelays: [],
     fusionDelays: [],
+    trainedDelays: [],
     baselineFalseAlarms: 0,
     fusionFalseAlarms: 0,
+    trainedFalseAlarms: 0,
     totalNuisanceRuns: 0,
     baselineTop1Matches: 0,
     fusionTop1Matches: 0,
+    trainedTop1Matches: 0,
     totalRuns,
   };
 
   for (let i = 0; i < totalRuns; i++) {
-    const outcome = evaluateSingleRun(i, habitat, prng, baselineDetector, fusionDetector);
+    const outcome = evaluateSingleRun(i, habitat, prng, baselineDetector, fusionDetector, trainedDetector);
     if (outcome.baselineAlarmTime !== undefined) batch.baselineDelays.push(outcome.baselineAlarmTime);
     if (outcome.fusionAlarmTime !== undefined) batch.fusionDelays.push(outcome.fusionAlarmTime);
+    if (outcome.trainedAlarmTime !== undefined) batch.trainedDelays.push(outcome.trainedAlarmTime);
     if (outcome.hasNuisance) batch.totalNuisanceRuns++;
     if (outcome.baselineFalseAlarm) batch.baselineFalseAlarms++;
     if (outcome.fusionFalseAlarm) batch.fusionFalseAlarms++;
+    if (outcome.trainedFalseAlarm) batch.trainedFalseAlarms++;
     if (outcome.baselineTop1) batch.baselineTop1Matches++;
     if (outcome.fusionTop1) batch.fusionTop1Matches++;
+    if (outcome.trainedTop1) batch.trainedTop1Matches++;
   }
 
   return batch;
@@ -245,6 +281,7 @@ function compileMonteCarloMetrics(
 
   const bStats = calcStats(batch.baselineDelays);
   const fStats = calcStats(batch.fusionDelays);
+  const tStats = calcStats(batch.trainedDelays);
 
   const bFalseAlarmRate =
     batch.totalNuisanceRuns > 0
@@ -254,9 +291,14 @@ function compileMonteCarloMetrics(
     batch.totalNuisanceRuns > 0
       ? Math.round((batch.fusionFalseAlarms / batch.totalNuisanceRuns) * 1000) / 1000
       : 0;
+  const tFalseAlarmRate =
+    batch.totalNuisanceRuns > 0
+      ? Math.round((batch.trainedFalseAlarms / batch.totalNuisanceRuns) * 1000) / 1000
+      : 0;
 
   const bTop1Acc = Math.round((batch.baselineTop1Matches / batch.totalRuns) * 1000) / 1000;
   const fTop1Acc = Math.round((batch.fusionTop1Matches / batch.totalRuns) * 1000) / 1000;
+  const tTop1Acc = Math.round((batch.trainedTop1Matches / batch.totalRuns) * 1000) / 1000;
 
   const fusionBeatsOnFalseAlarms = fFalseAlarmRate <= bFalseAlarmRate;
   const robustness = runRobustnessSweep(habitatId, seed);
@@ -279,6 +321,13 @@ function compileMonteCarloMetrics(
       p95DetectionDelay_s: fStats.p95,
       nuisanceFalseAlarmRate: fFalseAlarmRate,
       top1ClearAccuracy: fTop1Acc,
+    },
+    trained: {
+      meanDetectionDelay_s: tStats.mean,
+      p95DetectionDelay_s: tStats.p95,
+      nuisanceFalseAlarmRate: tFalseAlarmRate,
+      top1ClearAccuracy: tTop1Acc,
+      label: 'behaves sensibly on simulator streams; both model and simulator carry assumptions; not a superiority claim',
     },
     rankingComparison: {
       fusionBeatsBaselineOnDelay: fStats.mean <= bStats.mean,
@@ -326,15 +375,19 @@ export async function runMonteCarloValidationSweepAsync(
   const prng = new SeededPRNG(seed);
   const baselineDetector = new BaselineSmokeDetector();
   const fusionDetector = new HeuristicFusionDetector();
+  const trainedDetector = createTrainedDetector();
 
   const batch: RunBatchEvaluation = {
     baselineDelays: [],
     fusionDelays: [],
+    trainedDelays: [],
     baselineFalseAlarms: 0,
     fusionFalseAlarms: 0,
+    trainedFalseAlarms: 0,
     totalNuisanceRuns: 0,
     baselineTop1Matches: 0,
     fusionTop1Matches: 0,
+    trainedTop1Matches: 0,
     totalRuns,
   };
 
@@ -342,14 +395,17 @@ export async function runMonteCarloValidationSweepAsync(
   for (let i = 0; i < totalRuns; i += chunkSize) {
     const end = Math.min(i + chunkSize, totalRuns);
     for (let r = i; r < end; r++) {
-      const outcome = evaluateSingleRun(r, habitat, prng, baselineDetector, fusionDetector);
+      const outcome = evaluateSingleRun(r, habitat, prng, baselineDetector, fusionDetector, trainedDetector);
       if (outcome.baselineAlarmTime !== undefined) batch.baselineDelays.push(outcome.baselineAlarmTime);
       if (outcome.fusionAlarmTime !== undefined) batch.fusionDelays.push(outcome.fusionAlarmTime);
+      if (outcome.trainedAlarmTime !== undefined) batch.trainedDelays.push(outcome.trainedAlarmTime);
       if (outcome.hasNuisance) batch.totalNuisanceRuns++;
       if (outcome.baselineFalseAlarm) batch.baselineFalseAlarms++;
       if (outcome.fusionFalseAlarm) batch.fusionFalseAlarms++;
+      if (outcome.trainedFalseAlarm) batch.trainedFalseAlarms++;
       if (outcome.baselineTop1) batch.baselineTop1Matches++;
       if (outcome.fusionTop1) batch.fusionTop1Matches++;
+      if (outcome.trainedTop1) batch.trainedTop1Matches++;
     }
 
     if (onProgress) {

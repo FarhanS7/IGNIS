@@ -206,3 +206,4 @@ export class TrainedMLDetector implements DetectorEngine {
 export function createTrainedMLDetector(model: M2ModelExport): DetectorEngine {
   return new TrainedMLDetector(model);
 }
+

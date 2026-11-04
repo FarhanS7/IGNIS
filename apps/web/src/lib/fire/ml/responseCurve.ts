@@ -84,3 +84,4 @@ export function interpolateResponseCurve(
     effectiveMultiplierIsotonic: iso * matFactor,
   };
 }
+

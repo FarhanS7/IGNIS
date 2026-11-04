@@ -194,6 +194,13 @@ export interface MonteCarloMetrics {
     nuisanceFalseAlarmRate: number;
     top1ClearAccuracy: number;
   };
+  trained?: {
+    meanDetectionDelay_s: number;
+    p95DetectionDelay_s: number;
+    nuisanceFalseAlarmRate: number;
+    top1ClearAccuracy: number;
+    label: string;
+  };
   rankingComparison: {
     fusionBeatsBaselineOnDelay: boolean;
     fusionBeatsBaselineOnFalseAlarms: boolean;

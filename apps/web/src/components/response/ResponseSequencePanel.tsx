@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import type { M4ModelExport } from '../../lib/fire/ml/modelTypes.ts';
+import { evaluateFLEXExtinction } from '../../lib/fire/ml/extinctionModel.ts';
+import m4ModelJson from '../../data/models/m4-extinction-v1.json' with { type: 'json' };
+
+const m4Model: M4ModelExport = m4ModelJson as unknown as M4ModelExport;
 import type {
   SequenceStepId,
   SequencerMode,
@@ -14,6 +19,7 @@ import {
   UserCheck,
   Wind,
   AlertTriangle,
+  Sparkles,
 } from 'lucide-react';
 
 interface ResponseSequencePanelProps {
@@ -64,6 +70,19 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
 }) => {
   const [overrideModalStep, setOverrideModalStep] = useState<SequenceStepId | null>(null);
   const [overrideReason, setOverrideReason] = useState<string>('');
+
+  const flexExtinctionResult = useMemo(() => {
+    const isCO2Agent = sequencerState.suppressionAgentRecommendation === 'CO2';
+    return evaluateFLEXExtinction(m4Model, {
+      oxygen_mole_fraction: 0.209,
+      co2_mole_fraction: isCO2Agent ? 0.35 : 0.005,
+      nitrogen_mole_fraction: isCO2Agent ? 0.43 : 0.78,
+      helium_mole_fraction: 0.0,
+      ambient_pressure_kpa: 101.3,
+      droplet_initial_diameter_mm: 2.0,
+      is_heptane: 1,
+    });
+  }, [sequencerState.suppressionAgentRecommendation]);
 
   const steps = Object.keys(STEP_LABELS) as SequenceStepId[];
   const isCrewed = sequencerState.mode === 'CREWED';
@@ -187,6 +206,35 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
                 <div className="mt-2 flex items-center justify-between border-t border-slate-800/60 pt-1.5 text-[10px] font-mono text-slate-400">
                   <span>Actor: {stepState.actor}</span>
                   <span>Time: {stepState.timestamp_s.toFixed(1)}s</span>
+                </div>
+              )}
+
+              {/* Droplet Extinction Insight Card (NASA FLEX PSI-69) */}
+              {sId === 'SUPPRESSION' && (
+                <div className="mt-3 rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-xs space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 font-semibold text-slate-200">
+                      <Sparkles className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+                      <span>Droplet Extinction Insight (NASA FLEX PSI-69)</span>
+                    </div>
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider ${
+                        flexExtinctionResult.category === 'EXTINCTION_REGION'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          : flexExtinctionResult.category === 'SUSTAINED_REGION'
+                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                          : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      }`}
+                    >
+                      {flexExtinctionResult.category}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    Droplet flames in ISS microgravity (FLEX). Not cabin solid fuels.
+                  </p>
+                  <div className="text-[10px] text-slate-400 italic">
+                    Informs crew of physical regime boundaries; never auto-triggers suppression.
+                  </div>
                 </div>
               )}
 

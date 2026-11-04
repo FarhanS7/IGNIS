@@ -14,8 +14,10 @@ import { FireSimulator } from '../lib/fire/sim.ts';
 import {
   BaselineSmokeDetector,
   HeuristicFusionDetector,
+  createTrainedDetector,
   attachDetectorOutputs,
 } from '../lib/fire/detectors.ts';
+import { ModelCardModal } from '../components/response/ModelCardModal.tsx';
 import { localizeSmokeSource } from '../lib/fire/localizer.ts';
 import { ResponseSequencer } from '../lib/fire/responseSequencer.ts';
 import { bindActionEvidence } from '../lib/fire/evidenceBinder.ts';
@@ -27,6 +29,7 @@ import { MonteCarloValidationModal } from '../components/response/MonteCarloVali
 import {
   AlertOctagon,
   BarChart2,
+  BookOpen,
   ChevronDown,
   ChevronUp,
   Pause,
@@ -48,8 +51,9 @@ export const ResponseConsolePage: React.FC = () => {
   const [habitatId, setHabitatId] = useState<string>(initialHabitatId);
   const [fuel, setFuel] = useState<FuelType>(initialFuel);
   const [hasNuisanceDust, setHasNuisanceDust] = useState<boolean>(false);
-  const [detectorType, setDetectorType] = useState<'fusion' | 'baseline'>('fusion');
+  const [detectorType, setDetectorType] = useState<'fusion' | 'baseline' | 'trained'>('fusion');
   const [mode, setMode] = useState<SequencerMode>('CREWED');
+  const [isModelCardOpen, setIsModelCardOpen] = useState<boolean>(false);
 
   const currentHabitat = useMemo<HabitatGraph>(() => {
     return getHabitatById(habitatId) || habitatPresets[0];
@@ -85,7 +89,11 @@ export const ResponseConsolePage: React.FC = () => {
 
     const steps = sim.run(100.0);
     const detector =
-      detectorType === 'fusion' ? new HeuristicFusionDetector() : new BaselineSmokeDetector();
+      detectorType === 'trained'
+        ? createTrainedDetector()
+        : detectorType === 'baseline'
+        ? new BaselineSmokeDetector()
+        : new HeuristicFusionDetector();
     attachDetectorOutputs(detector, steps, currentHabitat);
     return steps;
   }, [habitatId, fuel, sourceZoneId, hasNuisanceDust, detectorType, currentHabitat]);
@@ -343,13 +351,14 @@ export const ResponseConsolePage: React.FC = () => {
               <select
                 value={detectorType}
                 onChange={(e) => {
-                  setDetectorType(e.target.value as 'fusion' | 'baseline');
+                  setDetectorType(e.target.value as 'fusion' | 'baseline' | 'trained');
                   handleReset();
                 }}
                 className="w-full rounded-lg bg-slate-950 border border-slate-700 px-2.5 py-1.5 text-slate-200"
               >
-                <option value="fusion">Multi-Channel Fusion</option>
-                <option value="baseline">Baseline Single-Channel</option>
+                <option value="fusion">Heuristic fusion</option>
+                <option value="baseline">Baseline (photoelectric)</option>
+                <option value="trained">Trained fusion (Earth-gravity data)</option>
               </select>
             </div>
 
@@ -386,6 +395,32 @@ export const ResponseConsolePage: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {/* Trained Model Info Banner (Visible when Trained Fusion is active) */}
+          {detectorType === 'trained' && (
+            <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-950/20 p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-xs font-bold text-amber-300">
+                    Trained on Earth-gravity data. Not validated in microgravity.
+                  </span>
+                  <span className="font-mono text-[11px] text-cyan-300">
+                    Model ID: <code className="text-white">m2-fusion-v1</code> | Tag: <code className="text-white">trained:m2-fusion-v1</code>
+                  </span>
+                </div>
+                <div className="text-[11px] text-slate-300 font-mono">
+                  Datasets: D1 EN54 Room (<a href="https://doi.org/10.17632/npk2zcm85h.2" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">DOI 10.17632/npk2zcm85h.2</a>) • D2 Industrial Hall (<a href="https://doi.org/10.17632/yghykzm4km.1" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">DOI 10.17632/yghykzm4km.1</a>)
+                </div>
+              </div>
+              <button
+                onClick={() => setIsModelCardOpen(true)}
+                className="flex items-center gap-1.5 rounded-lg border border-cyan-500/40 bg-cyan-950/40 hover:bg-cyan-900/40 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition-colors shadow-sm cursor-pointer"
+              >
+                <BookOpen className="h-3.5 w-3.5" />
+                <span>View M2 Model Card</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Main Grid: Left = Schematic & Timeline; Right = Response Sequencer & Evidence */}
@@ -555,6 +590,12 @@ export const ResponseConsolePage: React.FC = () => {
           isOpen={isMonteCarloOpen}
           onClose={() => setIsMonteCarloOpen(false)}
           habitatId={habitatId}
+        />
+
+        {/* M2 Model Card Modal */}
+        <ModelCardModal
+          isOpen={isModelCardOpen}
+          onClose={() => setIsModelCardOpen(false)}
         />
       </div>
     </div>

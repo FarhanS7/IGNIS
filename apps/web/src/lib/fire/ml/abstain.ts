@@ -48,3 +48,4 @@ export function evaluateMarginAbstention(
   const isAbstained = Math.abs(prob - threshold) < margin;
   return { isAbstained, margin };
 }
+

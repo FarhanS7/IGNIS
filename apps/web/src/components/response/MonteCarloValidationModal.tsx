@@ -136,7 +136,8 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
                   <tr>
                     <th className="py-2.5 px-3">Metric</th>
                     <th className="py-2.5 px-3">Baseline (Single-Ch)</th>
-                    <th className="py-2.5 px-3">Fusion (Multi-Sensor)</th>
+                    <th className="py-2.5 px-3">Heuristic Fusion</th>
+                    <th className="py-2.5 px-3">Trained ML (M2 Earth-Data)</th>
                     <th className="py-2.5 px-3">Robustness Sweep</th>
                   </tr>
                 </thead>
@@ -145,7 +146,8 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
                     <td className="py-2.5 px-3 font-semibold text-slate-200">Mean Detection Delay</td>
                     <td className="py-2.5 px-3">{metrics.baseline.meanDetectionDelay_s}s</td>
                     <td className="py-2.5 px-3">{metrics.fusion.meanDetectionDelay_s}s</td>
-                    <td className="py-2.5 px-3 text-cyan-300">
+                    <td className="py-2.5 px-3 text-cyan-300">{metrics.trained ? `${metrics.trained.meanDetectionDelay_s}s` : '-'}</td>
+                    <td className="py-2.5 px-3 text-slate-400">
                       {metrics.rankingComparison.delayHoldsFraction ?? 'holds across sweep'}
                     </td>
                   </tr>
@@ -153,6 +155,7 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
                     <td className="py-2.5 px-3 font-semibold text-slate-200">P95 Detection Delay</td>
                     <td className="py-2.5 px-3">{metrics.baseline.p95DetectionDelay_s}s</td>
                     <td className="py-2.5 px-3">{metrics.fusion.p95DetectionDelay_s}s</td>
+                    <td className="py-2.5 px-3 text-slate-300">{metrics.trained ? `${metrics.trained.p95DetectionDelay_s}s` : '-'}</td>
                     <td className="py-2.5 px-3 text-slate-400">
                       Tail delay comparison
                     </td>
@@ -164,6 +167,9 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
                     </td>
                     <td className="py-2.5 px-3 text-emerald-400 font-bold">
                       {metrics.fusion.nuisanceFalseAlarmRate.toFixed(3)}
+                    </td>
+                    <td className="py-2.5 px-3 text-emerald-300 font-semibold">
+                      {metrics.trained ? metrics.trained.nuisanceFalseAlarmRate.toFixed(3) : '-'}
                     </td>
                     <td className="py-2.5 px-3 text-emerald-400 font-semibold">
                       {metrics.rankingComparison.falseAlarmHoldsFraction ?? 'holds across sweep'}
@@ -178,12 +184,27 @@ export const MonteCarloValidationModal: React.FC<MonteCarloValidationModalProps>
                       {metrics.fusion.top1ClearAccuracy.toFixed(3)}
                     </td>
                     <td className="py-2.5 px-3 text-cyan-300">
+                      {metrics.trained ? metrics.trained.top1ClearAccuracy.toFixed(3) : '-'}
+                    </td>
+                    <td className="py-2.5 px-3 text-cyan-300">
                       {metrics.rankingComparison.localizationHoldsFraction ?? 'holds across sweep'}
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+
+            {/* Trained Model Label & Caveat */}
+            {metrics.trained && (
+              <div className="rounded-lg border border-cyan-500/30 bg-cyan-950/20 p-3 text-xs text-cyan-200 flex items-start gap-2.5">
+                <Info className="h-4 w-4 shrink-0 text-cyan-400 mt-0.5" />
+                <div className="leading-relaxed">
+                  <span className="font-semibold text-cyan-300">Trained ML Arm (M2):</span>{' '}
+                  {metrics.trained.label}.{' '}
+                  <span className="font-semibold text-amber-300">Trained on Earth-gravity data. Not validated in microgravity.</span>
+                </div>
+              </div>
+            )}
 
             {/* Robustness Assessment & Plain-Words Flip Reporting */}
             <div

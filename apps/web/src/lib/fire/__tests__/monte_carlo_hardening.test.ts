@@ -13,6 +13,12 @@ describe('Monte Carlo Hardening, Determinism & Robustness Sweep', () => {
 
     assert.deepEqual(run1.baseline, run2.baseline, 'Baseline metrics must match exactly for same seed');
     assert.deepEqual(run1.fusion, run2.fusion, 'Fusion metrics must match exactly for same seed');
+    assert.ok(run1.trained, 'Trained metrics arm must be present');
+    assert.deepEqual(run1.trained, run2.trained, 'Trained metrics must match exactly for same seed');
+    assert.equal(
+      run1.trained.label,
+      'behaves sensibly on simulator streams; both model and simulator carry assumptions; not a superiority claim'
+    );
     assert.equal(
       run1.rankingComparison.rankingHoldsAcrossSweep,
       run2.rankingComparison.rankingHoldsAcrossSweep

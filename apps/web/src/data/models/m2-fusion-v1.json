@@ -80,7 +80,7 @@
         "sha256": "65a568cf84bf17c0e7d25fe89f3547c93a097a18c65b9f357eab3c7104c97c1a"
       }
     ],
-    "git_commit": "0f2aaae106b5b58140c5949466a1ec4f51d0a7b7",
+    "git_commit": "c7c5b8b84b79a931b1c99176d24b7b2d04a037c6",
     "seed": 42,
     "split_notes": "S1 leave-one-scenario-out, S2 cross-site, S3 leave-one-repetition-out with 2000-resample bootstrap CIs"
   },

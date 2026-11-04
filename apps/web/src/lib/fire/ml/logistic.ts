@@ -52,3 +52,4 @@ export function evaluateLogisticLinear(
   const prob = stableSigmoid(logit);
   return { logit, prob };
 }
+

@@ -114,4 +114,30 @@ test('Fire Response Console Honesty & Copy Lint', async (t) => {
     }
     assert.deepEqual(violations, [], `Found forbidden percentage confidence in: ${JSON.stringify(violations)}`);
   });
+
+  await t.test('bans "AI-powered detection is validated", "proven", "certified", and microgravity training claims for M2', () => {
+    const violations: { file: string; line: number; text: string; reason: string }[] = [];
+    for (const file of targetFiles) {
+      const content = fs.readFileSync(file, 'utf8');
+      const lines = content.split('\n');
+      lines.forEach((line, idx) => {
+        // Skip comment lines in the lint test itself
+        if (file.includes('fire_copy_lint.test.ts')) return;
+
+        if (/AI-powered\s+detection\s+is\s+validated/i.test(line)) {
+          violations.push({ file: path.basename(file), line: idx + 1, text: line.trim(), reason: 'AI-powered detection is validated' });
+        }
+        if (/\bproven\b/i.test(line)) {
+          violations.push({ file: path.basename(file), line: idx + 1, text: line.trim(), reason: 'proven' });
+        }
+        if (/\bcertified\b/i.test(line) && !line.includes('Not flight software') && !line.includes('Not certified')) {
+          violations.push({ file: path.basename(file), line: idx + 1, text: line.trim(), reason: 'certified' });
+        }
+        if (/trained\s+on\s+microgravity\s+fire\s+data/i.test(line)) {
+          violations.push({ file: path.basename(file), line: idx + 1, text: line.trim(), reason: 'trained on microgravity fire data' });
+        }
+      });
+    }
+    assert.deepEqual(violations, [], `Found forbidden copy claims: ${JSON.stringify(violations, null, 2)}`);
+  });
 });

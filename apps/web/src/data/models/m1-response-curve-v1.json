@@ -228,7 +228,7 @@
         "sha256": "6d3a539ccf425b1fa8edc19cc75d828f57d650c7ce734d4e7aa686fea9593218"
       }
     ],
-    "git_commit": "0f2aaae106b5b58140c5949466a1ec4f51d0a7b7",
+    "git_commit": "c7c5b8b84b79a931b1c99176d24b7b2d04a037c6",
     "seed": 42,
     "split_notes": "Leave-one-material-out cross validation across 130 ISS microgravity runs (SAME / SAME-R)"
   },
@@ -240,5 +240,5 @@
     "Overheated Teflon aerosol exhibits 0.257 mean multiplier (94.7% drop relative to cellulose).",
     "Simulated sensor data. Not flight software."
   ],
-  "source_tag": "calibrated:same-response-v1"
+  "source_tag": "calibrated:m1-same-r"
 }

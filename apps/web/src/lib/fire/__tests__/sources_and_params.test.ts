@@ -32,6 +32,33 @@ describe('Verified Sources, Parameter Registry & Honesty Guardrails', () => {
         assert.ok(source.pageRef, `${sourceId} must specify verified page references`);
         assert.ok(source.supports, `${sourceId} must record verified qualitative finding`);
       }
+
+      if (param.tag.startsWith('calibrated:') || param.tag.startsWith('trained:')) {
+        // Tag must correspond to an existing model JSON with an existing model card
+        const modelsDir = path.resolve(webSrcRoot, 'data/models');
+        assert.ok(fs.existsSync(modelsDir), 'Models directory must exist');
+        const modelFiles = fs.readdirSync(modelsDir).filter((f) => f.endsWith('.json') && !f.includes('.golden.'));
+        
+        let matchedModel: { source_tag?: string; card?: string; model_id?: string } | null = null;
+        for (const mf of modelFiles) {
+          const mContent = JSON.parse(fs.readFileSync(path.join(modelsDir, mf), 'utf8'));
+          if (mContent.source_tag === param.tag) {
+            matchedModel = mContent;
+            break;
+          }
+        }
+
+        assert.ok(
+          matchedModel,
+          `Tag "${param.tag}" in SIM_PARAMS.${key} must match a registered model export in data/models/`
+        );
+        assert.ok(matchedModel.card, `Model for tag "${param.tag}" must specify a model card`);
+        const cardPath = path.resolve(repoRoot, matchedModel.card);
+        assert.ok(
+          fs.existsSync(cardPath),
+          `Model card file "${matchedModel.card}" referenced by "${param.tag}" must exist on disk`
+        );
+      }
     }
   });
 

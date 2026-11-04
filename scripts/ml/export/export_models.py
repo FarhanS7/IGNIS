@@ -199,7 +199,7 @@ def build_m1_export(manifest_lookup: Dict[str, Dict[str, str]], git_commit: str)
             "Overheated Teflon aerosol exhibits 0.257 mean multiplier (94.7% drop relative to cellulose).",
             "Simulated sensor data. Not flight software."
         ],
-        "source_tag": "calibrated:same-response-v1"
+        "source_tag": "calibrated:m1-same-r"
     }
     return export_obj
 

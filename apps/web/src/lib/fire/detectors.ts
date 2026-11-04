@@ -7,6 +7,13 @@ import type {
   SensorReadingWindow,
 } from './types.ts';
 import { SIM_PARAMS, computePersistenceSamples } from './sim_params.ts';
+import { TrainedMLDetector } from './ml/trainedDetector.ts';
+import type { M1ModelExport, M2ModelExport } from './ml/modelTypes.ts';
+import m1ModelJson from '../../data/models/m1-response-curve-v1.json' with { type: 'json' };
+import m2ModelJson from '../../data/models/m2-fusion-v1.json' with { type: 'json' };
+
+const m1Model: M1ModelExport = m1ModelJson as unknown as M1ModelExport;
+
 
 /**
  * Single-Channel Baseline Photoelectric Smoke Detector.
@@ -22,7 +29,7 @@ export class BaselineSmokeDetector implements DetectorEngine {
   readonly id = 'baseline_smoke_detector';
   readonly name = 'Baseline Single-Channel Smoke Detector';
   readonly version = '1.0.0';
-  readonly tag: ParameterSourceTag = SIM_PARAMS.baseline_smoke_alarm_threshold.tag;
+  readonly tag: ParameterSourceTag = SIM_PARAMS.photoelectric_small_particle_penalty.tag;
 
   private readonly alarmThreshold = SIM_PARAMS.baseline_smoke_alarm_threshold.value;
   private readonly advisoryThreshold = SIM_PARAMS.fusion_smoke_advisory_threshold.value;
@@ -40,6 +47,25 @@ export class BaselineSmokeDetector implements DetectorEngine {
     }
 
     const latest = window.readings[window.readings.length - 1];
+
+    // Check if input particle diameter is provided and within calibrated SAME-R microgravity range
+    const particleDiameter = (window as unknown as { particleDiameter_um?: number }).particleDiameter_um;
+    if (
+      typeof particleDiameter === 'number' &&
+      (particleDiameter < m1Model.applicable_range_um.min || particleDiameter > m1Model.applicable_range_um.max)
+    ) {
+      return {
+        detectorId: window.detectorId,
+        state: 'INSUFFICIENT_EVIDENCE',
+        timestamp_s: latest.timestamp_s,
+        triggeredChannels: [],
+        confidenceNotes: [
+          `Particle diameter (${particleDiameter} um) outside calibrated SAME-R flight range [${m1Model.applicable_range_um.min}, ${m1Model.applicable_range_um.max}] um. Baseline response model abstains.`,
+        ],
+        provenanceTag: this.tag,
+      };
+    }
+
     const obs = latest.obscuration_pct_m;
     const triggered: DetectorChannel[] = [];
     let state: DetectorState = 'NOMINAL';
@@ -197,6 +223,10 @@ export function createFusionDetector(): DetectorEngine {
   return new HeuristicFusionDetector();
 }
 
+export function createTrainedDetector(model?: M2ModelExport): DetectorEngine {
+  return new TrainedMLDetector(model || (m2ModelJson as unknown as M2ModelExport));
+}
+
 /**
  * Runs a detector engine across all time steps of a simulation, attaching
  * DetectorOutput for every detector in the habitat at every time step.
@@ -231,7 +261,7 @@ export function attachDetectorOutputs(
       readingHistories[detId].push(reading);
 
       // Keep up to 30s history in window
-      const maxWindowSize = Math.max(10, Math.round(30.0 * sampleRate_hz));
+      const maxWindowSize = Math.max(120, Math.round(60.0 * sampleRate_hz));
       if (readingHistories[detId].length > maxWindowSize) {
         readingHistories[detId].shift();
       }

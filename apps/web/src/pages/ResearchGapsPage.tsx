@@ -247,6 +247,53 @@ export const ResearchGapsPage: React.FC = () => {
           </div>
         )}
 
+        {/* Epistemic Transparency Audit Table */}
+        <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-200 font-mono">
+              Model Transparency: Real-Data Trained vs. Simulated Components
+            </span>
+          </div>
+          <div className="rounded-xl border border-slate-800 bg-slate-950/80 overflow-hidden">
+            <table className="w-full text-left text-xs font-mono">
+              <thead className="bg-slate-900 text-slate-400 border-b border-slate-800">
+                <tr>
+                  <th className="py-2.5 px-3">Subsystem</th>
+                  <th className="py-2.5 px-3">Implementation</th>
+                  <th className="py-2.5 px-3">Grounding / Training Source</th>
+                  <th className="py-2.5 px-3">Operational Boundary & Caveats</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-cyan-300">Detector Fusion (M2)</td>
+                  <td className="py-2.5 px-3">L2 Logistic Classifier + Conformal Abstention</td>
+                  <td className="py-2.5 px-3">Ground EN54 room & industrial hall (DOIs: 10.17632/npk2zcm85h.2, 10.17632/yghykzm4km.1)</td>
+                  <td className="py-2.5 px-3 text-amber-300">Trained on Earth-gravity data. Not validated in microgravity. Evaluates behavioral consistency on simulated streams.</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-cyan-300">Detector Response (M1)</td>
+                  <td className="py-2.5 px-3">Calibrated Response Curve + Domain Check</td>
+                  <td className="py-2.5 px-3">130 NASA SAME / SAME-R flight runs on ISS (PSI-101/102, PMC7918997)</td>
+                  <td className="py-2.5 px-3 text-slate-400">Calibrated on microgravity flight tests. Abstains outside empirical particle size range [0.035, 1.07] µm.</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-cyan-300">Extinction Boundary (M4)</td>
+                  <td className="py-2.5 px-3">Conformal Logistic Extinction Classifier</td>
+                  <td className="py-2.5 px-3">274 NASA FLEX / FLEX-2 droplet burns on ISS (PSI-69/68)</td>
+                  <td className="py-2.5 px-3 text-amber-300">Droplet flames in ISS microgravity (FLEX). Not cabin solid fuels. Informs physical boundaries; never auto-triggers.</td>
+                </tr>
+                <tr>
+                  <td className="py-2.5 px-3 font-semibold text-cyan-300">Transport & Sequencer</td>
+                  <td className="py-2.5 px-3">1D Advection-Dispersion Compartment Network</td>
+                  <td className="py-2.5 px-3">Qualitative transport from NASA SAME (NTRS-20130000422) & ISS Procedures (NTRS-20030053429)</td>
+                  <td className="py-2.5 px-3 text-slate-400">Simulated sensor data. Not flight software. Assumes well-mixed zone compartments.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* Fire Response Console Link */}
         <div className="rounded-xl border border-rose-500/30 bg-rose-950/20 p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div>

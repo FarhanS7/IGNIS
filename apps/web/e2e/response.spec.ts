@@ -125,4 +125,66 @@ test.describe('Fire Response Console End-to-End', () => {
     const closeBtn = page.getByRole('button', { name: /Close/i }).first();
     await closeBtn.click();
   });
+
+  test('integrates trained ML model: reveals honest caveats, suppression insight, and 3-arm Monte Carlo', async ({ page }) => {
+    // 1. Suppression Insight card is present with mandatory FLEX caveat
+    const flexCaveat = page.getByText(/Droplet flames in ISS microgravity \(FLEX\)\. Not cabin solid fuels\./i);
+    await expect(flexCaveat).toBeVisible();
+
+    // 2. Select Trained Fusion in Detector Engine dropdown (index 3)
+    const selects = page.locator('select');
+    await selects.nth(3).selectOption('trained');
+    await page.waitForTimeout(300);
+
+    // 3. Verify mandatory microgravity caveat badge appears in DOM
+    const caveatBadge = page.getByText(/Trained on Earth-gravity data\. Not validated in microgravity\./i);
+    await expect(caveatBadge.first()).toBeVisible();
+
+    // 4. Model ID and tag must be visible
+    await expect(page.getByText(/m2-fusion-v1/i).first()).toBeVisible();
+
+    // 5. Click View M2 Model Card
+    const modelCardBtn = page.getByRole('button', { name: /View M2 Model Card/i });
+    await expect(modelCardBtn).toBeVisible();
+    await modelCardBtn.click();
+    await page.waitForTimeout(300);
+
+    // Modal opens showing model card title and datasets
+    await expect(page.getByText(/Model Card: M2 Multi-Sensor Fusion Detector/i)).toBeVisible();
+    await expect(page.getByText(/10\.17632\/npk2zcm85h\.2/i).first()).toBeVisible();
+    const closeCardBtn = page.getByRole('button', { name: /Close Model Card/i }).first();
+    await closeCardBtn.click();
+    await page.waitForTimeout(300);
+
+    // 6. Advance scrubber and verify detector states (FIRE_ALARM or INSUFFICIENT_EVIDENCE)
+    await setScrubberTime(page, 30);
+    const alarmOrAbstain = page.locator('span, div').filter({ hasText: /FIRE_ALARM|INSUFFICIENT_EVIDENCE/i });
+    await expect(alarmOrAbstain.first()).toBeVisible();
+
+    // 7. Open Monte Carlo Modal and execute sweep to verify 3 arms in the table
+    const mcButton = page.getByRole('button', { name: /Monte Carlo/i });
+    await mcButton.click();
+    await page.waitForTimeout(400);
+
+    // Select 100 runs for quick execution
+    const modalSelect = page.locator('div[role="dialog"], .fixed').locator('select');
+    if (await modalSelect.isVisible()) {
+      await modalSelect.selectOption('100');
+    }
+
+    const execBtn = page.getByRole('button', { name: /Execute Monte Carlo/i });
+    await execBtn.click();
+
+    // Verify 3 arms in the headers after execution completes
+    await expect(page.getByRole('columnheader', { name: /Baseline \(Single-Ch\)/i })).toBeVisible({ timeout: 20000 });
+    await expect(page.getByRole('columnheader', { name: /Heuristic Fusion/i })).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: /Trained ML/i })).toBeVisible();
+
+    // Verify label for trained arm
+    await expect(page.getByText(/behaves sensibly on simulator streams/i)).toBeVisible();
+
+    // Close modal
+    const closeBtn = page.getByRole('button', { name: /Close Inspector/i }).or(page.getByRole('button', { name: /Close/i })).first();
+    await closeBtn.click();
+  });
 });
