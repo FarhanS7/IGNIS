@@ -398,7 +398,9 @@ export const ResponseConsolePage: React.FC = () => {
 
           {/* Trained Model Info Banner (Visible when Trained Fusion is active) */}
           {detectorType === 'trained' && (
-            <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-950/20 p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div role="status"
+              aria-live="polite"
+              className="mt-4 rounded-xl border border-amber-500/40 bg-amber-950/20 p-3.5 flex flex-wrap items-center justify-between gap-3 text-xs">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-xs font-bold text-amber-300">
@@ -436,7 +438,10 @@ export const ResponseConsolePage: React.FC = () => {
             />
 
             {/* Localization Result Card */}
-            <div className="rounded-xl border border-slate-700/60 bg-slate-950/80 p-4 shadow-xl backdrop-blur-md">
+            <div role="region"
+              aria-live="polite"
+              aria-label="Smoke source localization results"
+              className="rounded-xl border border-slate-700/60 bg-slate-950/80 p-4 shadow-xl backdrop-blur-md">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
                 <div className="flex items-center gap-2">
                   <Wind className="h-4 w-4 text-cyan-400" />

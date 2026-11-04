@@ -129,7 +129,9 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
 
       {/* Crew Safety Alert Banner */}
       {isCrewed && sequencerState.crewSafetyAlerts.length > 0 && (
-        <div className="mb-4 rounded-lg border border-amber-500/40 bg-amber-950/20 p-3 text-xs text-amber-200 space-y-1">
+        <div role="alert"
+          aria-live="polite"
+          className="mb-4 rounded-lg border border-amber-500/40 bg-amber-950/20 p-3 text-xs text-amber-200 space-y-1">
           <div className="flex items-center gap-1.5 font-semibold text-amber-300">
             <AlertTriangle className="h-4 w-4" />
             <span>Crew Life-Support & Extinguisher Guidance:</span>
@@ -211,7 +213,9 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
 
               {/* Droplet Extinction Insight Card (NASA FLEX PSI-69) */}
               {sId === 'SUPPRESSION' && (
-                <div className="mt-3 rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-xs space-y-2">
+                <div role="status"
+                  aria-live="polite"
+                  className="mt-3 rounded-lg border border-slate-800 bg-slate-900/70 p-3 text-xs space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 font-semibold text-slate-200">
                       <Sparkles className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
@@ -297,7 +301,10 @@ export const ResponseSequencePanel: React.FC<ResponseSequencePanelProps> = ({
           <Clock className="h-3.5 w-3.5 text-slate-400" />
           <span>Audit Event Log ({sequencerState.eventLog.length} events)</span>
         </div>
-        <div className="max-h-32 overflow-y-auto space-y-1.5 font-mono text-[11px] text-slate-400 pr-1">
+        <div role="log"
+          aria-live="polite"
+          aria-label="Emergency response audit event log"
+          className="max-h-32 overflow-y-auto space-y-1.5 font-mono text-[11px] text-slate-400 pr-1">
           {sequencerState.eventLog.length === 0 ? (
             <div className="text-slate-600 italic">No events logged yet.</div>
           ) : (
