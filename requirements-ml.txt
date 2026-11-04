@@ -1,0 +1,7 @@
+# Python 3.13.5
+numpy==2.3.3
+pandas==2.3.3
+scipy==1.16.3
+scikit-learn==1.9.1
+pytest==9.0.2
+pyarrow==26.0.0

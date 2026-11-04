@@ -1,0 +1,113 @@
+[
+  {
+    "id": "D1",
+    "name": "Indoor Fire Dataset with Distributed Multi-Sensor Nodes (EN54 Test Room)",
+    "source_url": "https://data.mendeley.com/datasets/npk2zcm85h/2",
+    "doi": "10.17632/npk2zcm85h.2",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "access_date": "2026-11-04T13:55:06.511926+00:00",
+    "files": [],
+    "notes": "Multi-sensor EN54 fire and nuisance experiments by Pascal Vorwerk et al. (MDPI Fire 2023, 6, 323). Used for M2 sensor fusion detector training/validation."
+  },
+  {
+    "id": "D2",
+    "name": "Indoor Fire Dataset with Distributed Multi-Sensor Nodes (Industrial Hall)",
+    "source_url": "https://data.mendeley.com/datasets/yghykzm4km/1",
+    "doi": "10.17632/yghykzm4km.1",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "access_date": "2026-11-04T13:55:06.512011+00:00",
+    "files": [],
+    "notes": "Distributed multi-sensor nodes in 10x22x8 m3 industrial hall by Otto von Guericke University Magdeburg. Used for M2 cross-site generalization testing."
+  },
+  {
+    "id": "D3",
+    "name": "Indoor Fire Dataset of Multi Sensor Data (Small Scale Test Chamber)",
+    "source_url": "https://data.mendeley.com/datasets/m85f9h6g9j/1",
+    "doi": "10.17632/m85f9h6g9j.1",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "access_date": "2026-11-04T13:55:06.512068+00:00",
+    "files": [],
+    "notes": "Multi-sensor chamber fire test dataset. Optional benchmark evaluation."
+  },
+  {
+    "id": "D4",
+    "name": "Smoke and Aerosol Measurement Experiment (SAME / PSI-102)",
+    "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-102",
+    "doi": "10.60555/gd4k-8h62",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "access_date": "2026-11-04T13:55:06.512132+00:00",
+    "files": [
+      {
+        "name": "PSI-102_Experimental table_SAME.csv",
+        "relative_path": "data/raw_ml/d4_same/PSI-102_Experimental table_SAME.csv",
+        "bytes": 331,
+        "sha256": "268d1e121d2f211b124407dd32b9475617bd269ede2c2d1749441da3e949a2af",
+        "rows": 8
+      },
+      {
+        "name": "PSI-102_metadata.json",
+        "relative_path": "data/raw_ml/d4_same/PSI-102_metadata.json",
+        "bytes": 178186,
+        "sha256": "028183fdb79422a83bd328cc1a2316e03fee415e9179060b362a50e053b28382",
+        "rows": 61
+      }
+    ],
+    "notes": "NASA flight microgravity smoke particle size distribution and detector response investigation. Used for M1 detector response modeling."
+  },
+  {
+    "id": "D5",
+    "name": "Smoke Aerosol Measurement Experiment-Reflight (SAME-R / PSI-101)",
+    "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-101",
+    "doi": "10.60555/2np7-jv14",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "access_date": "2026-11-04T13:55:06.513740+00:00",
+    "files": [
+      {
+        "name": "PSI-101_Analyzed Data_SAME, SAME-R_Results.xlsx",
+        "relative_path": "data/raw_ml/d5_samer/PSI-101_Analyzed Data_SAME, SAME-R_Results.xlsx",
+        "bytes": 4061669,
+        "sha256": "6d3a539ccf425b1fa8edc19cc75d828f57d650c7ce734d4e7aa686fea9593218",
+        "rows": 3922
+      },
+      {
+        "name": "PSI-101_Experimental table_SAME-R.csv",
+        "relative_path": "data/raw_ml/d5_samer/PSI-101_Experimental table_SAME-R.csv",
+        "bytes": 5674,
+        "sha256": "87164b7dc9168a4273c159f7a9f23699afbd06ad97b77974377e79b9bf8a3bef",
+        "rows": 109
+      },
+      {
+        "name": "PSI-101_metadata.json",
+        "relative_path": "data/raw_ml/d5_samer/PSI-101_metadata.json",
+        "bytes": 735450,
+        "sha256": "105a4dfec39e8d89015163edd8f8edc1e85a1d721bf55db2d37c7efe4fe577bc",
+        "rows": 61
+      }
+    ],
+    "notes": "NASA flight reflight microgravity smoke particle moments and detector responses across spacecraft materials (Teflon, Kapton, Silicone, Lampwick, Pyrell). Used for M1 detector response calibration."
+  },
+  {
+    "id": "D6",
+    "name": "Flame Extinguishment Experiment (FLEX / PSI-69 & FLEX-2 / PSI-68 Droplet Runs)",
+    "source_url": "https://psi.nasa.gov/geode-py/ws/repo/investigations/PSI-69",
+    "doi": "10.60555/psi-69-flex",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "access_date": "2026-11-04T13:55:09.099242+00:00",
+    "files": [
+      {
+        "name": "evidence_runs.json",
+        "relative_path": "data/processed/evidence_runs.json",
+        "bytes": 3913640,
+        "sha256": "21c68afeac92050a902d922ec7179957f5989cd0746aa9caa68a2a8a291b8d58",
+        "rows": 1401
+      }
+    ],
+    "notes": "Pre-processed NASA flight droplet microgravity extinction and burning experiments. Already integrated into repo evidence tier. Used for M4 extinction model."
+  }
+]

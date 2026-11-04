@@ -83,3 +83,26 @@ jobs:
           name: playwright-report
           path: apps/web/playwright-report/
           retention-days: 14
+
+  ml:
+    name: Machine Learning Pipeline Tests
+    needs: test-and-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install ML Python dependencies
+        run: pip install -r requirements-ml.txt
+
+      - name: Run ML tests suite
+        env:
+          PYTHONPATH: .
+        run: python -m pytest scripts/ml/tests -q
