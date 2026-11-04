@@ -116,8 +116,8 @@ export const SIM_PARAMS: Record<string, SimParam> = {
     value: 0.35,
     min: 0.15,
     max: 0.60,
-    tag: 'literature:NTRS-20130000422',
-    rationale: 'Photoelectric detectors exhibit reduced optical response to sub-micron smoke particles characteristic of smoldering Kapton/Teflon, as documented qualitatively in SAME-2 (NTRS-20130000422, pp. 1-8). The 0.35 multiplier itself is illustrative.',
+    tag: 'literature:PMC7918997',
+    rationale: 'Photoelectric detectors exhibit reduced optical response to sub-micron smoke particles characteristic of smoldering Kapton/Teflon, as demonstrated in ISS low-gravity experiments by Meyer et al. (2018, Fire Safety Journal 100: 46-55, PMC7918997). The 0.35 multiplier itself is illustrative.',
   },
 
   // --- Detector Alarm Thresholds ---
