@@ -120,20 +120,46 @@ To prevent hallucinations and out-of-distribution speculation, the assistant enf
 
 The **Fire Response Console** simulates multi-sensor fire detection, time-of-arrival smoke localization, and emergency response sequencing across microgravity habitat modules (ISS-like, uncrewed payload carrier, or lunar surface habitat):
 
-- **Multi-Sensor Heuristic Fusion**: Combines optical obscuration (%/m), carbon monoxide (ppm), and thermal rate-of-rise (°C/min) across a persistence window to discriminate true smoldering/flaming combustion from non-fire cabin dust or aerosol nuisance events.
+- **Three Selectable Detector Arms**:
+  - *Heuristic Multi-Sensor Fusion*: Combines optical obscuration (%/m), carbon monoxide (ppm), and thermal rate-of-rise (°C/min) across a persistence window to discriminate true combustion from non-fire dust or aerosol nuisance events.
+  - *Baseline Photoelectric*: Single-channel detector calibrated with empirical NASA SAME-R microgravity particle response curves (`calibrated:m1-same-r`), modeling the physical sensitivity reduction on sub-micron smoke (mean Teflon multiplier 0.257).
+  - *Trained ML Fusion*: L2-logistic multi-sensor classifier (`trained:m2-fusion-v1`) trained on ground fire datasets, achieving 100.0% fire detection with a 100 s latency reduction over particulate thresholding and 0.000 false alarms/hour, accompanied by a persistent honest disclosure banner: *"Trained on Earth-gravity data. Not validated in microgravity."*
+- **Droplet Extinction Insight (NASA FLEX)**: In Step 5 (`SUPPRESSION`), evaluates chemical flammability limits powered by a conformal logistic model trained on 262 NASA FLEX/FLEX-2 microgravity droplet burns (`trained:m4-extinction-v1`), explicitly caveated (*"Droplet flames in ISS microgravity (FLEX). Not cabin solid fuels."*) to prevent invalid extrapolation.
 - **Ventilation Transport & Mixing**: Advection along forced ventilation duct networks accounts for zero-buoyancy dispersion, grounded in qualitative findings from NASA SAME (NTRS-20130000422).
 - **Categorical Localization**: Smoke origin inference reports discrete categories (`CLEAR`, `CLOSE`, `AMBIGUOUS`, `INSUFFICIENT_EVIDENCE`) based on inter-zone arrival delays rather than misleading pseudo-probabilities.
-- **Emergency Containment Sequencing**: Progresses through `ALARM` → `REMOVE_POWER` → `ISOLATE_VENTILATION` → `INHIBIT_MAKEUP` → `SUPPRESSION` → `POST_FIRE_RECOVERY`. In crewed modules, suppression requires explicit human confirmation to safeguard astronaut breathing volumes, warning against CO2 flooding without breathing apparatus (NTRS-20130011664).
+- **Emergency Containment Sequencing**: Progresses through `ALARM` → `REMOVE_POWER` → `ISOLATE_VENTILATION` → `INHIBIT_MAKEUP` → `SUPPRESSION` → `POST_FIRE_RECOVERY`. In crewed modules, suppression strictly requires explicit human confirmation to safeguard astronaut breathing volumes, warning against CO2 flooding without breathing apparatus (NTRS-20130011664).
 - **Flight Data Provenance**: For each response action (e.g. flow cutoff), queries real NASA BASS-II flight runs to inspect empirical extinction behavior, accompanied by validation circularity caveats and environmental envelope warnings.
 - **Parameter Registry & Sweep**: All simulation parameters reside in a single registry (`sim_params.ts`), each tagged with engineering rationale and plausible ranges (`[min, max]`) evaluated by a built-in Monte Carlo design-consistency sweep.
 - **Persistent Honesty Banner**: Displays *"Simulated sensor data. Not flight software."* Extinction outcomes come solely from NASA flight evidence; the simulator never predicts flame extinction.
+- **Detailed Documentation**:
+  - Architecture & Reproduction Guide: [`docs/FIRE_RESPONSE.md`](docs/FIRE_RESPONSE.md)
+  - Known Engineering Limitations: [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md)
+  - Model Cards:
+    - M1 SAME Detector Response: [`docs/models/m1_same_detector_response.md`](docs/models/m1_same_detector_response.md)
+    - M2 Multi-Sensor Fusion Detector: [`docs/models/m2_fusion_detector.md`](docs/models/m2_fusion_detector.md)
+    - M4 FLEX Flame Extinction Threshold: [`docs/models/m4_flex_extinction.md`](docs/models/m4_flex_extinction.md)
+
+---
+
+## 📚 Dataset Attribution & Open Licenses
+
+In accordance with open-science standards and creative commons license terms, we attribute all primary experimental datasets utilized in IGNIS as recorded in [`data/provenance/ml_manifest.json`](data/provenance/ml_manifest.json):
+
+| Dataset ID | Dataset Title | Authors / Source Organization | Persistent Identifier (DOI) | Open License | Usage in IGNIS |
+| :---: | :--- | :--- | :---: | :---: | :--- |
+| **D1** | Indoor Fire Dataset with Distributed Multi-Sensor Nodes (EN54 Room) | Pascal Vorwerk et al., Otto von Guericke University Magdeburg (*MDPI Fire 2023, 6, 323*) | [10.17632/npk2zcm85h.2](https://doi.org/10.17632/npk2zcm85h.2) | CC BY 4.0 | Training & validation of M2 multi-sensor fusion detector |
+| **D2** | Indoor Fire Dataset with Distributed Multi-Sensor Nodes (Industrial Hall) | Pascal Vorwerk et al., Otto von Guericke University Magdeburg | [10.17632/yghykzm4km.1](https://doi.org/10.17632/yghykzm4km.1) | CC BY 4.0 | Cross-site domain generalization evaluation of M2 |
+| **D3** | Indoor Fire Dataset of Multi Sensor Data (Small Scale Test Chamber) | Pascal Vorwerk et al., Otto von Guericke University Magdeburg | [10.17632/m85f9h6g9j.1](https://doi.org/10.17632/m85f9h6g9j.1) | CC BY 4.0 | Benchmark reference & multi-sensor validation |
+| **D4** | Smoke Aerosol Measurement Experiment (SAME / PSI-102) | David L. Urban et al., NASA Glenn Research Center | [10.60555/gd4k-8h62](https://doi.org/10.60555/gd4k-8h62) | CC0-1.0 (Public Domain) | M1 microgravity photoelectric response calibration |
+| **D5** | Smoke Aerosol Measurement Experiment-Reflight (SAME-R / PSI-101) | David L. Urban et al., NASA Glenn Research Center | [10.60555/2np7-jv14](https://doi.org/10.60555/2np7-jv14) | CC0-1.0 (Public Domain) | M1 detector calibration across 5 spacecraft materials |
+| **D6** | Flame Extinguishment Experiment (FLEX / PSI-69 & FLEX-2 / PSI-68) | Forman A. Williams et al., NASA PSI Repository | [10.60555/psi-69-flex](https://doi.org/10.60555/psi-69-flex) | CC0-1.0 (Public Domain) | M4 microgravity droplet flame extinction boundary model |
 
 ---
 
 ## 💻 Tech Stack & Local Execution
 
-- **Frontend**: React 19, TypeScript, Vite, TailwindCSS, Framer Motion, Lucide icons.
-- **Client Matcher**: Standalone TypeScript matcher (`apps/web/src/lib/matcher/`) executing directly in the browser with zero backend dependency.
+- **Frontend**: React 19, TypeScript, Vite, TailwindCSS, Framer Motion, Recharts, Lucide icons.
+- **Client Inference Engines**: Pure TypeScript client-side matchers and ML inference engines (`apps/web/src/lib/fire/ml/`) executing deterministically in the user's browser with zero runtime dependencies.
 - **Dataset**: Precompiled `evidence_runs.json` (1,401 runs) and `evidence_solid.json` (132 usable solid runs).
 
 ### Development & Build
@@ -141,8 +167,11 @@ The **Fire Response Console** simulates multi-sensor fire detection, time-of-arr
 # Install dependencies
 npm install
 
-# Run unit tests (TypeScript matcher parity, Fact provenance, and copy-lint honesty guards)
+# Run full TypeScript unit test suite (211 tests across 15 suites)
 npm test
+
+# Run Playwright end-to-end browser tests (29 tests: routes, console, mobile, offline)
+npm run test:e2e --prefix apps/web
 
 # Build production bundle
 npm run build
@@ -152,15 +181,34 @@ npm run preview
 # or: npm --prefix apps/web run preview
 ```
 
+### Python ML Reproduction
+```bash
+# Install exact ML dependencies
+pip install -r requirements-ml.txt
+
+# Run Python ML test suite (27 tests)
+python -m pytest scripts/ml/tests -q
+
+# Run Grouped LOOCV Validation Benchmark (80.30% accuracy)
+python scripts/validate/grouped_loocv.py
+
+# Re-train models and verify TS/Python parity
+python -m scripts.ml.train_m2_fusion --seed 42
+python -m scripts.ml.calibrate_m1_same --seed 42
+python -m scripts.ml.train_m4_extinction --seed 42
+python -m scripts.ml.export_models
+```
+
 ---
 
 ## 🤖 AI Tool Usage Disclosure
 
 In compliance with NASA Space Apps Challenge guidance, we disclose the use of artificial intelligence tools in this project:
-- **Coding & Scaffolding**: AI coding assistants (including Google Antigravity / Claude Code) were used for code drafting, refactoring, and test writing under strict human architectural supervision.
-- **Microgravity Flight Evidence**: All physical flight tables, fuel properties, and DOI references are extracted directly from primary NASA PSI files and NTRS publications without generative fabrication.
+- **Coding & Agentic Pair Programming**: AI coding assistants (<CONFIRM: specify AI IDE tools used, e.g. Google Antigravity / Claude Code>) were used for code drafting, refactoring, test scaffolding, and continuous verification under human architectural supervision.
+- **Human Verification**: All code changes, mathematical derivations, and verification outputs were reviewed and confirmed by human authors (<CONFIRM: list team member names who verified the codebase>).
+- **Epistemic Data Integrity**: All physical flight tables, fuel material properties, and DOI citations are extracted directly from primary NASA PSI files and NTRS publications without generative fabrication.
 - **In-Browser Determinism**: The client-side application runs 100% deterministically in the user's browser using bundled JSON corpora without mandatory external LLM calls.
-- **Optional API Assistant**: The companion backend (`services/api`) contains optional endpoints interfacing with Gemini `<CONFIRM API MODEL>` for natural language synthesis, guarded by client-side verbatim citation verifiers (`apps/web/src/lib/assistant/client_verifier.ts`).
+- **Optional API Assistant**: The companion backend (`services/api`) contains optional endpoints interfacing with Gemini (<CONFIRM: specify exact Gemini model version configured, e.g. Gemini 1.5 Flash>) for natural language synthesis, guarded by client-side verbatim citation verifiers (`apps/web/src/lib/assistant/client_verifier.ts`).
 
 ---
 

@@ -28,7 +28,7 @@
 - [x] 09 Integrate into console
 - [x] 10 Held-out abstention evaluation
 - [x] 11 QA and hardening
-- [ ] 12 Docs and disclosure
+- [x] 12 Docs and disclosure
 - [ ] 13 Merge, CI, deploy
 - [ ] 14 Demo and submission
 
@@ -45,3 +45,4 @@
 - 2026-11-05 | Step 09 Integrate into console | ml: 67f0771 | npm: 200 pass; e2e: 23 pass; ml py: 27 pass; build: exit 0 | Integrated M2 TrainedMLDetector, M1 calibrated SAME-R response, and M4 FLEX extinction insight into /response console; added ModelCardModal, 3-arm Monte Carlo sweep with honest caveats, 4-row epistemic transparency table on /about and /gaps; updated parameter registry tests and copy-lint; all e2e tests green.
 - 2026-11-05 | Step 10 Held-out abstention evaluation | ml: 8326e7a | npm: 200 pass; py eval_qa: pass; holdout: 0.00% false-abstain, 83.33% OOS, 100% composite abstain | Evaluated shipped TS and Python BM25 engines against 26-question unseen held-out benchmark data/eval/qa_holdout.json; confirmed 100.0% cross-engine parity (56/56); documented real failure modes (holdout-20 Apollo 13 lexical overlap, keyword brittleness on novel phrasing caught by groundedness < 5.0) in docs/EVALUATION.md and README.md; no post-hoc rule changes.
 - 2026-11-05 | Step 11 QA and hardening | ml: 5b52460 | npm: 211 pass (15 suites); e2e: 29 pass; py: 194 pass (api) + 27 pass (ml); build: exit 0 (gzip 775.75 kB, models < 4 kB); MC N=200: 1.69s | Unit determinism tests added for Baseline, Heuristic Fusion, Trained ML, and Monte Carlo; comprehensive safety guard tests added (banned terms, retracted figures outside disclosure, literature tag integrity, model card integrity); accessibility aria-live and role attributes on alarm, safety alert, extinction insight, and event log; mobile 390x844 responsive spec added (no horizontal overflow, controls reachable); expanded offline CDN fallback spec across 5 routes; verified 0 secrets and 0 unexpected dependencies.
+- 2026-11-05 | Step 12 Docs and disclosure | ml: b8cce3d | npm: 211 pass; e2e: 29 pass; build: exit 0 | Created docs/FIRE_RESPONSE.md (architecture diagram, honesty table, model summaries, execution & reproduction guides); created docs/LIMITATIONS.md (9 physical & algorithmic boundaries); updated README.md with 3 detector arms, FLEX insight, dataset attributions (D1-D6 DOIs & licenses), local reproduction commands, and AI tool disclosure with <CONFIRM> markers; updated AboutPage.tsx with dataset attribution table; created CHANGELOG.md; verified 10 model metrics spot checks.

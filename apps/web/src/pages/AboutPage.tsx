@@ -322,6 +322,62 @@ export const AboutPage: React.FC = () => {
               </table>
             </div>
           </div>
+          {/* Primary Dataset Citations & Open Licenses (Creative Commons & Public Domain) */}
+          <div className="pt-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 font-mono mb-2">
+              Primary Dataset Citations & Open Licenses (ml_manifest.json)
+            </h3>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/60 overflow-hidden">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-slate-900 text-slate-400 border-b border-slate-800">
+                  <tr>
+                    <th className="py-2 px-3">ID</th>
+                    <th className="py-2 px-3">Dataset Title & Primary Reference</th>
+                    <th className="py-2 px-3">DOI / Source</th>
+                    <th className="py-2 px-3">License</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D1</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (EN54 Room) · Pascal Vorwerk et al., Otto von Guericke University Magdeburg</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/npk2zcm85h.2" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/npk2zcm85h.2</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D2</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (Industrial Hall) · Pascal Vorwerk et al., Otto von Guericke University Magdeburg</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/yghykzm4km.1" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/yghykzm4km.1</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D3</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (Small Scale Test Chamber) · Pascal Vorwerk et al.</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/m85f9h6g9j.1" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/m85f9h6g9j.1</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D4</td>
+                    <td className="py-2 px-3">Smoke Aerosol Measurement Experiment (SAME / PSI-102) · David L. Urban et al., NASA GRC</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/gd4k-8h62" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/gd4k-8h62</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D5</td>
+                    <td className="py-2 px-3">Smoke Aerosol Measurement Experiment-Reflight (SAME-R / PSI-101) · David L. Urban et al., NASA GRC</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/2np7-jv14" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/2np7-jv14</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D6</td>
+                    <td className="py-2 px-3">Flame Extinguishment Experiment (FLEX / PSI-69 & FLEX-2 / PSI-68) · Forman A. Williams et al., NASA PSI</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/psi-69-flex" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/psi-69-flex</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div className="pt-2">
             <Link
               to="/response"
