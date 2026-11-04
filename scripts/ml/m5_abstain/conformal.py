@@ -123,3 +123,4 @@ class MarginAbstainer:
             else:
                 results.append(class_names[0])
         return results
+

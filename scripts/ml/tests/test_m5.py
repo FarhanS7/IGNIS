@@ -124,3 +124,4 @@ def test_m5_json_schemas():
         assert 'm4_results' in metrics
         assert 'm2_results' in metrics
         assert metrics['target_coverage'] == 0.90
+

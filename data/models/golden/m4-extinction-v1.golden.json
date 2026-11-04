@@ -1,0 +1,4956 @@
+{
+  "model_id": "m4-extinction-v1",
+  "generated_at": "2026-11-04T17:04:10.791597+00:00",
+  "total_cases": 120,
+  "tolerance": 1e-06,
+  "cases": [
+    {
+      "case_id": "m4_std_air_001",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 1.50 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.5,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -2.1637257464,
+          -0.8374357894
+        ],
+        "logit": -0.7444753479,
+        "probability": 0.3220262846,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_002",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 1.60 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.6,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.6,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -2.0196386822,
+          -0.8374357894
+        ],
+        "logit": -0.6295218549,
+        "probability": 0.3476189637,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_003",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 1.70 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.7,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.8755516179,
+          -0.8374357894
+        ],
+        "logit": -0.5145683619,
+        "probability": 0.374123207,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_004",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 1.80 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.7314645537,
+          -0.8374357894
+        ],
+        "logit": -0.3996148688,
+        "probability": 0.4014048753,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_005",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 1.90 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.9,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.9,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.5873774894,
+          -0.8374357894
+        ],
+        "logit": -0.2846613758,
+        "probability": 0.4293113501,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_006",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.00 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.0,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.4432904252,
+          -0.8374357894
+        ],
+        "logit": -0.1697078828,
+        "probability": 0.4576745643,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_007",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.10 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.1,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.1,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.2992033609,
+          -0.8374357894
+        ],
+        "logit": -0.0547543898,
+        "probability": 0.4863148214,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": true,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_008",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.20 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.2,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.2,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.1551162967,
+          -0.8374357894
+        ],
+        "logit": 0.0601991032,
+        "probability": 0.5150452325,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": true,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_009",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.30 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.3,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.3,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.0110292325,
+          -0.8374357894
+        ],
+        "logit": 0.1751525962,
+        "probability": 0.5436765454,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_010",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.40 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.4,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.4,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.8669421682,
+          -0.8374357894
+        ],
+        "logit": 0.2901060892,
+        "probability": 0.5720221051,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_011",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.50 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 0.4050595822,
+        "probability": 0.5999026698,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_012",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.60 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.6,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.6,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.5787680397,
+          -0.8374357894
+        ],
+        "logit": 0.5200130752,
+        "probability": 0.6271508237,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_013",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.70 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 0.6349665682,
+        "probability": 0.6536147619,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_014",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.80 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.7499200612,
+        "probability": 0.6791612807,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_015",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 2.90 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.9000000000000004,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.9,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.146506847,
+          -0.8374357894
+        ],
+        "logit": 0.8648735543,
+        "probability": 0.7036778728,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_016",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.00 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 0.9798270473,
+        "probability": 0.7270738974,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_017",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.10 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.1,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.1,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.1416672815,
+          -0.8374357894
+        ],
+        "logit": 1.0947805403,
+        "probability": 0.7492808592,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_018",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.20 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.2,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.2,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.2857543457,
+          -0.8374357894
+        ],
+        "logit": 1.2097340333,
+        "probability": 0.7702518859,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_019",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.30 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.3,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.3,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.42984141,
+          -0.8374357894
+        ],
+        "logit": 1.3246875263,
+        "probability": 0.7899605316,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_020",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.40 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.4000000000000004,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.4,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.5739284742,
+          -0.8374357894
+        ],
+        "logit": 1.4396410193,
+        "probability": 0.8083990551,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_021",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.50 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.5,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.7180155385,
+          -0.8374357894
+        ],
+        "logit": 1.5545945123,
+        "probability": 0.8255763318,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_022",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.60 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.6,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.6,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.8621026027,
+          -0.8374357894
+        ],
+        "logit": 1.6695480053,
+        "probability": 0.8415155492,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_023",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.70 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.7,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.0061896669,
+          -0.8374357894
+        ],
+        "logit": 1.7845014983,
+        "probability": 0.8562518202,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_024",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.80 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.8000000000000003,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.1502767312,
+          -0.8374357894
+        ],
+        "logit": 1.8994549913,
+        "probability": 0.869829829,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_025",
+      "description": "Standard air (21% O2, 79% N2, 101.3 kPa) diameter 3.90 mm Methanol",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.9000000000000004,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.9,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.2943637954,
+          -0.8374357894
+        ],
+        "logit": 2.0144084843,
+        "probability": 0.8823015955,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_001",
+      "description": "Heptane in standard air diameter 1.80 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.8,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.8,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.7314645537,
+          1.1941214033
+        ],
+        "logit": -1.6512380173,
+        "probability": 0.1609416982,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_002",
+      "description": "Heptane in standard air diameter 1.90 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 1.9000000000000001,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          1.9,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.5873774894,
+          1.1941214033
+        ],
+        "logit": -1.5362845242,
+        "probability": 0.1770760449,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_003",
+      "description": "Heptane in standard air diameter 2.00 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.0,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.0,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.4432904252,
+          1.1941214033
+        ],
+        "logit": -1.4213310312,
+        "probability": 0.1944530047,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_004",
+      "description": "Heptane in standard air diameter 2.10 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.1,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.1,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.2992033609,
+          1.1941214033
+        ],
+        "logit": -1.3063775382,
+        "probability": 0.2130936444,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_005",
+      "description": "Heptane in standard air diameter 2.20 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.2,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.2,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.1551162967,
+          1.1941214033
+        ],
+        "logit": -1.1914240452,
+        "probability": 0.2330043432,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_006",
+      "description": "Heptane in standard air diameter 2.30 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.3,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.3,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -1.0110292325,
+          1.1941214033
+        ],
+        "logit": -1.0764705522,
+        "probability": 0.2541745128,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_007",
+      "description": "Heptane in standard air diameter 2.40 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.4000000000000004,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.4,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.8669421682,
+          1.1941214033
+        ],
+        "logit": -0.9615170592,
+        "probability": 0.2765745572,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_008",
+      "description": "Heptane in standard air diameter 2.50 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.5,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.722855104,
+          1.1941214033
+        ],
+        "logit": -0.8465635662,
+        "probability": 0.3001542244,
+        "conformal_set": [
+          0
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "SUSTAINED_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_009",
+      "description": "Heptane in standard air diameter 2.60 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.6,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.6,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.5787680397,
+          1.1941214033
+        ],
+        "logit": -0.7316100732,
+        "probability": 0.3248415074,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_010",
+      "description": "Heptane in standard air diameter 2.70 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.7,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          1.1941214033
+        ],
+        "logit": -0.6166565802,
+        "probability": 0.3505422415,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_011",
+      "description": "Heptane in standard air diameter 2.80 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.8,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.2905939112,
+          1.1941214033
+        ],
+        "logit": -0.5017030872,
+        "probability": 0.3771405205,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_012",
+      "description": "Heptane in standard air diameter 2.90 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.9000000000000004,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          2.9,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.146506847,
+          1.1941214033
+        ],
+        "logit": -0.3867495942,
+        "probability": 0.404500014,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_013",
+      "description": "Heptane in standard air diameter 3.00 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.0,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          1.1941214033
+        ],
+        "logit": -0.2717961011,
+        "probability": 0.4324662081,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_014",
+      "description": "Heptane in standard air diameter 3.10 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.1,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.1,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.1416672815,
+          1.1941214033
+        ],
+        "logit": -0.1568426081,
+        "probability": 0.4608695313,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_015",
+      "description": "Heptane in standard air diameter 3.20 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.2,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.2,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.2857543457,
+          1.1941214033
+        ],
+        "logit": -0.0418891151,
+        "probability": 0.4895292523,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": true,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_016",
+      "description": "Heptane in standard air diameter 3.30 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.3,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.3,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.42984141,
+          1.1941214033
+        ],
+        "logit": 0.0730643779,
+        "probability": 0.5182579728,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": true,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_017",
+      "description": "Heptane in standard air diameter 3.40 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.4000000000000004,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.4,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.5739284742,
+          1.1941214033
+        ],
+        "logit": 0.1880178709,
+        "probability": 0.5468664853,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_018",
+      "description": "Heptane in standard air diameter 3.50 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.5,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.5,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.7180155385,
+          1.1941214033
+        ],
+        "logit": 0.3029713639,
+        "probability": 0.5751687302,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_019",
+      "description": "Heptane in standard air diameter 3.60 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.6,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.6,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          0.8621026027,
+          1.1941214033
+        ],
+        "logit": 0.4179248569,
+        "probability": 0.6029865799,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_020",
+      "description": "Heptane in standard air diameter 3.70 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.7,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.7,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.0061896669,
+          1.1941214033
+        ],
+        "logit": 0.5328783499,
+        "probability": 0.6301541908,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_021",
+      "description": "Heptane in standard air diameter 3.80 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.8,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.8,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.1502767312,
+          1.1941214033
+        ],
+        "logit": 0.6478318429,
+        "probability": 0.6565217072,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_022",
+      "description": "Heptane in standard air diameter 3.90 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.9000000000000004,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          3.9,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.2943637954,
+          1.1941214033
+        ],
+        "logit": 0.7627853359,
+        "probability": 0.6819581547,
+        "conformal_set": [
+          0,
+          1
+        ],
+        "conformal_abstained": true,
+        "margin_abstained": false,
+        "category": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_023",
+      "description": "Heptane in standard air diameter 4.00 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 4.0,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          4.0,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.4384508597,
+          1.1941214033
+        ],
+        "logit": 0.8777388289,
+        "probability": 0.7063534319,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_024",
+      "description": "Heptane in standard air diameter 4.10 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 4.1000000000000005,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          4.1,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.5825379239,
+          1.1941214033
+        ],
+        "logit": 0.992692322,
+        "probability": 0.7296193782,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_std_air_heptane_025",
+      "description": "Heptane in standard air diameter 4.20 mm",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.79,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 4.2,
+        "is_heptane": 1
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.0,
+          0.79,
+          0.0,
+          101.3,
+          4.2,
+          1.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          -0.7047323402,
+          0.9321159657,
+          -0.4256805342,
+          0.1555648595,
+          1.7266249881,
+          1.1941214033
+        ],
+        "logit": 1.107645815,
+        "probability": 0.7516899581,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_001",
+      "description": "CO2 dilution quench sweep CO2=10.0%, O2=18.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.18,
+        "co2_mole_fraction": 0.1,
+        "nitrogen_mole_fraction": 0.7200000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.18,
+          0.1,
+          0.72,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -0.4448282414,
+          -0.1374823459,
+          0.5352959376,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 2.3456090521,
+        "probability": 0.9125845782,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_002",
+      "description": "CO2 dilution quench sweep CO2=12.0%, O2=17.4%",
+      "input": {
+        "oxygen_mole_fraction": 0.174,
+        "co2_mole_fraction": 0.12000000000000001,
+        "nitrogen_mole_fraction": 0.7060000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.174,
+          0.12,
+          0.706,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -0.5717374964,
+          -0.0240323471,
+          0.4559319319,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 2.6187654531,
+        "probability": 0.932059571,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_003",
+      "description": "CO2 dilution quench sweep CO2=14.0%, O2=16.8%",
+      "input": {
+        "oxygen_mole_fraction": 0.16799999999999998,
+        "co2_mole_fraction": 0.14,
+        "nitrogen_mole_fraction": 0.6920000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.168,
+          0.14,
+          0.692,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -0.6986467515,
+          0.0894176518,
+          0.3765679263,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 2.891921854,
+        "probability": 0.9474456576,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_004",
+      "description": "CO2 dilution quench sweep CO2=16.0%, O2=16.2%",
+      "input": {
+        "oxygen_mole_fraction": 0.16199999999999998,
+        "co2_mole_fraction": 0.16,
+        "nitrogen_mole_fraction": 0.678,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.162,
+          0.16,
+          0.678,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -0.8255560066,
+          0.2028676506,
+          0.2972039207,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 3.165078255,
+        "probability": 0.9594987531,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_005",
+      "description": "CO2 dilution quench sweep CO2=18.0%, O2=15.6%",
+      "input": {
+        "oxygen_mole_fraction": 0.156,
+        "co2_mole_fraction": 0.18,
+        "nitrogen_mole_fraction": 0.6639999999999999,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.156,
+          0.18,
+          0.664,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -0.9524652616,
+          0.3163176495,
+          0.2178399151,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 3.438234656,
+        "probability": 0.9688783293,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_006",
+      "description": "CO2 dilution quench sweep CO2=20.0%, O2=15.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.15,
+        "co2_mole_fraction": 0.2,
+        "nitrogen_mole_fraction": 0.6499999999999999,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.15,
+          0.2,
+          0.65,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.0793745167,
+          0.4297676483,
+          0.1384759095,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 3.7113910569,
+        "probability": 0.9761397311,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_007",
+      "description": "CO2 dilution quench sweep CO2=22.0%, O2=14.4%",
+      "input": {
+        "oxygen_mole_fraction": 0.144,
+        "co2_mole_fraction": 0.22,
+        "nitrogen_mole_fraction": 0.636,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.144,
+          0.22,
+          0.636,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.2062837718,
+          0.5432176472,
+          0.0591119039,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 3.9845474579,
+        "probability": 0.9817388137,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_008",
+      "description": "CO2 dilution quench sweep CO2=24.0%, O2=13.8%",
+      "input": {
+        "oxygen_mole_fraction": 0.13799999999999998,
+        "co2_mole_fraction": 0.24000000000000002,
+        "nitrogen_mole_fraction": 0.622,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.138,
+          0.24,
+          0.622,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.3331930268,
+          0.656667646,
+          -0.0202521018,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 4.2577038589,
+        "probability": 0.9860427945,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_009",
+      "description": "CO2 dilution quench sweep CO2=26.0%, O2=13.2%",
+      "input": {
+        "oxygen_mole_fraction": 0.132,
+        "co2_mole_fraction": 0.26,
+        "nitrogen_mole_fraction": 0.608,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.132,
+          0.26,
+          0.608,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.4601022819,
+          0.7701176449,
+          -0.0996161074,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 4.5308602598,
+        "probability": 0.9893433809,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_010",
+      "description": "CO2 dilution quench sweep CO2=28.0%, O2=12.6%",
+      "input": {
+        "oxygen_mole_fraction": 0.126,
+        "co2_mole_fraction": 0.28,
+        "nitrogen_mole_fraction": 0.594,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.126,
+          0.28,
+          0.594,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.587011537,
+          0.8835676437,
+          -0.178980113,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 4.8040166608,
+        "probability": 0.9918698833,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_011",
+      "description": "CO2 dilution quench sweep CO2=30.0%, O2=12.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.11999999999999998,
+        "co2_mole_fraction": 0.30000000000000004,
+        "nitrogen_mole_fraction": 0.58,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.12,
+          0.3,
+          0.58,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.713920792,
+          0.9970176425,
+          -0.2583441186,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 5.0771730618,
+        "probability": 0.9938011483,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_012",
+      "description": "CO2 dilution quench sweep CO2=32.0%, O2=11.4%",
+      "input": {
+        "oxygen_mole_fraction": 0.11399999999999999,
+        "co2_mole_fraction": 0.32,
+        "nitrogen_mole_fraction": 0.5660000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.114,
+          0.32,
+          0.566,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.8408300471,
+          1.1104676414,
+          -0.3377081242,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 5.3503294627,
+        "probability": 0.9952758367,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_013",
+      "description": "CO2 dilution quench sweep CO2=34.0%, O2=10.8%",
+      "input": {
+        "oxygen_mole_fraction": 0.108,
+        "co2_mole_fraction": 0.33999999999999997,
+        "nitrogen_mole_fraction": 0.552,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.108,
+          0.34,
+          0.552,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -1.9677393022,
+          1.2239176402,
+          -0.4170721299,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 5.6234858637,
+        "probability": 0.9964009717,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_014",
+      "description": "CO2 dilution quench sweep CO2=36.0%, O2=10.2%",
+      "input": {
+        "oxygen_mole_fraction": 0.102,
+        "co2_mole_fraction": 0.36,
+        "nitrogen_mole_fraction": 0.538,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.102,
+          0.36,
+          0.538,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.0946485572,
+          1.3373676391,
+          -0.4964361355,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 5.8966422647,
+        "probability": 0.9972588758,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_015",
+      "description": "CO2 dilution quench sweep CO2=38.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.38,
+        "nitrogen_mole_fraction": 0.52,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.38,
+          0.52,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          1.4508176379,
+          -0.5984755713,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.0104048676,
+        "probability": 0.9975529081,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_016",
+      "description": "CO2 dilution quench sweep CO2=40.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.4,
+        "nitrogen_mole_fraction": 0.5,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.4,
+          0.5,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          1.5642676368,
+          -0.7118527221,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.0444705714,
+        "probability": 0.9976346723,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_017",
+      "description": "CO2 dilution quench sweep CO2=42.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.42000000000000004,
+        "nitrogen_mole_fraction": 0.48,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.42,
+          0.48,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          1.6777176356,
+          -0.825229873,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.0785362753,
+        "probability": 0.9977137107,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_018",
+      "description": "CO2 dilution quench sweep CO2=44.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.44000000000000006,
+        "nitrogen_mole_fraction": 0.45999999999999996,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.44,
+          0.46,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          1.7911676345,
+          -0.9386070239,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.1126019791,
+        "probability": 0.9977901139,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_019",
+      "description": "CO2 dilution quench sweep CO2=46.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.45999999999999996,
+        "nitrogen_mole_fraction": 0.44000000000000006,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.46,
+          0.44,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          1.9046176333,
+          -1.0519841748,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.1466676829,
+        "probability": 0.9978639693,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_020",
+      "description": "CO2 dilution quench sweep CO2=48.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.48,
+        "nitrogen_mole_fraction": 0.42000000000000004,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.48,
+          0.42,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.0180676322,
+          -1.1653613257,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.1807333868,
+        "probability": 0.9979353616,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_021",
+      "description": "CO2 dilution quench sweep CO2=50.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.5,
+        "nitrogen_mole_fraction": 0.4,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.5,
+          0.4,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.131517631,
+          -1.2787384766,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.2147990906,
+        "probability": 0.9980043724,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_022",
+      "description": "CO2 dilution quench sweep CO2=52.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.52,
+        "nitrogen_mole_fraction": 0.38,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.52,
+          0.38,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.2449676299,
+          -1.3921156274,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.2488647945,
+        "probability": 0.9980710811,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_023",
+      "description": "CO2 dilution quench sweep CO2=54.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.54,
+        "nitrogen_mole_fraction": 0.36,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.54,
+          0.36,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.3584176287,
+          -1.5054927783,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.2829304983,
+        "probability": 0.998135564,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_024",
+      "description": "CO2 dilution quench sweep CO2=56.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.56,
+        "nitrogen_mole_fraction": 0.33999999999999997,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.56,
+          0.34,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.4718676276,
+          -1.6188699292,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.3169962022,
+        "probability": 0.9981978951,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_co2_quench_025",
+      "description": "CO2 dilution quench sweep CO2=58.0%, O2=10.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.1,
+        "co2_mole_fraction": 0.58,
+        "nitrogen_mole_fraction": 0.32000000000000006,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 3.0,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.1,
+          0.58,
+          0.32,
+          0.0,
+          101.3,
+          3.0,
+          0.0
+        ],
+        "scaled_features": [
+          -2.1369516423,
+          2.5853176264,
+          -1.7322470801,
+          -0.4256805342,
+          0.1555648595,
+          -0.0024197828,
+          -0.8374357894
+        ],
+        "logit": 6.351061906,
+        "probability": 0.9982581461,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_001",
+      "description": "Helium inert gas dilution He=5.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.75,
+        "helium_mole_fraction": 0.05,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.75,
+          0.05,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          0.7053616639,
+          0.0168920847,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.0056744777,
+        "probability": 0.7321727848,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_002",
+      "description": "Helium inert gas dilution He=9.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.7100000000000001,
+        "helium_mole_fraction": 0.09,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.71,
+          0.09,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          0.4786073621,
+          0.3709501798,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.1673787979,
+        "probability": 0.7626708944,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_003",
+      "description": "Helium inert gas dilution He=13.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.67,
+        "helium_mole_fraction": 0.13,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.67,
+          0.13,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          0.2518530604,
+          0.7250082749,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.3290831182,
+        "probability": 0.7906889313,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_004",
+      "description": "Helium inert gas dilution He=17.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.6300000000000001,
+        "helium_mole_fraction": 0.16999999999999998,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.63,
+          0.17,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          0.0250987586,
+          1.07906637,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.4907874384,
+        "probability": 0.8161964334,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_005",
+      "description": "Helium inert gas dilution He=21.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.5900000000000001,
+        "helium_mole_fraction": 0.21000000000000002,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.59,
+          0.21,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -0.2016555432,
+          1.4331244651,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.6524917586,
+        "probability": 0.8392275344,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_006",
+      "description": "Helium inert gas dilution He=25.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.55,
+        "helium_mole_fraction": 0.25,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.55,
+          0.25,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -0.4284098449,
+          1.7871825602,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.8141960789,
+        "probability": 0.859868244,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_007",
+      "description": "Helium inert gas dilution He=29.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.51,
+        "helium_mole_fraction": 0.29,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.51,
+          0.29,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -0.6551641467,
+          2.1412406553,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 1.9759003991,
+        "probability": 0.8782434634,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_008",
+      "description": "Helium inert gas dilution He=33.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.47000000000000003,
+        "helium_mole_fraction": 0.33,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.47,
+          0.33,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -0.8819184485,
+          2.4952987504,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.1376047193,
+        "probability": 0.894504791,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_009",
+      "description": "Helium inert gas dilution He=37.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.43000000000000005,
+        "helium_mole_fraction": 0.37,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.43,
+          0.37,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -1.1086727502,
+          2.8493568455,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.2993090396,
+        "probability": 0.9088197978,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_010",
+      "description": "Helium inert gas dilution He=41.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.39000000000000007,
+        "helium_mole_fraction": 0.41,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.39,
+          0.41,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -1.335427052,
+          3.2034149406,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.4610133598,
+        "probability": 0.9213631153,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_011",
+      "description": "Helium inert gas dilution He=45.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.35000000000000003,
+        "helium_mole_fraction": 0.45,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.35,
+          0.45,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -1.5621813538,
+          3.5574730357,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.62271768,
+        "probability": 0.932309417,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_012",
+      "description": "Helium inert gas dilution He=49.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.31000000000000005,
+        "helium_mole_fraction": 0.49,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.31,
+          0.49,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -1.7889356555,
+          3.9115311308,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.7844220003,
+        "probability": 0.9418281902,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_013",
+      "description": "Helium inert gas dilution He=53.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.27,
+        "helium_mole_fraction": 0.53,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.27,
+          0.53,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -2.0156899573,
+          4.2655892259,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 2.9461263205,
+        "probability": 0.9500800879,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_014",
+      "description": "Helium inert gas dilution He=57.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.22999999999999998,
+        "helium_mole_fraction": 0.5700000000000001,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.23,
+          0.57,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -2.2424442591,
+          4.619647321,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 3.1078306407,
+        "probability": 0.9572145982,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_helium_dilution_015",
+      "description": "Helium inert gas dilution He=61.0%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.0,
+        "nitrogen_mole_fraction": 0.18999999999999995,
+        "helium_mole_fraction": 0.6100000000000001,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.5,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.0,
+          0.19,
+          0.61,
+          101.3,
+          2.5,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          -0.7047323402,
+          -2.4691985608,
+          4.9737054161,
+          0.1555648595,
+          -0.722855104,
+          -0.8374357894
+        ],
+        "logit": 3.269534961,
+        "probability": 0.9633687643,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_001",
+      "description": "Pressure boundary sweep P=40.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 40.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          40.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          -1.4851756348,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 1.0229222012,
+        "probability": 0.7355414179,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_002",
+      "description": "Pressure boundary sweep P=60.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 60.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          60.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          -0.9498606285,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 1.0172095222,
+        "probability": 0.7344286919,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_003",
+      "description": "Pressure boundary sweep P=80.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 80.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          80.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          -0.4145456222,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 1.0114968432,
+        "probability": 0.7333129817,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_004",
+      "description": "Pressure boundary sweep P=100.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 100.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          100.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          0.1207693841,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 1.0057841642,
+        "probability": 0.7321942933,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_005",
+      "description": "Pressure boundary sweep P=120.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 120.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          120.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          0.6560843904,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 1.0000714852,
+        "probability": 0.7310726332,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_006",
+      "description": "Pressure boundary sweep P=140.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 140.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          140.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          1.1913993966,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9943588062,
+        "probability": 0.729948008,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_007",
+      "description": "Pressure boundary sweep P=160.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 160.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          160.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          1.7267144029,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9886461272,
+        "probability": 0.7288204242,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_008",
+      "description": "Pressure boundary sweep P=180.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 180.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          180.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          2.2620294092,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9829334482,
+        "probability": 0.7276898886,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_009",
+      "description": "Pressure boundary sweep P=200.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 200.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          200.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          2.7973444155,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9772207692,
+        "probability": 0.7265564083,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_010",
+      "description": "Pressure boundary sweep P=220.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 220.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          220.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          3.3326594218,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9715080902,
+        "probability": 0.7254199901,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_011",
+      "description": "Pressure boundary sweep P=240.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 240.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          240.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          3.8679744281,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9657954111,
+        "probability": 0.7242806413,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_012",
+      "description": "Pressure boundary sweep P=260.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 260.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          260.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          4.4032894343,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9600827321,
+        "probability": 0.7231383692,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_013",
+      "description": "Pressure boundary sweep P=280.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 280.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          280.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          4.9386044406,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9543700531,
+        "probability": 0.7219931812,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_014",
+      "description": "Pressure boundary sweep P=300.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 300.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          300.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          5.4739194469,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9486573741,
+        "probability": 0.720845085,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_pressure_sweep_015",
+      "description": "Pressure boundary sweep P=320.0 kPa",
+      "input": {
+        "oxygen_mole_fraction": 0.21,
+        "co2_mole_fraction": 0.15,
+        "nitrogen_mole_fraction": 0.64,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 320.0,
+        "droplet_initial_diameter_mm": 2.8,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.21,
+          0.15,
+          0.64,
+          0.0,
+          320.0,
+          2.8,
+          0.0
+        ],
+        "scaled_features": [
+          0.189718034,
+          0.1461426512,
+          0.081787334,
+          -0.4256805342,
+          6.0092344532,
+          -0.2905939112,
+          -0.8374357894
+        ],
+        "logit": 0.9429446951,
+        "probability": 0.7196940882,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_001",
+      "description": "Boundary region fine sweep CO2=20.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.2,
+        "nitrogen_mole_fraction": 0.6000000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.2,
+          0.6,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.4297676483,
+          -0.1449669677,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.3741081019,
+        "probability": 0.7980430684,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_002",
+      "description": "Boundary region fine sweep CO2=21.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.21500000000000002,
+        "nitrogen_mole_fraction": 0.585,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.215,
+          0.585,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.5148551474,
+          -0.2299998309,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.3996573798,
+        "probability": 0.8021295143,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_003",
+      "description": "Boundary region fine sweep CO2=23.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.23,
+        "nitrogen_mole_fraction": 0.5700000000000001,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.23,
+          0.57,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.5999426466,
+          -0.3150326941,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.4252066576,
+        "probability": 0.8061533586,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_004",
+      "description": "Boundary region fine sweep CO2=24.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.245,
+        "nitrogen_mole_fraction": 0.555,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.245,
+          0.555,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.6850301457,
+          -0.4000655572,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.4507559355,
+        "probability": 0.8101147459,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_005",
+      "description": "Boundary region fine sweep CO2=26.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.26,
+        "nitrogen_mole_fraction": 0.54,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.26,
+          0.54,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.7701176449,
+          -0.4850984204,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.4763052134,
+        "probability": 0.8140138563,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_006",
+      "description": "Boundary region fine sweep CO2=27.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.275,
+        "nitrogen_mole_fraction": 0.525,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.275,
+          0.525,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.855205144,
+          -0.5701312835,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.5018544913,
+        "probability": 0.8178509041,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_007",
+      "description": "Boundary region fine sweep CO2=29.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.29000000000000004,
+        "nitrogen_mole_fraction": 0.51,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.29,
+          0.51,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          0.9402926431,
+          -0.6551641467,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.5274037692,
+        "probability": 0.821626137,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_008",
+      "description": "Boundary region fine sweep CO2=30.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.305,
+        "nitrogen_mole_fraction": 0.49500000000000005,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.305,
+          0.495,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.0253801423,
+          -0.7401970099,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.5529530471,
+        "probability": 0.8253398344,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_009",
+      "description": "Boundary region fine sweep CO2=32.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.32,
+        "nitrogen_mole_fraction": 0.48000000000000004,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.32,
+          0.48,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.1104676414,
+          -0.825229873,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.5785023249,
+        "probability": 0.8289923061,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_010",
+      "description": "Boundary region fine sweep CO2=33.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.335,
+        "nitrogen_mole_fraction": 0.465,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.335,
+          0.465,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.1955551405,
+          -0.9102627362,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.6040516028,
+        "probability": 0.832583891,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_011",
+      "description": "Boundary region fine sweep CO2=35.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.35,
+        "nitrogen_mole_fraction": 0.45000000000000007,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.35,
+          0.45,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.2806426397,
+          -0.9952955994,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.6296008807,
+        "probability": 0.8361149561,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_012",
+      "description": "Boundary region fine sweep CO2=36.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.365,
+        "nitrogen_mole_fraction": 0.43500000000000005,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.365,
+          0.435,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.3657301388,
+          -1.0803284625,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.6551501586,
+        "probability": 0.8395858948,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_013",
+      "description": "Boundary region fine sweep CO2=38.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.38,
+        "nitrogen_mole_fraction": 0.42000000000000004,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.38,
+          0.42,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.4508176379,
+          -1.1653613257,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.6806994365,
+        "probability": 0.8429971258,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_014",
+      "description": "Boundary region fine sweep CO2=39.50%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.395,
+        "nitrogen_mole_fraction": 0.405,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.395,
+          0.405,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.5359051371,
+          -1.2503941888,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.7062487144,
+        "probability": 0.846349092,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    },
+    {
+      "case_id": "m4_decision_boundary_015",
+      "description": "Boundary region fine sweep CO2=41.00%",
+      "input": {
+        "oxygen_mole_fraction": 0.2,
+        "co2_mole_fraction": 0.41000000000000003,
+        "nitrogen_mole_fraction": 0.39,
+        "helium_mole_fraction": 0.0,
+        "ambient_pressure_kpa": 101.3,
+        "droplet_initial_diameter_mm": 2.7,
+        "is_heptane": 0
+      },
+      "expected": {
+        "features": [
+          0.2,
+          0.41,
+          0.39,
+          0.0,
+          101.3,
+          2.7,
+          0.0
+        ],
+        "scaled_features": [
+          -0.0217973911,
+          1.6209926362,
+          -1.335427052,
+          -0.4256805342,
+          0.1555648595,
+          -0.4346809755,
+          -0.8374357894
+        ],
+        "logit": 1.7317979922,
+        "probability": 0.8496422587,
+        "conformal_set": [
+          1
+        ],
+        "conformal_abstained": false,
+        "margin_abstained": false,
+        "category": "EXTINCTION_REGION"
+      }
+    }
+  ]
+}

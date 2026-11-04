@@ -56,3 +56,4 @@ def compute_reliability_stats(
         'ece': float(np.round(ece, 4)),
         'reliability_table': table
     }
+

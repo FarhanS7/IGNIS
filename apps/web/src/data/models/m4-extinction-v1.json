@@ -1,0 +1,80 @@
+{
+  "model_id": "m4-extinction-v1",
+  "version": "1.0.0",
+  "type": "logistic",
+  "feature_names": [
+    "oxygen_mole_fraction",
+    "co2_mole_fraction",
+    "nitrogen_mole_fraction",
+    "helium_mole_fraction",
+    "ambient_pressure_kpa",
+    "droplet_initial_diameter_mm",
+    "is_heptane"
+  ],
+  "preprocessing": {
+    "scaler_mean": [
+      0.20103053435114507,
+      0.12423664122137393,
+      0.6255725190839692,
+      0.04809160305343511,
+      95.48791337175571,
+      3.0016793893129767,
+      0.4122137404580153
+    ],
+    "scaler_scale": [
+      0.047277875808202696,
+      0.17628911593708466,
+      0.17640238658502014,
+      0.11297580977188629,
+      37.36117942771975,
+      0.6940248281540679,
+      0.49223325023369463
+    ]
+  },
+  "params": {
+    "coef": [
+      -1.8687110869266805,
+      0.3570934750088414,
+      0.05685934453733079,
+      0.493132126108659,
+      -0.010671621274186582,
+      0.7978057823135695,
+      -0.616090530409401
+    ],
+    "intercept": 1.2305821913641948
+  },
+  "abstention": {
+    "method": "conformal",
+    "conformal_q_hat_90": 0.6993804932690765,
+    "margin_threshold": 0.02
+  },
+  "operating_point": {
+    "decision_threshold": 0.55,
+    "extinction_region_threshold": 0.65,
+    "sustained_region_threshold": 0.4,
+    "rule": "false-extinction penalty minimizing threshold"
+  },
+  "training": {
+    "datasets": [
+      {
+        "id": "D6",
+        "doi": "10.60555/psi-69-flex",
+        "sha256": "21c68afeac92050a902d922ec7179957f5989cd0746aa9caa68a2a8a291b8d58"
+      }
+    ],
+    "git_commit": "0f2aaae106b5b58140c5949466a1ec4f51d0a7b7",
+    "seed": 42,
+    "split_notes": "Grouped 5-fold cross validation by physical gas mixture on 262 valid NASA FLEX droplet runs"
+  },
+  "metrics_ref": "data/models/m4/metrics.json",
+  "card": "docs/models/m4_flex_extinction.md",
+  "limitations": [
+    "Droplet flames in ISS microgravity (FLEX). Not cabin solid fuels.",
+    "Not validated for partial gravity.",
+    "Model indicates isolated spherical droplet combustion limits only.",
+    "Cross-fuel extrapolation fails (LOFO FER 76-100%); must not be used on untested liquid fuels.",
+    "Output is discrete flammability regions only; no continuous probability presented as certainty.",
+    "Simulated sensor data. Not flight software."
+  ],
+  "source_tag": "calibrated:flex-extinction-v1"
+}

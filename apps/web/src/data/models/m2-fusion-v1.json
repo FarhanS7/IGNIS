@@ -1,0 +1,97 @@
+{
+  "model_id": "m2-fusion-v1",
+  "version": "1.0.0",
+  "type": "logistic",
+  "feature_names": [
+    "L_smoke",
+    "L_co",
+    "L_temp",
+    "S_smoke",
+    "S_co",
+    "S_temp",
+    "M_smoke",
+    "M_co",
+    "M_temp",
+    "agreement_fraction"
+  ],
+  "preprocessing": {
+    "k_baseline": 10,
+    "window_size": 6,
+    "sample_rate_hz": 0.1,
+    "z_thresholds": [
+      0.5,
+      0.5,
+      0.2
+    ],
+    "scaler_mean": [
+      31347003.69443843,
+      2.421283112435167,
+      -0.0029696217334946587,
+      2.3639639669675194,
+      0.0060413331733657006,
+      -6.4122341608956455e-06,
+      37578335.093620315,
+      2.8519816748167304,
+      -0.002263074262777837,
+      0.16582428842201272
+    ],
+    "scaler_scale": [
+      252553016.66494098,
+      21.465188601929945,
+      0.016329188027441967,
+      138521436.57465428,
+      2.440930462774512,
+      0.002041866127038466,
+      309533456.9694611,
+      22.21711184864729,
+      0.016434388217276167,
+      0.21247083666537123
+    ]
+  },
+  "params": {
+    "coef": [
+      42.74303436279297,
+      -6.70522928237915,
+      -0.586800754070282,
+      1.976996660232544,
+      0.13721363246440887,
+      0.03711843490600586,
+      43.72955322265625,
+      6.225969314575195,
+      1.1217294931411743,
+      1.1229532957077026
+    ],
+    "intercept": 9.474479675292969
+  },
+  "abstention": {
+    "method": "conformal",
+    "conformal_q_hat_90": 0.6710141897201538,
+    "margin_threshold": 0.05
+  },
+  "operating_point": {
+    "decision_threshold": 0.9999,
+    "rule": "zero false alarms on train nuisance/background"
+  },
+  "training": {
+    "datasets": [
+      {
+        "id": "D1",
+        "doi": "10.17632/npk2zcm85h.2",
+        "sha256": "65a568cf84bf17c0e7d25fe89f3547c93a097a18c65b9f357eab3c7104c97c1a"
+      }
+    ],
+    "git_commit": "0f2aaae106b5b58140c5949466a1ec4f51d0a7b7",
+    "seed": 42,
+    "split_notes": "S1 leave-one-scenario-out, S2 cross-site, S3 leave-one-repetition-out with 2000-resample bootstrap CIs"
+  },
+  "metrics_ref": "data/models/m2/metrics.json",
+  "card": "docs/models/m2_fusion_detector.md",
+  "limitations": [
+    "Trained on 1g ground test room data (EN54 test room D1).",
+    "Not validated in microgravity.",
+    "Cross-site shift reduces accuracy from 97.4% to 77.2% without calibration.",
+    "Output is discrete categories only; no risk percentages.",
+    "Simulated sensor data. Not flight software."
+  ],
+  "source_tag": "trained:m2-fusion-v1"
+}

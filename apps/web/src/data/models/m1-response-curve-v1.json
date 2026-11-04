@@ -1,0 +1,244 @@
+{
+  "model_id": "m1-response-curve-v1",
+  "version": "1.0.0",
+  "type": "calibrated_curve",
+  "platform": "International Space Station (ISS) Microgravity Environment",
+  "applicable_range_um": {
+    "min": 0.04900510396933735,
+    "max": 1.1026381309223143
+  },
+  "reference_sensitivity_v_per_mg_m3": 0.2153,
+  "small_particle_penalty_calibrated": {
+    "kapton_mean_multiplier": 2.514470689780005,
+    "teflon_mean_multiplier": 0.25698809093717556,
+    "combined_small_particle_multiplier": 1.5872903366838431
+  },
+  "curve_points": [
+    {
+      "diameter_um": 0.049,
+      "response_multiplier_isotonic": 0.8333,
+      "response_multiplier_poly": 4.3163,
+      "response_multiplier_ridge": 3.4173,
+      "ci_lower_95": 0.1081,
+      "ci_upper_95": 1.3605
+    },
+    {
+      "diameter_um": 0.0929,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 2.2853,
+      "response_multiplier_ridge": 2.4353,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.1368,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.4006,
+      "response_multiplier_ridge": 1.8411,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.1807,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9246,
+      "response_multiplier_ridge": 1.4138,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.2246,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.646,
+      "response_multiplier_ridge": 1.0799,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.2685,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4785,
+      "response_multiplier_ridge": 0.8058,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.3124,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3797,
+      "response_multiplier_ridge": 0.5734,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.3563,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3261,
+      "response_multiplier_ridge": 0.3715,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.4002,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3036,
+      "response_multiplier_ridge": 0.1931,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.4441,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3034,
+      "response_multiplier_ridge": 0.0333,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.488,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3194,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.5319,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3474,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.5758,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3846,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.6197,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4287,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.6636,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4783,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7075,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.532,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7514,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.5889,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7953,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.6484,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.8392,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.7098,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.8831,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.7727,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.927,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.8368,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.9709,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9017,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.0148,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9671,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.0587,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.033,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.1026,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.0991,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    }
+  ],
+  "training": {
+    "datasets": [
+      {
+        "id": "D4",
+        "doi": "10.60555/gd4k-8h62",
+        "sha256": "268d1e121d2f211b124407dd32b9475617bd269ede2c2d1749441da3e949a2af"
+      },
+      {
+        "id": "D5",
+        "doi": "10.60555/2np7-jv14",
+        "sha256": "6d3a539ccf425b1fa8edc19cc75d828f57d650c7ce734d4e7aa686fea9593218"
+      }
+    ],
+    "git_commit": "0f2aaae106b5b58140c5949466a1ec4f51d0a7b7",
+    "seed": 42,
+    "split_notes": "Leave-one-material-out cross validation across 130 ISS microgravity runs (SAME / SAME-R)"
+  },
+  "metrics_ref": "data/models/m1/response_curve.json",
+  "card": "docs/models/m1_same_detector_response.md",
+  "limitations": [
+    "Calibrated on ISS microgravity PSI-101/102 data.",
+    "High mass loadings saturated detector at 6.28V rail voltage for Silicone and Lampwick.",
+    "Overheated Teflon aerosol exhibits 0.257 mean multiplier (94.7% drop relative to cellulose).",
+    "Simulated sensor data. Not flight software."
+  ],
+  "source_tag": "calibrated:same-response-v1"
+}
