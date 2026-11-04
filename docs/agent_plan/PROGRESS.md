@@ -17,7 +17,7 @@
 
 ## Steps
 - [x] 00 Sync and baseline
-- [ ] 01 Console audit and fixes
+- [x] 01 Console audit and fixes
 - [ ] 02 Console e2e + Monte Carlo hardening (+ merge into ml)
 - [ ] 03 ML data acquisition
 - [ ] 04 M2 fusion detector
@@ -34,3 +34,4 @@
 
 ## Log (date, step, commit, test counts, notes)
 - 2026-11-04 | Step 00 Sync and baseline | HEAD 657bd02 | npm: 157 pass / 0 fail; py: 194 pass; loocv: 80.30% | Verified baselines, added agent_plan to docs/, updated .gitignore negations.
+- 2026-11-04 | Step 01 Console audit and fixes | HEAD ced8870 | npm: 186 pass / 0 fail; build: exit 0; lint: 0 errors | Added test registry & evidence binder tests; re-pointed literature to PMC7918997; verified honest UX & circularity caveats; captured 3 state screenshots.
