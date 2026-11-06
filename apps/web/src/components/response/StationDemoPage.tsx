@@ -4,6 +4,7 @@ import type { FuelType, SequencerMode, SequenceStepId, StepStatus } from '../../
 import { getHabitatById, getHabitatPresets } from '../../lib/fire/habitat.ts';
 import { useTimeline } from '../../lib/fire/timeline/useTimeline.ts';
 import { Caption } from './Caption.tsx';
+import { StationStage } from './StationStage.tsx';
 import {
   AlertOctagon,
   CheckCircle2,
@@ -243,17 +244,17 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
         </div>
       )}
 
-      {/* Main Visual Stage (Placeholder for 3D in Step 2, high-contrast schematic layout) */}
-      <main className="relative flex-1 min-h-[440px] max-h-[660px] bg-[#03060c] border-b border-slate-800/80 overflow-hidden flex flex-col justify-between p-3 sm:p-4">
-        {/* Race Clocks HUD (Top Centered) */}
-        <div className="relative z-10 w-full max-w-2xl mx-auto pt-1">
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-4">
+      {/* Main Visual Stage (3D Scene with 2D Fallback) */}
+      <main className="relative flex-1 min-h-[440px] max-h-[660px] bg-[#03060c] border-b border-slate-800/80 overflow-hidden flex flex-col justify-between">
+        {/* Race Clocks HUD (Top Centered Over Canvas) */}
+        <div className="absolute top-0 inset-x-0 z-10 w-full max-w-2xl mx-auto pt-2 px-2 pointer-events-none">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-4 pointer-events-auto">
             {/* Arm 1: Standard Detector */}
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
                 frameState.clocks.std.isFrozen
-                  ? 'border-red-500/60 bg-red-950/30 shadow-[0_0_20px_rgba(255,66,88,0.2)]'
-                  : 'border-slate-800 bg-[#09111c]/80'
+                  ? 'border-red-500/60 bg-red-950/40 shadow-[0_0_20px_rgba(255,66,88,0.25)]'
+                  : 'border-slate-800 bg-[#09111c]/85'
               }`}
             >
               <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
@@ -275,8 +276,8 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
                 frameState.clocks.cal.isFrozen
-                  ? 'border-cyan-500/80 bg-cyan-950/40 shadow-[0_0_24px_rgba(58,215,255,0.25)]'
-                  : 'border-slate-800 bg-[#09111c]/80'
+                  ? 'border-cyan-500/80 bg-cyan-950/45 shadow-[0_0_24px_rgba(58,215,255,0.3)]'
+                  : 'border-slate-800 bg-[#09111c]/85'
               }`}
             >
               <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
@@ -298,8 +299,8 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
                 frameState.clocks.ml.isFrozen
-                  ? 'border-fuchsia-500/60 bg-fuchsia-950/30'
-                  : 'border-slate-800 bg-[#09111c]/80'
+                  ? 'border-fuchsia-500/60 bg-fuchsia-950/40'
+                  : 'border-slate-800 bg-[#09111c]/85'
               }`}
             >
               <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
@@ -320,87 +321,26 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
 
           {/* Big Computed Gap Banner (When Available) */}
           {frameState.gapText && (
-            <div className="w-full flex justify-center mt-2">
-              <span className="px-3.5 py-1 rounded-full border border-emerald-500/50 bg-emerald-950/60 text-emerald-300 text-xs sm:text-sm font-mono font-bold tracking-wide shadow-[0_0_15px_rgba(56,228,164,0.3)]">
+            <div className="w-full flex justify-center mt-2 pointer-events-auto">
+              <span className="px-3.5 py-1 rounded-full border border-emerald-500/50 bg-emerald-950/70 text-emerald-300 text-xs sm:text-sm font-mono font-bold tracking-wide shadow-[0_0_15px_rgba(56,228,164,0.3)]">
                 {frameState.gapText}
               </span>
             </div>
           )}
         </div>
 
-        {/* Central Stage Cutaway Schematic (Step 1 Visualization Shell) */}
-        <div className="relative my-auto py-4 sm:py-6 flex items-center justify-center">
-          <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 z-0">
-            {currentHabitat.zones.map((zone) => {
-              const isSource = zone.id === sourceZoneId;
-              const series = timeline.zoneSeries[zone.id];
-              const stepIdx = Math.min(
-                timeline.steps.length - 1,
-                Math.floor(t / timeline.dt_s)
-              );
-              const obs = series?.smokeObscuration[stepIdx] ?? 0;
-              const co = series?.coPpm[stepIdx] ?? 0;
-              const isAlarmed = obs >= 0.5 || co >= 15.0;
-
-              return (
-                <div
-                  key={zone.id}
-                  className={`p-2.5 sm:p-3 rounded-xl border transition-all ${
-                    isSource && frameState.isSuppressionActive
-                      ? 'border-cyan-400 bg-cyan-950/40 shadow-[0_0_30px_rgba(58,215,255,0.3)]'
-                      : isSource && t >= (timeline.clocks.cal.alarmTime_s ?? 999)
-                      ? 'border-red-500 bg-red-950/40 shadow-[0_0_30px_rgba(255,66,88,0.3)]'
-                      : isAlarmed
-                      ? 'border-amber-500/80 bg-amber-950/20'
-                      : 'border-slate-800 bg-slate-900/40'
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-1">
-                    <span className="text-[11px] sm:text-xs font-semibold text-slate-200 truncate">
-                      {zone.name.replace(/\(.*\)/, '').trim()}
-                    </span>
-                    {isSource && (
-                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-red-500/20 text-red-400 border border-red-500/40 font-bold shrink-0">
-                        ORIGIN
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="mt-2 sm:mt-3 space-y-0.5 sm:space-y-1 font-mono text-[10px] sm:text-[11px]">
-                    <div className="flex justify-between text-slate-400">
-                      <span>Smoke:</span>
-                      <span className={obs >= 0.5 ? 'text-amber-400 font-bold' : 'text-slate-300'}>
-                        {obs.toFixed(2)} %/m
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>CO:</span>
-                      <span className={co >= 15.0 ? 'text-cyan-400 font-bold' : 'text-slate-300'}>
-                        {co.toFixed(1)} ppm
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-2 sm:mt-3 pt-1.5 sm:pt-2 border-t border-slate-800/80 flex items-center justify-between text-[9px] sm:text-[10px] font-mono">
-                    <span className="text-slate-400">Duct:</span>
-                    <span
-                      className={
-                        frameState.areVentsIsolated
-                          ? 'text-cyan-400 font-bold'
-                          : 'text-emerald-400'
-                      }
-                    >
-                      {frameState.areVentsIsolated ? 'ISOLATED' : 'OPEN'}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        {/* 3D Scene / 2D Fallback Stage */}
+        <div className="absolute inset-0 z-0">
+          <StationStage
+            habitat={currentHabitat}
+            timeline={timeline}
+            frameState={frameState}
+            t={t}
+          />
         </div>
 
-        {/* Dynamic Caption Display (Bottom of Stage) */}
-        <div className="relative z-10 pb-1 sm:pb-2">
+        {/* Dynamic Caption Display (Bottom of Stage Over Canvas) */}
+        <div className="absolute bottom-2 inset-x-0 z-10 pb-1 sm:pb-2 pointer-events-none">
           <Caption text={frameState.activeCaption} />
         </div>
       </main>

@@ -1,0 +1,137 @@
+﻿
+> web@0.0.0 test:e2e
+> playwright test
+
+
+Running 31 tests using 1 worker
+
+  ok  1 [chromium] › e2e\integration.spec.ts:4:3 › Additive Integration & Cross-Page Navigation › navigates to /response via link on Simulator page (2.2s)
+  ok  2 [chromium] › e2e\integration.spec.ts:19:3 › Additive Integration & Cross-Page Navigation › research gaps page displays Fire Response Console capability card (527ms)
+  ok  3 [chromium] › e2e\integration.spec.ts:30:3 › Additive Integration & Cross-Page Navigation › about page displays fire detection methodology section (561ms)
+  ok  4 [chromium] › e2e\integration.spec.ts:41:3 › Additive Integration & Cross-Page Navigation › navbar maintains all original links without removal (583ms)
+  ok  5 [chromium] › e2e\mobile.spec.ts:6:3 › Mobile Viewport (390x844) Responsiveness › verifies /response page renders without horizontal overflow and controls remain accessible (1.5s)
+  ok  6 [chromium] › e2e\mobile.spec.ts:53:3 › Mobile Viewport (390x844) Responsiveness › verifies /simulator page renders without horizontal overflow and controls remain accessible (1.5s)
+  ok  7 [chromium] › e2e\mobile.spec.ts:70:3 › Mobile Viewport (390x844) Responsiveness › verifies /response station demo page renders without horizontal overflow on mobile (1.4s)
+  ok  8 [chromium] › e2e\offline.spec.ts:10:3 › Offline & CDN Fallback Integrity › renders landing page fallback gradient when CDN assets are blocked (1.4s)
+  ok  9 [chromium] › e2e\offline.spec.ts:23:3 › Offline & CDN Fallback Integrity › verifies /response functions completely offline without external network (1.5s)
+  ok 10 [chromium] › e2e\offline.spec.ts:41:3 › Offline & CDN Fallback Integrity › verifies /simulator loads and renders completely offline (1.5s)
+  ok 11 [chromium] › e2e\offline.spec.ts:51:3 › Offline & CDN Fallback Integrity › verifies /experiments flight data explorer renders offline (1.4s)
+  ok 12 [chromium] › e2e\offline.spec.ts:61:3 › Offline & CDN Fallback Integrity › verifies /ask works completely client-side offline (1.4s)
+  ok 13 [chromium] › e2e\response.spec.ts:26:3 › Fire Response Console End-to-End › enforces honesty rules: persistent banner visible and zero confidence/risk percentages (624ms)
+  ok 14 [chromium] › e2e\response.spec.ts:39:3 › Fire Response Console End-to-End › simulates scenario, triggers alarm, highlights source zone, and verifies sequencer in CREWED mode (2.3s)
+  ok 15 [chromium] › e2e\response.spec.ts:83:3 › Fire Response Console End-to-End › uncrewed mode autonomous suppression progression past timeout (1.7s)
+  ok 16 [chromium] › e2e\response.spec.ts:97:3 › Fire Response Console End-to-End › lunar habitat preset enforces unvalidated partial-gravity notice and INSUFFICIENT_EVIDENCE (1.2s)
+  ok 17 [chromium] › e2e\response.spec.ts:114:3 › Fire Response Console End-to-End › parameter tags are visible and Monte Carlo modal shows design-consistency label (1.3s)
+  ok 18 [chromium] › e2e\response.spec.ts:129:3 › Fire Response Console End-to-End › integrates trained ML model: reveals honest caveats, suppression insight, and 3-arm Monte Carlo (4.2s)
+  ok 19 [chromium] › e2e\response.spec.ts:191:3 › Fire Response Console End-to-End › verifies StationDemoPage hero view at /response with race clocks and view toggle (734ms)
+  ok 20 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/" with HTTP 200 and no uncaught console errors (923ms)
+  ok 21 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/simulator" with HTTP 200 and no uncaught console errors (1.0s)
+  ok 22 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/build" with HTTP 200 and no uncaught console errors (1.0s)
+  ok 23 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/evidence" with HTTP 200 and no uncaught console errors (963ms)
+  ok 24 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/experiments" with HTTP 200 and no uncaught console errors (909ms)
+  ok 25 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/explorer" with HTTP 200 and no uncaught console errors (938ms)
+node.exe : [WebServer] 3:44:49 AM [vite] http proxy error: /api/v1/stories
+At E:\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] 3:4.../api/v1/stories:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:8000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+  ok 26 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/explore" with HTTP 200 and no uncaught console errors (931ms)
+  ok 27 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/stories/v2" with HTTP 200 and no uncaught console errors (895ms)
+  ok 28 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/ask" with HTTP 200 and no uncaught console errors (907ms)
+  ok 29 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/gaps" with HTTP 200 and no uncaught console errors (919ms)
+  ok 30 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/about" with HTTP 200 and no uncaught console errors (920ms)
+  x  31 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/response" with HTTP 200 and no uncaught console errors (918ms)
+  x  32 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/response" with HTTP 200 and no uncaught console errors (retry #1) (1.3s)
+
+
+  1) [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/response" with HTTP 200 and no uncaught console errors 
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 17
+
+    - Array []
+    + Array [
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    + ]
+
+      40 |         (e) => !e.includes('Failed to load resource') && !e.includes('favicon.ico')
+      41 |       );
+    > 42 |       expect(fatalErrors).toEqual([]);
+         |                           ^
+      43 |
+      44 |       // Verify page mounted successfully
+      45 |       const root = page.locator('#root');
+        at E:\IGNIS\apps\web\e2e\routes.spec.ts:42:27
+
+    Error Context: test-results\routes-All-12-Core-Applica-4f729--no-uncaught-console-errors-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 18
+
+    - Array []
+    + Array [
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    +   "E.current.setAttribute is not a function",
+    + ]
+
+      40 |         (e) => !e.includes('Failed to load resource') && !e.includes('favicon.ico')
+      41 |       );
+    > 42 |       expect(fatalErrors).toEqual([]);
+         |                           ^
+      43 |
+      44 |       // Verify page mounted successfully
+      45 |       const root = page.locator('#root');
+        at E:\IGNIS\apps\web\e2e\routes.spec.ts:42:27
+
+    Error Context: test-results\routes-All-12-Core-Applica-4f729--no-uncaught-console-errors-chromium-retry1\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\routes-All-12-Core-Applica-4f729--no-uncaught-console-errors-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\routes-All-12-Core-Applica-4f729--no-uncaught-console-errors-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/response" with HTTP 200 and no uncaught console errors 
+  30 passed (45.7s)
+
