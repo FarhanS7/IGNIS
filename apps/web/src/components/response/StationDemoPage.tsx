@@ -5,6 +5,7 @@ import { getHabitatById, getHabitatPresets } from '../../lib/fire/habitat.ts';
 import { useTimeline } from '../../lib/fire/timeline/useTimeline.ts';
 import { Caption } from './Caption.tsx';
 import { StationStage } from './StationStage.tsx';
+import { LocalizationOverlay } from './LocalizationOverlay.tsx';
 import {
   AlertOctagon,
   CheckCircle2,
@@ -99,6 +100,15 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     'SUPPRESSION',
     'POST_FIRE_RECOVERY',
   ];
+
+  // Clock flash triggers at moment of alarm
+  const stdAlarmTime = timeline.clocks.std.alarmTime_s;
+  const calAlarmTime = timeline.clocks.cal.alarmTime_s;
+  const mlAlarmTime = timeline.clocks.ml.alarmTime_s;
+
+  const isStdFlashing = stdAlarmTime !== null && t >= stdAlarmTime && t < stdAlarmTime + 1.2;
+  const isCalFlashing = calAlarmTime !== null && t >= calAlarmTime && t < calAlarmTime + 1.2;
+  const isMlFlashing = mlAlarmTime !== null && t >= mlAlarmTime && t < mlAlarmTime + 1.2;
 
   return (
     <div className="min-h-screen bg-[#04070d] text-[#e8f0f8] flex flex-col font-sans selection:bg-cyan-500/30 w-full overflow-x-hidden">
@@ -252,7 +262,9 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             {/* Arm 1: Standard Detector */}
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                frameState.clocks.std.isFrozen
+                isStdFlashing
+                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
+                  : frameState.clocks.std.isFrozen
                   ? 'border-red-500/60 bg-red-950/40 shadow-[0_0_20px_rgba(255,66,88,0.25)]'
                   : 'border-slate-800 bg-[#09111c]/85'
               }`}
@@ -275,7 +287,9 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             {/* Arm 2: SAME-R Calibrated Fusion */}
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                frameState.clocks.cal.isFrozen
+                isCalFlashing
+                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
+                  : frameState.clocks.cal.isFrozen
                   ? 'border-cyan-500/80 bg-cyan-950/45 shadow-[0_0_24px_rgba(58,215,255,0.3)]'
                   : 'border-slate-800 bg-[#09111c]/85'
               }`}
@@ -298,7 +312,9 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             {/* Arm 3: ML Fusion */}
             <div
               className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                frameState.clocks.ml.isFrozen
+                isMlFlashing
+                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
+                  : frameState.clocks.ml.isFrozen
                   ? 'border-fuchsia-500/60 bg-fuchsia-950/40'
                   : 'border-slate-800 bg-[#09111c]/85'
               }`}
@@ -319,9 +335,16 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             </div>
           </div>
 
+          {/* ML Disclosure Banner */}
+          <div className="w-full flex justify-center mt-1">
+            <span className="text-[10px] font-mono text-slate-400/90 text-center">
+              ML arm: Trained on Earth-gravity data. Not validated in microgravity.
+            </span>
+          </div>
+
           {/* Big Computed Gap Banner (When Available) */}
           {frameState.gapText && (
-            <div className="w-full flex justify-center mt-2 pointer-events-auto">
+            <div className="w-full flex justify-center mt-1.5 pointer-events-auto">
               <span className="px-3.5 py-1 rounded-full border border-emerald-500/50 bg-emerald-950/70 text-emerald-300 text-xs sm:text-sm font-mono font-bold tracking-wide shadow-[0_0_15px_rgba(56,228,164,0.3)]">
                 {frameState.gapText}
               </span>
@@ -338,6 +361,25 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             t={t}
           />
         </div>
+
+        {/* Soft Screen-Edge Alarm Pulse Vignette */}
+        {frameState.clocks.cal.isFrozen && !frameState.isFireExtinguished && (
+          <div
+            className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
+            style={{
+              opacity: 0.35 + 0.25 * Math.sin(t * 7),
+              boxShadow: 'inset 0 0 140px 24px rgba(255, 66, 88, 0.55)',
+            }}
+          />
+        )}
+
+        {/* Localization Rings & Reticle Overlay */}
+        <LocalizationOverlay
+          habitat={currentHabitat}
+          timeline={timeline}
+          frameState={frameState}
+          t={t}
+        />
 
         {/* Dynamic Caption Display (Bottom of Stage Over Canvas) */}
         <div className="absolute bottom-2 inset-x-0 z-10 pb-1 sm:pb-2 pointer-events-none">

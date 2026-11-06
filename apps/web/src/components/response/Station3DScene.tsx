@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import type { HabitatGraph } from '../../lib/fire/types.ts';
 import type { Timeline, TimelineFrameState } from '../../lib/fire/timeline/types.ts';
 import { SmokeParticleEngine } from './smokeParticles.ts';
+import { computeStationCamera } from './cameraMath.ts';
 import { reportRendererStats, isPerfModeEnabled } from '../../visuals/perfStore.ts';
 
 export interface Station3DSceneProps {
@@ -181,18 +182,15 @@ const SceneContents: React.FC<SceneContentsProps> = ({
 
   // Update loop (driven deterministically by t)
   useFrame(() => {
-    // 1. Camera deterministic orbit as pure function of t
-    const az = 0.12 + 0.08 * Math.sin(t * 0.15);
-    const el = 0.24 + 0.05 * Math.cos(t * 0.12);
-    const rad = 13.0;
-    const targetX = engine.moduleCentersX[originZoneIndex] * (frameState.isSuppressionActive ? 0.6 : 0.2);
-
-    camera.position.set(
-      targetX + rad * Math.cos(el) * Math.sin(az),
-      rad * Math.sin(el),
-      rad * Math.cos(el) * Math.cos(az)
+    // 1. Camera deterministic orbit & fly-to as pure function of t
+    const camState = computeStationCamera(
+      t,
+      engine.moduleCentersX[originZoneIndex],
+      timeline.clocks.cal.alarmTime_s,
+      frameState.isSuppressionActive
     );
-    camera.lookAt(targetX, 0, 0);
+    camera.position.set(camState.x, camState.y, camState.z);
+    camera.lookAt(camState.targetX, camState.targetY, camState.targetZ);
 
     // 2. Evaluate current smoke obscuration array
     const stepIdx = Math.min(

@@ -196,7 +196,7 @@ test.describe('Fire Response Console End-to-End', () => {
     const honestyBadge = page.getByText(/Simulated\.\s*Not flight software\./i);
     await expect(honestyBadge).toBeVisible();
 
-    const mlBadge = page.getByText(/Trained on Earth-gravity data\.\s*Not validated in microgravity\./i);
+    const mlBadge = page.getByText(/Trained on Earth-gravity data\.\s*Not validated in microgravity\./i).first();
     await expect(mlBadge).toBeVisible();
 
     // 2. Race clocks visible

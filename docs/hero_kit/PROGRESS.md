@@ -7,7 +7,7 @@ Tick a box only after: verify PASS + you looked at it in the browser + checkpoin
 | 0  | step0_recon              | [x] | 2026-11-07 | PASS | 120 scenarios scouted across 3 habitats x 4 fuels x 10 zones |
 | 0b | step0b_lock_decision     | [x] | 2026-11-07 | PASS | Locked race scenario: cellulose primary (13s vs 15s), teflon secondary (no alarm vs 16.5s) |
 | 1  | step1_timeline_shell     | [x] | 2026-11-07 | PASS | Precomputed timeline, useTimeline hook, StationDemoPage hero view, 217 unit tests + 31 E2E pass |
-| 2  | step2_station_3d         | [ ] | | | |
+| 2  | step2_station_3d         | [x] | 2026-11-07 | PASS | R3F 3D station cutaway, spherical flame, GPU smoke points, 2D fallback, 220 unit tests + 31 E2E pass |
 | 3  | step3_localize_alarm     | [ ] | | | |
 | 4  | step4_containment_gate   | [ ] | | | |
 | 5  | step5_earth_vs_orbit     | [ ] | | | |
