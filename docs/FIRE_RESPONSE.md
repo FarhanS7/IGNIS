@@ -160,3 +160,4 @@ python scripts/validate/grouped_loocv.py
 ```
 
 All exported JSON models reside in `apps/web/src/data/models/` and are validated against TypeScript golden parity fixtures via `npm test`.
+

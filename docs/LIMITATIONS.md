@@ -83,3 +83,4 @@ IGNIS is an interactive educational and mission architecture research tool devel
 - **Not Flight Software**: IGNIS is **not** certified flight software.
 - **No Safety Clearance**: Outputs do **not** constitute operational mission safety clearance, flight qualification, or certified life-support compliance under **NASA-STD-6001B** or **SSP 50005**.
 - **Human In The Loop**: In all crewed operational modes, life-critical fire suppression commands strictly require human astronaut confirmation.
+

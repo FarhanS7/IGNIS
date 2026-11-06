@@ -45,3 +45,4 @@ Use this checklist before recording the final submission video for NASA Space Ap
 - [ ] **Duration**: 90 seconds target; **hard limit < 3 minutes** (Space Apps rules strictly enforce the 3-minute cap).
 - [ ] **Resolution**: 1080p (1920x1080).
 - [ ] **Hosting**: Upload as an Unlisted or Public YouTube video and paste the URL into `README.md` and `docs/SUBMISSION.md`.
+

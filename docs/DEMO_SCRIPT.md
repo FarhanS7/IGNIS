@@ -51,3 +51,4 @@
 - **Visual**: Switch back to `/response` habitat view, showing crew safety guidance and immutable audit log.
 - **Voiceover**: 
   > *"In space exploration, false confidence is catastrophic. IGNIS proves that machine learning is at its best when anchored in transparent scientific boundaries: AI is not the source of truth—NASA flight data is."*
+

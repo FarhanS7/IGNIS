@@ -41,3 +41,4 @@ The project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - **Determinism Tests**: Added bit-exact unit determinism tests proving identical outputs across repeated runs with identical seeds for all detector arms and Monte Carlo sweeps.
 - **Accessibility & Contrast**: Added `aria-live="polite"` and ARIA landmark roles (`status`, `alert`, `log`, `region`) to alarm banners, crew safety alerts, extinction insights, and audit event logs.
 - **Security & Hygiene**: Verified zero committed secrets, `.env` gitignored, and zero unexpected third-party dependencies added to `apps/web/package.json`.
+
