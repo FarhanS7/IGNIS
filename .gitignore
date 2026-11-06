@@ -48,6 +48,8 @@ docs/*
 !docs/agent_plan/**
 !docs/models/
 !docs/models/**
+!docs/hero_kit/
+!docs/hero_kit/**
 
 IGNIS_PRD*.md
 IGNIS_Project_Concept*.md
