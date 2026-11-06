@@ -6,7 +6,7 @@ test.describe('Mobile Viewport (390x844) Responsiveness', () => {
   test('verifies /response page renders without horizontal overflow and controls remain accessible', async ({
     page,
   }) => {
-    await page.goto('/response', { waitUntil: 'domcontentloaded' });
+    await page.goto('/response?view=inspect', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
     // Verify no unexpected horizontal document overflow (allow max 1px rounding margin)
@@ -65,5 +65,20 @@ test.describe('Mobile Viewport (390x844) Responsiveness', () => {
     // Verify root is mounted and responsive
     const root = page.locator('#root');
     await expect(root).toBeVisible();
+  });
+
+  test('verifies /response station demo page renders without horizontal overflow on mobile', async ({
+    page,
+  }) => {
+    await page.goto('/response', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(1000);
+
+    const isNoHorizontalScroll = await page.evaluate(() => {
+      return document.documentElement.scrollWidth <= window.innerWidth + 1;
+    });
+    expect(isNoHorizontalScroll).toBe(true);
+
+    const clocks = page.getByText(/SAME-R calibrated/i);
+    await expect(clocks.first()).toBeVisible();
   });
 });

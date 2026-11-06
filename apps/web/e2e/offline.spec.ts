@@ -23,7 +23,7 @@ test.describe('Offline & CDN Fallback Integrity', () => {
   test('verifies /response functions completely offline without external network', async ({
     page,
   }) => {
-    await page.goto('/response', { waitUntil: 'domcontentloaded' });
+    await page.goto('/response?view=inspect', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
     const heading = page.getByRole('heading', { name: /FIRE RESPONSE CONSOLE/i });

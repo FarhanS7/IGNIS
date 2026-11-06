@@ -19,7 +19,7 @@ async function setScrubberTime(page: Page, targetSeconds: number) {
 
 test.describe('Fire Response Console End-to-End', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/response');
+    await page.goto('/response?view=inspect');
     await page.waitForLoadState('domcontentloaded');
   });
 
@@ -186,5 +186,36 @@ test.describe('Fire Response Console End-to-End', () => {
     // Close modal
     const closeBtn = page.getByRole('button', { name: /Close Inspector/i }).or(page.getByRole('button', { name: /Close/i })).first();
     await closeBtn.click();
+  });
+
+  test('verifies StationDemoPage hero view at /response with race clocks and view toggle', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 1. Honesty badges visible
+    const honestyBadge = page.getByText(/Simulated\.\s*Not flight software\./i);
+    await expect(honestyBadge).toBeVisible();
+
+    const mlBadge = page.getByText(/Trained on Earth-gravity data\.\s*Not validated in microgravity\./i);
+    await expect(mlBadge).toBeVisible();
+
+    // 2. Race clocks visible
+    await expect(page.getByText(/^Standard$/i)).toBeVisible();
+    await expect(page.getByText(/^SAME-R calibrated$/i)).toBeVisible();
+    await expect(page.getByText(/^ML fusion$/i)).toBeVisible();
+
+    // 3. Playback scrubber reachable
+    const scrubber = page.locator('input[type="range"]');
+    await expect(scrubber).toBeVisible();
+
+    // 4. View toggle to inspect console
+    const inspectBtn = page.getByRole('button', { name: /Inspect Console/i });
+    await expect(inspectBtn).toBeVisible();
+    await inspectBtn.click();
+
+    // 5. Inspect console loads
+    await page.waitForURL(/view=inspect/);
+    const consoleHeading = page.getByRole('heading', { name: /FIRE RESPONSE CONSOLE/i });
+    await expect(consoleHeading).toBeVisible();
   });
 });

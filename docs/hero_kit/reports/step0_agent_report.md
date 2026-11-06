@@ -152,3 +152,4 @@ node --experimental-strip-types apps/web/scripts/scout_scenarios.ts
 # 2. Run the Step 0 verification suite
 powershell -ExecutionPolicy Bypass -File .\docs\hero_kit\scripts\verify.ps1 -Step 0
 ```
+

@@ -26,8 +26,10 @@ import { SensorTimelineChart } from '../components/response/SensorTimelineChart.
 import { ResponseSequencePanel } from '../components/response/ResponseSequencePanel.tsx';
 import { EvidenceChipsDrawer } from '../components/response/EvidenceChipsDrawer.tsx';
 import { MonteCarloValidationModal } from '../components/response/MonteCarloValidationModal.tsx';
+import { StationDemoPage } from '../components/response/StationDemoPage.tsx';
 import {
   AlertOctagon,
+  ArrowLeft,
   BarChart2,
   BookOpen,
   ChevronDown,
@@ -40,7 +42,11 @@ import {
   Wind,
 } from 'lucide-react';
 
-export const ResponseConsolePage: React.FC = () => {
+interface ResponseConsoleInspectProps {
+  onBackToDemo?: () => void;
+}
+
+const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackToDemo }) => {
   const [searchParams] = useSearchParams();
 
   // Presets & Selection
@@ -226,14 +232,25 @@ export const ResponseConsolePage: React.FC = () => {
         {/* Console Header & Scenario Controls */}
         <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-5 shadow-xl backdrop-blur-md">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
-                <Shield className="h-6 w-6 text-cyan-400" />
-                Fire Response Console
-              </h1>
-              <p className="text-xs text-slate-400 font-mono mt-1">
-                Detect → Locate → Contain → Isolate → Suppress microgravity cabin fires
-              </p>
+            <div className="flex items-center gap-3">
+              {onBackToDemo && (
+                <button
+                  onClick={onBackToDemo}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 text-xs font-semibold tracking-wide transition-colors"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  <span>Station Demo</span>
+                </button>
+              )}
+              <div>
+                <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2.5">
+                  <Shield className="h-6 w-6 text-cyan-400" />
+                  Fire Response Console
+                </h1>
+                <p className="text-xs text-slate-400 font-mono mt-1">
+                  Detect → Locate → Contain → Isolate → Suppress microgravity cabin fires
+                </p>
+              </div>
             </div>
 
             {/* Simulation Playback Bar */}
@@ -604,6 +621,29 @@ export const ResponseConsolePage: React.FC = () => {
         />
       </div>
     </div>
+  );
+};
+
+export const ResponseConsolePage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const view = searchParams.get('view') || 'demo';
+
+  if (view === 'inspect') {
+    return (
+      <ResponseConsoleInspect
+        onBackToDemo={() => {
+          setSearchParams({ view: 'demo' });
+        }}
+      />
+    );
+  }
+
+  return (
+    <StationDemoPage
+      onSwitchToInspect={() => {
+        setSearchParams({ view: 'inspect' });
+      }}
+    />
   );
 };
 

@@ -58,3 +58,4 @@ The race compares the single-channel optical smoke detector against the multi-se
 2. **ML Detector Disclosure:** Whenever the ML fusion detector is rendered or compared: `"Trained on Earth-gravity data. Not validated in microgravity."`
 3. **Partial Gravity Warning:** If user switches to `lunar_habitat`, display: `"Partial-gravity smoke transport is not validated; results are indicative only."`
 4. **Categorical Outputs Only:** Banned percentage risk scores; use discrete categorical states (`NOMINAL`, `ADVISORY`, `FIRE_ALARM`, `INSUFFICIENT_EVIDENCE`).
+
