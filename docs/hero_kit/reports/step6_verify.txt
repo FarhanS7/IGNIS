@@ -1,0 +1,21 @@
+﻿Step: 6
+Compared with: hero-step-5
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=237 fail=0
+[PASS] build 
+[PASS] e2e passed=32
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-step-5 7 files
+
+Changed files:
+  apps/web/scripts/record_frames.mjs
+  apps/web/src/components/response/__tests__/captureConstants.test.ts
+  apps/web/src/components/response/ClosingCardOverlay.tsx
+  apps/web/src/components/response/ProofDrawerOverlay.tsx
+  apps/web/src/lib/fire/captureConstants.ts
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/reports/checkpoints.log
