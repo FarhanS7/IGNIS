@@ -218,4 +218,34 @@ test.describe('Fire Response Console End-to-End', () => {
     const consoleHeading = page.getByRole('heading', { name: /FIRE RESPONSE CONSOLE/i });
     await expect(consoleHeading).toBeVisible();
   });
+
+  test('verifies crewed hold-to-confirm suppression gate at /response', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Seek scrubber forward to suppression armed state (t = 18s)
+    const scrubber = page.locator('input[type="range"]');
+    await scrubber.fill('18');
+    await page.waitForTimeout(300);
+
+    // Verify hold to confirm button appears
+    const gateBtn = page.getByRole('button', { name: /Hold to confirm fire suppression/i });
+    await expect(gateBtn).toBeVisible();
+
+    // Verify keyboard hint is visible
+    await expect(page.getByText(/Hold 1\.2s · Space or Enter/i)).toBeVisible();
+
+    // Verify FLEX droplet caveat chip is visible
+    await expect(page.getByText(/Droplet flames only\. Not cabin solid fuels\./i)).toBeVisible();
+
+    // Press and hold Space key for 1.3s to confirm
+    await gateBtn.focus();
+    await page.keyboard.down('Space');
+    await page.waitForTimeout(1350);
+    await page.keyboard.up('Space');
+    await page.waitForTimeout(400);
+
+    // Gate should close after confirmation
+    await expect(gateBtn).not.toBeVisible();
+  });
 });

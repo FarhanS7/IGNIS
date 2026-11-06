@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { FuelType, SequencerMode, SequenceStepId, StepStatus } from '../../lib/fire/types.ts';
 import { getHabitatById, getHabitatPresets } from '../../lib/fire/habitat.ts';
@@ -6,6 +6,7 @@ import { useTimeline } from '../../lib/fire/timeline/useTimeline.ts';
 import { Caption } from './Caption.tsx';
 import { StationStage } from './StationStage.tsx';
 import { LocalizationOverlay } from './LocalizationOverlay.tsx';
+import { HoldToConfirmGate } from './HoldToConfirmGate.tsx';
 import {
   AlertOctagon,
   CheckCircle2,
@@ -50,6 +51,8 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     isPlaying,
     speed,
     frameState,
+    play,
+    pause,
     togglePlay,
     seek,
     setSpeed,
@@ -65,6 +68,30 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     },
     true
   );
+
+  const [hasConfirmedCrewSuppression, setHasConfirmedCrewSuppression] = useState<boolean>(false);
+
+  // Auto-pause when reaching suppression armed state in crewed mode
+  useEffect(() => {
+    if (mode === 'CREWED' && frameState.isSuppressionArmed && !hasConfirmedCrewSuppression && isPlaying) {
+      pause();
+    }
+  }, [mode, frameState.isSuppressionArmed, hasConfirmedCrewSuppression, isPlaying, pause]);
+
+  // Reset confirmed flag when scrubbing back before suppression
+  useEffect(() => {
+    if (!frameState.isSuppressionArmed && !frameState.isSuppressionActive && !frameState.isFireExtinguished) {
+      setHasConfirmedCrewSuppression(false);
+    }
+  }, [frameState.isSuppressionArmed, frameState.isSuppressionActive, frameState.isFireExtinguished]);
+
+  const handleConfirmGate = useCallback(() => {
+    setHasConfirmedCrewSuppression(true);
+    const armedStep = timeline.sequencerEvents.find((e) => e.stepId === 'SUPPRESSION');
+    const confirmTime = armedStep ? armedStep.triggerTime_s : t + 0.5;
+    seek(confirmTime);
+    play();
+  }, [timeline.sequencerEvents, t, seek, play]);
 
   const handleInspectClick = () => {
     if (onSwitchToInspect) {
@@ -379,6 +406,18 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
           timeline={timeline}
           frameState={frameState}
           t={t}
+        />
+
+        {/* Hold to Confirm Gate (Crewed Human Authority Barrier) */}
+        <HoldToConfirmGate
+          isArmed={
+            mode === 'CREWED'
+              ? frameState.isSuppressionArmed && !hasConfirmedCrewSuppression
+              : frameState.isSuppressionArmed
+          }
+          mode={mode}
+          onConfirm={handleConfirmGate}
+          onStandDown={() => restart()}
         />
 
         {/* Dynamic Caption Display (Bottom of Stage Over Canvas) */}

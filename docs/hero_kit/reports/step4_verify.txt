@@ -1,0 +1,20 @@
+﻿Step: 4
+Compared with: hero-step-3
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=228 fail=0
+[PASS] build 
+[PASS] e2e passed=32
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-step-3 6 files
+
+Changed files:
+  apps/web/e2e/response.spec.ts
+  apps/web/src/components/response/__tests__/containmentGate.test.ts
+  apps/web/src/components/response/HoldToConfirmGate.tsx
+  apps/web/src/components/response/StationDemoPage.tsx
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/reports/checkpoints.log
