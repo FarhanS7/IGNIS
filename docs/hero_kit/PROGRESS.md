@@ -4,7 +4,7 @@ Tick a box only after: verify PASS + you looked at it in the browser + checkpoin
 
 | Step | Prompt | Done | Date | Verify | Notes |
 |------|--------|:----:|------|--------|-------|
-| 0  | step0_recon              | [ ] | | | |
+| 0  | step0_recon              | [x] | 2026-11-07 | PASS | 120 scenarios scouted across 3 habitats x 4 fuels x 10 zones |
 | 0b | step0b_lock_decision     | [ ] | | | |
 | 1  | step1_timeline_shell     | [ ] | | | |
 | 2  | step2_station_3d         | [ ] | | | |

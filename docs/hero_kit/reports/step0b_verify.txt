@@ -1,0 +1,17 @@
+﻿Step: 0b
+Compared with: hero-step-0
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=211 fail=0
+[PASS] build 
+[SKIP] e2e (add -E2E to run)
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-step-0 3 files
+
+Changed files:
+  docs/hero_kit/DECISION.md
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/reports/checkpoints.log
