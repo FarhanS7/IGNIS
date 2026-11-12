@@ -7,6 +7,9 @@ import { playSoundEffect } from './synthAudio.ts';
 
 const SETTINGS_STORAGE_KEY = 'ignis_narration_settings_v1';
 
+/** Delay (ms) between sound effect and voice start to prevent audio collision */
+const SOUND_EFFECT_VOICE_STAGGER_MS = 500;
+
 function loadStoredSettings(): NarrationAudioSettings {
   try {
     if (typeof window !== 'undefined' && window.sessionStorage) {
@@ -64,43 +67,22 @@ export function useNarration({
   }, [cues, t]);
 
   const lastTriggeredCueIdRef = useRef<string | null>(null);
-  const currentAudioRef = useRef<HTMLAudioElement | null>(null);
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const audioCacheRef = useRef<Map<string, HTMLAudioElement>>(new Map());
+  const staggerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Save settings on update
   useEffect(() => {
     saveStoredSettings(settings);
   }, [settings]);
 
-  // Preload prepared audio files when available
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    for (const cue of cues) {
-      if (cue.audioUrl && !audioCacheRef.current.has(cue.audioUrl)) {
-        try {
-          const audio = new Audio(cue.audioUrl);
-          audio.preload = 'auto';
-          audioCacheRef.current.set(cue.audioUrl, audio);
-        } catch {
-          // Graceful fallback if Audio constructor fails
-        }
-      }
+  // Cancel speech synthesis gracefully (let current utterance finish naturally
+  // unless we are seeking backward or pausing)
+  const cancelSpeech = useCallback((force = false) => {
+    if (staggerTimerRef.current) {
+      clearTimeout(staggerTimerRef.current);
+      staggerTimerRef.current = null;
     }
-  }, [cues]);
-
-  // Stop any active audio or speech
-  const stopAllPlayback = useCallback(() => {
-    if (currentAudioRef.current) {
-      try {
-        currentAudioRef.current.pause();
-        currentAudioRef.current.currentTime = 0;
-      } catch {
-        // Ignore errors
-      }
-      currentAudioRef.current = null;
-    }
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
+    if (force && typeof window !== 'undefined' && window.speechSynthesis) {
       try {
         window.speechSynthesis.cancel();
       } catch {
@@ -110,7 +92,7 @@ export function useNarration({
     }
   }, []);
 
-  // Preferred natural speech synthesis voice as resilient fallback
+  // Preferred natural speech synthesis voice
   const getPreferredVoice = useCallback((): SpeechSynthesisVoice | null => {
     if (typeof window === 'undefined' || !window.speechSynthesis) return null;
     const voices = window.speechSynthesis.getVoices();
@@ -134,61 +116,17 @@ export function useNarration({
     return voices.find((v) => v.lang.startsWith('en')) || voices[0] || null;
   }, []);
 
-  // Play narration segment with fallback
-  const playCue = useCallback(
-    (cue: NarrationCue) => {
-      // 1. Play accompanying sound effect if defined
-      if (cue.soundEffect && !settings.isMuted) {
-        playSoundEffect(cue.soundEffect, settings.volume);
-      }
-
-      if (!settings.isVoiceEnabled || settings.isMuted || settings.volume <= 0) {
-        return;
-      }
-
-      stopAllPlayback();
-
-      // 2. Attempt playing prepared audio file first
-      if (cue.audioUrl && typeof window !== 'undefined') {
-        try {
-          let audio = audioCacheRef.current.get(cue.audioUrl);
-          if (!audio) {
-            audio = new Audio(cue.audioUrl);
-            audioCacheRef.current.set(cue.audioUrl, audio);
-          }
-          audio.volume = settings.isMuted ? 0 : settings.volume;
-          audio.currentTime = 0;
-
-          currentAudioRef.current = audio;
-
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(() => {
-              // Audio element play failed (e.g. autoplay policy, file missing)
-              // Fallback to browser SpeechSynthesis
-              playSpeechSynthesis(cue);
-            });
-          }
-          return;
-        } catch {
-          // Fallback to speech synthesis
-        }
-      }
-
-      // 3. Fallback: Browser speech synthesis
-      playSpeechSynthesis(cue);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [settings, stopAllPlayback, getPreferredVoice]
-  );
-
-  const playSpeechSynthesis = useCallback(
+  // Speak a cue using Web Speech API (primary voice engine)
+  const speakCue = useCallback(
     (cue: NarrationCue) => {
       if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
       try {
+        // Cancel any in-progress speech before starting new cue
+        window.speechSynthesis.cancel();
+
         const utterance = new SpeechSynthesisUtterance(cue.spokenText);
-        utterance.rate = 0.95; // Calm, measured speaking speed
+        utterance.rate = 0.92; // Calm, educational pacing
         utterance.pitch = 1.0; // Neutral calm pitch
         utterance.volume = settings.isMuted ? 0 : settings.volume;
 
@@ -208,21 +146,54 @@ export function useNarration({
         currentUtteranceRef.current = utterance;
         window.speechSynthesis.speak(utterance);
       } catch {
-        // Speech synthesis fallback failed, subtitles continue undisturbed
+        // Speech synthesis failed — subtitles continue undisturbed
       }
     },
     [settings, getPreferredVoice]
   );
 
+  // Play narration with staggered sound effect
+  const playCue = useCallback(
+    (cue: NarrationCue) => {
+      // Clear any pending stagger timer
+      if (staggerTimerRef.current) {
+        clearTimeout(staggerTimerRef.current);
+        staggerTimerRef.current = null;
+      }
+
+      const shouldSpeak = settings.isVoiceEnabled && !settings.isMuted && settings.volume > 0;
+
+      // Play sound effect first (if any)
+      if (cue.soundEffect && !settings.isMuted) {
+        playSoundEffect(cue.soundEffect, settings.volume);
+
+        // Stagger voice start so effect and voice don't collide
+        if (shouldSpeak) {
+          staggerTimerRef.current = setTimeout(() => {
+            staggerTimerRef.current = null;
+            speakCue(cue);
+          }, SOUND_EFFECT_VOICE_STAGGER_MS);
+        }
+        return;
+      }
+
+      // No sound effect — start voice immediately
+      if (shouldSpeak) {
+        speakCue(cue);
+      }
+    },
+    [settings, speakCue]
+  );
+
   // Synchronized Trigger Loop: triggers narration once when entering each segment
   useEffect(() => {
     if (!isPlaying) {
-      stopAllPlayback();
+      cancelSpeech(true);
       return;
     }
 
     if (!activeCue) {
-      stopAllPlayback();
+      // Past end of all cues — don't force-cancel (let last utterance finish)
       return;
     }
 
@@ -231,7 +202,7 @@ export function useNarration({
       lastTriggeredCueIdRef.current = activeCue.id;
       playCue(activeCue);
     }
-  }, [isPlaying, activeCue, playCue, stopAllPlayback]);
+  }, [isPlaying, activeCue, playCue, cancelSpeech]);
 
   // Reset trigger ref when seeking backwards
   useEffect(() => {
@@ -241,27 +212,30 @@ export function useNarration({
       const activeIdx = cues.findIndex((c) => c.id === activeCue.id);
       const lastIdx = cues.findIndex((c) => c.id === lastTriggeredCueIdRef.current);
       if (activeIdx < lastIdx) {
+        // User seeked backward — force-cancel current speech and reset
+        cancelSpeech(true);
         lastTriggeredCueIdRef.current = null;
       }
     }
-  }, [activeCue, cues]);
+  }, [activeCue, cues, cancelSpeech]);
 
   // Replay current cue on demand
   const replayCurrentCue = useCallback(() => {
     if (!activeCue) return;
+    cancelSpeech(true);
     playCue(activeCue);
-  }, [activeCue, playCue]);
+  }, [activeCue, playCue, cancelSpeech]);
 
   // Audio Control Toggles
   const toggleVoice = useCallback(() => {
     setSettings((prev) => {
       const next = !prev.isVoiceEnabled;
       if (!next) {
-        stopAllPlayback();
+        cancelSpeech(true);
       }
       return { ...prev, isVoiceEnabled: next };
     });
-  }, [stopAllPlayback]);
+  }, [cancelSpeech]);
 
   const toggleSubtitles = useCallback(() => {
     setSettings((prev) => ({ ...prev, areSubtitlesEnabled: !prev.areSubtitlesEnabled }));
@@ -271,9 +245,6 @@ export function useNarration({
     const clamped = Math.max(0, Math.min(1, val));
     setSettings((prev) => {
       const isMuted = clamped === 0 ? true : prev.isMuted;
-      if (currentAudioRef.current) {
-        currentAudioRef.current.volume = isMuted ? 0 : clamped;
-      }
       return {
         ...prev,
         volume: clamped,
@@ -285,22 +256,19 @@ export function useNarration({
   const toggleMute = useCallback(() => {
     setSettings((prev) => {
       const nextMuted = !prev.isMuted;
-      if (currentAudioRef.current) {
-        currentAudioRef.current.volume = nextMuted ? 0 : prev.volume;
-      }
       if (nextMuted) {
-        stopAllPlayback();
+        cancelSpeech(true);
       }
       return { ...prev, isMuted: nextMuted };
     });
-  }, [stopAllPlayback]);
+  }, [cancelSpeech]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      stopAllPlayback();
+      cancelSpeech(true);
     };
-  }, [stopAllPlayback]);
+  }, [cancelSpeech]);
 
   return {
     cues,
