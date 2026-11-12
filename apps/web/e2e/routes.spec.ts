@@ -7,6 +7,7 @@ const ROUTES = [
   '/evidence',
   '/experiments',
   '/explorer',
+  '/stories',
   '/explore',
   '/stories/v2',
   '/ask',

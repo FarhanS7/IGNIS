@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
 
           {/* Item 2: Learn (Story Mode) */}
           <Link
-            to="/explore"
+            to="/stories"
             aria-current={isLearnActive ? 'page' : undefined}
             onClick={closeMenu}
           >

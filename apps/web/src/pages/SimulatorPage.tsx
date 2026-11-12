@@ -5,29 +5,19 @@ import {
   Orbit,
   Moon,
   Globe2,
-  Sliders,
-  Wind,
-  Gauge,
-  Flame,
-  AlertTriangle,
-  RotateCcw,
-  Sparkles,
-  ShieldCheck,
-  Shield,
   Check,
   Share2,
   GitCompare,
   ChevronDown,
   ChevronUp,
   HelpCircle,
-  Info,
+  Sparkles,
   X,
   FileDown,
+  Settings,
 } from 'lucide-react';
 import { Button } from '../components/common/Button';
 import { Card } from '../components/common/Card';
-import { Badge } from '../components/common/Badge';
-import { Term } from '../components/common/Term';
 import { SyncedSliderInput } from '../components/common/SyncedSliderInput';
 import { QualitySelector } from '../visuals/QualitySelector';
 import { EvidenceGuidedVisualization } from '../components/evidence/EvidenceGuidedVisualization';
@@ -35,7 +25,13 @@ import { SimpleNasaResultPanel } from '../components/evidence/SimpleNasaResultPa
 import { EvidenceBriefModal } from '../components/evidence/EvidenceBriefModal';
 import { useAskIgnis, useSetAskContext } from '../hooks/useAskIgnis';
 
-import { RealSolidMatcher } from '../lib/matcher/real_solid_matcher';
+import {
+  RealSolidMatcher,
+  TESTED_O2_MIN,
+  TESTED_O2_MAX,
+  TESTED_FLOW_MIN,
+  TESTED_FLOW_MAX,
+} from '../lib/matcher/real_solid_matcher';
 import type { SolidScenarioInput, RawEvidenceSolidRun, MaterialMap } from '../lib/matcher/types';
 import solidRunsData from '../data/evidence_solid.json';
 import materialMapData from '../data/material_map.json';
@@ -52,7 +48,7 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   {
     id: '55555555-5555-5555-5555-555555555501',
     slug: 'orbital',
-    display_name: 'Orbital Spacecraft (0g Microgravity)',
+    display_name: 'Orbital Station — 0g',
     destination: 'orbital',
     gravity_class: 'microgravity',
     gravity_value_g: 0.0,
@@ -66,7 +62,7 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   {
     id: '55555555-5555-5555-5555-555555555502',
     slug: 'moon',
-    display_name: 'Lunar Surface Habitat (0.16g)',
+    display_name: 'Lunar Habitat — 0.16g',
     destination: 'moon',
     gravity_class: 'partial_gravity_lunar',
     gravity_value_g: 0.16,
@@ -80,7 +76,7 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   {
     id: '55555555-5555-5555-5555-555555555503',
     slug: 'mars',
-    display_name: 'Mars Surface Habitat (0.38g)',
+    display_name: 'Mars Habitat — 0.38g',
     destination: 'mars',
     gravity_class: 'partial_gravity_mars',
     gravity_value_g: 0.38,
@@ -93,33 +89,23 @@ const DEFAULT_PRESETS: HabitatPreset[] = [
   },
 ];
 
-const MATERIAL_OPTIONS: Array<{ value: MaterialFamily; label: string; group: string; notes: string }> = [
-  { value: 'pmma', label: 'PMMA (Acrylic / Plexiglas)', group: 'Rigid Polymers', notes: 'Benchmark NASA flight fuel used in BASS & Saffire' },
-  { value: 'fabric_cotton', label: 'Cotton Fabric / SIBAL (SFI)', group: 'Fabrics & Textiles', notes: 'NASA standard flammability sample fabric' },
-  { value: 'fabric_synthetic', label: 'Synthetic Polymer Fabric (Nomex)', group: 'Fabrics & Textiles', notes: 'Nomex spaceflight suit & liner material' },
-  { value: 'cellulose', label: 'Cellulose / Paper Sample', group: 'Natural Polymers', notes: 'Thin fuel sheet tested in microgravity' },
-  { value: 'polyethylene', label: 'Polyethylene Polymer Sheet', group: 'Rigid Polymers', notes: 'Common insulation & packaging component' },
-  { value: 'thin_solid', label: 'Thin Solid Sample (< 1mm)', group: 'General Solids', notes: 'Thermally thin regime combustion' },
-  { value: 'thick_solid', label: 'Thick Solid Plate (> 5mm)', group: 'General Solids', notes: 'Thermally thick boundary layer burning' },
+const MATERIAL_OPTIONS: Array<{ value: MaterialFamily; label: string }> = [
+  { value: 'pmma', label: 'Acrylic plastic' },
+  { value: 'fabric_cotton', label: 'Cotton fabric' },
+  { value: 'fabric_synthetic', label: 'Nomex synthetic fabric' },
+  { value: 'cellulose', label: 'Paper' },
+  { value: 'polyethylene', label: 'Polyethylene plastic' },
+  { value: 'thin_solid', label: 'Thin sheet' },
+  { value: 'thick_solid', label: 'Thick plate' },
 ];
 
-const OBJECTIVE_OPTIONS: Array<{ value: ScientificObjective; label: string; description: string }> = [
-  { value: 'flame_spread', label: 'Flame Spread Rate & Propagation', description: 'Analyze flame velocity along fuel surface' },
-  { value: 'sustained_burning', label: 'Sustained Burning & Soot Formation', description: 'Evaluate duration and self-sustaining combustion' },
-  { value: 'extinction', label: 'Flame Extinction & Quenching Limits', description: 'Investigate low-oxygen and radiative extinction' },
-  { value: 'ignition', label: 'Ignition Delay & Sensitivity', description: 'Analyze energy required for radiant ignition' },
-  { value: 'flammability_limits', label: 'Flammability Boundary Limits', description: 'Map minimum oxygen index and pressure boundaries' },
+const OBJECTIVE_OPTIONS: Array<{ value: ScientificObjective; label: string }> = [
+  { value: 'flame_spread', label: 'Flame spread rate' },
+  { value: 'sustained_burning', label: 'Sustained burning' },
+  { value: 'extinction', label: 'When does it go out?' },
+  { value: 'ignition', label: 'How easily does it catch fire?' },
+  { value: 'flammability_limits', label: 'Flammability limits' },
 ];
-
-const MATERIAL_JUSTIFICATIONS: Partial<Record<MaterialFamily, string>> = {
-  pmma: 'Benchmark rigid acrylic fuel tested across NASA BASS & Saffire missions due to consistent, well-characterized chemical breakdown.',
-  fabric_cotton: 'NASA standard flammability sample textile representing astronaut crew clothing and cotton-blend cabin surfaces.',
-  fabric_synthetic: 'Flame-resistant polymer blend (Nomex / Nylon) evaluated for spaceflight suits and protective equipment liners.',
-  cellulose: 'Thermally thin natural paper sample tested in microgravity to isolate pure flame spread without bulk heat sinks.',
-  polyethylene: 'Ubiquitous spaceflight electrical wire insulator and payload packaging material prone to melting and rapid dripping.',
-  thin_solid: 'Thermally thin test specimen (< 1mm) where heat transfers rapidly through the entire sample thickness without temperature gradients.',
-  thick_solid: 'Thermally thick specimen (> 5mm) where burning is governed by slower internal thermal conduction and surface charring.',
-};
 
 interface TourStep {
   title: string;
@@ -130,18 +116,18 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     targetId: 'tour-step-destination',
-    title: '1. Pick a Destination',
-    description: 'Select an orbital spacecraft (0g microgravity), Lunar base (0.16g), or Mars base (0.38g). Gravity directly governs whether buoyant hot air rises or flames form quiet spheres.',
+    title: '1. Set up the cabin',
+    description: 'Pick a location and set the oxygen, air pressure, and fan speed.',
   },
   {
-    targetId: 'tour-step-conditions',
-    title: '2. Adjust Conditions & Watch the Flame Change',
-    description: 'Tweak oxygen concentration, cabin pressure, and ventilation airflow. The live 3D flame responds immediately to reflect the physical combustion regime.',
+    targetId: 'tour-step-canvas',
+    title: '2. See the flame',
+    description: 'Watch how gravity, oxygen, and airflow shape the flame in real time.',
   },
   {
     targetId: 'tour-step-evidence',
-    title: '3. See What NASA Actually Saw',
-    description: 'IGNIS compares your atmosphere against real NASA spaceflight missions (Saffire, BASS-II) to show verified test records and closest flight runs.',
+    title: '3. What NASA has tested',
+    description: 'Compare your cabin conditions against 132 real spaceflight combustion tests.',
   },
 ];
 
@@ -252,19 +238,28 @@ export const SimulatorPage: React.FC = () => {
   // Share link feedback
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
+  // Toolbar dropdown menus
+  const [showSettingsMenu, setShowSettingsMenu] = useState<boolean>(false);
+  const [showShareMenu, setShowShareMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!showSettingsMenu && !showShareMenu) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('#settings-menu-container') && !target.closest('#share-menu-container')) {
+        setShowSettingsMenu(false);
+        setShowShareMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showSettingsMenu, showShareMenu]);
+
   // Interactive Coachmark Tour State
   const [tourStep, setTourStep] = useState<number | null>(null);
 
-  // Responsive state for mobile vs desktop sticky flame
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
-  );
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Progressive disclosure: hide complex fuel & scientific settings by default
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
 
   // First-run tour trigger
   useEffect(() => {
@@ -377,10 +372,6 @@ export const SimulatorPage: React.FC = () => {
     updateUrlParams(updated, preset.slug, true);
   };
 
-  const handleResetPresetA = () => {
-    handleSelectPresetA(activePresetA);
-  };
-
   const handleSelectPresetB = (presetSlug: string) => {
     setSelectedPresetSlugB(presetSlug);
     const p = DEFAULT_PRESETS.find((item) => item.slug === presetSlug) || DEFAULT_PRESETS[1];
@@ -461,136 +452,163 @@ export const SimulatorPage: React.FC = () => {
     return notes.join(' ');
   }, [isCompareMode, scenarioA, scenarioB]);
 
+  // Dynamic one-sentence physical summary of what the flame shows (max 20 words, built from templates)
+  const plainFlameSummary = useMemo(() => {
+    const o2 = scenarioA.oxygen_pct ?? 21.0;
+    const flow = scenarioA.airflow_cm_s ?? 5.0;
+    const grav = activePresetA.gravity_value_g ?? 0.0;
+
+    let clause1 = 'No gravity: the flame is a round ball.';
+    if (selectedPresetSlug === 'moon' || (grav > 0 && grav <= 0.2)) {
+      clause1 = 'Moon gravity: the flame starts to stretch upward.';
+    } else if (selectedPresetSlug === 'mars' || grav > 0.2) {
+      clause1 = 'Mars gravity: the flame stretches upward.';
+    }
+
+    let clause2 = '';
+    if (o2 > TESTED_O2_MAX) {
+      clause2 = 'More oxygen: it burns hotter and faster.';
+    } else if (o2 < 19) {
+      clause2 = 'Less oxygen: it burns weaker.';
+    } else if (flow >= 15) {
+      clause2 = 'A strong fan makes it lean sideways.';
+    }
+
+    return clause2 ? `${clause1} ${clause2}` : clause1;
+  }, [scenarioA, activePresetA, selectedPresetSlug]);
+
+  const o2A = scenarioA.oxygen_pct ?? 21.0;
+  const flowA = scenarioA.airflow_cm_s ?? 5.0;
+  const isO2OutsideA = o2A < TESTED_O2_MIN || o2A > TESTED_O2_MAX;
+  const isFlowOutsideA = flowA < TESTED_FLOW_MIN || flowA > TESTED_FLOW_MAX;
+
   return (
-    <div className="space-y-8 py-2 sm:py-6 max-w-7xl mx-auto px-4 sm:px-6">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-orange-400">
-            <Flame className="w-3.5 h-3.5 text-orange-400 animate-pulse" />
-            <span>Mode 01 · Simulator</span>
-            <span className="text-slate-600">|</span>
-            <span className="text-slate-400">NASA Flight Grounding</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
-            Habitat Simulator & Live Evidence
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-white/10">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight font-sans">
+            How does fire behave in space?
           </h1>
-          <p className="text-slate-300 text-sm sm:text-base max-w-3xl leading-relaxed">
-            Interactively configure space destination atmosphere parameters. The illustrative 3D flame visualization responds
-            instantly while IGNIS continuously evaluates comparable NASA <Term term="microgravity">microgravity</Term> flight datasets.
+          <p className="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1 font-sans">
+            Pick a place, set the air, see the flame, then see what NASA has tested.
           </p>
         </div>
 
-        {/* Global Toolbar: Quality setting, Share link, Tour replay, & Compare toggle */}
-        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0">
-          <QualitySelector />
-
+        {/* Quiet Toolbar */}
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* 1. Tour */}
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             onClick={handleReplayTour}
-            icon={<HelpCircle className="w-3.5 h-3.5 text-cyan-400" />}
-            title="Replay interactive walkthrough"
+            icon={<HelpCircle className="w-3.5 h-3.5 text-slate-400" />}
+            title="Replay walkthrough"
           >
             Tour
           </Button>
 
+          {/* 2. Compare */}
           <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCopyLink}
-            icon={copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5" />}
-          >
-            {copiedLink ? 'Copied Link!' : 'Share'}
-          </Button>
-
-          <Button
-            variant={isCompareMode ? 'primary' : 'outline'}
+            variant={isCompareMode ? 'secondary' : 'ghost'}
             size="sm"
             onClick={() => setIsCompareMode(!isCompareMode)}
-            icon={<GitCompare className="w-3.5 h-3.5" />}
+            icon={<GitCompare className="w-3.5 h-3.5 text-slate-400" />}
           >
-            {isCompareMode ? 'Compare Active' : 'Compare'}
+            Compare
           </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsBriefOpen(true)}
-            icon={<FileDown className="w-3.5 h-3.5 text-cyan-400" />}
-            title="Export single printable HTML/PDF Evidence Brief"
-          >
-            Export Brief
-          </Button>
+          {/* 3. Share / Export */}
+          <div id="share-menu-container" className="relative">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setShowShareMenu((prev) => !prev);
+                setShowSettingsMenu(false);
+              }}
+              icon={<Share2 className="w-3.5 h-3.5 text-slate-400" />}
+              title="Share and export options"
+            >
+              <span>Share / Export</span>
+              <ChevronDown className="w-3 h-3 ml-1 text-slate-400" />
+            </Button>
+            {showShareMenu && (
+              <div className="absolute right-0 top-full mt-1.5 z-30 p-1.5 rounded-xl bg-slate-900 border border-slate-700 shadow-xl min-w-[160px] space-y-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleCopyLink();
+                    setShowShareMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-800 text-left text-slate-200 transition-colors cursor-pointer"
+                >
+                  {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-cyan-400" />}
+                  <span>{copiedLink ? 'Link copied!' : 'Copy link'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsBriefOpen(true);
+                    setShowShareMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-slate-800 text-left text-slate-200 transition-colors cursor-pointer"
+                >
+                  <FileDown className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Export brief</span>
+                </button>
+              </div>
+            )}
+          </div>
 
+          {/* 4. Display Quality Popover */}
+          <div id="settings-menu-container" className="relative">
+            <button
+              type="button"
+              aria-label="Display quality"
+              onClick={() => {
+                setShowSettingsMenu((prev) => !prev);
+                setShowShareMenu(false);
+              }}
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+              title="Display quality"
+            >
+              <Settings className="w-3.5 h-3.5" />
+            </button>
+            {showSettingsMenu && (
+              <div className="absolute right-0 top-full mt-1.5 z-30 p-2.5 rounded-xl bg-slate-900 border border-slate-700 shadow-xl min-w-[200px] space-y-2">
+                <div className="text-[11px] font-sans font-medium text-slate-400 pb-1 border-b border-slate-800">
+                  Display quality
+                </div>
+                <QualitySelector compact />
+              </div>
+            )}
+          </div>
+
+          {/* 5. Calm plain text transition link */}
           <Link
             to="/response"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-500/40 bg-rose-950/20 hover:bg-rose-950/40 text-rose-300 text-xs font-semibold transition-colors"
+            className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1 font-sans shrink-0 ml-1 py-1 px-1.5"
             title="Launch Fire Response Console"
           >
-            <Shield className="w-3.5 h-3.5 text-rose-400" />
-            <span>Run Fire Response</span>
+            <span>Run Fire Response →</span>
           </Link>
         </div>
       </div>
 
-      {/* MOBILE ONLY: Sticky Compact Flame Canvas */}
-      <div className="lg:hidden sticky top-[68px] z-20 pb-3 bg-[#060813] border-b border-slate-800/80 -mx-4 px-4 sm:mx-0 sm:px-0">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
-              <Flame className="w-3.5 h-3.5 text-orange-400" />
-              <span>Illustrative Flame</span>
-            </span>
-          </div>
-          {!isDesktop && (
-            <EvidenceGuidedVisualization
-              scenario={scenarioA}
-              comparableCount={matchResult.total_evaluated}
-              compact
-              label={isCompareMode ? 'Live Reaction (A vs B Comparison)' : 'Illustrative Flame Visualization'}
-              destination={selectedPresetSlug}
-              compareScenario={isCompareMode ? scenarioB : undefined}
-              compareDestination={isCompareMode ? selectedPresetSlugB : undefined}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Main Two-Column Layout (Desktop ≥1024px) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* Main Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         {/* =================================================================== */}
-        {/* LEFT COLUMN: Controls & Presets (5 cols on Desktop)                 */}
+        {/* SECTION 1: Set up the cabin (Left col on Desktop)                    */}
         {/* =================================================================== */}
-        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24 max-h-[calc(100vh-7rem)] lg:overflow-y-auto pr-1">
-          {/* Destination Preset Selector Cards */}
-          <section
-            id="tour-step-destination"
-            className={`space-y-3 transition-all duration-300 ${
-              tourStep === 0 ? 'ring-2 ring-cyan-400/80 rounded-2xl p-2.5 bg-cyan-950/20' : ''
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                  <Orbit className="w-4 h-4 text-orange-400" />
-                  <span>Destination Preset</span>
-                </h2>
-                <p className="text-[11px] text-slate-400 font-sans leading-normal mt-0.5">
-                  Selects the gravity field and baseline atmosphere parameters for the simulated habitat.
-                </p>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleResetPresetA}
-                icon={<RotateCcw className="w-3 h-3" />}
-              >
-                Reset
-              </Button>
-            </div>
+        <div id="stage-1" className="lg:col-span-5 space-y-5">
+          <h2 className="text-xl font-semibold text-white font-sans">
+            1. Set up the cabin
+          </h2>
 
-            <div className="grid grid-cols-3 gap-2.5">
+          {/* Place picker: 3 cards */}
+          <section id="tour-step-destination" className="space-y-2">
+            <div className="grid grid-cols-3 gap-2">
               {DEFAULT_PRESETS.map((preset) => {
                 const isSelected = selectedPresetSlug === preset.slug;
                 const icon =
@@ -601,6 +619,20 @@ export const SimulatorPage: React.FC = () => {
                   ) : (
                     <Globe2 className="w-4 h-4" />
                   );
+
+                const placeLabel =
+                  preset.slug === 'orbital'
+                    ? 'Space station'
+                    : preset.slug === 'moon'
+                    ? 'Moon base'
+                    : 'Mars base';
+
+                const gravSub =
+                  preset.slug === 'orbital'
+                    ? 'No gravity'
+                    : preset.slug === 'moon'
+                    ? '1/6 gravity'
+                    : '1/3 gravity';
 
                 return (
                   <button
@@ -613,14 +645,14 @@ export const SimulatorPage: React.FC = () => {
                         : 'bg-slate-900/60 border-slate-800/80 hover:border-slate-700 text-slate-400 hover:text-white'
                     }`}
                   >
-                    <div className="flex items-center justify-between w-full mb-1">
-                      <div className={isSelected ? 'text-orange-400' : 'text-slate-400'}>{icon}</div>
-                      <Badge variant={isSelected ? 'strong' : 'neutral'} size="xs">
-                        {preset.gravity_value_g !== null ? `${preset.gravity_value_g}g` : '0g'}
-                      </Badge>
+                    <div className={`mb-1.5 ${isSelected ? 'text-orange-400' : 'text-slate-400'}`}>
+                      {icon}
                     </div>
-                    <span className="text-xs font-bold leading-tight line-clamp-1">
-                      {preset.display_name.split('(')[0].trim()}
+                    <span className="text-xs font-semibold leading-snug text-white">
+                      {placeLabel}
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-sans mt-0.5">
+                      {gravSub}
                     </span>
                   </button>
                 );
@@ -628,146 +660,145 @@ export const SimulatorPage: React.FC = () => {
             </div>
           </section>
 
-          {/* Atmosphere Parameter Sliders + Synced Clamped Inputs */}
-          <section
-            id="tour-step-conditions"
-            className={`space-y-3 transition-all duration-300 ${
-              tourStep === 1 ? 'ring-2 ring-cyan-400/80 rounded-2xl p-2.5 bg-cyan-950/20' : ''
-            }`}
-          >
-            <div>
-              <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-cyan-400" />
-                <span>Atmosphere Sliders (Scenario A)</span>
-              </h2>
-              <p className="text-[11px] text-slate-400 font-sans leading-normal mt-0.5">
-                Adjust life-support parameters to see how physical fire behaves in space.
-              </p>
-            </div>
+          {/* Sliders */}
+          <section id="tour-step-conditions" className="space-y-2.5">
+            <SyncedSliderInput
+              id="oxygen-slider-a"
+              label={isCompareMode ? 'Oxygen (A)' : 'Oxygen'}
+              unit="%"
+              min={15.0}
+              max={40.0}
+              step={0.1}
+              value={scenarioA.oxygen_pct ?? 21.0}
+              hint="Oxygen must be 15–40%"
+              statusText={
+                isO2OutsideA
+                  ? `Beyond NASA tests (tested ${TESTED_O2_MIN.toFixed(1)}–${TESTED_O2_MAX.toFixed(1)}%)`
+                  : 'Within NASA tests'
+              }
+              statusType={isO2OutsideA ? 'amber' : 'cyan'}
+              tooltip="Normal cabin: 21–34%"
+              onChange={(val) => {
+                const updated = { ...scenarioA, oxygen_pct: val };
+                setScenarioA(updated);
+                updateUrlParams(updated, selectedPresetSlug);
+              }}
+            />
 
-            <div className="space-y-2.5">
-              <SyncedSliderInput
-                id="oxygen-slider-a"
-                label="Oxygen Concentration"
-                unit="%"
-                min={15.0}
-                max={40.0}
-                step={0.1}
-                value={scenarioA.oxygen_pct ?? 21.0}
-                hint="Oxygen must be 15–40%"
-                helperText="Controls chemical reaction rate and flame intensity (typical space habitat: 21–34% O₂)."
-                icon={<Flame className="w-3.5 h-3.5 text-orange-400" />}
-                onChange={(val) => {
-                  const updated = { ...scenarioA, oxygen_pct: val };
-                  setScenarioA(updated);
-                  updateUrlParams(updated, selectedPresetSlug);
-                }}
-              />
+            <SyncedSliderInput
+              id="pressure-slider-a"
+              label={isCompareMode ? 'Air pressure (A)' : 'Air pressure'}
+              unit="kPa"
+              min={30.0}
+              max={120.0}
+              step={0.5}
+              value={scenarioA.pressure_kpa ?? 101.3}
+              hint="Pressure must be 30–120 kPa"
+              statusText="Only changes how the flame looks. NASA didn't record it."
+              statusType="slate"
+              tooltip="Normal cabin: 56–101.3 kPa"
+              onChange={(val) => {
+                const updated = { ...scenarioA, pressure_kpa: val };
+                setScenarioA(updated);
+                updateUrlParams(updated, selectedPresetSlug);
+              }}
+            />
 
-              <SyncedSliderInput
-                id="pressure-slider-a"
-                label="Cabin Total Pressure"
-                unit="kPa"
-                min={30.0}
-                max={120.0}
-                step={0.5}
-                value={scenarioA.pressure_kpa ?? 101.3}
-                hint="Pressure must be 30–120 kPa"
-                helperText="Sets cabin gas density (typical space habitat: 56.0–101.3 kPa). NASA assumed 101.3 kPa in flights."
-                icon={<Gauge className="w-3.5 h-3.5 text-sky-400" />}
-                onChange={(val) => {
-                  const updated = { ...scenarioA, pressure_kpa: val };
-                  setScenarioA(updated);
-                  updateUrlParams(updated, selectedPresetSlug);
-                }}
-              />
-
-              <SyncedSliderInput
-                id="airflow-slider-a"
-                label="Forced Ventilation Airflow"
-                unit="cm/s"
-                min={0.0}
-                max={30.0}
-                step={0.5}
-                value={scenarioA.airflow_cm_s ?? 5.0}
-                hint="Airflow must be 0–30 cm/s"
-                helperText="Supplies fresh oxygen and sweeps exhaust away (typical cabin ventilation: 5.0–20.0 cm/s)."
-                icon={<Wind className="w-3.5 h-3.5 text-emerald-400" />}
-                onChange={(val) => {
-                  const updated = { ...scenarioA, airflow_cm_s: val };
-                  setScenarioA(updated);
-                  updateUrlParams(updated, selectedPresetSlug);
-                }}
-              />
-            </div>
+            <SyncedSliderInput
+              id="airflow-slider-a"
+              label={isCompareMode ? 'Fan speed (A)' : 'Fan speed'}
+              unit="cm/s"
+              min={0.0}
+              max={30.0}
+              step={0.5}
+              value={scenarioA.airflow_cm_s ?? 5.0}
+              hint="Airflow must be 0–30 cm/s"
+              statusText={
+                isFlowOutsideA
+                  ? `Beyond NASA tests (tested ${TESTED_FLOW_MIN.toFixed(1)}–${TESTED_FLOW_MAX.toFixed(1)} cm/s)`
+                  : 'Within NASA tests'
+              }
+              statusType={isFlowOutsideA ? 'amber' : 'cyan'}
+              tooltip="Normal cabin: 5–20 cm/s"
+              onChange={(val) => {
+                const updated = { ...scenarioA, airflow_cm_s: val };
+                setScenarioA(updated);
+                updateUrlParams(updated, selectedPresetSlug);
+              }}
+            />
           </section>
 
-          {/* Material & Objective Selectors */}
-          <section className="space-y-4">
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label htmlFor="material-select" className="text-xs font-semibold text-white block">
-                  Combustible Material Family
-                </label>
-                <span className="text-[10px] font-mono text-cyan-400">7 Spaceflight Materials</span>
-              </div>
-              <p className="text-[11px] text-slate-400 font-sans leading-normal">
-                Selects the fuel family tested in microgravity combustion chambers.
-              </p>
-              <select
-                id="material-select"
-                value={scenarioA.material}
-                onChange={(e) => {
-                  const updated = { ...scenarioA, material: e.target.value as MaterialFamily };
-                  setScenarioA(updated);
-                  updateUrlParams(updated, selectedPresetSlug);
-                }}
-                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-cyan-400"
-              >
-                {MATERIAL_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label} — {opt.notes}
-                  </option>
-                ))}
-              </select>
+          {/* More options accordion */}
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 text-xs font-medium text-slate-300 transition-colors cursor-pointer"
+            >
+              <span>More options</span>
+              {showAdvancedSettings ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
 
-              {/* Material Justification Callout */}
-              <div className="flex items-start gap-2 p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300">
-                <Info className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
-                <div className="space-y-0.5">
-                  <span className="font-semibold text-white">Why Offered: </span>
-                  <span className="text-slate-300">{MATERIAL_JUSTIFICATIONS[scenarioA.material]}</span>
-                </div>
-              </div>
-            </div>
+            <AnimatePresence>
+              {showAdvancedSettings && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-3 pt-2 overflow-hidden"
+                >
+                  <div className="space-y-3 p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/80">
+                    <div className="space-y-1">
+                      <label htmlFor="material-select" className="text-xs font-semibold text-white block">
+                        Material
+                      </label>
+                      <select
+                        id="material-select"
+                        value={scenarioA.material}
+                        onChange={(e) => {
+                          const updated = { ...scenarioA, material: e.target.value as MaterialFamily };
+                          setScenarioA(updated);
+                          updateUrlParams(updated, selectedPresetSlug);
+                        }}
+                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-cyan-400"
+                      >
+                        {MATERIAL_OPTIONS.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-            <div className="space-y-1.5">
-              <label htmlFor="objective-select" className="text-xs font-semibold text-white block">
-                Primary Scientific Investigation Goal
-              </label>
-              <p className="text-[11px] text-slate-400 font-sans leading-normal">
-                Specifies the primary research question used in research scenarios.
-              </p>
-              <select
-                id="objective-select"
-                value={scenarioA.objective}
-                onChange={(e) => {
-                  const updated = { ...scenarioA, objective: e.target.value as ScientificObjective };
-                  setScenarioA(updated);
-                  updateUrlParams(updated, selectedPresetSlug);
-                }}
-                className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-cyan-400"
-              >
-                {OBJECTIVE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label} ({opt.description})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </section>
+                    <div className="space-y-1">
+                      <label htmlFor="objective-select" className="text-xs font-semibold text-white block">
+                        Goal
+                      </label>
+                      <select
+                        id="objective-select"
+                        value={scenarioA.objective}
+                        onChange={(e) => {
+                          const updated = { ...scenarioA, objective: e.target.value as ScientificObjective };
+                          setScenarioA(updated);
+                          updateUrlParams(updated, selectedPresetSlug);
+                        }}
+                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white font-medium text-xs focus:outline-none focus:border-cyan-400"
+                      >
+                        {OBJECTIVE_OPTIONS.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-          {/* Scenario B Controls Panel (When Compare Mode is Active) */}
+          {/* Setup B (when Compare Mode is active) */}
           <AnimatePresence>
             {isCompareMode && (
               <motion.section
@@ -778,23 +809,22 @@ export const SimulatorPage: React.FC = () => {
                 className="space-y-3 p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 overflow-hidden"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-cyan-300 uppercase flex items-center gap-1.5">
-                    <GitCompare className="w-3.5 h-3.5" />
-                    <span>Scenario B (Comparison)</span>
+                  <span className="text-xs font-semibold text-cyan-300 font-sans">
+                    Setup B
                   </span>
                   <button
                     type="button"
                     onClick={() => setShowScenarioBDetails(!showScenarioBDetails)}
-                    className="text-xs text-cyan-400 hover:text-white flex items-center gap-1 font-mono cursor-pointer"
+                    className="text-xs text-cyan-400 hover:text-white flex items-center gap-1 font-sans cursor-pointer"
                   >
-                    <span>{showScenarioBDetails ? 'Collapse Sliders' : 'Expand Sliders'}</span>
+                    <span>{showScenarioBDetails ? 'Hide sliders' : 'Show sliders'}</span>
                     {showScenarioBDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                   </button>
                 </div>
 
                 <div className="space-y-1.5">
                   <label htmlFor="destination-b-select" className="text-xs font-medium text-slate-300 block">
-                    Scenario B Destination
+                    Setup B Location
                   </label>
                   <select
                     id="destination-b-select"
@@ -811,38 +841,63 @@ export const SimulatorPage: React.FC = () => {
                 </div>
 
                 {showScenarioBDetails && (
-                  <div className="space-y-2 pt-2 border-t border-cyan-900/50">
+                  <div className="space-y-2.5 pt-2 border-t border-cyan-900/50">
                     <SyncedSliderInput
                       id="oxygen-slider-b"
-                      label="O₂ (Scenario B)"
+                      label="Oxygen (B)"
                       unit="%"
                       min={15.0}
                       max={40.0}
                       step={0.1}
                       value={scenarioB.oxygen_pct ?? 21.0}
                       hint="Oxygen must be 15–40%"
+                      statusText={
+                        (scenarioB.oxygen_pct ?? 21.0) < TESTED_O2_MIN || (scenarioB.oxygen_pct ?? 21.0) > TESTED_O2_MAX
+                          ? `Beyond NASA tests (tested ${TESTED_O2_MIN.toFixed(1)}–${TESTED_O2_MAX.toFixed(1)}%)`
+                          : 'Within NASA tests'
+                      }
+                      statusType={
+                        (scenarioB.oxygen_pct ?? 21.0) < TESTED_O2_MIN || (scenarioB.oxygen_pct ?? 21.0) > TESTED_O2_MAX
+                          ? 'amber'
+                          : 'cyan'
+                      }
+                      tooltip="Normal cabin: 21–34%"
                       onChange={(val) => setScenarioB((prev) => ({ ...prev, oxygen_pct: val }))}
                     />
                     <SyncedSliderInput
                       id="pressure-slider-b"
-                      label="Pressure (Scenario B)"
+                      label="Air pressure (B)"
                       unit="kPa"
                       min={30.0}
                       max={120.0}
                       step={0.5}
                       value={scenarioB.pressure_kpa ?? 101.3}
                       hint="Pressure must be 30–120 kPa"
+                      statusText="Only changes how the flame looks. NASA didn't record it."
+                      statusType="slate"
+                      tooltip="Normal cabin: 56–101.3 kPa"
                       onChange={(val) => setScenarioB((prev) => ({ ...prev, pressure_kpa: val }))}
                     />
                     <SyncedSliderInput
                       id="airflow-slider-b"
-                      label="Airflow (Scenario B)"
+                      label="Fan speed (B)"
                       unit="cm/s"
                       min={0.0}
                       max={30.0}
                       step={0.5}
                       value={scenarioB.airflow_cm_s ?? 5.0}
                       hint="Airflow must be 0–30 cm/s"
+                      statusText={
+                        (scenarioB.airflow_cm_s ?? 5.0) < TESTED_FLOW_MIN || (scenarioB.airflow_cm_s ?? 5.0) > TESTED_FLOW_MAX
+                          ? `Beyond NASA tests (tested ${TESTED_FLOW_MIN.toFixed(1)}–${TESTED_FLOW_MAX.toFixed(1)} cm/s)`
+                          : 'Within NASA tests'
+                      }
+                      statusType={
+                        (scenarioB.airflow_cm_s ?? 5.0) < TESTED_FLOW_MIN || (scenarioB.airflow_cm_s ?? 5.0) > TESTED_FLOW_MAX
+                          ? 'amber'
+                          : 'cyan'
+                      }
+                      tooltip="Normal cabin: 5–20 cm/s"
                       onChange={(val) => setScenarioB((prev) => ({ ...prev, airflow_cm_s: val }))}
                     />
                   </div>
@@ -850,148 +905,88 @@ export const SimulatorPage: React.FC = () => {
               </motion.section>
             )}
           </AnimatePresence>
-
-          {/* Contextual Gravity Transfer Warning & Engineering Notice */}
-          <div className="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400 space-y-2">
-            {activePresetA.gravity_value_g && activePresetA.gravity_value_g > 0 ? (
-              <div className="flex items-start gap-2 text-amber-300">
-                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-[11px] leading-relaxed">
-                  <strong>Gravity Transfer Warning:</strong> All NASA flight datasets (Saffire, BASS-II) are 0g <Term term="microgravity">microgravity</Term>.
-                  Comparing to {activePresetA.display_name.split('(')[0]} ({activePresetA.gravity_value_g}g) carries a gravity warning because partial <Term term="buoyancy">buoyant convection</Term> re-emerges.
-                </p>
-              </div>
-            ) : (
-              <div className="flex items-start gap-2 text-emerald-400">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <p className="text-[11px] leading-relaxed">
-                  <strong>Zero-Buoyancy Flight Match:</strong> Orbital conditions directly match ISS and Cygnus <Term term="microgravity">microgravity</Term> flight tests without buoyancy extrapolation.
-                </p>
-              </div>
-            )}
-          </div>
         </div>
 
         {/* =================================================================== */}
-        {/* RIGHT COLUMN: Visualizations & Analysis Evidence Results (7 cols)   */}
+        {/* RIGHT COLUMN: Section 2 & Section 3 (7 cols on Desktop)             */}
         {/* =================================================================== */}
         <div className="lg:col-span-7 space-y-6">
-          {/* Top Status */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Badge variant="strong" size="xs">
-                REAL DATA ENGINE
-              </Badge>
-              <span className="text-xs font-mono text-slate-400">
-                132 Usable NASA Flight Runs
-              </span>
-            </div>
-            <span className="text-xs font-mono text-cyan-400">
-              Live Matcher Active
-            </span>
-          </div>
+          {/* SECTION 2: See the flame */}
+          <div id="stage-2" className="space-y-3 scroll-mt-28">
+            <h2 className="text-xl font-semibold text-white font-sans">
+              2. See the flame
+            </h2>
 
-          {/* Desktop 3D Morphing Flame Visualization (Single or Compare Mode) */}
-          {isDesktop && (
-            <div className="space-y-4">
-              {!isCompareMode ? (
+            <div id="tour-step-canvas" className="space-y-2">
+              <div className="sticky top-[68px] lg:static z-20">
                 <EvidenceGuidedVisualization
                   scenario={scenarioA}
-                  comparableCount={matchResult.total_evaluated}
-                  label="Scenario A · Illustrative Flame Regime"
+                  label={isCompareMode ? 'Setup A vs Setup B' : undefined}
                   destination={selectedPresetSlug}
+                  compareScenario={isCompareMode ? scenarioB : undefined}
+                  compareDestination={isCompareMode ? selectedPresetSlugB : undefined}
                 />
-              ) : (
-                <div className="space-y-4">
-                  <EvidenceGuidedVisualization
-                    scenario={scenarioA}
-                    compareScenario={scenarioB}
-                    comparableCount={matchResult.total_evaluated}
-                    label="Compare Mode · Scenario A (Left) vs Scenario B (Right)"
-                    destination={selectedPresetSlug}
-                    compareDestination={selectedPresetSlugB}
-                  />
+              </div>
 
-                  {/* Compare Mode Side-by-Side Delta Summary */}
-                  <Card variant="glass" padding="md" className="border-cyan-500/30 space-y-3">
-                    <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-cyan-300 font-semibold flex items-center gap-1.5">
-                        <GitCompare className="w-4 h-4 text-cyan-400" />
-                        <span>Behavior Difference Summary</span>
-                      </span>
-                      <Badge variant="strong" size="xs">
-                        A vs B Comparison
-                      </Badge>
-                    </div>
-
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {behaviorDifferenceSummary}
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800 text-[11px] font-mono">
-                      <div className="p-2 rounded bg-black/40">
-                        <span className="text-slate-400 block text-[10px]">O₂ Concentration</span>
-                        <span className="text-white font-bold">{scenarioA.oxygen_pct}%</span>
-                        <span className="text-cyan-400 ml-1.5">vs {scenarioB.oxygen_pct}%</span>
-                      </div>
-                      <div className="p-2 rounded bg-black/40">
-                        <span className="text-slate-400 block text-[10px]">Gravity Field</span>
-                        <span className="text-white font-bold">{activePresetA.gravity_value_g ?? '0'}g</span>
-                        <span className="text-cyan-400 ml-1.5">vs {scenarioB.gravity_environment?.replace(/partial_gravity_/g, '') || '0g'}</span>
-                      </div>
-                      <div className="p-2 rounded bg-black/40">
-                        <span className="text-slate-400 block text-[10px]">Ventilation Flow</span>
-                        <span className="text-white font-bold">{scenarioA.airflow_cm_s} cm/s</span>
-                        <span className="text-cyan-400 ml-1.5">vs {scenarioB.airflow_cm_s} cm/s</span>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
+              {/* Compare Mode Side-by-Side Summary */}
+              {isCompareMode && (
+                <Card variant="glass" padding="md" className="border-cyan-500/30 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-sans">
+                    <span className="text-cyan-300 font-semibold flex items-center gap-1.5">
+                      <GitCompare className="w-4 h-4 text-cyan-400" />
+                      <span>Setup difference</span>
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                    {behaviorDifferenceSummary}
+                  </p>
+                </Card>
               )}
-            </div>
-          )}
 
-          {/* Simple NASA Result Panel (Step 2) */}
-          <section
-            id="tour-step-evidence"
-            className={`transition-all duration-300 ${
-              tourStep === 2 ? 'ring-2 ring-cyan-400/80 rounded-2xl p-1 bg-cyan-950/20' : ''
-            }`}
-          >
-            <SimpleNasaResultPanel
-              matchResult={matchResult}
-              scenario={solidScenarioA}
-              activePresetSlug={selectedPresetSlug}
-              onExportBrief={() => setIsBriefOpen(true)}
-            />
-          </section>
+              {/* Flame summary sentence (max 20 words) */}
+              <p className="text-sm font-medium text-slate-200 font-sans leading-relaxed pt-1">
+                {plainFlameSummary}
+              </p>
 
-          {/* Deepen Your Investigation Footer Card */}
-          <section className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-[#0F1626] border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="space-y-1 text-center sm:text-left">
-              <h4 className="text-sm font-bold text-white font-['Space_Grotesk',sans-serif]">
-                Deepen Your Investigation
-              </h4>
-              <p className="text-xs text-slate-400">
-                Ask targeted questions with citations or explore full flight experiment datasets.
+              {/* Small caption below that */}
+              <p className="text-xs text-slate-400 font-sans">
+                Illustration, not a prediction.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Button
-                variant="primary"
-                size="sm"
-                icon={<Sparkles className="w-4 h-4" />}
+          </div>
+
+          {/* SECTION 3: What NASA has tested */}
+          <div id="stage-3" className="space-y-3 scroll-mt-28">
+            <h2 className="text-xl font-semibold text-white font-sans">
+              3. What NASA has tested
+            </h2>
+
+            <section id="tour-step-evidence">
+              <SimpleNasaResultPanel
+                matchResult={matchResult}
+                scenario={solidScenarioA}
+                activePresetSlug={selectedPresetSlug}
+              />
+            </section>
+
+            {/* Plain links: Ask a question · Browse all NASA tests */}
+            <div className="flex items-center gap-4 text-xs text-slate-400 pt-1 font-sans">
+              <button
+                type="button"
                 onClick={() => openDrawer()}
+                className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 cursor-pointer font-medium"
               >
-                Ask IGNIS AI
-              </Button>
-              <Link to="/experiments">
-                <Button variant="outline" size="sm">
-                  Flight Data
-                </Button>
+                Ask a question
+              </button>
+              <span>·</span>
+              <Link
+                to="/experiments"
+                className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 font-medium"
+              >
+                Browse all NASA tests
               </Link>
             </div>
-          </section>
+          </div>
         </div>
       </div>
 

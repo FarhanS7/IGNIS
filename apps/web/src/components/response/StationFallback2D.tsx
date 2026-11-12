@@ -7,6 +7,12 @@ export interface StationFallback2DProps {
   timeline: Timeline;
   frameState: TimelineFrameState;
   t: number;
+  selectedZoneId?: string;
+  onSelectZone?: (zoneId: string) => void;
+  userAzimuthOffset?: number;
+  userElevationOffset?: number;
+  userZoomOffset?: number;
+  layers?: any;
 }
 
 export const StationFallback2D: React.FC<StationFallback2DProps> = ({
@@ -14,6 +20,8 @@ export const StationFallback2D: React.FC<StationFallback2DProps> = ({
   timeline,
   frameState,
   t,
+  selectedZoneId,
+  onSelectZone,
 }) => {
   const zones = habitat.zones;
   const zoneCount = zones.length;
@@ -83,6 +91,7 @@ export const StationFallback2D: React.FC<StationFallback2DProps> = ({
           const co = series?.coPpm[stepIdx] ?? 0;
           const isAlarmed = obs >= 0.5 || co >= 15.0;
           const isOrigin = zone.id === originZoneId;
+          const isSelected = zone.id === selectedZoneId;
 
           // Border color: nominal cyan, advisory amber, alarm red
           let borderColor = '#3ad7ff';
@@ -111,7 +120,20 @@ export const StationFallback2D: React.FC<StationFallback2DProps> = ({
           const ductHeight = 24;
 
           return (
-            <g key={zone.id}>
+            <g
+              key={zone.id}
+              onClick={() => onSelectZone?.(zone.id)}
+              className="cursor-pointer"
+              tabIndex={0}
+              role="button"
+              aria-label={`Inspect ${zone.name}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onSelectZone?.(zone.id);
+                }
+              }}
+            >
               {/* Ventilation Duct to next module */}
               {hasNext && (
                 <g>
@@ -159,10 +181,26 @@ export const StationFallback2D: React.FC<StationFallback2DProps> = ({
                 height={modHeight}
                 rx="14"
                 fill={fillColor}
-                stroke={borderColor}
-                strokeWidth={isOrigin && isAlarmed ? 2.5 : 1.5}
-                filter={isAlarmed ? 'url(#glowFilter)' : undefined}
+                stroke={isSelected ? '#ffffff' : borderColor}
+                strokeWidth={isSelected ? 3.0 : isOrigin && isAlarmed ? 2.5 : 1.5}
+                filter={isAlarmed || isSelected ? 'url(#glowFilter)' : undefined}
               />
+
+              {/* Selection Halo Ring */}
+              {isSelected && (
+                <rect
+                  x={x - 4}
+                  y={y - 4}
+                  width={modWidth + 8}
+                  height={modHeight + 8}
+                  rx="18"
+                  fill="none"
+                  stroke="#3ad7ff"
+                  strokeWidth="1.5"
+                  strokeDasharray="6 4"
+                  opacity="0.85"
+                />
+              )}
 
               {/* Equipment Rack outlines inside module */}
               <rect
@@ -188,85 +226,58 @@ export const StationFallback2D: React.FC<StationFallback2DProps> = ({
                 opacity="0.4"
               />
 
-              {/* Sensor Node on wall */}
-              <circle
-                cx={x + modWidth / 2}
-                cy={y + 12}
-                r={isAlarmed ? 6 : 4}
-                fill={borderColor}
-                filter="url(#glowFilter)"
-              />
-
-              {/* Smoke Cloud (Zero upward buoyancy: stays centered/radial) */}
-              {obs > 0.1 && (
-                <ellipse
+              {/* Smoke Cloud representation */}
+              {obs > 0.05 && (
+                <circle
                   cx={x + modWidth / 2}
-                  cy={y + modHeight / 2 + 10}
-                  rx={Math.min(75, 25 + obs * 30)}
-                  ry={Math.min(70, 25 + obs * 28)}
+                  cy={y + modHeight / 2}
+                  r={Math.min(modWidth / 2 - 10, 20 + obs * 80)}
                   fill="url(#smokeCloud2D)"
-                  opacity={Math.min(0.85, obs / 2.2)}
+                  opacity={Math.min(0.85, obs * 0.9)}
                 />
               )}
 
-              {/* Microgravity Spherical Flame (at origin zone only) */}
-              {isOrigin && !frameState.isFireExtinguished && t > 0 && (
+              {/* Microgravity Spherical Diffusion Flame (Origin only) */}
+              {isOrigin && !frameState.isFireExtinguished && t > 0.5 && (
                 <circle
-                  cx={x + modWidth / 2}
-                  cy={y + modHeight / 2 + 15}
-                  r={Math.max(5, Math.min(32, 12 + Math.sqrt(t) * 3))}
+                  cx={x + modWidth / 2 - 15}
+                  cy={y + modHeight / 2 + 10}
+                  r={frameState.isSuppressionActive ? 12 : 24}
                   fill="url(#microgFlame2D)"
                   filter="url(#glowFilter)"
                 />
               )}
 
-              {/* Suppression Mist Discharge */}
-              {isOrigin && frameState.isSuppressionActive && (
-                <rect
-                  x={x + 4}
-                  y={y + 4}
-                  width={modWidth - 8}
-                  height={modHeight - 8}
-                  rx="10"
-                  fill="#38e4a4"
-                  opacity="0.25"
-                />
-              )}
-
-              {/* Floating Zone Label (max 2 words) */}
+              {/* Module Name Label */}
+              <rect
+                x={x + 10}
+                y={y - 28}
+                width={modWidth - 20}
+                height="22"
+                rx="4"
+                fill="#02050a"
+                stroke="#1e324d"
+                strokeWidth="1"
+              />
               <text
                 x={x + modWidth / 2}
-                y={y - 12}
+                y={y - 14}
+                fill={isSelected ? '#3ad7ff' : '#d8e5f2'}
+                fontSize="11"
+                fontFamily="sans-serif"
+                fontWeight="bold"
                 textAnchor="middle"
-                fill="#b9c7d8"
-                fontSize="12"
-                fontWeight="600"
-                fontFamily="system-ui, sans-serif"
-                letterSpacing="0.08em"
+                dominantBaseline="middle"
+                letterSpacing="0.05em"
               >
-                {shortLabel}
-              </text>
-
-              {/* Live Metric Readout */}
-              <text
-                x={x + modWidth / 2}
-                y={y + modHeight - 12}
-                textAnchor="middle"
-                fill="#8a9bb1"
-                fontSize="10"
-                fontFamily="monospace"
-              >
-                {obs.toFixed(2)} %/m · {co.toFixed(0)} ppm
+                {shortLabel.toUpperCase()}
               </text>
             </g>
           );
         })}
       </svg>
-
-      <div className="text-[10px] font-mono text-slate-500 mt-1">
-        2D Microgravity Fallback View · Reduced Motion / Canvas Fallback
-      </div>
     </div>
   );
 };
 
+export default StationFallback2D;

@@ -115,24 +115,24 @@ export const MiniEnvelopePlot: React.FC<MiniEnvelopePlotProps> = ({
           30
         </text>
 
-        {/* Max tested O2 dashed line (30.7%) */}
+        {/* Max tested O2 dashed line (22.2%) */}
         <line
-          x1={scaleX(30.7)}
+          x1={scaleX(22.2)}
           y1={padTop}
-          x2={scaleX(30.7)}
+          x2={scaleX(22.2)}
           y2={height - padBottom}
           stroke="rgba(239, 68, 68, 0.4)"
           strokeDasharray="3 3"
           strokeWidth="1"
         />
         <text
-          x={scaleX(30.7) + 2}
+          x={scaleX(22.2) + 2}
           y={padTop + 10}
           fill="rgba(239, 68, 68, 0.7)"
           fontSize="7"
           fontFamily="monospace"
         >
-          max 30.7%
+          max 22.2%
         </text>
 
         {/* Tested flight runs (dots) */}

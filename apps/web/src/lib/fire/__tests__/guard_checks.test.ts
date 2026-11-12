@@ -164,6 +164,34 @@ describe('Step 11 Guard Checks & Safety Integrity', () => {
     );
   });
 
+  it('confirms customer-facing UI displays only audited grouped LOOCV benchmark figures (80.30%, 46.72%, 48.00%)', () => {
+    const aboutPath = path.resolve(webSrcRoot, 'pages/AboutPage.tsx');
+    const resultPanelPath = path.resolve(webSrcRoot, 'components/evidence/SimpleNasaResultPanel.tsx');
+
+    assert.ok(fs.existsSync(aboutPath), 'AboutPage.tsx must exist');
+    assert.ok(fs.existsSync(resultPanelPath), 'SimpleNasaResultPanel.tsx must exist');
+
+    const aboutContent = fs.readFileSync(aboutPath, 'utf8');
+    const resultPanelContent = fs.readFileSync(resultPanelPath, 'utf8');
+
+    // Confirm verified grouped LOOCV metrics appear in AboutPage
+    assert.ok(aboutContent.includes('80.30% (106/132)'), 'AboutPage must display verified overall accuracy 80.30% (106/132)');
+    assert.ok(aboutContent.includes('46.72%'), 'AboutPage must display verified balanced accuracy 46.72%');
+    assert.ok(aboutContent.includes('48.00% (12/25)'), 'AboutPage must display verified extinction recall 48.00% (12/25)');
+    assert.ok(aboutContent.includes('110 independent'), 'AboutPage must cite 110 independent hardware groups');
+    assert.ok(aboutContent.includes('p=1.0000') || aboutContent.includes('p = 1.0000'), 'AboutPage must cite p=1.0000');
+
+    // Confirm verified grouped LOOCV metrics appear in SimpleNasaResultPanel
+    assert.ok(resultPanelContent.includes('80.30% overall accuracy'), 'SimpleNasaResultPanel must display 80.30% overall accuracy');
+    assert.ok(resultPanelContent.includes('46.72% balanced accuracy'), 'SimpleNasaResultPanel must display 46.72% balanced accuracy');
+    assert.ok(resultPanelContent.includes('48.00% extinction recall'), 'SimpleNasaResultPanel must display 48.00% extinction recall');
+    assert.ok(resultPanelContent.includes('110 independent hardware groups'), 'SimpleNasaResultPanel must cite 110 independent hardware groups');
+
+    // Confirm retracted figures do not appear in SimpleNasaResultPanel
+    assert.ok(!resultPanelContent.includes('77.5%'), 'SimpleNasaResultPanel must not contain retracted 77.5%');
+    assert.ok(!resultPanelContent.includes('84.4%'), 'SimpleNasaResultPanel must not contain retracted 84.4%');
+  });
+
   it('fails if any literature: tag in sim_params or code is missing from verified_sources.ts', () => {
     for (const [key, param] of Object.entries(SIM_PARAMS)) {
       if (param.tag.startsWith('literature:')) {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Info } from 'lucide-react';
 
 export interface SyncedInputProps {
   id: string;
@@ -9,8 +10,9 @@ export interface SyncedInputProps {
   step: number;
   value: number;
   hint: string;
-  helperText?: string;
-  icon?: React.ReactNode;
+  statusText?: string;
+  statusType?: 'cyan' | 'amber' | 'slate';
+  tooltip?: string;
   onChange: (val: number) => void;
 }
 
@@ -23,8 +25,9 @@ export const SyncedSliderInput: React.FC<SyncedInputProps> = ({
   step,
   value,
   hint,
-  helperText,
-  icon,
+  statusText,
+  statusType = 'slate',
+  tooltip,
   onChange,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
@@ -80,12 +83,21 @@ export const SyncedSliderInput: React.FC<SyncedInputProps> = ({
   };
 
   return (
-    <div className="space-y-1.5 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+    <div className="space-y-1.5 p-3 rounded-xl bg-slate-900/80 border border-slate-800">
       <div className="flex items-center justify-between gap-2">
-        <label htmlFor={id} className="text-xs font-semibold text-white flex items-center gap-1.5">
-          {icon}
-          <span>{label}</span>
-        </label>
+        <div className="flex items-center gap-1.5">
+          <label htmlFor={id} className="text-sm font-medium text-white">
+            {label}
+          </label>
+          {tooltip && (
+            <span className="group relative inline-flex items-center cursor-help" tabIndex={0} aria-label={tooltip}>
+              <Info className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-200 transition-colors" />
+              <span className="pointer-events-none absolute left-0 bottom-full mb-1.5 hidden w-max max-w-xs rounded-md bg-slate-950 px-2 py-1 text-xs text-slate-300 shadow-md border border-slate-800 group-hover:block group-focus:block z-30 font-sans">
+                {tooltip}
+              </span>
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-1">
           <input
             id={id}
@@ -116,21 +128,25 @@ export const SyncedSliderInput: React.FC<SyncedInputProps> = ({
         aria-label={`${label} slider`}
       />
 
-      {helperText && (
-        <p className="text-[11px] text-slate-400 font-sans leading-normal">
-          {helperText}
-        </p>
-      )}
-
-      <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+      <div className="flex items-center justify-between text-xs font-mono text-slate-400">
         <span>{min} {unit}</span>
-        {errorHint ? (
-          <span className="text-amber-400 font-semibold">{errorHint}</span>
-        ) : (
-          <span className="text-slate-400">Target Range</span>
-        )}
+        {errorHint && <span className="text-amber-400 font-sans text-xs">{errorHint}</span>}
         <span>{max} {unit}</span>
       </div>
+
+      {statusText && (
+        <div
+          className={`text-xs font-sans ${
+            statusType === 'cyan'
+              ? 'text-cyan-400 font-medium'
+              : statusType === 'amber'
+              ? 'text-amber-400 font-medium'
+              : 'text-slate-400'
+          }`}
+        >
+          {statusText}
+        </div>
+      )}
     </div>
   );
 };

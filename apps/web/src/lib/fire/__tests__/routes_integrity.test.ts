@@ -20,6 +20,7 @@ test('Route Integrity & Additive Safety', async (t) => {
     '/evidence',
     '/experiments',
     '/explorer',
+    '/stories',
     '/explore',
     '/stories/v2',
     '/ask',

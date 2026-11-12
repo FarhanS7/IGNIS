@@ -212,7 +212,7 @@ export const AboutPage: React.FC = () => {
           </h2>
         </div>
         <p className="text-sm text-slate-300 leading-relaxed">
-          To evaluate whether multi-factor similarity matching provides predictive utility over simple rules, we conducted grouped leave-one-out cross-validation (Grouped LOOCV) grouped by fuel material and sample geometry (110 independent test groups across 132 usable solid runs), benchmarked against a baseline single-parameter oxygen threshold rule:
+          To evaluate whether multi-factor similarity matching provides predictive utility over simple rules, we conducted grouped leave-one-group-out cross-validation (Grouped LOOCV) grouped strictly by physical sample hardware (110 independent test groups across 132 usable solid runs), benchmarked against a baseline single-parameter oxygen threshold rule:
         </p>
 
         <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-900/40">
@@ -230,7 +230,7 @@ export const AboutPage: React.FC = () => {
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Overall Accuracy</td>
                 <td className="p-3 sm:p-4 text-cyan-400">80.30% (106/132)</td>
                 <td className="p-3 sm:p-4 text-slate-300">79.55% (105/132)</td>
-                <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.000)</td>
+                <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.0000)</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Balanced Accuracy</td>

@@ -84,14 +84,14 @@ test('validateChapterConfig - validates Chapter 1 against NASA fixtures', () => 
   assert.equal(result.valid, true, `Chapter 1 validation failed with errors: ${result.errors.join('; ')}`);
   assert.equal(result.errors.length, 0);
 
-  // Verify all 7 beat types are present in Chapter 1
+  // Verify 4 to 6 beats and core beat types are present in Chapter 1
+  assert.ok(chapter1.beats.length >= 4 && chapter1.beats.length <= 6);
   const types = chapter1.beats.map((b) => b.type);
   assert.ok(types.includes('hook'));
   assert.ok(types.includes('predict'));
   assert.ok(types.includes('reveal'));
   assert.ok(types.includes('why'));
   assert.ok(types.includes('check'));
-  assert.ok(types.includes('real-world'));
   assert.ok(types.includes('takeaway'));
 });
 

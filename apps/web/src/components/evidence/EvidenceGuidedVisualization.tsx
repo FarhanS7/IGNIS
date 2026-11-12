@@ -1,27 +1,26 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Eye, EyeOff, Info, Wind } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { Card } from '../common/Card';
-import { Badge } from '../common/Badge';
 import type { ScenarioInput } from '../../types/api';
 import { deriveFlameParams, type FlameParams } from '../../visuals/flameParams';
 import { useWebGLSupport } from '../../visuals/useWebGLSupport';
 import { WebGLErrorBoundary } from '../../visuals/WebGLErrorBoundary';
 import { DestinationBackdrop } from '../../visuals/DestinationBackdrop';
+import { getPlainFlameShape } from '../../visuals/flameShape';
 
 // Lazy-load Three.js 3D flame scene to prevent bundle bloat (FR-EGV-005)
 const LazyFlameScene = lazy(() => import('../../visuals/FlameScene'));
 
 interface Props {
   scenario: ScenarioInput;
-  comparableCount: number;
+  comparableCount?: number;
   label?: string;
   compact?: boolean;
   destination?: string;
   compareScenario?: ScenarioInput;
   compareDestination?: string;
 }
-
 
 interface SvgFlameFallbackProps {
   scenario: ScenarioInput;
@@ -45,7 +44,6 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
   compact,
   shouldReduceMotion,
   airflow,
-  o2,
   flameAriaLabel,
 }) => {
   const isMicrogravity = flame.gravityG === 0;
@@ -57,7 +55,7 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
 
   return (
     <div
-      className={`relative w-full ${compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'} bg-[#05070E] flex items-center justify-center overflow-hidden`}
+      className={`relative w-full h-40 sm:h-48 lg:h-72 lg:sm:h-80 max-h-[180px] lg:max-h-none bg-[#05070E] flex items-center justify-center overflow-hidden`}
     >
       {/* Destination-reactive visual backdrop with 500ms crossfade */}
       <DestinationBackdrop
@@ -65,17 +63,14 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
         gravityEnvironment={scenario.gravity_environment}
       />
 
-      {/* Airflow velocity vector indicator */}
-      <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/70 border border-slate-800 text-xs font-mono text-cyan-300">
-        <Wind className="w-3.5 h-3.5 text-cyan-400" />
-        <span>Airflow: {airflow} cm/s →</span>
-      </div>
-
-      {/* Regime Badge */}
-      <div className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-lg bg-black/70 border border-slate-800 text-xs font-mono text-slate-300">
-        <span>Regime: </span>
-        <span className="text-orange-400 font-semibold">{flame.regimeLabel}</span>
-      </div>
+      {/* Single top-left label (desktop only; hidden on compact/mobile) */}
+      {!compact && (
+        <div className="hidden lg:flex absolute top-4 left-4 z-10 items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/70 border border-slate-800 text-xs font-sans text-slate-300 pointer-events-none shadow-xs">
+          <span>
+            Flame shape: <span className="text-orange-400 font-semibold">{getPlainFlameShape(flame.gravityG)}</span> · Fan: {airflow} cm/s →
+          </span>
+        </div>
+      )}
 
       {/* Animated SVG Flame Geometry */}
       <svg
@@ -131,9 +126,9 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
               shouldReduceMotion
                 ? undefined
                 : {
-                    scale: [1, 1.04, 0.98, 1],
-                    opacity: [0.6, 0.8, 0.6],
-                  }
+                  scale: [1, 1.04, 0.98, 1],
+                  opacity: [0.6, 0.8, 0.6],
+                }
             }
             transition={{
               duration: 4,
@@ -154,9 +149,9 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
             shouldReduceMotion
               ? undefined
               : {
-                  scale: [1, 1.03, 0.97, 1],
-                  rx: [flameBaseRadius, flameBaseRadius * 1.02, flameBaseRadius * 0.98, flameBaseRadius],
-                }
+                scale: [1, 1.03, 0.97, 1],
+                rx: [flameBaseRadius, flameBaseRadius * 1.02, flameBaseRadius * 0.98, flameBaseRadius],
+              }
           }
           transition={{
             duration: 2.5,
@@ -176,9 +171,9 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
             shouldReduceMotion
               ? undefined
               : {
-                  scale: [0.95, 1.05, 0.98, 0.95],
-                  opacity: [0.85, 0.95, 0.85],
-                }
+                scale: [0.95, 1.05, 0.98, 0.95],
+                opacity: [0.85, 0.95, 0.85],
+              }
           }
           transition={{
             duration: 1.8,
@@ -196,20 +191,12 @@ const SvgFlameFallback: React.FC<SvgFlameFallbackProps> = ({
           className={shouldReduceMotion ? '' : 'animate-ping'}
         />
       </svg>
-
-      {/* Bottom Telemetry Legend */}
-      <div className="absolute bottom-3 inset-x-4 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 border-t border-slate-800/80 pt-2">
-        <span>O₂: {o2}% ({o2 > 21 ? 'Accelerated Growth' : 'Nominal Flux'})</span>
-        <span>Pressure: {scenario.pressure_kpa ?? 101.3} kPa</span>
-        <span>Gravity: {scenario.gravity_environment ?? '0g'}</span>
-      </div>
     </div>
   );
 };
 
 export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
   scenario,
-  comparableCount,
   label,
   compact = false,
   destination,
@@ -230,14 +217,13 @@ export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
   const gravityDescription = flame.gravityG === 0
     ? 'microgravity'
     : flame.gravityG <= 0.16
-    ? 'lunar partial gravity'
-    : flame.gravityG <= 0.38
-    ? 'martian partial gravity'
-    : 'terrestrial 1g';
+      ? 'lunar partial gravity'
+      : flame.gravityG <= 0.38
+        ? 'martian partial gravity'
+        : 'terrestrial 1g';
 
-  const flameAriaLabel = `Predicted flame shape: ${flame.shapeDescription}, ${flame.coreDescription}, ${
-    o2 < 19 ? 'low oxygen' : o2 > 28 ? 'elevated oxygen' : 'nominal oxygen'
-  } ${gravityDescription} scenario with ${o2}% O2, ${scenario.pressure_kpa ?? 101.3} kPa pressure, and ${airflow} cm/s airflow on ${scenario.material} sample`;
+  const flameAriaLabel = `Predicted flame shape: ${flame.shapeDescription}, ${flame.coreDescription}, ${o2 < 19 ? 'low oxygen' : o2 > 28 ? 'elevated oxygen' : 'nominal oxygen'
+    } ${gravityDescription} scenario with ${o2}% O2, ${scenario.pressure_kpa ?? 101.3} kPa pressure, and ${airflow} cm/s airflow on ${scenario.material} sample`;
 
   const fallbackView = (
     <SvgFlameFallback
@@ -254,44 +240,19 @@ export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
 
   return (
     <Card variant="glass" padding="none" className="border-sky-500/20 overflow-hidden bg-[rgba(10,20,40,0.88)] backdrop-blur-none">
-      {/* Top Banner with Controls and Mandatory FR-EGV-002 Label */}
-      <div className="p-4 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <Badge variant="strong" size="xs">
-            {label ? label : 'EVIDENCE-GUIDED VIZ (FR-EGV-001)'}
-          </Badge>
-          <span className="text-xs font-semibold text-white font-['Space_Grotesk',sans-serif]">
-            Physical Regime Visualization
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* FR-EGV-004: Toggle display */}
-          <button
-            type="button"
-            onClick={() => setIsVisible(!isVisible)}
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
-          >
-            {isVisible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-            <span>{isVisible ? 'Minimize Canvas' : 'Expand Canvas'}</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Mandatory Persistent Non-Simulation Label (FR-EGV-002) */}
-      <div className="px-4 py-2 bg-black/60 border-b border-slate-800/80 flex items-center justify-between gap-2 text-[11px] text-amber-300">
-        <div className="flex items-center gap-1.5 font-mono">
-          <Info className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-          <span className="font-semibold uppercase tracking-wider">Scientific Disclaimer:</span>
-          <span className="text-slate-300">
-            Illustrative evidence-guided visualization — not a validated physical simulation (PRD v1.1 §16.6)
-          </span>
-        </div>
-        <span className="text-slate-400 font-mono text-[11px] hidden sm:inline">
-          {comparableCount > 0
-            ? `Based on ${comparableCount} comparable NASA flight runs`
-            : 'No directly comparable flight runs; showing nearest matches.'}
+      {/* Top Banner with Toggle display */}
+      <div className="px-3.5 py-2 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between gap-2.5">
+        <span className="text-xs font-sans text-slate-300">
+          {label || ''}
         </span>
+        <button
+          type="button"
+          onClick={() => setIsVisible(!isVisible)}
+          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer ml-auto"
+        >
+          {isVisible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+          <span>{isVisible ? 'Hide flame' : 'Show flame'}</span>
+        </button>
       </div>
 
       {/* Interactive Visual Canvas */}
@@ -312,13 +273,6 @@ export const EvidenceGuidedVisualization: React.FC<Props> = React.memo(({
           ) : (
             fallbackView
           )}
-
-          {/* Mandatory caption: Illustrative rendering driven by scenario parameters, not a CFD simulation */}
-          <div className="px-4 py-2 bg-black/80 border-t border-slate-800/80 text-center">
-            <p className="text-[11px] text-slate-400 font-mono">
-              Illustrative visualization, not a physics simulation.
-            </p>
-          </div>
         </>
       )}
     </Card>

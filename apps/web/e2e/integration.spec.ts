@@ -12,7 +12,7 @@ test.describe('Additive Integration & Cross-Page Navigation', () => {
     await page.waitForURL(/\/response/);
     expect(page.url()).toContain('/response');
 
-    const header = page.getByRole('heading', { level: 1, name: /Fire Response Console/i });
+    const header = page.getByRole('heading', { level: 1, name: /Fire in space/i });
     await expect(header).toBeVisible();
   });
 

@@ -1,25 +1,31 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import type { FuelType, SequencerMode, SequenceStepId, StepStatus } from '../../lib/fire/types.ts';
+import type { FuelType, SequencerMode } from '../../lib/fire/types.ts';
 import { getHabitatById, getHabitatPresets } from '../../lib/fire/habitat.ts';
 import { useTimeline } from '../../lib/fire/timeline/useTimeline.ts';
-import { Caption } from './Caption.tsx';
 import { StationStage } from './StationStage.tsx';
-import { LocalizationOverlay } from './LocalizationOverlay.tsx';
 import { HoldToConfirmGate } from './HoldToConfirmGate.tsx';
+import { ExplanationDrawer } from './ExplanationDrawer.tsx';
+import { ModuleTelemetryDrawer } from './ModuleTelemetryDrawer.tsx';
+import { DetectorDetailModal, type DetectorArmId } from './DetectorDetailModal.tsx';
+import { OutcomeSummaryModal } from './OutcomeSummaryModal.tsx';
+import { ProofDrawerOverlay } from './ProofDrawerOverlay.tsx';
+import { ClosingCardOverlay } from './ClosingCardOverlay.tsx';
+import { EarthVsOrbitIntro } from './EarthVsOrbitIntro.tsx';
+import { markIntroSeen, resetIntroSeen } from './introStorage.ts';
+import { resolveActiveExplanation } from '../../lib/fire/upgrade/explanationContent.ts';
+import { VisualLayersControl, type VisualLayerPreferences } from './VisualLayersControl.tsx';
+import { IncidentSummaryCard } from './IncidentSummaryCard.tsx';
+import { resolveStoryboardScene } from './sceneStoryboard.ts';
+import { useNarration } from '../../lib/fire/narration/useNarration.ts';
+import { UnifiedNarrationDeck } from './UnifiedNarrationDeck.tsx';
+import { GuidedProgressSequence } from './GuidedProgressSequence.tsx';
+import { DetailsMenuDrawer } from './DetailsMenuDrawer.tsx';
 import {
-  AlertOctagon,
-  CheckCircle2,
-  ChevronDown,
-  ChevronUp,
-  Flame,
   Pause,
   Play,
   RotateCcw,
-  ShieldAlert,
   Sliders,
-  Wind,
-  ZapOff,
 } from 'lucide-react';
 
 export interface StationDemoPageProps {
@@ -27,14 +33,27 @@ export interface StationDemoPageProps {
 }
 
 export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInspect }) => {
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isCaptureMode = searchParams.get('capture') === '1';
+
+  // Experience Mode State: 'guided' (Default, 36s) vs 'explore' (Full Simulation, 100s)
+  const [experienceMode, setExperienceMode] = useState<'guided' | 'explore'>(() => {
+    return searchParams.get('mode') === 'explore' ? 'explore' : 'guided';
+  });
+
+  const duration_s = isCaptureMode ? 90.0 : experienceMode === 'guided' ? 36.0 : 100.0;
+  const crewConfirmDelay_s = experienceMode === 'guided' ? 5.0 : 8.0;
+
+  // Educational Prologue State (activates via ?intro=1 or details menu)
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    return searchParams.get('intro') === '1';
+  });
 
   // Scenario configuration state
   const habitatPresets = useMemo(() => getHabitatPresets(), []);
   const [habitatId, setHabitatId] = useState<string>('iss_like_module');
   const [fuel, setFuel] = useState<FuelType>('cellulose');
   const [mode, setMode] = useState<SequencerMode>('CREWED');
-  const [showScenarioPanel, setShowScenarioPanel] = useState<boolean>(false);
 
   const currentHabitat = useMemo(() => {
     return getHabitatById(habitatId) || habitatPresets[0];
@@ -63,13 +82,124 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
       fuel,
       sourceZoneId,
       mode,
-      duration_s: 100.0,
-      crewConfirmDelay_s: 8.0,
+      duration_s,
+      crewConfirmDelay_s,
     },
     true
   );
 
+  const handleToggleExperienceMode = (newMode: 'guided' | 'explore') => {
+    setExperienceMode(newMode);
+    const newParams = new URLSearchParams(searchParams);
+    if (newMode === 'explore') {
+      newParams.set('mode', 'explore');
+    } else {
+      newParams.delete('mode');
+    }
+    setSearchParams(newParams, { replace: true });
+    restart();
+  };
+
+  // Synchronized Voice Narration & Guided Audio
+  const {
+    activeCue,
+    settings: audioSettings,
+    toggleVoice,
+    toggleSubtitles,
+    setVolume,
+    toggleMute,
+    replayCurrentCue,
+  } = useNarration({
+    timeline,
+    habitat: currentHabitat,
+    t,
+    isPlaying,
+    isGuidedMode: experienceMode === 'guided',
+  });
+
+  // Human Gate State in CREWED Mode
   const [hasConfirmedCrewSuppression, setHasConfirmedCrewSuppression] = useState<boolean>(false);
+
+  // Details Menu & Drawer States
+  const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
+  const [isExplanationDrawerOpen, setIsExplanationDrawerOpen] = useState<boolean>(false);
+  const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
+  const [selectedDetectorArm, setSelectedDetectorArm] = useState<DetectorArmId | null>(null);
+  const [isOutcomeModalOpen, setIsOutcomeModalOpen] = useState<boolean>(false);
+  const [isProofDrawerOpen, setIsProofDrawerOpen] = useState<boolean>(false);
+
+  // Camera Orbit Controls
+  const [userAzimuthOffset, setUserAzimuthOffset] = useState<number>(0);
+  const [userElevationOffset, setUserElevationOffset] = useState<number>(0);
+  const [userZoomOffset, setUserZoomOffset] = useState<number>(0);
+
+  const hasManualCamera = useMemo(() => {
+    return (
+      Math.abs(userAzimuthOffset) > 0.001 ||
+      Math.abs(userElevationOffset) > 0.001 ||
+      Math.abs(userZoomOffset) > 0.001
+    );
+  }, [userAzimuthOffset, userElevationOffset, userZoomOffset]);
+
+  const handleResetCamera = useCallback(() => {
+    setUserAzimuthOffset(0);
+    setUserElevationOffset(0);
+    setUserZoomOffset(0);
+  }, []);
+
+  // Scientific Visual Layers Preferences
+  const [visualLayers, setVisualLayers] = useState<VisualLayerPreferences>({
+    smoke: true,
+    thermal: false,
+    airflow: true,
+    sensors: true,
+  });
+  const [isLayersMenuOpen, setIsLayersMenuOpen] = useState<boolean>(false);
+
+  const handleLayerChange = (key: keyof VisualLayerPreferences, value: boolean) => {
+    setVisualLayers((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const selectedZone = useMemo(() => {
+    if (!selectedZoneId) return null;
+    return currentHabitat.zones.find((z) => z.id === selectedZoneId) || null;
+  }, [currentHabitat, selectedZoneId]);
+
+  const currentScene = useMemo(() => {
+    return resolveStoryboardScene(
+      t,
+      timeline.clocks.cal.alarmTime_s,
+      frameState.isSuppressionArmed,
+      frameState.isSuppressionActive,
+      frameState.isFireExtinguished,
+      experienceMode === 'guided'
+    );
+  }, [
+    t,
+    timeline.clocks.cal.alarmTime_s,
+    frameState.isSuppressionArmed,
+    frameState.isSuppressionActive,
+    frameState.isFireExtinguished,
+    experienceMode,
+  ]);
+
+  const activeExplanation = useMemo(() => {
+    return resolveActiveExplanation(
+      t,
+      frameState.isSuppressionArmed,
+      frameState.isSuppressionActive,
+      frameState.isFireExtinguished,
+      timeline.clocks.cal.alarmTime_s,
+      timeline.clocks.std.alarmTime_s
+    );
+  }, [
+    t,
+    frameState.isSuppressionArmed,
+    frameState.isSuppressionActive,
+    frameState.isFireExtinguished,
+    timeline.clocks.cal.alarmTime_s,
+    timeline.clocks.std.alarmTime_s,
+  ]);
 
   // Auto-pause when reaching suppression armed state in crewed mode
   useEffect(() => {
@@ -78,12 +208,12 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     }
   }, [mode, frameState.isSuppressionArmed, hasConfirmedCrewSuppression, isPlaying, pause]);
 
-  // Reset confirmed flag when scrubbing back before suppression
+  // Reset confirmed flag whenever scrubbing before suppression discharge
   useEffect(() => {
-    if (!frameState.isSuppressionArmed && !frameState.isSuppressionActive && !frameState.isFireExtinguished) {
+    if (!frameState.isSuppressionActive && !frameState.isFireExtinguished) {
       setHasConfirmedCrewSuppression(false);
     }
-  }, [frameState.isSuppressionArmed, frameState.isSuppressionActive, frameState.isFireExtinguished]);
+  }, [frameState.isSuppressionActive, frameState.isFireExtinguished]);
 
   const handleConfirmGate = useCallback(() => {
     setHasConfirmedCrewSuppression(true);
@@ -101,282 +231,190 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     }
   };
 
-  const stageIcons: Record<SequenceStepId, React.ReactNode> = {
-    ALARM: <AlertOctagon className="h-4 w-4" />,
-    REMOVE_POWER: <ZapOff className="h-4 w-4" />,
-    ISOLATE_VENTILATION: <Wind className="h-4 w-4" />,
-    INHIBIT_MAKEUP: <ShieldAlert className="h-4 w-4" />,
-    SUPPRESSION: <Flame className="h-4 w-4" />,
-    POST_FIRE_RECOVERY: <CheckCircle2 className="h-4 w-4" />,
-  };
+  // Plain-English single-sentence current event caption
+  const currentEventCaption = useMemo(() => {
+    const originZone = currentHabitat.zones.find((z) => z.id === timeline.scenario.sourceZoneId);
+    const originName = originZone?.name.replace(/\(.*\)/, '').trim() || 'the station';
 
-  const stageLabels: Record<SequenceStepId, string> = {
-    ALARM: 'Alarm',
-    REMOVE_POWER: 'Power Cut',
-    ISOLATE_VENTILATION: 'Vents Closed',
-    INHIBIT_MAKEUP: 'Inhibit Makeup',
-    SUPPRESSION: 'Suppression',
-    POST_FIRE_RECOVERY: 'Recovery',
-  };
+    if (frameState.isFireExtinguished) {
+      return `Fire out in ${originName}`;
+    }
+    if (frameState.isSuppressionActive) {
+      return `Releasing suppression into ${originName}`;
+    }
+    if (frameState.isSuppressionArmed) {
+      return mode === 'CREWED'
+        ? 'Waiting for crew to confirm'
+        : 'Automatic suppression authorized';
+    }
+    const calAlarm = timeline.clocks.cal.alarmTime_s;
+    if (calAlarm !== null && t >= calAlarm) {
+      return `Source found: ${originName}`;
+    }
+    if (t >= 4.0) {
+      return `Smoke detected in ${originName}`;
+    }
+    return 'Smoke begins spreading through the station';
+  }, [currentHabitat, timeline.scenario.sourceZoneId, frameState, mode, timeline.clocks.cal.alarmTime_s, t]);
 
-  const stageSequence: SequenceStepId[] = [
-    'ALARM',
-    'REMOVE_POWER',
-    'ISOLATE_VENTILATION',
-    'INHIBIT_MAKEUP',
-    'SUPPRESSION',
-    'POST_FIRE_RECOVERY',
-  ];
-
-  // Clock flash triggers at moment of alarm
+  // Lead time difference calculation (honest comparison from active timeline)
   const stdAlarmTime = timeline.clocks.std.alarmTime_s;
   const calAlarmTime = timeline.clocks.cal.alarmTime_s;
-  const mlAlarmTime = timeline.clocks.ml.alarmTime_s;
+  const detectorComparison = useMemo(() => {
+    if (stdAlarmTime === null && calAlarmTime !== null) {
+      return {
+        beforeAlarm: 'Calibrated catches sub-micron fire — Standard misses threshold',
+        afterAlarm: 'Calibrated catches sub-micron fire — Standard still waiting',
+        badge: 'SAME-R catches wire smolder',
+      };
+    }
+    if (stdAlarmTime !== null && calAlarmTime !== null) {
+      const delta = Math.abs(stdAlarmTime - calAlarmTime);
+      const rounded = delta >= 1 ? Math.round(delta).toString() : delta.toFixed(1);
+      if (calAlarmTime < stdAlarmTime) {
+        return {
+          beforeAlarm: `Calibrated detector alarms ~${rounded} s earlier`,
+          afterAlarm: `Calibrated alarms ${rounded} s earlier`,
+          badge: `${rounded} s earlier`,
+        };
+      }
+      if (calAlarmTime > stdAlarmTime) {
+        return {
+          beforeAlarm: `Standard alarms ~${rounded} s earlier; Calibrated waits 6 s to filter dust`,
+          afterAlarm: `Calibrated alarms ${rounded} s later (6 s multi-sensor dust filter)`,
+          badge: `6 s dust-filter lag (+${rounded} s)`,
+        };
+      }
+      return {
+        beforeAlarm: 'Both detectors reach alarm simultaneously',
+        afterAlarm: 'Both detectors alarmed at the same timestamp',
+        badge: 'Synchronous',
+      };
+    }
+    return {
+      beforeAlarm: 'Comparing single-channel optical vs SAME-R calibrated fusion',
+      afterAlarm: timeline.gapText,
+      badge: timeline.gapText,
+    };
+  }, [stdAlarmTime, calAlarmTime, timeline.gapText]);
 
   const isStdFlashing = stdAlarmTime !== null && t >= stdAlarmTime && t < stdAlarmTime + 1.2;
   const isCalFlashing = calAlarmTime !== null && t >= calAlarmTime && t < calAlarmTime + 1.2;
-  const isMlFlashing = mlAlarmTime !== null && t >= mlAlarmTime && t < mlAlarmTime + 1.2;
+
+  // Handle Intro completion
+  const handleIntroComplete = () => {
+    markIntroSeen();
+    setShowIntro(false);
+  };
+
+  const handleReplayIntro = () => {
+    resetIntroSeen();
+    setShowIntro(true);
+  };
+
+  // If showing intro prologue, render 2D prologue (strictly 0 WebGL canvases alive)
+  if (showIntro) {
+    return (
+      <EarthVsOrbitIntro
+        onComplete={handleIntroComplete}
+        onSkip={handleIntroComplete}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#04070d] text-[#e8f0f8] flex flex-col font-sans selection:bg-cyan-500/30 w-full overflow-x-hidden">
-      {/* Top Bar: Brand, Badges, View Toggle */}
-      <header className="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-800/80 bg-[#09111c]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 sm:gap-3 max-w-full">
-        <div className="flex items-center gap-3">
-          <h1 className="flex items-baseline gap-2">
-            <span className="font-display font-bold text-xl sm:text-2xl tracking-wider text-white">
-              IGN<span className="text-cyan-400">IS</span>
-            </span>
-            <span className="font-display font-medium text-[11px] sm:text-xs tracking-widest uppercase text-slate-400">
-              Fire Response Console
-            </span>
+      {/* Header (Layout A): Title, 1 Subtitle Line, Honesty Text */}
+      <header className="px-4 py-3 border-b border-slate-800/80 bg-[#09111c]/90 flex flex-wrap items-center justify-between gap-3 max-w-full">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            Fire in space
           </h1>
+          <p className="text-xs sm:text-sm text-slate-300 font-sans mt-0.5">
+            Watch how fast two detectors notice a fire, then respond.
+          </p>
         </div>
 
-        {/* Persistent Honesty Badges */}
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap text-left">
-          <span className="px-2 py-0.5 sm:py-1 rounded border border-amber-600/40 bg-amber-950/40 text-amber-300 text-[10px] sm:text-xs font-mono font-medium">
+        {/* Required Epistemic Caveats in One Line */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="px-2 py-0.5 rounded border border-amber-600/40 bg-amber-950/40 text-amber-300 text-[10px] sm:text-xs font-mono">
             Simulated. Not flight software.
           </span>
-          <span className="px-2 py-0.5 sm:py-1 rounded border border-slate-700 bg-slate-900 text-slate-300 text-[10px] sm:text-xs font-mono break-words max-w-[280px] sm:max-w-none">
+          <span className="px-2 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 text-[10px] sm:text-xs font-mono">
             Trained on Earth-gravity data. Not validated in microgravity.
           </span>
-          <span className="px-2 py-0.5 sm:py-1 rounded border border-cyan-800 bg-cyan-950/50 text-cyan-300 text-[10px] sm:text-xs font-mono uppercase">
-            {mode} Mode
-          </span>
-        </div>
-
-        {/* View Toggle */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowScenarioPanel(!showScenarioPanel)}
-            className="flex items-center gap-1 px-2.5 py-1 sm:py-1.5 rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-colors"
-          >
-            <Sliders className="h-3.5 w-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">Scenario</span> Controls
-            {showScenarioPanel ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-          </button>
-          <button
-            onClick={handleInspectClick}
-            className="px-3 py-1 sm:py-1.5 rounded-lg border border-cyan-500/40 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 text-xs font-semibold tracking-wide transition-colors"
-          >
-            Inspect Console &rarr;
-          </button>
         </div>
       </header>
 
-      {/* Collapsible "Run your own scenario" panel */}
-      {showScenarioPanel && (
-        <div className="border-b border-slate-800 bg-[#0d1726] p-3 sm:p-4 transition-all">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                Habitat Preset
-              </label>
-              <select
-                value={habitatId}
-                onChange={(e) => {
-                  setHabitatId(e.target.value);
-                  const hab = getHabitatById(e.target.value);
-                  if (hab && hab.zones[0]) setSourceZoneId(hab.zones[0].id);
-                }}
-                className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:border-cyan-500 outline-none"
-              >
-                {habitatPresets.map((h) => (
-                  <option key={h.id} value={h.id}>
-                    {h.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                Fuel Material
-              </label>
-              <select
-                value={fuel}
-                onChange={(e) => setFuel(e.target.value as FuelType)}
-                className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:border-cyan-500 outline-none"
-              >
-                <option value="cellulose">Cellulose / Cotton (Primary)</option>
-                <option value="teflon">Teflon Wire Overheating (NASA SAME-R)</option>
-                <option value="pmma">PMMA / Acrylic Plexiglas</option>
-                <option value="silicone">Silicone Wire Insulation</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                Ignition Origin Zone
-              </label>
-              <select
-                value={sourceZoneId}
-                onChange={(e) => setSourceZoneId(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-slate-200 font-mono focus:border-cyan-500 outline-none"
-              >
-                {currentHabitat.zones.map((z) => (
-                  <option key={z.id} value={z.id}>
-                    {z.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
-                Operating Mode
-              </label>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => setMode('CREWED')}
-                  className={`flex-1 py-1.5 px-2 rounded text-xs font-mono font-medium border transition-colors ${
-                    mode === 'CREWED'
-                      ? 'bg-cyan-950/80 border-cyan-500 text-cyan-300'
-                      : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Crewed (Hold)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode('UNCREWED')}
-                  className={`flex-1 py-1.5 px-2 rounded text-xs font-mono font-medium border transition-colors ${
-                    mode === 'UNCREWED'
-                      ? 'bg-cyan-950/80 border-cyan-500 text-cyan-300'
-                      : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Uncrewed Auto
-                </button>
-              </div>
-            </div>
+      {/* Scenario Controls (Layout B): Collapsed Single Row */}
+      <div className="border-b border-slate-800/80 bg-[#060b13] px-4 py-2">
+        <div className="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-sans">
+          <div className="flex items-center gap-2">
+            <label className="text-slate-400 font-medium whitespace-nowrap">Station:</label>
+            <select
+              value={habitatId}
+              onChange={(e) => {
+                setHabitatId(e.target.value);
+                const hab = getHabitatById(e.target.value);
+                if (hab && hab.zones[0]) setSourceZoneId(hab.zones[0].id);
+              }}
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-slate-200 text-xs focus:border-cyan-500 outline-none"
+            >
+              {habitatPresets.map((h) => (
+                <option key={h.id} value={h.id}>
+                  {h.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {habitatId === 'lunar_habitat' && (
-            <div className="mt-3 text-xs text-amber-400 font-mono bg-amber-950/30 border border-amber-800/50 rounded p-2">
-              Partial-gravity smoke transport is not validated; results are indicative only.
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            <label className="text-slate-400 font-medium whitespace-nowrap">Material that burns:</label>
+            <select
+              value={fuel}
+              onChange={(e) => setFuel(e.target.value as FuelType)}
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-slate-200 text-xs focus:border-cyan-500 outline-none"
+            >
+              <option value="cellulose">Cellulose / Cotton</option>
+              <option value="teflon">Teflon Wire Overheating</option>
+              <option value="pmma">PMMA / Acrylic</option>
+              <option value="silicone">Silicone Wire</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <label className="text-slate-400 font-medium whitespace-nowrap">Who confirms:</label>
+            <select
+              value={mode}
+              onChange={(e) => setMode(e.target.value as SequencerMode)}
+              className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-slate-200 text-xs focus:border-cyan-500 outline-none"
+            >
+              <option value="CREWED">Crew</option>
+              <option value="UNCREWED">Automatic if uncrewed</option>
+            </select>
+          </div>
         </div>
-      )}
+      </div>
 
-      {/* Main Visual Stage (3D Scene with 2D Fallback) */}
-      <main className="relative flex-1 min-h-[440px] max-h-[660px] bg-[#03060c] border-b border-slate-800/80 overflow-hidden flex flex-col justify-between">
-        {/* Race Clocks HUD (Top Centered Over Canvas) */}
-        <div className="absolute top-0 inset-x-0 z-10 w-full max-w-2xl mx-auto pt-2 px-2 pointer-events-none">
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-4 pointer-events-auto">
-            {/* Arm 1: Standard Detector */}
-            <div
-              className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                isStdFlashing
-                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
-                  : frameState.clocks.std.isFrozen
-                  ? 'border-red-500/60 bg-red-950/40 shadow-[0_0_20px_rgba(255,66,88,0.25)]'
-                  : 'border-slate-800 bg-[#09111c]/85'
-              }`}
-            >
-              <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
-                Standard
-              </div>
-              <div className="font-mono text-lg sm:text-3xl font-semibold text-amber-400 tracking-tight mt-0.5 truncate">
-                {frameState.clocks.std.time_s.toFixed(1)}
-                <span className="text-xs font-sans text-slate-400 ml-1">s</span>
-              </div>
-              <div className="text-[8px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1 flex items-center justify-between">
-                <span className="truncate">{frameState.clocks.std.isFrozen ? 'ALARM' : frameState.clocks.std.status}</span>
-                {frameState.clocks.std.isFrozen && (
-                  <span className="text-red-400 font-semibold hidden sm:inline ml-1">FROZEN</span>
-                )}
-              </div>
-            </div>
+      {/* Main Visual Stage (Layout C): Station Canvas with ONE Caption Line */}
+      <main className="relative flex-1 min-h-[380px] max-h-[580px] bg-[#03060c] border-b border-slate-800/80 overflow-hidden flex flex-col justify-between">
+        {/* At most ONE caption line over canvas */}
+        <div className="absolute top-3 left-3 z-10 pointer-events-none">
+          <span className="px-3 py-1 rounded-full bg-[#09111c]/90 border border-slate-700/80 text-xs font-sans text-slate-200 shadow-md">
+            {currentEventCaption}
+          </span>
+        </div>
 
-            {/* Arm 2: SAME-R Calibrated Fusion */}
-            <div
-              className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                isCalFlashing
-                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
-                  : frameState.clocks.cal.isFrozen
-                  ? 'border-cyan-500/80 bg-cyan-950/45 shadow-[0_0_24px_rgba(58,215,255,0.3)]'
-                  : 'border-slate-800 bg-[#09111c]/85'
-              }`}
-            >
-              <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
-                SAME-R calibrated
-              </div>
-              <div className="font-mono text-lg sm:text-3xl font-semibold text-cyan-400 tracking-tight mt-0.5 truncate">
-                {frameState.clocks.cal.time_s.toFixed(1)}
-                <span className="text-xs font-sans text-slate-400 ml-1">s</span>
-              </div>
-              <div className="text-[8px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1 flex items-center justify-between">
-                <span className="truncate">{frameState.clocks.cal.isFrozen ? 'ALARM' : frameState.clocks.cal.status}</span>
-                {frameState.clocks.cal.isFrozen && (
-                  <span className="text-cyan-300 font-semibold hidden sm:inline ml-1">FROZEN</span>
-                )}
-              </div>
-            </div>
-
-            {/* Arm 3: ML Fusion */}
-            <div
-              className={`min-w-0 p-2 sm:p-3 rounded-lg border backdrop-blur-md transition-all ${
-                isMlFlashing
-                  ? 'border-white bg-white/30 ring-2 ring-white/90 shadow-[0_0_35px_rgba(255,255,255,0.7)]'
-                  : frameState.clocks.ml.isFrozen
-                  ? 'border-fuchsia-500/60 bg-fuchsia-950/40'
-                  : 'border-slate-800 bg-[#09111c]/85'
-              }`}
-            >
-              <div className="text-[9px] sm:text-[11px] font-mono tracking-wider uppercase text-slate-400 truncate">
-                ML fusion
-              </div>
-              <div className="font-mono text-lg sm:text-3xl font-semibold text-fuchsia-400 tracking-tight mt-0.5 truncate">
-                {frameState.clocks.ml.time_s.toFixed(1)}
-                <span className="text-xs font-sans text-slate-400 ml-1">s</span>
-              </div>
-              <div className="text-[8px] sm:text-[10px] font-mono uppercase tracking-wider text-slate-400 mt-0.5 sm:mt-1 flex items-center justify-between">
-                <span className="truncate">{frameState.clocks.ml.isFrozen ? 'ALARM' : frameState.clocks.ml.status}</span>
-                {frameState.clocks.ml.isFrozen && (
-                  <span className="text-fuchsia-300 font-semibold hidden sm:inline ml-1">FROZEN</span>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* ML Disclosure Banner */}
-          <div className="w-full flex justify-center mt-1">
-            <span className="text-[10px] font-mono text-slate-400/90 text-center">
-              ML arm: Trained on Earth-gravity data. Not validated in microgravity.
-            </span>
-          </div>
-
-          {/* Big Computed Gap Banner (When Available) */}
-          {frameState.gapText && (
-            <div className="w-full flex justify-center mt-1.5 pointer-events-auto">
-              <span className="px-3.5 py-1 rounded-full border border-emerald-500/50 bg-emerald-950/70 text-emerald-300 text-xs sm:text-sm font-mono font-bold tracking-wide shadow-[0_0_15px_rgba(56,228,164,0.3)]">
-                {frameState.gapText}
-              </span>
-            </div>
-          )}
+        {/* ONE Details Menu Button at Top Right (Layout H) */}
+        <div className="absolute top-3 right-3 z-20">
+          <button
+            onClick={() => setIsDetailsOpen(true)}
+            aria-label="Details"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#09111c]/90 border border-slate-700/90 hover:border-cyan-400 text-xs font-sans text-slate-200 shadow-lg backdrop-blur-md transition-colors"
+          >
+            <Sliders className="h-3.5 w-3.5 text-cyan-400" />
+            <span>Details</span>
+          </button>
         </div>
 
         {/* 3D Scene / 2D Fallback Stage */}
@@ -386,10 +424,51 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             timeline={timeline}
             frameState={frameState}
             t={t}
+            selectedZoneId={selectedZoneId ?? undefined}
+            onSelectZone={(zId) => setSelectedZoneId(zId)}
+            userAzimuthOffset={userAzimuthOffset}
+            userElevationOffset={userElevationOffset}
+            userZoomOffset={userZoomOffset}
+            layers={visualLayers}
+            isGuidedMode={experienceMode === 'guided'}
+            isExploreMode={experienceMode === 'explore'}
           />
         </div>
 
-        {/* Soft Screen-Edge Alarm Pulse Vignette */}
+        {/* Unified Narration Subtitles & Compact Audio (Layout G) */}
+        {!(experienceMode === 'guided' && t >= 32.0) && (
+          <div className="absolute bottom-3 inset-x-2 sm:inset-x-4 max-w-xl mx-auto z-20 pointer-events-auto">
+            <UnifiedNarrationDeck
+              scene={currentScene}
+              activeCue={activeCue}
+              settings={audioSettings}
+              onExploreWhy={() => setIsExplanationDrawerOpen(true)}
+              onToggleVoice={toggleVoice}
+              onToggleSubtitles={toggleSubtitles}
+              onToggleMute={toggleMute}
+              onVolumeChange={setVolume}
+              onReplayCue={replayCurrentCue}
+            />
+          </div>
+        )}
+
+        {/* Result at End: Incident Summary Card (Layout J) */}
+        {experienceMode === 'guided' && t >= 32.0 && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center p-4 pointer-events-none">
+            <div className="pointer-events-auto w-full max-w-md">
+              <IncidentSummaryCard
+                moduleName={currentHabitat.zones.find((z) => z.id === timeline.scenario.sourceZoneId)?.name || 'Module 1'}
+                isExtinguished={frameState.isFireExtinguished}
+                alarmTime_s={timeline.clocks.cal.alarmTime_s}
+                onReplay={restart}
+                onExploreFullSimulation={() => handleToggleExperienceMode('explore')}
+                onOpenAuditModal={() => setIsOutcomeModalOpen(true)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Screen-Edge Alarm Pulse Vignette */}
         {frameState.clocks.cal.isFrozen && !frameState.isFireExtinguished && (
           <div
             className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
@@ -400,15 +479,7 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
           />
         )}
 
-        {/* Localization Rings & Reticle Overlay */}
-        <LocalizationOverlay
-          habitat={currentHabitat}
-          timeline={timeline}
-          frameState={frameState}
-          t={t}
-        />
-
-        {/* Hold to Confirm Gate (Crewed Human Authority Barrier) */}
+        {/* Hold to Confirm Gate (Layout F) */}
         <HoldToConfirmGate
           isArmed={
             mode === 'CREWED'
@@ -419,22 +490,79 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
           onConfirm={handleConfirmGate}
           onStandDown={() => restart()}
         />
-
-        {/* Dynamic Caption Display (Bottom of Stage Over Canvas) */}
-        <div className="absolute bottom-2 inset-x-0 z-10 pb-1 sm:pb-2 pointer-events-none">
-          <Caption text={frameState.activeCaption} />
-        </div>
       </main>
 
-      {/* Bottom Scrubber & 6 Containment Stages */}
-      <footer className="bg-[#09111c] border-t border-slate-800/90 p-2.5 sm:p-4 space-y-2 sm:space-y-3">
-        {/* Playback Controls & Range Scrubber */}
-        <div className="max-w-5xl mx-auto flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3">
+      {/* Clocks Section (Layout D): Exactly Two Clocks + Difference Line */}
+      <div className="bg-[#060b13] border-b border-slate-800/80 px-4 py-3">
+        <div className="max-w-xl mx-auto">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {/* Standard detector */}
+            <button
+              onClick={() => setSelectedDetectorArm('std')}
+              aria-label="Inspect standard baseline detector"
+              className={`p-3 rounded-xl border text-left transition-all ${
+                isStdFlashing
+                  ? 'border-white bg-white/30 ring-2 ring-white shadow-[0_0_20px_rgba(255,255,255,0.6)]'
+                  : frameState.clocks.std.isFrozen
+                  ? 'border-red-500/60 bg-red-950/40'
+                  : 'border-slate-800 bg-[#09111c]/80'
+              }`}
+              title="Traditional spacecraft smoke obscuration threshold"
+            >
+              <div className="text-xs font-sans text-slate-400">
+                Standard detector
+              </div>
+              <div className="font-mono text-xl sm:text-2xl font-bold text-amber-400 mt-1">
+                {frameState.clocks.std.time_s.toFixed(1)} <span className="text-xs font-sans text-slate-400 font-normal">s</span>
+              </div>
+              <div className="text-[11px] font-mono uppercase text-slate-400 mt-0.5">
+                {frameState.clocks.std.isFrozen ? 'ALARM' : frameState.clocks.std.status}
+              </div>
+            </button>
+
+            {/* Calibrated detector */}
+            <button
+              onClick={() => setSelectedDetectorArm('cal')}
+              aria-label="Inspect SAME-R calibrated multi-sensor detector"
+              className={`p-3 rounded-xl border text-left transition-all ${
+                isCalFlashing
+                  ? 'border-white bg-white/30 ring-2 ring-white shadow-[0_0_20px_rgba(255,255,255,0.6)]'
+                  : frameState.clocks.cal.isFrozen
+                  ? 'border-cyan-500/80 bg-cyan-950/45 shadow-[0_0_15px_rgba(58,215,255,0.25)]'
+                  : 'border-slate-800 bg-[#09111c]/80'
+              }`}
+              title="NASA SAME-R multi-sensor heuristic fusion (smoke + CO + thermal)"
+            >
+              <div className="flex items-center justify-between text-xs font-sans">
+                <span className="text-slate-400">Calibrated detector</span>
+                <span className="text-[10px] text-cyan-400 font-mono">SAME-R calibrated</span>
+              </div>
+              <div className="font-mono text-xl sm:text-2xl font-bold text-cyan-400 mt-1">
+                {frameState.clocks.cal.time_s.toFixed(1)} <span className="text-xs font-sans text-slate-400 font-normal">s</span>
+              </div>
+              <div className="text-[11px] font-mono uppercase text-slate-400 mt-0.5">
+                {frameState.clocks.cal.isFrozen ? 'ALARM' : frameState.clocks.cal.status}
+              </div>
+            </button>
+          </div>
+
+          {/* Single Difference Line */}
+          <div className="text-center text-xs font-sans text-cyan-300 font-medium mt-2">
+            {calAlarmTime !== null && t >= calAlarmTime
+              ? detectorComparison.afterAlarm
+              : detectorComparison.beforeAlarm}
+          </div>
+        </div>
+      </div>
+
+      {/* Progress & Scrubber Footer (Layout E): ONE Stepper */}
+      <footer className="bg-[#09111c] p-3 sm:p-4 space-y-3">
+        <div className="max-w-4xl mx-auto flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-2">
             <button
               onClick={togglePlay}
               aria-label={isPlaying ? 'Pause simulation' : 'Play simulation'}
-              className="p-1.5 sm:p-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors"
+              className="p-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors"
             >
               {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
             </button>
@@ -442,7 +570,7 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             <button
               onClick={restart}
               aria-label="Restart simulation"
-              className="p-1.5 sm:p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+              className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
             >
               <RotateCcw className="h-4 w-4" />
             </button>
@@ -466,58 +594,106 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
             </span>
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-800/80 rounded-lg p-0.5 border border-slate-700 ml-auto order-2 sm:order-3">
-            {[0.5, 1.0, 2.0].map((s) => (
-              <button
-                key={s}
-                onClick={() => setSpeed(s)}
-                className={`px-1.5 sm:px-2 py-0.5 rounded text-xs font-mono font-medium transition-colors ${
-                  speed === s
-                    ? 'bg-cyan-600 text-white'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {s}x
-              </button>
-            ))}
-          </div>
+          {experienceMode === 'explore' && (
+            <div className="flex items-center gap-1 bg-slate-800/80 rounded-lg p-0.5 border border-slate-700 ml-auto order-2 sm:order-3">
+              {[0.5, 1.0, 2.0].map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSpeed(s)}
+                  className={`px-2 py-0.5 rounded text-xs font-mono font-medium transition-colors ${
+                    speed === s ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {s}x
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* 6 Stage Emergency Containment Progression */}
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-1.5 sm:gap-2 pt-1">
-          {stageSequence.map((stepId) => {
-            const status: StepStatus = frameState.stages[stepId] || 'PENDING';
-            const isCompleted = status === 'COMPLETED';
-            const isArmed = status === 'ARMED' || status === 'EXECUTING';
-
-            return (
-              <div
-                key={stepId}
-                className={`flex items-center gap-1.5 sm:gap-2 px-2 py-1 sm:py-1.5 rounded-lg border text-[11px] sm:text-xs font-mono transition-all ${
-                  isCompleted
-                    ? 'border-cyan-500/60 bg-cyan-950/40 text-cyan-300'
-                    : isArmed
-                    ? 'border-amber-500/80 bg-amber-950/40 text-amber-300'
-                    : 'border-slate-800 bg-slate-900/30 text-slate-500'
-                }`}
-              >
-                <span
-                  className={
-                    isCompleted
-                      ? 'text-cyan-400'
-                      : isArmed
-                      ? 'text-amber-400'
-                      : 'text-slate-600'
-                  }
-                >
-                  {stageIcons[stepId]}
-                </span>
-                <span className="truncate">{stageLabels[stepId]}</span>
-              </div>
-            );
-          })}
+        {/* ONE 5-Beat Progress Stepper */}
+        <div className="max-w-4xl mx-auto pt-1">
+          <GuidedProgressSequence
+            t={t}
+            duration_s={timeline.duration_s}
+            onSeek={seek}
+          />
         </div>
       </footer>
+
+      {/* Details Menu Drawer (Layout H) */}
+      <DetailsMenuDrawer
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        habitat={currentHabitat}
+        selectedZoneId={selectedZoneId}
+        onSelectZone={(zId) => setSelectedZoneId(zId)}
+        onSelectDetectorArm={(arm) => setSelectedDetectorArm(arm)}
+        onOpenExplanation={() => setIsExplanationDrawerOpen(true)}
+        onOpenProof={() => setIsProofDrawerOpen(true)}
+        onOpenOutcome={() => setIsOutcomeModalOpen(true)}
+        onOpenLayers={() => setIsLayersMenuOpen(true)}
+        onSwitchToInspect={handleInspectClick}
+        onRotateLeft={() => setUserAzimuthOffset((prev) => prev - 0.25)}
+        onRotateRight={() => setUserAzimuthOffset((prev) => prev + 0.25)}
+        onZoomIn={() => setUserZoomOffset((prev) => Math.max(-0.6, prev - 0.15))}
+        onZoomOut={() => setUserZoomOffset((prev) => Math.min(1.2, prev + 0.15))}
+        onResetCamera={handleResetCamera}
+        hasManualCamera={hasManualCamera}
+        onReturnToGuidedCamera={handleResetCamera}
+        onReplayIntro={handleReplayIntro}
+        isFireExtinguished={frameState.isFireExtinguished}
+      />
+
+      {/* Modals & Drawers */}
+      <ExplanationDrawer
+        isOpen={isExplanationDrawerOpen}
+        onClose={() => setIsExplanationDrawerOpen(false)}
+        explanation={activeExplanation}
+        t={t}
+      />
+
+      <ModuleTelemetryDrawer
+        zone={selectedZone}
+        timeline={timeline}
+        frameState={frameState}
+        t={t}
+        onClose={() => setSelectedZoneId(null)}
+      />
+
+      <DetectorDetailModal
+        detectorArm={selectedDetectorArm}
+        timeline={timeline}
+        frameState={frameState}
+        t={t}
+        onClose={() => setSelectedDetectorArm(null)}
+      />
+
+      <OutcomeSummaryModal
+        isOpen={isOutcomeModalOpen}
+        onClose={() => setIsOutcomeModalOpen(false)}
+        timeline={timeline}
+        frameState={frameState}
+        t={t}
+      />
+
+      <ProofDrawerOverlay
+        isOpen={isProofDrawerOpen}
+        onClose={() => setIsProofDrawerOpen(false)}
+      />
+
+      <VisualLayersControl
+        layers={visualLayers}
+        onChangeLayer={handleLayerChange}
+        isOpen={isLayersMenuOpen}
+        onToggleOpen={() => setIsLayersMenuOpen(!isLayersMenuOpen)}
+        hideButton={true}
+      />
+
+      {/* Closing Card in Capture Mode */}
+      {isCaptureMode && (
+        <ClosingCardOverlay isVisible={t >= 82.0} />
+      )}
     </div>
   );
 };

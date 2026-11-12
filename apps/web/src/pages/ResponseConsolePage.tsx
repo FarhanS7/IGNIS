@@ -70,7 +70,6 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
   );
   const [selectedZoneId, setSelectedZoneId] = useState<string>(sourceZoneId);
 
-
   // Simulation execution state
   const [currentTime_s, setCurrentTime_s] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -98,111 +97,131 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
       detectorType === 'trained'
         ? createTrainedDetector()
         : detectorType === 'baseline'
-        ? new BaselineSmokeDetector()
-        : new HeuristicFusionDetector();
+          ? new BaselineSmokeDetector()
+          : new HeuristicFusionDetector();
     attachDetectorOutputs(detector, steps, currentHabitat);
     return steps;
   }, [habitatId, fuel, sourceZoneId, hasNuisanceDust, detectorType, currentHabitat]);
 
-  // Sliced steps up to currentTime_s for interactive timeline
-  const activeSteps = useMemo<SimStepResult[]>(() => {
-    return fullSimulationSteps.filter((s) => s.timestamp_s <= currentTime_s);
-  }, [fullSimulationSteps, currentTime_s]);
+  // Current step index matching current simulation time
+  const currentStepIndex = useMemo(() => {
+    if (fullSimulationSteps.length === 0) return 0;
+    const dt = fullSimulationSteps.length > 1 ? fullSimulationSteps[1].timestamp_s - fullSimulationSteps[0].timestamp_s : 0.5;
+    const idx = Math.floor(currentTime_s / dt);
+    return Math.max(0, Math.min(fullSimulationSteps.length - 1, idx));
+  }, [currentTime_s, fullSimulationSteps]);
 
-  const currentStepData = useMemo<SimStepResult | undefined>(() => {
-    if (activeSteps.length === 0) return fullSimulationSteps[0];
-    return activeSteps[activeSteps.length - 1];
-  }, [activeSteps, fullSimulationSteps]);
+  const currentStepData = fullSimulationSteps[currentStepIndex];
 
-  // Smoke localization inference over current timeline
-  const localizationResult = useMemo<LocalizationResult>(() => {
-    return localizeSmokeSource(currentHabitat, activeSteps);
-  }, [currentHabitat, activeSteps]);
+  // Active steps up to current time
+  const activeSimulationSteps = useMemo(() => {
+    return fullSimulationSteps.slice(0, currentStepIndex + 1);
+  }, [fullSimulationSteps, currentStepIndex]);
 
-  // Response Sequencer State
-  const sequencerRef = useRef<ResponseSequencer | null>(null);
-  const [sequencerState, setSequencerState] = useState<
-    ReturnType<ResponseSequencer['getState']> | null
-  >(null);
-
-  // Re-initialize sequencer when habitat, mode, or simulation resets
-  const initSequencer = useCallback(() => {
-    const seq = new ResponseSequencer(currentHabitat, mode);
-    sequencerRef.current = seq;
-    setSequencerState(seq.getState());
+  // Response Sequencer instance managed across steps
+  const sequencer = useMemo(() => {
+    return new ResponseSequencer(currentHabitat, mode);
   }, [currentHabitat, mode]);
 
-  useEffect(() => {
-    initSequencer();
-  }, [initSequencer]);
+  // Re-run sequencer progression up to current step
+  const sequencerState = useMemo(() => {
+    if (!currentStepData) return null;
 
-  // Track sequencer progression as currentTime_s advances
-  useEffect(() => {
-    if (!sequencerRef.current) return;
-    const seq = sequencerRef.current;
+    let hasAlarmTriggered = false;
+    let alarmTime = 0;
+    let alarmedZoneId = sourceZoneId;
 
-    // Check if any detector fired an alarm at or before current time
-    let firstAlarm: { zoneId: string; time_s: number } | undefined;
-    for (const step of activeSteps) {
+    for (const step of activeSimulationSteps) {
       for (const [detId, out] of Object.entries(step.detectorOutputs)) {
         if (out.state === 'FIRE_ALARM') {
-          const zone = currentHabitat.zones.find((z) => z.detectorIds.includes(detId));
-          if (zone) {
-            firstAlarm = { zoneId: zone.id, time_s: step.timestamp_s };
-            break;
-          }
+          hasAlarmTriggered = true;
+          alarmTime = step.timestamp_s;
+          const matchedZone = currentHabitat.zones.find((z) => z.detectorIds.includes(detId));
+          if (matchedZone) alarmedZoneId = matchedZone.id;
+          break;
         }
       }
-      if (firstAlarm) break;
+      if (hasAlarmTriggered) break;
     }
 
-    const state = seq.getState();
-    if (firstAlarm && state.steps.ALARM.status === 'PENDING') {
-      seq.triggerAlarm(firstAlarm.zoneId, firstAlarm.time_s);
+    if (hasAlarmTriggered) {
+      sequencer.triggerAlarm(alarmedZoneId, alarmTime);
+      sequencer.update(currentTime_s);
     }
 
-    // Update sequencer for uncrewed timeouts
-    seq.update(currentTime_s);
-    setSequencerState(seq.getState());
-  }, [currentTime_s, activeSteps, currentHabitat]);
+    return sequencer.getState();
+  }, [activeSimulationSteps, currentHabitat, currentTime_s, mode, sequencer, sourceZoneId]);
 
-  // Playback timer loop
+  // Smoke Source Localization
+  const localizationResult = useMemo<LocalizationResult | null>(() => {
+    if (!currentStepData) return null;
+    return localizeSmokeSource(currentHabitat, activeSimulationSteps);
+  }, [currentHabitat, activeSimulationSteps, currentStepData]);
+
+  // Handle Play/Pause timer with RAF
+  const lastTimeRef = useRef<number | null>(null);
+  const rafHandleRef = useRef<number | null>(null);
+
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setCurrentTime_s((prev) => {
-        if (prev >= 99.5) {
-          setIsPlaying(false);
-          return 100.0;
-        }
-        return Math.round((prev + 0.5) * 10) / 10;
-      });
-    }, 250);
-    return () => clearInterval(interval);
+    if (!isPlaying) {
+      lastTimeRef.current = null;
+      if (rafHandleRef.current !== null) {
+        cancelAnimationFrame(rafHandleRef.current);
+        rafHandleRef.current = null;
+      }
+      return;
+    }
+
+    const animate = (time: number) => {
+      if (lastTimeRef.current !== null) {
+        const delta = (time - lastTimeRef.current) / 1000;
+        setCurrentTime_s((prev) => {
+          const next = prev + delta;
+          if (next >= 100) {
+            setIsPlaying(false);
+            return 100;
+          }
+          return next;
+        });
+      }
+      lastTimeRef.current = time;
+      rafHandleRef.current = requestAnimationFrame(animate);
+    };
+
+    rafHandleRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (rafHandleRef.current !== null) {
+        cancelAnimationFrame(rafHandleRef.current);
+        rafHandleRef.current = null;
+      }
+    };
   }, [isPlaying]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setIsPlaying(false);
     setCurrentTime_s(0);
-    initSequencer();
-  };
+  }, []);
 
-  const handleConfirmSuppression = () => {
-    if (sequencerRef.current) {
-      sequencerRef.current.confirmSuppression(currentTime_s, 'CREW');
-      setSequencerState(sequencerRef.current.getState());
-    }
-  };
+  const handleConfirmSuppression = useCallback(() => {
+    sequencer.confirmSuppression(currentTime_s);
+    setCurrentTime_s((t) => t + 0.1);
+  }, [currentTime_s, sequencer]);
 
-  const handleOverrideStep = (stepId: SequenceStepId, reason: string) => {
-    if (sequencerRef.current) {
-      sequencerRef.current.overrideStep(stepId, currentTime_s, reason, 'CREW');
-      setSequencerState(sequencerRef.current.getState());
-    }
-  };
+  const handleOverrideStep = useCallback(
+    (stepId: SequenceStepId, reason: string) => {
+      sequencer.overrideStep(stepId, currentTime_s, reason, 'CREW');
+      setCurrentTime_s((t) => t + 0.1);
+    },
+    [currentTime_s, sequencer]
+  );
 
-  // Active evidence chip for the current response step
-  const activeStepId = sequencerState?.currentStep || 'ALARM';
+  const activeStepId = useMemo<SequenceStepId>(() => {
+    if (!sequencerState) return 'ALARM';
+    const entries = Object.entries(sequencerState.steps);
+    const active = entries.find(([_, s]) => (s as { status: string }).status === 'ARMED');
+    return (active ? active[0] : 'ALARM') as SequenceStepId;
+  }, [sequencerState]);
+
   const evidenceChip = useMemo(() => {
     return bindActionEvidence(activeStepId, fuel, currentHabitat);
   }, [activeStepId, fuel, currentHabitat]);
@@ -232,7 +251,7 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
         {/* Console Header & Scenario Controls */}
         <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-5 shadow-xl backdrop-blur-md">
           <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               {onBackToDemo && (
                 <button
                   onClick={onBackToDemo}
@@ -257,11 +276,10 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
             <div className="flex items-center gap-3 bg-slate-950/80 px-4 py-2 rounded-xl border border-slate-800">
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className={`p-2 rounded-lg font-semibold transition-all ${
-                  isPlaying
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                    : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30'
-                }`}
+                className={`p-2 rounded-lg font-semibold transition-all ${isPlaying
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                  : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30'
+                  }`}
                 title={isPlaying ? 'Pause' : 'Play Simulation'}
                 aria-label={isPlaying ? 'Pause Simulation' : 'Play Simulation'}
               >
@@ -402,11 +420,10 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
                   setHasNuisanceDust(!hasNuisanceDust);
                   handleReset();
                 }}
-                className={`w-full py-1.5 px-2 rounded-lg border text-xs font-semibold transition-all ${
-                  hasNuisanceDust
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
-                    : 'bg-slate-950 border-slate-700 text-slate-400 hover:text-slate-200'
-                }`}
+                className={`w-full py-1.5 px-2 rounded-lg border text-xs font-semibold transition-all ${hasNuisanceDust
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_10px_rgba(245,158,11,0.2)]'
+                  : 'bg-slate-950 border-slate-700 text-slate-400 hover:text-slate-200'
+                  }`}
               >
                 Dust Nuisance: {hasNuisanceDust ? 'INJECTED' : 'OFF'}
               </button>
@@ -449,7 +466,7 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
             <HabitatSchematic
               habitat={currentHabitat}
               currentStepData={currentStepData}
-              localizationResult={localizationResult}
+              localizationResult={localizationResult || undefined}
               selectedZoneId={selectedZoneId}
               onSelectZone={(zId) => setSelectedZoneId(zId)}
             />
@@ -466,47 +483,36 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
                     SMOKE SOURCE LOCALIZATION
                   </h3>
                 </div>
-
-                {/* Categorical Status Badge (Honesty: No percentages) */}
-                <span
-                  className={`rounded px-2.5 py-0.5 text-xs font-mono font-bold uppercase tracking-wider ${
-                    localizationResult.status === 'CLEAR'
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                {localizationResult && (
+                  <span
+                    className={`rounded px-2.5 py-0.5 text-xs font-mono font-bold ${localizationResult.status === 'CLEAR'
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                       : localizationResult.status === 'CLOSE'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                      : localizationResult.status === 'AMBIGUOUS'
-                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                      : 'bg-slate-800 text-slate-400'
-                  }`}
-                >
-                  Status: {localizationResult.status}
-                </span>
+                        ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                        : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                      }`}
+                  >
+                    {localizationResult.status}
+                  </span>
+                )}
               </div>
 
-              {/* Disclaimer if single detector or partial g */}
-              {localizationResult.disclaimer && (
-                <div className="text-xs text-amber-300/90 font-mono mb-2">
-                  ℹ {localizationResult.disclaimer}
+              {localizationResult && localizationResult.rankedZones.length > 0 ? (
+                <div className="space-y-2">
+                  <div className="text-xs text-slate-300">
+                    Primary candidate:{' '}
+                    <span className="font-semibold text-cyan-300 font-mono">
+                      {currentHabitat.zones.find((z) => z.id === localizationResult.rankedZones[0].zoneId)?.name || localizationResult.rankedZones[0].zoneId}
+                    </span>{' '}
+                    (First triggered: +{localizationResult.rankedZones[0].onsetDelay_s.toFixed(1)}s)
+                  </div>
+                  <div className="text-[11px] font-mono text-slate-400 bg-slate-900/60 p-2.5 rounded-lg border border-slate-800">
+                    {localizationResult.disclaimer || localizationResult.rankedZones[0].rationale}
+                  </div>
                 </div>
-              )}
-
-              {/* Ranked Zones List */}
-              {localizationResult.rankedZones.length > 0 && (
-                <div className="space-y-1.5 font-mono text-xs">
-                  {localizationResult.rankedZones.map((rz, idx) => (
-                    <div
-                      key={rz.zoneId}
-                      className="flex items-start justify-between rounded bg-slate-900/60 p-2 border border-slate-800"
-                    >
-                      <div>
-                        <span className="font-bold text-cyan-300">#{idx + 1} {rz.zoneName}:</span>{' '}
-                        <span className="text-slate-300">{rz.rationale}</span>
-                      </div>
-                      <span className="shrink-0 text-slate-400 ml-2">
-                        +{rz.onsetDelay_s.toFixed(1)}s
-                      </span>
-                    </div>
-                  ))}
+              ) : (
+                <div className="text-xs text-slate-500 font-mono italic">
+                  Awaiting sensor trigger threshold to evaluate smoke transport gradient...
                 </div>
               )}
             </div>
@@ -591,11 +597,10 @@ const ResponseConsoleInspect: React.FC<ResponseConsoleInspectProps> = ({ onBackT
                     <td className="py-2 px-3">{p.value}</td>
                     <td className="py-2 px-3 text-slate-400">[{p.min}, {p.max}]</td>
                     <td className="py-2 px-3">
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
-                        p.tag.startsWith('literature:')
-                          ? 'bg-emerald-500/20 text-emerald-300'
-                          : 'bg-slate-800 text-slate-400'
-                      }`}>
+                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${p.tag.startsWith('literature:')
+                        ? 'bg-emerald-500/20 text-emerald-300'
+                        : 'bg-slate-800 text-slate-400'
+                        }`}>
                         {p.tag}
                       </span>
                     </td>

@@ -200,15 +200,16 @@ test.describe('Fire Response Console End-to-End', () => {
     await expect(mlBadge).toBeVisible();
 
     // 2. Race clocks visible
-    await expect(page.getByText(/^Standard$/i)).toBeVisible();
-    await expect(page.getByText(/^SAME-R calibrated$/i)).toBeVisible();
-    await expect(page.getByText(/^ML fusion$/i)).toBeVisible();
+    await expect(page.getByText(/Standard detector/i)).toBeVisible();
+    await expect(page.getByText(/Calibrated detector/i).first()).toBeVisible();
+    await expect(page.getByText(/SAME-R calibrated/i)).toBeVisible();
 
     // 3. Playback scrubber reachable
     const scrubber = page.locator('input[type="range"]');
     await expect(scrubber).toBeVisible();
 
-    // 4. View toggle to inspect console
+    // 4. View toggle to inspect console via Details menu
+    await page.getByRole('button', { name: /Details/i }).click();
     const inspectBtn = page.getByRole('button', { name: /Inspect Console/i });
     await expect(inspectBtn).toBeVisible();
     await inspectBtn.click();
@@ -233,10 +234,10 @@ test.describe('Fire Response Console End-to-End', () => {
     await expect(gateBtn).toBeVisible();
 
     // Verify keyboard hint is visible
-    await expect(page.getByText(/Hold 1\.2s · Space or Enter/i)).toBeVisible();
+    await expect(page.getByText(/Press and hold for 1\.2 seconds/i)).toBeVisible();
 
     // Verify FLEX droplet caveat chip is visible
-    await expect(page.getByText(/Droplet flames only\. Not cabin solid fuels\./i)).toBeVisible();
+    await expect(page.getByText(/Droplet flames in ISS microgravity \(FLEX\)\. Not cabin solid fuels\./i)).toBeVisible();
 
     // Press and hold Space key for 1.3s to confirm
     await gateBtn.focus();
@@ -247,5 +248,299 @@ test.describe('Fire Response Console End-to-End', () => {
 
     // Gate should close after confirmation
     await expect(gateBtn).not.toBeVisible();
+  });
+
+  test('verifies progressive explanation drawer with 3 depth tabs (quick, science, engineering)', async ({
+    page,
+  }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 1. Open explanation drawer via details menu
+    await page.getByRole('button', { name: /Details/i }).click();
+    const explainBtn = page.getByRole('button', { name: /Explain/i });
+    await expect(explainBtn).toBeVisible();
+    await explainBtn.click();
+
+    const drawer = page.getByRole('region', { name: /Contextual Explanation Drawer/i });
+    await expect(drawer).toBeVisible();
+
+    // 2. Default Quick depth is selected
+    await expect(page.getByText(/Plain Language Summary/i)).toBeVisible();
+
+    // 3. Switch to Science depth tab
+    const scienceTab = page.getByRole('button', { name: /^Science$/i });
+    await scienceTab.click();
+    await expect(page.getByText(/Physical Transport Mechanism/i)).toBeVisible();
+    await expect(page.getByText(/Model Limitations/i)).toBeVisible();
+
+    // 4. Switch to Engineering depth tab
+    const engTab = page.getByRole('button', { name: /^Engineering$/i });
+    await engTab.click();
+    await expect(page.getByText(/Authoritative State Transition/i)).toBeVisible();
+    await expect(page.getByText(/Underlying Telemetry Fields/i)).toBeVisible();
+    await expect(page.getByText(/Engineering Thresholds & Criteria/i)).toBeVisible();
+
+    // 5. Close drawer via close button
+    const closeBtn = page.getByRole('button', { name: /Close explanation drawer/i });
+    await closeBtn.click();
+    await expect(drawer).not.toBeVisible();
+  });
+
+  test('verifies interactive module telemetry inspection and granularity disclosure', async ({
+    page,
+  }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Click module button in details menu
+    await page.getByRole('button', { name: /Details/i }).click();
+    const compBtn = page.getByRole('button', { name: /Inspect compartment/i }).first();
+    await expect(compBtn).toBeVisible();
+    await compBtn.click();
+
+    // Verify module telemetry drawer appears
+    const moduleDrawer = page.getByRole('dialog', { name: /Module telemetry inspection/i });
+    await expect(moduleDrawer).toBeVisible();
+
+    // Verify telemetry channels
+    await expect(moduleDrawer.getByText(/SMOKE OBSCURATION/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/CARBON MONOXIDE/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/TEMPERATURE/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/OXYGEN \(O2\)/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/Ventilation Dampers/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/Payload Power/i)).toBeVisible();
+
+    // Verify spatial granularity disclosure
+    await expect(moduleDrawer.getByText(/Spatial Model Granularity/i)).toBeVisible();
+    await expect(moduleDrawer.getByText(/compartment-averaged values/i)).toBeVisible();
+
+    // Close drawer
+    const closeBtn = page.getByRole('button', { name: /Close module inspection drawer/i });
+    await closeBtn.click();
+    await expect(moduleDrawer).not.toBeVisible();
+  });
+
+  test('verifies detector card inspection and disagreement modal', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Click SAME-R calibrated detector card
+    const calArmBtn = page.getByRole('button', { name: /Inspect SAME-R calibrated/i });
+    await expect(calArmBtn).toBeVisible();
+    await calArmBtn.click();
+
+    // Modal opens
+    const modal = page.getByRole('dialog', { name: /SAME-R Calibrated/i });
+    await expect(modal).toBeVisible();
+
+    // Verifies algorithm, thresholds, channels, and disagreement
+    await expect(page.getByText(/Detection Algorithm & Logic/i)).toBeVisible();
+    await expect(page.getByText(/Trigger Threshold/i)).toBeVisible();
+    await expect(page.getByText(/Primary Sensor Channels/i)).toBeVisible();
+    await expect(page.getByText(/Sensor Disagreement & Benchmark Notes/i)).toBeVisible();
+
+    // Close modal
+    const closeBtn = page.getByRole('button', { name: /Close detector modal/i });
+    await closeBtn.click();
+    await expect(modal).not.toBeVisible();
+
+    // Click ML detector card in details menu and verify honest Earth-gravity caveat
+    await page.getByRole('button', { name: /Details/i }).click();
+    const mlArmBtn = page.getByRole('button', { name: /Inspect machine learning fusion/i });
+    await mlArmBtn.click();
+    const mlModal = page.getByRole('dialog', { name: /ML Fusion|Machine Learning/i });
+    await expect(mlModal.getByText(/Trained on Earth-gravity data\. Not validated in microgravity\./i)).toBeVisible();
+
+    const mlCloseBtn = page.getByRole('button', { name: /Close detector modal/i });
+    await mlCloseBtn.click();
+  });
+
+  test('verifies camera controls toolbar buttons', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Camera toolbar buttons in details menu
+    await page.getByRole('button', { name: /Details/i }).click();
+    const rotateLeft = page.getByRole('button', { name: /Rotate camera left/i });
+    const rotateRight = page.getByRole('button', { name: /Rotate camera right/i });
+    const zoomIn = page.getByRole('button', { name: /Zoom camera in/i });
+    const zoomOut = page.getByRole('button', { name: /Zoom camera out/i });
+    const resetCamera = page.getByRole('button', { name: /Reset camera view/i });
+
+    await expect(rotateLeft).toBeVisible();
+    await expect(rotateRight).toBeVisible();
+    await expect(zoomIn).toBeVisible();
+    await expect(zoomOut).toBeVisible();
+    await expect(resetCamera).toBeVisible();
+
+    // Click each control
+    await rotateLeft.click();
+    await rotateRight.click();
+    await zoomIn.click();
+    await zoomOut.click();
+    await resetCamera.click();
+  });
+
+  test('verifies post-fire outcome audit modal upon flame extinction', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Advance scrubber to t = 35s where fire is extinguished
+    const scrubber = page.locator('input[type="range"]');
+    await scrubber.fill('35');
+    await page.waitForTimeout(300);
+
+    // Outcome audit button becomes visible
+    const auditBtn = page.getByRole('button', { name: /View NASA Audit|Flame Extinguished — View Audit/i });
+    await expect(auditBtn).toBeVisible();
+    await auditBtn.click();
+
+    // Outcome modal opens
+    const modal = page.getByRole('dialog', { name: /Post-Fire Response Outcome Summary/i });
+    await expect(modal).toBeVisible();
+
+    // Epistemic provenance breakdown table
+    await expect(page.getByText(/Epistemic Data Classification/i)).toBeVisible();
+    await expect(page.getByText(/Droplet Extinction Time/i)).toBeVisible();
+    await expect(page.getByText(/Sensor Race & Lead Time/i)).toBeVisible();
+    await expect(page.getByText(/1D Compartment Advection/i)).toBeVisible();
+    await expect(page.getByText(/3D Smoke Particles/i)).toBeVisible();
+
+    // Close audit
+    const closeBtn = page.getByRole('button', { name: /Close Audit/i });
+    await closeBtn.click();
+    await expect(modal).not.toBeVisible();
+  });
+
+  test('verifies floating contextual explanation card and explore why action', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Contextual explanation card is visible
+    const card = page.getByRole('region', { name: /Event Explanation Card/i });
+    await expect(card).toBeVisible();
+
+    // Expand card to view scene indicator and summary
+    const expandBtn = page.getByRole('button', { name: /Expand explanation card/i });
+    await expandBtn.click();
+
+    // Scene indicator is visible
+    await expect(card.getByText(/Scene 1\/6/i)).toBeVisible();
+    await expect(card.getByText(/Normal Spacecraft Operations/i)).toBeVisible();
+
+    // Provenance badge
+    await expect(card.getByText(/MONITORED BASELINE/i)).toBeVisible();
+
+    // Collapse card
+    const toggleBtn = page.getByRole('button', { name: /Collapse explanation card/i });
+    await toggleBtn.click();
+    await expect(card.getByText(/Normal Spacecraft Operations/i)).not.toBeVisible();
+
+    // Click "Explore why" action to open progressive explanation drawer
+    const exploreBtn = card.getByRole('button', { name: /Explore why/i });
+    await exploreBtn.click();
+
+    const drawer = page.getByRole('region', { name: /Contextual Explanation Drawer/i });
+    await expect(drawer).toBeVisible();
+
+    const closeDrawerBtn = page.getByRole('button', { name: /Close explanation drawer/i });
+    await closeDrawerBtn.click();
+    await expect(drawer).not.toBeVisible();
+  });
+
+  test('verifies scientific visual layers menu and truth labels', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Open layers menu via details menu
+    await page.getByRole('button', { name: /Details/i }).click();
+    const layersBtn = page.getByRole('button', { name: /Toggle visual layers controls/i });
+    await expect(layersBtn).toBeVisible();
+    await layersBtn.click();
+
+    // Dialog appears with truth labels
+    const layersDialog = page.getByRole('dialog', { name: /Visual Layers and Truth Labels/i });
+    await expect(layersDialog).toBeVisible();
+
+    await expect(page.getByText(/COMPARTMENT-AVERAGED TRANSPORT/i)).toBeVisible();
+    await expect(page.getByText(/COMPARTMENT-AVERAGED VALUE/i)).toBeVisible();
+    await expect(page.getByText(/SIMULATED INTER-ZONE FLOW/i)).toBeVisible();
+    await expect(page.getByText(/SENSOR HARDWARE LOCATION/i)).toBeVisible();
+
+    // Toggle Thermal layer checkbox
+    const thermalCheckbox = page.getByRole('checkbox', { name: /Toggle Thermal Heat Field/i });
+    await expect(thermalCheckbox).toBeVisible();
+    await thermalCheckbox.click();
+
+    // Close layers dialog
+    const closeBtn = page.getByRole('button', { name: /Close layers menu/i });
+    await closeBtn.click();
+    await expect(layersDialog).not.toBeVisible();
+  });
+
+  test('verifies return to guided camera pill on manual camera interaction', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // Return to guided pill should NOT be visible initially
+    const returnPill = page.getByRole('button', { name: /Return to guided camera/i });
+    await expect(returnPill).not.toBeVisible();
+
+    // Rotate camera right using toolbar button in details menu
+    await page.getByRole('button', { name: /Details/i }).click();
+    const rotateRight = page.getByRole('button', { name: /Rotate camera right/i });
+    await rotateRight.click();
+
+    // Return to guided camera button now appears in details menu
+    await expect(returnPill).toBeVisible();
+
+    // Click return to guided view
+    await returnPill.click();
+
+    // Pill hides again
+    await expect(returnPill).not.toBeVisible();
+  });
+
+  test('verifies voice narration audio controls, subtitles overlay, and term highlighting', async ({ page }) => {
+    await page.goto('/response');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 1. Audio controls toolbar is visible
+    const audioToolbar = page.getByRole('toolbar', { name: /Narration and Audio Controls/i });
+    await expect(audioToolbar).toBeVisible();
+
+    // 2. Voice toggle is pressed/enabled by default
+    const voiceBtn = page.getByRole('button', { name: /^Voice$/i });
+    await expect(voiceBtn).toBeVisible();
+    await expect(voiceBtn).toHaveAttribute('aria-pressed', 'true');
+
+    // 3. Subtitles (CC) toggle is enabled by default
+    const ccBtn = page.getByRole('button', { name: /^CC$/i });
+    await expect(ccBtn).toBeVisible();
+    await expect(ccBtn).toHaveAttribute('aria-pressed', 'true');
+
+    // 4. Subtitles overlay region is rendered with mission-control speaker badge
+    const subtitlesRegion = page.getByRole('region', { name: /Synchronized Emergency Subtitles/i });
+    await expect(subtitlesRegion).toBeVisible();
+    await expect(subtitlesRegion.getByText(/Flight Operations Voice/i)).toBeVisible();
+    await expect(subtitlesRegion.getByText(/Stage 1/i)).toBeVisible();
+
+    // 5. Toggle subtitles OFF hides the overlay
+    await ccBtn.click();
+    await expect(subtitlesRegion).not.toBeVisible();
+
+    // 6. Toggle subtitles back ON restores the overlay
+    await ccBtn.click();
+    await expect(subtitlesRegion).toBeVisible();
+
+    // 7. Toggle voice OFF
+    await voiceBtn.click();
+    await expect(voiceBtn).toHaveAttribute('aria-pressed', 'false');
+
+    // 8. Replay audio button is present and clickable
+    const replayBtn = page.getByRole('button', { name: /Replay current voice narration/i });
+    await expect(replayBtn).toBeVisible();
+    await replayBtn.click();
   });
 });

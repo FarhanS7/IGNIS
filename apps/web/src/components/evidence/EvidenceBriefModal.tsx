@@ -3,6 +3,13 @@ import { Fact } from '../common/Fact';
 import { MiniEnvelopePlot } from '../gaps/MiniEnvelopePlot';
 import type { RealSolidMatch, SolidEnvelopeData } from '../../lib/matcher/types';
 import {
+  TESTED_O2_MIN,
+  TESTED_O2_MAX,
+  TESTED_FLOW_MIN,
+  TESTED_FLOW_MAX,
+} from '../../lib/matcher/real_solid_matcher';
+import { getInvestigationDoi } from '../../lib/matcher/investigationDoi';
+import {
   Printer,
   X,
   FileCheck2,
@@ -46,8 +53,8 @@ export const EvidenceBriefModal: React.FC<EvidenceBriefModalProps> = ({
   const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-md flex justify-center items-start p-2 sm:p-6 print:p-0 print:bg-white print:text-black">
-      <div className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-4xl my-6 overflow-hidden shadow-2xl print:border-none print:shadow-none print:bg-white print:text-black print:w-full print:max-w-none print:my-0">
+    <div className="fixed inset-0 z-[70] overflow-y-auto bg-black/85 backdrop-blur-md flex justify-center items-start p-2 pt-16 sm:p-6 sm:pt-20 print:p-0 print:bg-white print:text-black">
+      <div className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-4xl my-2 overflow-hidden shadow-2xl print:border-none print:shadow-none print:bg-white print:text-black print:w-full print:max-w-none print:my-0">
         {/* Screen Controls Header (Hidden in Print) */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/80 sticky top-0 z-10 print:hidden">
           <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase tracking-wider font-semibold">
@@ -175,10 +182,10 @@ export const EvidenceBriefModal: React.FC<EvidenceBriefModalProps> = ({
               <div className="md:col-span-2 space-y-2 text-xs font-mono">
                 <div className="bg-zinc-900/60 print:bg-zinc-100 border border-zinc-800 print:border-black/20 p-3 rounded-lg space-y-1">
                   <div className="text-zinc-400 print:text-black/70">
-                    Tested O₂ Range: <strong className="text-white print:text-black">13.4% – 30.7%</strong>
+                    Tested O₂ Range: <strong className="text-white print:text-black">{TESTED_O2_MIN.toFixed(1)}% – {TESTED_O2_MAX.toFixed(1)}%</strong>
                   </div>
                   <div className="text-zinc-400 print:text-black/70">
-                    Tested Forced Flow Range: <strong className="text-white print:text-black">0.0 – 40.0 cm/s</strong>
+                    Tested Forced Flow Range: <strong className="text-white print:text-black">{TESTED_FLOW_MIN.toFixed(1)} – {TESTED_FLOW_MAX.toFixed(2)} cm/s</strong>
                   </div>
                   <div className="text-zinc-400 print:text-black/70">
                     Normalized Distance to Nearest Run: <strong className="text-white print:text-black">{envelope.nearest_distance_norm.toFixed(3)}</strong>
@@ -221,7 +228,7 @@ export const EvidenceBriefModal: React.FC<EvidenceBriefModalProps> = ({
                 <tbody className="divide-y divide-zinc-800 print:divide-black/10">
                   {matches.slice(0, 5).map((m, idx) => {
                     const invId = m.metadata?.investigation_id || 'PSI-25';
-                    const runDoi = invId === 'PSI-98' ? '10.60555/0t15-1z43' : invId === 'PSI-99' ? '10.60555/k97e-x930' : '10.60555/4qc4-de67';
+                    const runDoi = getInvestigationDoi(invId);
                     const materialFamily = m.metadata?.material_family || 'PMMA';
                     const rawMaterial = m.metadata?.material || m.factors.material?.experiment_value || materialFamily;
                     const o2Val = m.factors.oxygen?.experiment_value;
@@ -331,7 +338,7 @@ export const EvidenceBriefModal: React.FC<EvidenceBriefModalProps> = ({
                 </div>
                 <div className="bg-zinc-900 print:bg-zinc-200 p-2 rounded">
                   <span className="text-[10px] text-zinc-400 print:text-black/60 block">Balanced Accuracy</span>
-                  <span className="font-bold text-white print:text-black">59.85%</span>
+                  <span className="font-bold text-white print:text-black">46.72%</span>
                 </div>
                 <div className="bg-zinc-900 print:bg-zinc-200 p-2 rounded">
                   <span className="text-[10px] text-zinc-400 print:text-black/60 block">Extinction Recall</span>
@@ -357,7 +364,7 @@ export const EvidenceBriefModal: React.FC<EvidenceBriefModalProps> = ({
                 <strong className="text-zinc-200 print:text-black">PSI-98 SAFFIRE-I:</strong> Spacecraft Fire Experiment-I (Cygnus OA-6, 2016). DOI: 10.60555/0t15-1z43
               </li>
               <li>
-                <strong className="text-zinc-200 print:text-black">PSI-99 SAFFIRE-II:</strong> Spacecraft Fire Experiment-II (Cygnus OA-5, 2016). DOI: 10.60555/5r8w-9v32
+                <strong className="text-zinc-200 print:text-black">PSI-99 SAFFIRE-II:</strong> Spacecraft Fire Experiment-II (Cygnus OA-5, 2016). DOI: 10.60555/2chp-m469
               </li>
               <li>
                 <strong className="text-zinc-200 print:text-black">NTRS-20080013149:</strong> Piloted Ignition Delay of PMMA in Space Exploration Atmospheres (McAllister, Fernandez-Pello, Urban, Ruff, 2008).

@@ -34,7 +34,7 @@ interface PlanetInfo {
 
 const PLANETS: Record<string, PlanetInfo> = {
   orbital: {
-    name: 'ORBITAL',
+    name: 'EARTH',
     presetText: 'ORBITAL (0g MICROGRAVITY)',
     clip: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202422_3ffb4889-c520-432d-8458-038009eb40df.mp4',
     still: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260827_202133_508c64b8-a31e-4290-bdfc-1187df70e0a6.png',
@@ -64,8 +64,25 @@ const PLANETS: Record<string, PlanetInfo> = {
 
 const ORDER = ['orbital', 'moon', 'mars'];
 
+// Rotation sequence: Earth (orbital) -> Mars -> Moon -> Earth
+const NEXT_PLANET: Record<string, string> = {
+  orbital: 'mars',
+  mars: 'moon',
+  moon: 'orbital',
+};
+
+const CHAPTERS = [
+  { id: 'how-it-works', num: '01', label: 'How It Works' },
+  { id: 'simulator-demo', num: '02', label: 'Flame Morphing' },
+  { id: 'explore-more', num: '03', label: 'Flight Archives' },
+  { id: 'trust-strip', num: '04', label: 'Provenance' },
+];
+
 export const LandingPage: React.FC = () => {
   const [featuredPlanet, setFeaturedPlanet] = useState<string>('orbital');
+  const [isPaused, setIsPaused] = useState(false);
+  const [showJourneyHud, setShowJourneyHud] = useState(false);
+  const [activeChapter, setActiveChapter] = useState('how-it-works');
   const [loadedClips, setLoadedClips] = useState<Record<string, boolean>>({
     orbital: true,
   });
@@ -80,16 +97,54 @@ export const LandingPage: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       ORDER.forEach((p) => warmClip(p));
-    }, 2500);
+    }, 1200);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-rotate featured celestial body every 5.5 seconds unless user is interacting
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      setFeaturedPlanet((current) => {
+        const next = NEXT_PLANET[current] || 'orbital';
+        warmClip(next);
+        return next;
+      });
+    }, 5500);
+
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
+  // Track scroll position to reveal bottom journey HUD and update active chapter
+  useEffect(() => {
+    const handleScroll = () => {
+      const y = window.scrollY;
+      setShowJourneyHud(y > 350);
+
+      const offsets = CHAPTERS.map((ch) => {
+        const el = document.getElementById(ch.id);
+        if (!el) return { id: ch.id, distance: Infinity };
+        const rect = el.getBoundingClientRect();
+        return { id: ch.id, distance: Math.abs(rect.top - 140) };
+      });
+      offsets.sort((a, b) => a.distance - b.distance);
+      if (offsets[0] && offsets[0].distance < 700) {
+        setActiveChapter(offsets[0].id);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const currentIndex = ORDER.indexOf(featuredPlanet);
   const leftPlanetKey = ORDER[(currentIndex + 2) % 3];
   const rightPlanetKey = ORDER[(currentIndex + 1) % 3];
 
-  const scrollToHowItWorks = () => {
-    const el = document.getElementById('how-it-works');
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
     if (el) {
       const yOffset = -90;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -97,12 +152,22 @@ export const LandingPage: React.FC = () => {
     }
   };
 
+  const scrollToHowItWorks = () => {
+    scrollToSection('how-it-works');
+  };
+
   return (
     <div className="relative min-h-screen text-white">
       {/* ======================================================================
           HERO STAGE (PIXEL-IDENTICAL ARCHITECTURE & DESIGN)
           ====================================================================== */}
-      <section className="stage">
+      <section
+        className="stage"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+      >
         <div
           className="sky"
           style={{
@@ -156,14 +221,16 @@ export const LandingPage: React.FC = () => {
             </h1>
 
             <div className="col dest-preset-wrapper">
-              <div className="dest-preset-pill">
+              <div key={featuredPlanet} className="dest-preset-pill hero-fade-change">
                 <span className="dest-indicator-dot" />
                 <span className="dest-preset-label">ENVIRONMENT PRESET: </span>
                 <span className="dest-name">{PLANETS[featuredPlanet].presetText}</span>
               </div>
             </div>
 
-            <p className="col lede">{PLANETS[featuredPlanet].lede}</p>
+            <p key={`lede-${featuredPlanet}`} className="col lede hero-fade-change">
+              {PLANETS[featuredPlanet].lede}
+            </p>
 
             <div className="col cta">
               {/* Left Planet Switcher Button */}
@@ -211,13 +278,17 @@ export const LandingPage: React.FC = () => {
                 <Link to="/simulator" className="cursor-pointer">
                   Try the Simulator
                 </Link>
-                <Link to="/experiments" className="cta-secondary cursor-pointer">
-                  Explore 1,401 Flight Records
+                <Link to="/response" className="cta-secondary cursor-pointer">
+                  Explore Fire Response
                 </Link>
               </div>
 
-              <span className="label label-l">{PLANETS[leftPlanetKey].name}</span>
-              <span className="label label-r">{PLANETS[rightPlanetKey].name}</span>
+              <span key={`lbl-l-${leftPlanetKey}`} className="label label-l hero-fade-change">
+                {PLANETS[leftPlanetKey].name}
+              </span>
+              <span key={`lbl-r-${rightPlanetKey}`} className="label label-r hero-fade-change">
+                {PLANETS[rightPlanetKey].name}
+              </span>
             </div>
           </main>
         </div>
@@ -269,6 +340,33 @@ export const LandingPage: React.FC = () => {
           </Suspense>
         </LazySection>
       </div>
+
+      {/* Floating Journey HUD (Inspired by ECLIPSE) */}
+      {showJourneyHud && (
+        <nav
+          className="bottom-hud-journey transition-all duration-300 animate-fade-in"
+          aria-label="Landing page journey navigation"
+        >
+          <div className="travel-hint hidden md:flex">
+            <span className="scroll-mouse" />
+            <span>EXPLORE</span>
+          </div>
+          <div className="chapter-nav-pills">
+            {CHAPTERS.map((ch) => (
+              <button
+                key={ch.id}
+                type="button"
+                onClick={() => scrollToSection(ch.id)}
+                className={`chapter-pill-btn ${activeChapter === ch.id ? 'is-active' : ''}`}
+                title={`Jump to ${ch.label}`}
+              >
+                <b>{ch.num}</b>
+                <span className="hidden sm:inline">{ch.label}</span>
+              </button>
+            ))}
+          </div>
+        </nav>
+      )}
     </div>
   );
 };

@@ -15,8 +15,7 @@
 import React, { useState, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Sliders, ArrowRight, Info, Sparkles } from 'lucide-react';
-import { Button } from '../common/Button';
+import { Sliders, Info } from 'lucide-react';
 import { Card } from '../common/Card';
 import { Badge } from '../common/Badge';
 import type { ScenarioInput, GravityEnvironment } from '../../types/api';
@@ -180,22 +179,32 @@ export const SimulatorMiniDemo: React.FC = () => {
   const fallback = <MiniSvgFallback scenario={scenario} shouldReduceMotion={Boolean(shouldReduceMotion)} />;
 
   return (
-    <section ref={containerRef} className="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6">
-      {/* Header */}
-      <div className="text-center max-w-2xl mx-auto mb-8 space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono tracking-wider uppercase">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Interactive Physical Morphing</span>
+    <section id="simulator-demo" ref={containerRef} className="py-16 sm:py-24 max-w-5xl mx-auto px-4 sm:px-6 relative">
+      {/* Header with Coordinates HUD */}
+      <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 mb-10">
+        <div className="text-center sm:text-left space-y-3">
+          <div className="cinema-eyebrow">
+            <span className="cinema-hairline" />
+            <span>02 / INTERACTIVE HABITAT SIMULATION</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif] leading-tight">
+            <span>HOW GRAVITY </span>
+            <span className="cinema-line-outline">RESHAPES </span>
+            <span className="cinema-line-warm">FIRE</span>
+          </h2>
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
+            Drag the gravity slider below to watch combustion morph in real time from a spherical 0g bubble into an Earth teardrop.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
-          How Gravity Reshapes Fire
-        </h2>
-        <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-          Drag the gravity slider below to watch combustion morph in real time from a spherical 0g bubble into an Earth teardrop.
-        </p>
+
+        <div className="coordinates-hud shrink-0 hidden sm:flex">
+          <span>ISS COLUMBUS MODULE</span>
+          <span>ALT 408 KM • INC 51.6°</span>
+          <span className="text-[8px] text-slate-500">21% O₂ • 101.3 kPa</span>
+        </div>
       </div>
 
-      <Card variant="glass" padding="none" className="border-sky-500/25 overflow-hidden shadow-2xl space-y-0">
+      <Card variant="glass" padding="none" className="border-sky-500/25 overflow-hidden shadow-2xl space-y-0 cinema-card">
         {/* Top Disclaimer Bar */}
         <div className="px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
@@ -307,9 +316,10 @@ export const SimulatorMiniDemo: React.FC = () => {
               className="shrink-0"
               aria-label={`Run this scenario in the Simulator with ${nearest.name}`}
             >
-              <Button variant="primary" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-                Run this in the Simulator
-              </Button>
+              <button className="journey-button" type="button">
+                <span>RUN IN THE SIMULATOR</span>
+                <span className="button-arrow">↗</span>
+              </button>
             </Link>
           </div>
         </div>

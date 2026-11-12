@@ -8,11 +8,26 @@ import { SmokeParticleEngine } from './smokeParticles.ts';
 import { computeStationCamera } from './cameraMath.ts';
 import { reportRendererStats, isPerfModeEnabled } from '../../visuals/perfStore.ts';
 
+export interface VisualLayerFlags {
+  smoke: boolean;
+  thermal: boolean;
+  airflow: boolean;
+  sensors: boolean;
+}
+
 export interface Station3DSceneProps {
   habitat: HabitatGraph;
   timeline: Timeline;
   frameState: TimelineFrameState;
   t: number;
+  selectedZoneId?: string;
+  onSelectZone?: (zoneId: string) => void;
+  userAzimuthOffset?: number;
+  userElevationOffset?: number;
+  userZoomOffset?: number;
+  layers?: VisualLayerFlags;
+  isExploreMode?: boolean;
+  isGuidedMode?: boolean;
 }
 
 // Perf Collector
@@ -82,18 +97,21 @@ const SMOKE_FS = /* glsl */ `
   }
 `;
 
-interface SceneContentsProps {
-  habitat: HabitatGraph;
-  timeline: Timeline;
-  frameState: TimelineFrameState;
-  t: number;
-}
+interface SceneContentsProps extends Station3DSceneProps {}
 
 const SceneContents: React.FC<SceneContentsProps> = ({
   habitat,
   timeline,
   frameState,
   t,
+  selectedZoneId,
+  onSelectZone,
+  userAzimuthOffset = 0,
+  userElevationOffset = 0,
+  userZoomOffset = 0,
+  layers = { smoke: true, thermal: false, airflow: true, sensors: true },
+  isExploreMode,
+  isGuidedMode,
 }) => {
   const { camera } = useThree();
   const zones = habitat.zones;
@@ -180,14 +198,26 @@ const SceneContents: React.FC<SceneContentsProps> = ({
     return geo;
   }, []);
 
-  // Update loop (driven deterministically by t)
+  // Update loop (driven deterministically by t + user camera offsets)
   useFrame(() => {
+    const selectedZoneIndex = selectedZoneId
+      ? zones.findIndex((z) => z.id === selectedZoneId)
+      : -1;
+    const selectedZoneX =
+      selectedZoneIndex >= 0 ? engine.moduleCentersX[selectedZoneIndex] : undefined;
+
     // 1. Camera deterministic orbit & fly-to as pure function of t
     const camState = computeStationCamera(
       t,
       engine.moduleCentersX[originZoneIndex],
       timeline.clocks.cal.alarmTime_s,
-      frameState.isSuppressionActive
+      frameState.isSuppressionActive,
+      userAzimuthOffset,
+      userElevationOffset,
+      userZoomOffset,
+      frameState.isFireExtinguished,
+      selectedZoneX,
+      isGuidedMode !== undefined ? isGuidedMode : (isExploreMode !== undefined ? !isExploreMode : false)
     );
     camera.position.set(camState.x, camState.y, camState.z);
     camera.lookAt(camState.targetX, camState.targetY, camState.targetZ);
@@ -214,7 +244,11 @@ const SceneContents: React.FC<SceneContentsProps> = ({
     const zoneGeo = zoneGeoRef.current;
     if (zoneGeo && typeof zoneGeo.setAttribute === 'function') {
       zoneGeo.setAttribute('position', new THREE.BufferAttribute(zonePositions, 3));
-      zoneGeo.setAttribute('aAlpha', new THREE.BufferAttribute(zoneAlphas, 1));
+      if (layers.smoke) {
+        zoneGeo.setAttribute('aAlpha', new THREE.BufferAttribute(zoneAlphas, 1));
+      } else {
+        zoneGeo.setAttribute('aAlpha', new THREE.BufferAttribute(new Float32Array(zoneAlphas.length), 1));
+      }
       if (zoneGeo.attributes.position) zoneGeo.attributes.position.needsUpdate = true;
       if (zoneGeo.attributes.aAlpha) zoneGeo.attributes.aAlpha.needsUpdate = true;
     }
@@ -222,7 +256,11 @@ const SceneContents: React.FC<SceneContentsProps> = ({
     const ductGeo = ductGeoRef.current;
     if (ductGeo && typeof ductGeo.setAttribute === 'function') {
       ductGeo.setAttribute('position', new THREE.BufferAttribute(ductPositions, 3));
-      ductGeo.setAttribute('aAlpha', new THREE.BufferAttribute(ductAlphas, 1));
+      if (layers.airflow) {
+        ductGeo.setAttribute('aAlpha', new THREE.BufferAttribute(ductAlphas, 1));
+      } else {
+        ductGeo.setAttribute('aAlpha', new THREE.BufferAttribute(new Float32Array(ductAlphas.length), 1));
+      }
       if (ductGeo.attributes.position) ductGeo.attributes.position.needsUpdate = true;
       if (ductGeo.attributes.aAlpha) ductGeo.attributes.aAlpha.needsUpdate = true;
     }
@@ -260,6 +298,7 @@ const SceneContents: React.FC<SceneContentsProps> = ({
       {zones.map((zone, zIdx) => {
         const xPos = engine.moduleCentersX[zIdx];
         const isOrigin = zone.id === originZoneId;
+        const isSelected = zone.id === selectedZoneId;
         const stepIdx = Math.min(timeline.steps.length - 1, Math.floor(t / timeline.dt_s));
         const series = timeline.zoneSeries[zone.id];
         const obs = series?.smokeObscuration[stepIdx] ?? 0;
@@ -279,14 +318,21 @@ const SceneContents: React.FC<SceneContentsProps> = ({
         const shortLabel = labelParts.slice(0, 2).join(' ');
 
         return (
-          <group key={zone.id} position={[xPos, 0, 0]}>
+          <group
+            key={zone.id}
+            position={[xPos, 0, 0]}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelectZone?.(zone.id);
+            }}
+          >
             {/* Outer Translucent Hull Cylinder */}
             <mesh rotation={[0, 0, Math.PI / 2]}>
               <cylinderGeometry args={[0.95, 0.95, 2.5, 32, 1, true]} />
               <meshBasicMaterial
-                color={colorHex}
+                color={isSelected ? '#ffffff' : colorHex}
                 transparent
-                opacity={isPowered ? 0.07 : 0.02}
+                opacity={isSelected ? 0.16 : isPowered ? 0.07 : 0.02}
                 depthWrite={false}
                 side={THREE.DoubleSide}
               />
@@ -296,11 +342,31 @@ const SceneContents: React.FC<SceneContentsProps> = ({
             <lineSegments rotation={[0, 0, Math.PI / 2]}>
               <edgesGeometry args={[new THREE.CylinderGeometry(0.95, 0.95, 2.5, 16, 1, true)]} />
               <lineBasicMaterial
-                color={colorHex}
+                color={isSelected ? '#ffffff' : colorHex}
                 transparent
-                opacity={isAlarmed ? 0.85 : 0.5}
+                opacity={isSelected ? 1.0 : isAlarmed ? 0.85 : 0.5}
               />
             </lineSegments>
+
+            {/* Selected Module Highlight Ring */}
+            {isSelected && (
+              <mesh rotation={[0, Math.PI / 2, 0]}>
+                <torusGeometry args={[1.06, 0.035, 12, 36]} />
+                <meshBasicMaterial color="#3ad7ff" />
+              </mesh>
+            )}
+
+            {/* Origin Module Focal Beacon in Stage 1 of Guided Mode */}
+            {isOrigin && isGuidedMode && t < 5.0 && (
+              <mesh rotation={[0, Math.PI / 2, 0]}>
+                <torusGeometry args={[1.08, 0.04, 12, 36]} />
+                <meshBasicMaterial
+                  color="#ff4258"
+                  transparent
+                  opacity={0.5 + 0.3 * Math.sin(t * 6)}
+                />
+              </mesh>
+            )}
 
             {/* Equipment Racks Inside Module */}
             <lineSegments position={[-0.7, -0.5, -0.3]}>
@@ -312,15 +378,43 @@ const SceneContents: React.FC<SceneContentsProps> = ({
               <lineBasicMaterial color={colorHex} transparent opacity={isPowered ? 0.4 : 0.12} />
             </lineSegments>
 
-            {/* Wall Sensor Node (Pulses when alarmed) */}
-            <mesh position={[0, 0.98, 0]}>
-              <sphereGeometry args={[0.08, 12, 8]} />
-              <meshBasicMaterial color={colorHex} />
-            </mesh>
+            {/* Thermal Heat Overlay Mesh (When thermal layer is active) */}
+            {layers.thermal && (() => {
+              const tempC = series?.temperature_c?.[stepIdx] ?? 21.5;
+              const tempDelta = Math.max(0, tempC - 21.5);
+              if (tempDelta < 1.0) return null;
+              const thermalIntensity = Math.min(0.55, 0.14 + 0.07 * Math.min(6, tempDelta));
+              return (
+                <mesh rotation={[0, 0, Math.PI / 2]}>
+                  <cylinderGeometry args={[0.88, 0.88, 2.35, 24, 1, true]} />
+                  <meshBasicMaterial
+                    color="#ff6b35"
+                    transparent
+                    opacity={thermalIntensity}
+                    depthWrite={false}
+                    side={THREE.DoubleSide}
+                  />
+                </mesh>
+              );
+            })()}
+
+            {/* Wall Sensor Node (Shown when sensors layer is active) */}
+            {layers.sensors && (
+              <mesh position={[0, 0.98, 0]}>
+                <sphereGeometry args={[0.08, 12, 8]} />
+                <meshBasicMaterial color={colorHex} />
+              </mesh>
+            )}
 
             {/* Floating 2D Zone Label (max 2 words) */}
             <Html position={[0, 1.35, 0]} center pointerEvents="none">
-              <div className="px-2 py-0.5 rounded bg-black/70 border border-slate-700/80 text-[11px] font-sans font-semibold tracking-wider uppercase text-slate-200 select-none whitespace-nowrap shadow-md">
+              <div
+                className={`px-2 py-0.5 rounded border text-[11px] font-sans font-semibold tracking-wider uppercase select-none whitespace-nowrap shadow-md transition-colors ${
+                  isSelected
+                    ? 'bg-cyan-950/90 border-cyan-400 text-cyan-200'
+                    : 'bg-black/70 border-slate-700/80 text-slate-200'
+                }`}
+              >
                 {shortLabel}
               </div>
             </Html>
@@ -403,4 +497,3 @@ export const Station3DScene: React.FC<Station3DSceneProps> = (props) => {
 };
 
 export default Station3DScene;
-

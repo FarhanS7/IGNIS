@@ -1,0 +1,67 @@
+{
+  "chapter_slug": "what-nasa-has-not-tested",
+  "citation": {
+    "chunk_id": "NTRS-20240002981-p001-c002",
+    "document_title": "53rd International Conference on Environmental Systems (ICES-2024-365)",
+    "page": 1,
+    "verbatim_quote": "The lack of this experimental data has \r\nforced spacecraft designers to base their designs and safety precautions on 1-g understanding \r\nof flame spread, flame self-extinguishment, fire detection, and suppression."
+  },
+  "description": "Explicit boundaries of flight-tested data: gravity, pressure, and exploration oxygen atmospheres.",
+  "destination_gaps": [
+    {
+      "gravity_g": 0.0,
+      "name": "Earth Space Station (ISS)",
+      "oxygen_pct": 21.0,
+      "pressure_kpa": 101.3,
+      "status": "Well tested in 0g"
+    },
+    {
+      "gravity_g": 0.16,
+      "name": "Lunar Habitat (Artemis)",
+      "oxygen_pct": 34.0,
+      "pressure_kpa": 56.0,
+      "status": "Untested partial gravity & elevated O2"
+    },
+    {
+      "gravity_g": 0.38,
+      "name": "Mars Surface Habitat",
+      "oxygen_pct": 28.0,
+      "pressure_kpa": 70.3,
+      "status": "Untested Martian gravity"
+    }
+  ],
+  "tested_envelope": {
+    "airflow": {
+      "basis": "converted from fan dial settings",
+      "tested_max_cm_s": 28.18,
+      "tested_min_cm_s": 0.0
+    },
+    "gravity": {
+      "note": "Zero long-duration solid combustion experiments have been conducted on the Moon or Mars.",
+      "tested": "0.0g (ISS orbit only)",
+      "untested": [
+        "0.16g (Moon surface)",
+        "0.38g (Mars surface)"
+      ]
+    },
+    "oxygen": {
+      "note": "Oxygen above 22.2% has never been tested in microgravity for these solid fuel samples.",
+      "tested_max_pct": 22.2,
+      "tested_min_pct": 13.6,
+      "untested_exploration_pct": [
+        28.0,
+        32.0,
+        34.0
+      ]
+    },
+    "pressure": {
+      "note": "Pressure was not varied or recorded as a controlled parameter in BASS-II solid burn tests.",
+      "tested": "101.3 kPa (assumed, not measured)",
+      "untested": [
+        "56.0 kPa (Artemis exploration atmosphere)",
+        "70.3 kPa (Deep space transit)"
+      ]
+    }
+  },
+  "title": "What NASA has not tested"
+}

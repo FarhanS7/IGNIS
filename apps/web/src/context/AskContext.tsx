@@ -14,6 +14,11 @@ import {
   type CorpusChunk,
   type RetrievedChunk,
 } from '../lib/assistant/bm25_retriever';
+import {
+  DEFAULT_CORPUS_PROMPTS,
+  filterChunksByScope,
+  type CorpusScopeId,
+} from '../lib/assistant/corpus_scopes';
 import { verifyAnswer } from '../lib/assistant/client_verifier';
 import { RealSolidMatcher } from '../lib/matcher/real_solid_matcher';
 import type { RawEvidenceSolidRun, MaterialMap, RealSolidMatchResult } from '../lib/matcher/types';
@@ -24,23 +29,23 @@ import materialMapData from '../data/material_map.json';
 
 export type { ChatMessage, GroundedCitation, AskPageContext, AskContextValue };
 
-export const DEFAULT_CORPUS_PROMPTS = [
-  'What happens to a flame when there is no gravity?',
-  'Why does blowing air make a space flame burn instead of going out?',
-  'Has NASA ever tested fires on the Moon or Mars?',
-  'What materials did NASA burn in the space station experiments?',
-];
-
 export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputQuery, setInputQuery] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [pageContext, setPageContext] = useState<AskPageContext | null>(null);
+  const [scope, setScope] = useState<CorpusScopeId>('global');
+  const [useLLMSynthesis, setUseLLMSynthesis] = useState<boolean>(false);
 
-  // Initialize BM25 retriever in client memory over 930 corpus chunks
-  const retriever = useMemo(() => {
-    return new BM25Retriever(rawChunks as unknown as CorpusChunk[]);
+  // Initialize BM25 retrievers in client memory per corpus scope
+  const retrievers = useMemo(() => {
+    const typed = rawChunks as unknown as CorpusChunk[];
+    return {
+      global: new BM25Retriever(typed),
+      solid: new BM25Retriever(filterChunksByScope(typed, 'solid')),
+      acme: new BM25Retriever(filterChunksByScope(typed, 'acme')),
+    };
   }, []);
 
   // Initialize RealSolidMatcher in client memory
@@ -68,9 +73,17 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   const sendMessage = useCallback(
-    async (queryToSend?: string, useLLM = false) => {
+    async (
+      queryToSend?: string,
+      useLLMOverride?: boolean,
+      scopeOverride?: CorpusScopeId
+    ) => {
       const q = (queryToSend ?? inputQuery).trim();
       if (!q) return;
+
+      const effectiveScope = scopeOverride ?? scope;
+      const shouldUseLLM = useLLMOverride ?? useLLMSynthesis;
+      const activeRetriever = retrievers[effectiveScope] || retrievers.global;
 
       const userMessage: ChatMessage = {
         id: `user-${Date.now()}`,
@@ -84,8 +97,8 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setIsLoading(true);
 
       try {
-        // Step 1: Client-Side BM25 Retrieval over Corpus Chunks
-        const topChunks: RetrievedChunk[] = retriever.search(q, 5);
+        // Step 1: Client-Side BM25 Retrieval over selected scope chunks
+        const topChunks: RetrievedChunk[] = activeRetriever.search(q, 5);
 
         // Step 2: Structured Scenario Parameter Extraction & Matcher Tool
         const extractedScenario = extractScenarioFromQuestion(q);
@@ -115,7 +128,7 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         let llmAnswerSentences: Array<{ text: string; cites: string[] }> = [];
         let llmAbstain = false;
 
-        if (useLLM) {
+        if (shouldUseLLM) {
           try {
             const res = await fetch('/api/ask', {
               method: 'POST',
@@ -201,10 +214,13 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               abstain: true,
             };
           } else if (abstentionCheck.abstain) {
+            const hasMatcherHit = Boolean(matcherResult?.matches?.length);
             assistantMessage = {
               id: `assistant-${Date.now()}`,
               role: 'assistant',
-              content: "I couldn't find that in the NASA reports I have.",
+              content: hasMatcherHit
+                ? "I couldn't find a direct report excerpt above the citation threshold, though structured flight matching found nearby NASA PSI runs below."
+                : "I couldn't find that in the NASA reports I have.",
               timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
               verifiedBadge: undefined,
               mode: 'extractive',
@@ -255,7 +271,7 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsLoading(false);
       }
     },
-    [inputQuery, retriever, matcher]
+    [inputQuery, retrievers, matcher, scope, useLLMSynthesis]
   );
 
   const suggestedPrompts = useMemo(() => {
@@ -269,6 +285,10 @@ export const AskProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         inputQuery,
         setInputQuery,
         isLoading,
+        scope,
+        setScope,
+        useLLMSynthesis,
+        setUseLLMSynthesis,
         sendMessage,
         clearSession,
         isDrawerOpen,

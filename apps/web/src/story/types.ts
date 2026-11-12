@@ -134,11 +134,34 @@ export interface BeatContentLayer3 {
   citationLabel?: string;
 }
 
+export interface BeatProvenance {
+  datasetId: string;
+  sourceDocId?: string;
+  doiOrNtrs?: string;
+  platform: string;
+  quoteOrRow: string;
+  runId?: string;
+  caveat?: string;
+}
+
+export interface LevelTextMap {
+  little: string;
+  explorer: string;
+  scientist: string;
+}
+
 export interface Beat {
   id: string;
   type: BeatType;
   title: string;
   subtitle?: string;
+  /** Act mapping: coldOpen | wonder | do | reveal | takeaway */
+  act?: 'coldOpen' | 'wonder' | 'do' | 'reveal' | 'takeaway';
+  /** Text tailored to audience levels */
+  levelText?: LevelTextMap;
+  /** Epistemic truth label */
+  truthTag?: 'From NASA flight tests' | 'Illustration';
+  illustrationDescription?: string;
   /** Declare which modes include this beat */
   modes: StoryMode[];
   /** Avatar cue displayed for this beat */
@@ -151,10 +174,21 @@ export interface Beat {
   layer2?: BeatContentLayer2;
   /** Layer 3: Show data (Recharts telemetry visualization + Explorer link) */
   layer3?: BeatContentLayer3;
+  /** Exact NASA source grounding displayed in the beat provenance drawer */
+  provenance?: BeatProvenance;
   /** Specialized interactive component configurations */
   predictInteraction?: PredictInteraction;
   revealInteraction?: RevealInteraction;
   checkInteraction?: CheckInteraction;
+  /** Real NASA droplet runs for interactive selection */
+  dropletRuns?: Array<{
+    runId: string;
+    testNumber: number;
+    fuel: string;
+    initialDiameterMm: number;
+    durationSec: number;
+    csvRow: number;
+  }>;
 }
 
 export interface Chapter {
@@ -172,9 +206,13 @@ export interface Chapter {
   heroFlameScenario: ScenarioInput & { gravity_g?: number };
   beats: Beat[];
   takeawayMessage: string;
+  /** 3 concrete takeaway bullets displayed at the chapter end */
+  takeaways?: [string, string, string] | string[];
   limitsOfData: string[];
   glossary: GlossaryItem[];
   nextChapterSlug?: string;
+  /** Epistemic caveat displayed prominently on chapter header and data */
+  epistemicCaveat?: string;
 }
 
 export type TextSizeSetting = 'normal' | 'large' | 'xlarge';

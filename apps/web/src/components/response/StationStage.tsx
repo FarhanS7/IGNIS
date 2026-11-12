@@ -5,7 +5,9 @@ import { useWebGLSupport } from '../../visuals/useWebGLSupport.ts';
 import { useReducedMotion } from '../../visuals/useReducedMotion.ts';
 import { StationFallback2D } from './StationFallback2D.tsx';
 
-// Lazy-load the heavy 3D Scene as required by Step 2
+import type { VisualLayerFlags } from './Station3DScene.tsx';
+
+// Lazy-load the heavy 3D Scene
 const Station3DScene = lazy(() => import('./Station3DScene.tsx'));
 
 export interface StationStageProps {
@@ -13,6 +15,14 @@ export interface StationStageProps {
   timeline: Timeline;
   frameState: TimelineFrameState;
   t: number;
+  selectedZoneId?: string;
+  onSelectZone?: (zoneId: string) => void;
+  userAzimuthOffset?: number;
+  userElevationOffset?: number;
+  userZoomOffset?: number;
+  layers?: VisualLayerFlags;
+  isExploreMode?: boolean;
+  isGuidedMode?: boolean;
 }
 
 class StageErrorBoundary extends React.Component<
@@ -59,4 +69,3 @@ export const StationStage: React.FC<StationStageProps> = (props) => {
 };
 
 export default StationStage;
-

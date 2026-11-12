@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Download, AlertTriangle, ExternalLink, ShieldCheck } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertTriangle, ExternalLink, ShieldCheck } from 'lucide-react';
 import type { RealSolidMatch, RealSolidMatchResult, SolidScenarioInput } from '../../lib/matcher/types';
-import { OUTCOME_FRIENDLY_LABELS, formatHowClose } from '../../content/glossary';
+import {
+  TESTED_O2_MIN,
+  TESTED_O2_MAX,
+  TESTED_FLOW_MIN,
+  TESTED_FLOW_MAX,
+} from '../../lib/matcher/real_solid_matcher';
+import { getInvestigationDoi } from '../../lib/matcher/investigationDoi';
+import { formatHowClose } from '../../content/glossary';
 import { EvidenceEnvelopePlot } from './EvidenceEnvelopePlot';
 import { useTrustLedger } from '../../context/TrustLedgerContext';
 
@@ -16,50 +23,37 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
   matchResult,
   scenario,
   activePresetSlug = 'orbital',
-  onExportBrief,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const { openDrawer } = useTrustLedger();
 
   const isMoonOrMars = (scenario.gravity_g !== undefined && scenario.gravity_g !== null && scenario.gravity_g > 0) || activePresetSlug === 'moon' || activePresetSlug === 'mars';
-  const isO2High = scenario.oxygen_pct > 22.2;
-  const isO2Low = scenario.oxygen_pct < 13.6;
-  const isFlowOutside = scenario.flow_cm_s > 28.2 || scenario.flow_cm_s < 0;
-  const isOutside = matchResult.envelope.outside_tested_range || isMoonOrMars || isO2High || isO2Low || isFlowOutside;
+  const isO2Outside = scenario.oxygen_pct < TESTED_O2_MIN || scenario.oxygen_pct > TESTED_O2_MAX;
+  const isFlowOutside = scenario.flow_cm_s < TESTED_FLOW_MIN || scenario.flow_cm_s > TESTED_FLOW_MAX;
+  const isOutside = matchResult.envelope.outside_tested_range || isMoonOrMars || isO2Outside || isFlowOutside;
 
-  // Compute plain headline
-  let headlineSentence = '';
-  let missingReason = '';
-
-  if (isOutside) {
-    headlineSentence = "NASA hasn't tested anything close to this yet.";
-    if (isMoonOrMars) {
-      missingReason = 'All 132 flight tests were in space station freefall (0g). None were conducted on the Moon (0.16g) or Mars (0.38g).';
-    } else if (isO2High) {
-      missingReason = 'No flight tests exist above 22.2% oxygen in this record (tested flights ranged from 13.6% to 22.2% O₂).';
-    } else if (isO2Low) {
-      missingReason = 'No flight tests exist below 13.6% oxygen in this record.';
-    } else if (isFlowOutside) {
-      missingReason = 'Airflow is outside the tested flight range (0.0 to 28.2 cm/s).';
+  const outReasons: string[] = [];
+  if (isO2Outside) {
+    if (scenario.oxygen_pct > TESTED_O2_MAX) {
+      outReasons.push(`Oxygen ${scenario.oxygen_pct}% is above the tested ${TESTED_O2_MIN.toFixed(1)}–${TESTED_O2_MAX.toFixed(1)}%.`);
     } else {
-      missingReason = 'These conditions are outside the range NASA has tested in orbit.';
+      outReasons.push(`Oxygen ${scenario.oxygen_pct}% is below the tested ${TESTED_O2_MIN.toFixed(1)}–${TESTED_O2_MAX.toFixed(1)}%.`);
     }
-  } else {
-    // Count matches in range
-    const closeMatches = matchResult.matches.filter((m) => m.similarity >= 0.75);
-    const pool = closeMatches.length > 0 ? closeMatches : matchResult.matches.slice(0, 5);
-    const totalCount = pool.length;
-    const burnedCount = pool.filter((m) => m.outcome_class === 'frames_recorded').length;
-    const extinguishedCount = pool.filter((m) => m.outcome_class === 'extinguished').length;
-    const noIgnCount = pool.filter((m) => m.outcome_class === 'no_ignition').length;
-
-    const parts: string[] = [];
-    if (burnedCount > 0) parts.push(`in ${burnedCount} a flame was photographed`);
-    if (extinguishedCount > 0) parts.push(`in ${extinguishedCount} the flame went out`);
-    if (noIgnCount > 0) parts.push(`in ${noIgnCount} no flame started`);
-
-    headlineSentence = `NASA tested conditions close to this ${totalCount} times. ${parts.length > 0 ? parts.join('; ') + '.' : ''}`;
   }
+  if (isMoonOrMars) {
+    outReasons.push('All NASA tests were in zero gravity.');
+  }
+  if (isFlowOutside) {
+    if (scenario.flow_cm_s > TESTED_FLOW_MAX) {
+      outReasons.push(`Fan speed ${scenario.flow_cm_s} cm/s is above the tested ${TESTED_FLOW_MIN.toFixed(1)}–${TESTED_FLOW_MAX.toFixed(1)} cm/s.`);
+    } else {
+      outReasons.push(`Fan speed ${scenario.flow_cm_s} cm/s is below the tested ${TESTED_FLOW_MIN.toFixed(1)}–${TESTED_FLOW_MAX.toFixed(1)} cm/s.`);
+    }
+  }
+
+  const headlineSentence = isOutside
+    ? "NASA hasn't tested this setup."
+    : 'NASA tested something close to this.';
 
   // Top 3 closest runs
   const top3 = matchResult.matches.slice(0, 3);
@@ -92,74 +86,56 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
       sourceFile: match.source_file,
       sourceColumn: 'Outcome / Nikon frames',
       sourceRow: match.source_row,
-      doi: inv === 'BASS-II' ? '10.60555/4qc4-de67' : '10.60555/0t15-1z43',
+      doi: getInvestigationDoi(inv),
       investigationId: inv,
       notes: `Recorded in ${inv} flight table. O2=${o2Val}%, Flow=${flowVal} cm/s.`,
     });
   };
 
   return (
-    <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-5 space-y-5 text-slate-100 shadow-xl">
-      {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/10">
-        <div>
-          <h2 className="text-lg font-bold text-white font-['Space_Grotesk',sans-serif] flex items-center gap-2">
-            <span>What did NASA actually see?</span>
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Based on 132 real spaceflight tests from BASS-II and Saffire missions.
-          </p>
-        </div>
-        {onExportBrief && (
-          <button
-            type="button"
-            onClick={onExportBrief}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-white/5 hover:bg-white/10 text-cyan-400 border border-cyan-500/30 transition-colors cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export Brief</span>
-          </button>
-        )}
-      </div>
-
-      {/* Top Headline Sentence */}
+    <div className="rounded-2xl bg-slate-900/90 border border-slate-800 p-5 space-y-4 text-slate-100 shadow-xl">
+      {/* Top Headline Sentence & Out-of-range reason */}
       <div className={`p-4 rounded-xl border ${isOutside ? 'bg-amber-950/20 border-amber-500/40' : 'bg-slate-950/60 border-cyan-500/30'}`}>
-        <p className="text-sm sm:text-base font-semibold text-white leading-relaxed">
+        <p className="text-base sm:text-lg font-semibold text-white leading-snug">
           {headlineSentence}
         </p>
-        {isOutside && (
-          <p className="text-xs text-amber-300/90 mt-1.5 leading-relaxed flex items-start gap-1.5">
+        {isOutside && outReasons.length > 0 && (
+          <p className="text-xs text-amber-300/90 mt-1.5 leading-relaxed flex items-start gap-1.5 font-sans">
             <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5 text-amber-400" />
-            <span>{missingReason}</span>
+            <span>{outReasons.join(' ')}</span>
           </p>
         )}
       </div>
 
-      {/* Closest Real NASA Tests (Up to 3 cards) */}
+      {/* Closest NASA tests (Up to 3 cards) */}
       <div className="space-y-2.5">
-        <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
-          <span>{isOutside ? 'Closest tested conditions in space:' : 'Closest real NASA tests:'}</span>
-          <span className="font-mono text-[11px] text-cyan-400">Top {top3.length} tests</span>
+        <div className="text-xs text-slate-400 font-medium">
+          <span>Closest NASA tests</span>
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5">
+        <div className="grid grid-cols-1 gap-2">
           {top3.map((match) => {
-            const friendlyOutcome = OUTCOME_FRIENDLY_LABELS[match.outcome_class] || match.outcome_class;
+            const outcomeText =
+              match.outcome_class === 'frames_recorded'
+                ? 'Flame recorded on camera'
+                : match.outcome_class === 'extinguished'
+                  ? 'Went out'
+                  : "Didn't light";
+
             const outcomeColor =
               match.outcome_class === 'frames_recorded'
                 ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                 : match.outcome_class === 'extinguished'
-                ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                : 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+                  ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                  : 'bg-purple-500/15 text-purple-300 border-purple-500/30';
 
             const dotColor =
               match.outcome_class === 'frames_recorded'
                 ? 'bg-emerald-400'
                 : match.outcome_class === 'extinguished'
-                ? 'bg-amber-400'
-                : 'bg-purple-400';
+                  ? 'bg-amber-400'
+                  : 'bg-purple-400';
 
-            const inv = getInvestigation(match);
             const matFamily = getMaterialFamily(match);
             const o2Val = getO2(match);
             const flowVal = getFlow(match);
@@ -169,32 +145,36 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
               matFamily &&
               scenario.material.toLowerCase() !== matFamily.toLowerCase();
 
+            const whyDetails: string[] = [];
+            if (isDiffMaterial) {
+              whyDetails.push('Different material');
+            } else {
+              whyDetails.push('Same material');
+            }
+            if (Math.abs(o2Val - scenario.oxygen_pct) <= 1.0) whyDetails.push(`Near-identical O₂ (${o2Val}%)`);
+            else whyDetails.push(`O₂ ${o2Val}%`);
+            if (Math.abs(flowVal - scenario.flow_cm_s) <= 2.0) whyDetails.push(`Similar fan speed (${flowVal} cm/s)`);
+
             return (
               <div
                 key={match.run_uid}
-                className="p-3 rounded-xl bg-slate-950/70 border border-white/10 hover:border-cyan-400/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                className="p-3 rounded-xl bg-slate-950/70 border border-white/10 hover:border-cyan-400/40 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs"
               >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white">{inv}</span>
-                    <span className="text-slate-400 font-mono text-[11px]">Row {match.source_row}</span>
-                    {isDiffMaterial && (
-                      <span className="px-1.5 py-0.5 text-[10px] rounded bg-amber-950/60 text-amber-300 border border-amber-700/50">
-                        diff material
-                      </span>
-                    )}
+                <div className="space-y-0.5">
+                  <div className="text-white font-medium">
+                    <span>{match.metadata?.raw_material || matFamily}</span>
+                    <span className="text-slate-400 font-normal"> · {o2Val}% O₂ · Fan: {flowVal} cm/s</span>
                   </div>
-                  <div className="text-slate-300 text-[11px]">
-                    <span className="text-slate-400">Material:</span> {match.metadata?.raw_material || matFamily} ·{' '}
-                    <span className="text-slate-400">Oxygen:</span> {o2Val}% ·{' '}
-                    <span className="text-slate-400">Airflow:</span> {flowVal} cm/s
+                  <div className="text-[11px] text-slate-400 font-sans">
+                    <span>Why similar: </span>
+                    <span className="text-slate-300">{whyDetails.join(' · ')}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${outcomeColor}`}>
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${outcomeColor}`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`} />
-                    <span>{friendlyOutcome}</span>
+                    <span>{outcomeText}</span>
                   </span>
 
                   <button
@@ -202,7 +182,7 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
                     onClick={() => handleOpenRunSource(match)}
                     className="inline-flex items-center gap-1 text-[11px] text-cyan-400 hover:text-white underline decoration-cyan-500/40 underline-offset-2 cursor-pointer font-medium"
                   >
-                    <span>See source</span>
+                    <span>Source</span>
                     <ExternalLink className="w-3 h-3" />
                   </button>
                 </div>
@@ -210,6 +190,11 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
             );
           })}
         </div>
+
+        {/* Small Caption */}
+        <p className="text-xs text-slate-400 pt-1 font-sans">
+          Shows what NASA tested, not what will happen.
+        </p>
       </div>
 
       {/* Collapsible Details (Closed by default) */}
@@ -217,11 +202,11 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
         <button
           type="button"
           onClick={() => setShowDetails(!showDetails)}
-          className="w-full flex items-center justify-between py-2 text-xs font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
+          className="w-full flex items-center justify-between py-1 text-xs font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-cyan-400" />
-            <span>Show the details (range plot, factors, assumed pressure notice)</span>
+            <span>Show the numbers behind this</span>
           </span>
           {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
@@ -308,9 +293,9 @@ export const SimpleNasaResultPanel: React.FC<Props> = ({
 
             {/* Validation Note */}
             <div className="p-3 rounded-xl bg-slate-950/60 border border-white/10 text-[11px] text-slate-400 space-y-1">
-              <span className="font-semibold text-slate-300">Validation & Accuracy</span>
+              <span className="font-semibold text-slate-300">Validation & Epistemic Boundaries</span>
               <p className="leading-relaxed">
-                Evaluated across 132 microgravity flight runs in 110 hardware groups. Grouped leave-one-group-out cross-validation yields 80.30% overall accuracy, 46.72% balanced accuracy, and 48.00% extinction recall. Multi-factor matching demonstrates no statistically significant advantage over a single O₂-threshold rule (p = 1.0000; earlier higher figures from ungrouped CV had sample leakage and were retracted).
+                Evaluated across 132 microgravity flight runs in 110 independent hardware groups. Grouped leave-one-group-out cross-validation yields 80.30% overall accuracy (106/132), 46.72% balanced accuracy, and 48.00% extinction recall (12/25). Multi-factor matching demonstrates no statistically significant advantage over a single O₂-threshold rule (p = 1.0000; earlier higher figures from ungrouped CV had sample leakage and were retracted). The engine operates strictly as an empirical evidence locator to inspect real flight records, not an autonomous outcome predictor.
               </p>
             </div>
           </div>
