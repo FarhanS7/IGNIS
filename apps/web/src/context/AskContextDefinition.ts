@@ -53,12 +53,22 @@ export interface AskPageContext {
   suggestedPrompts?: string[];
 }
 
+import type { CorpusScopeId } from '../lib/assistant/corpus_scopes';
+
 export interface AskContextValue {
   messages: ChatMessage[];
   inputQuery: string;
   setInputQuery: (q: string) => void;
   isLoading: boolean;
-  sendMessage: (queryToSend?: string) => Promise<void>;
+  scope: CorpusScopeId;
+  setScope: (scope: CorpusScopeId) => void;
+  useLLMSynthesis: boolean;
+  setUseLLMSynthesis: (enabled: boolean) => void;
+  sendMessage: (
+    queryToSend?: string,
+    useLLMOverride?: boolean,
+    scopeOverride?: CorpusScopeId
+  ) => Promise<void>;
   clearSession: () => void;
   isDrawerOpen: boolean;
   openDrawer: (initialQuery?: string) => void;

@@ -13,6 +13,9 @@ export const AppLayout: React.FC = () => {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isStoryChapter =
+    (location.pathname.startsWith('/stories/') &&
+      location.pathname !== '/stories' &&
+      location.pathname !== '/stories/') ||
     (location.pathname.startsWith('/stories/v2/') &&
       location.pathname !== '/stories/v2' &&
       location.pathname !== '/stories/v2/') ||
@@ -22,14 +25,14 @@ export const AppLayout: React.FC = () => {
   if (isStoryChapter) {
     return (
       <AskProvider>
-        <div className="min-h-screen flex flex-col bg-transparent text-white relative selection:bg-[#79dce8]/30 selection:text-white">
+        <div className="min-h-screen w-full flex flex-col bg-[#05070E] text-white relative selection:bg-[#79dce8]/30 selection:text-white">
           {/* Fixed Cosmic Space Background matching index.html */}
           <div className="fixed-bg" aria-hidden="true" />
 
           {/* Ambient Canvas Cursor Particle Trail */}
           <GlowingCursor />
 
-          {/* Full-screen Story Chapter View */}
+          {/* Story Chapter View - native scroll enabled */}
           <main className="flex-1 w-full relative z-1">
             <ErrorBoundary>
               <Outlet />

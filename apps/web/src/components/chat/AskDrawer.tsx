@@ -19,6 +19,7 @@ import { useAskIgnis } from '../../hooks/useAskIgnis';
 import { EvidenceBadge } from '../common/EvidenceBadge';
 import { ConfidenceBadge } from '../common/ConfidenceBadge';
 import { Button } from '../common/Button';
+import { formatMatchMaterial } from '../../lib/assistant/corpus_scopes';
 
 export const AskDrawer: React.FC = () => {
   const {
@@ -168,7 +169,7 @@ export const AskDrawer: React.FC = () => {
                     )}
                   </div>
                   <p className="text-[11px] text-slate-400 font-mono truncate">
-                    NASA RAG Research Assistant
+                    Extractive NASA Evidence Search
                   </p>
                 </div>
               </div>
@@ -277,7 +278,7 @@ export const AskDrawer: React.FC = () => {
                           <span>Structured Flight Matcher Tool Output:</span>
                         </div>
                         <div className="text-zinc-200">
-                          Nearest Run: <strong className="text-white">{msg.structuredMatch.matches[0].run_uid}</strong> ({msg.structuredMatch.matches[0].material_family || msg.structuredMatch.matches[0].material})
+                          Nearest Run: <strong className="text-white">{msg.structuredMatch.matches[0].run_uid}</strong> ({formatMatchMaterial(msg.structuredMatch.matches[0])})
                         </div>
                         <div className="text-zinc-400 text-[10px]">
                           Tested: {msg.structuredMatch.matches[0].factors?.oxygen?.experiment_value}% O₂, {msg.structuredMatch.matches[0].factors?.flow?.experiment_value} cm/s • Outcome: <span className="text-amber-300 font-semibold">{msg.structuredMatch.matches[0].outcome_class}</span>
@@ -462,7 +463,7 @@ export const AskDrawer: React.FC = () => {
               </form>
               <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 px-1">
                 <span>Enter to submit, Shift+Enter for newline</span>
-                <span className="font-mono text-cyan-400/80">PRD §19 Grounded RAG</span>
+                <span className="font-mono text-cyan-400/80">Offline BM25 + Abstention</span>
               </div>
             </footer>
           </motion.div>

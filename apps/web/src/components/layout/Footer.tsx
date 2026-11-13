@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
               <Link to="/experiments">Flight Data</Link>
             </li>
             <li>
-              <Link to="/explore">Stories</Link>
+              <Link to="/stories">Stories</Link>
             </li>
             <li>
               <Link to="/about">About</Link>

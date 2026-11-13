@@ -1,0 +1,24 @@
+﻿Step: 2
+Compared with: hero-step-1
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=220 fail=0
+[PASS] build 
+[PASS] e2e passed=31
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-step-1 10 files
+
+Changed files:
+  apps/web/src/components/response/__tests__/station3d.test.ts
+  apps/web/src/components/response/smokeParticles.ts
+  apps/web/src/components/response/Station3DScene.tsx
+  apps/web/src/components/response/StationDemoPage.tsx
+  apps/web/src/components/response/StationFallback2D.tsx
+  apps/web/src/components/response/StationStage.tsx
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/reports/checkpoints.log
+  docs/hero_kit/reports/step2_e2e_output.txt
+  docs/hero_kit/reports/step2_verify.txt

@@ -7,13 +7,30 @@ export const FloatingAskButton: React.FC = () => {
   const { openDrawer, isDrawerOpen } = useAskIgnis();
   const location = useLocation();
 
-  // Hide floating button on /ask page or when drawer is already open
+  // Hide floating button on /ask or when drawer is already open
   if (location.pathname === '/ask' || isDrawerOpen) {
     return null;
   }
 
+  const isSimulator = location.pathname === '/simulator' || location.pathname.startsWith('/simulator');
+
+  if (isSimulator) {
+    return (
+      <div className="fixed bottom-6 left-6 z-40 print:hidden">
+        <button
+          type="button"
+          onClick={() => openDrawer()}
+          className="p-2.5 rounded-full bg-slate-900 border border-cyan-500/40 hover:border-cyan-400 text-cyan-400 hover:text-cyan-300 shadow-xl shadow-cyan-950/80 transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+          aria-label="Ask IGNIS"
+        >
+          <Sparkles className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="fixed bottom-6 left-6 z-40 print:hidden">
+    <div className="fixed bottom-6 right-6 z-40 print:hidden">
       <button
         type="button"
         onClick={() => openDrawer()}

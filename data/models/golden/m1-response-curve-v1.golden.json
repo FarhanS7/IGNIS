@@ -1,0 +1,2003 @@
+{
+  "model_id": "m1-response-curve-v1",
+  "generated_at": "2026-11-04T17:04:10.802999+00:00",
+  "total_cases": 105,
+  "tolerance": 1e-06,
+  "cases": [
+    {
+      "case_id": "m1_response_001",
+      "description": "Diameter 0.04000 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.04,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 4.3163,
+        "base_multiplier_isotonic": 0.8333,
+        "base_multiplier_ridge": 3.4173,
+        "ci_lower_95": 0.1081,
+        "ci_upper_95": 1.3605,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 4.3163,
+        "effective_multiplier_ridge": 3.4173,
+        "effective_multiplier_isotonic": 0.8333
+      }
+    },
+    {
+      "case_id": "m1_response_002",
+      "description": "Diameter 0.05067 um, Material teflon",
+      "input": {
+        "diameter_um": 0.05067,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 4.239038724373576,
+        "base_multiplier_isotonic": 0.8424869020501139,
+        "base_multiplier_ridge": 3.379943735763098,
+        "ci_lower_95": 0.1300838952164009,
+        "ci_upper_95": 1.3713835307517084,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 1.0893824691855252,
+        "effective_multiplier_ridge": 0.8686052881288239,
+        "effective_multiplier_isotonic": 0.216509100597434
+      }
+    },
+    {
+      "case_id": "m1_response_003",
+      "description": "Diameter 0.06135 um, Material kapton",
+      "input": {
+        "diameter_um": 0.06135,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 3.744936674259681,
+        "base_multiplier_isotonic": 0.9012390660592255,
+        "base_multiplier_ridge": 3.1410425968109337,
+        "ci_lower_95": 0.2706755125284739,
+        "ci_upper_95": 1.4409859908883829,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 9.416533502508178,
+        "effective_multiplier_ridge": 7.8980595450315665,
+        "effective_multiplier_isotonic": 2.2661392160906284
+      }
+    },
+    {
+      "case_id": "m1_response_004",
+      "description": "Diameter 0.07202 um, Material silicone",
+      "input": {
+        "diameter_um": 0.07202,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 3.2512972665148063,
+        "base_multiplier_isotonic": 0.9599362186788155,
+        "base_multiplier_ridge": 2.9023651480637813,
+        "ci_lower_95": 0.4111354897494306,
+        "ci_upper_95": 1.5105232801822324,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 3.2512972665148063,
+        "effective_multiplier_ridge": 2.9023651480637813,
+        "effective_multiplier_isotonic": 0.9599362186788155
+      }
+    },
+    {
+      "case_id": "m1_response_005",
+      "description": "Diameter 0.08269 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.08269,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 2.7576578587699316,
+        "base_multiplier_isotonic": 1.0186333712984055,
+        "base_multiplier_ridge": 2.6636876993166285,
+        "ci_lower_95": 0.5515954669703873,
+        "ci_upper_95": 1.580060569476082,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 2.7576578587699316,
+        "effective_multiplier_ridge": 2.6636876993166285,
+        "effective_multiplier_isotonic": 1.0186333712984055
+      }
+    },
+    {
+      "case_id": "m1_response_006",
+      "description": "Diameter 0.09337 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.09337,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 2.2758282687927105,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 2.4289384054669703,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 2.2758282687927105,
+        "effective_multiplier_ridge": 2.4289384054669703,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_007",
+      "description": "Diameter 0.10404 um, Material teflon",
+      "input": {
+        "diameter_um": 0.10404,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 2.060799817767654,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 2.284516674259681,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.5296010109717887,
+        "effective_multiplier_ridge": 0.5870935788321408,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_008",
+      "description": "Diameter 0.11471 um, Material kapton",
+      "input": {
+        "diameter_um": 0.11471,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.8457713667425968,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 2.1400949430523917,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 4.6411380017094395,
+        "effective_multiplier_ridge": 5.381206007651648,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_009",
+      "description": "Diameter 0.12538 um, Material silicone",
+      "input": {
+        "diameter_um": 0.12538,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.6307429157175402,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.9956732118451026,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.6307429157175402,
+        "effective_multiplier_ridge": 1.9956732118451026,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_010",
+      "description": "Diameter 0.13606 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.13606,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.4155129384965837,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.8511161275626424,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.4155129384965837,
+        "effective_multiplier_ridge": 1.8511161275626424,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_011",
+      "description": "Diameter 0.14673 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.14673,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.2929307517084283,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.7444464920273348,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.2929307517084283,
+        "effective_multiplier_ridge": 1.7444464920273348,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_012",
+      "description": "Diameter 0.15740 um, Material teflon",
+      "input": {
+        "diameter_um": 0.1574,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.177237813211845,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.6405902050113894,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.30253609819636734,
+        "effective_multiplier_ridge": 0.4216121447961064,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_013",
+      "description": "Diameter 0.16808 um, Material kapton",
+      "input": {
+        "diameter_um": 0.16808,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0614364464692483,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.5366365831435078,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.668950833711168,
+        "effective_multiplier_ridge": 3.863827649158046,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_014",
+      "description": "Diameter 0.17875 um, Material silicone",
+      "input": {
+        "diameter_um": 0.17875,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9457435079726653,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.4327802961275626,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.9457435079726653,
+        "effective_multiplier_ridge": 1.4327802961275626,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_015",
+      "description": "Diameter 0.18942 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.18942,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8692607744874715,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.347476355353075,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.8692607744874715,
+        "effective_multiplier_ridge": 1.347476355353075,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_016",
+      "description": "Diameter 0.20010 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.2001,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8014829157175398,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.2662451025056947,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.8014829157175398,
+        "effective_multiplier_ridge": 1.2662451025056947,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_017",
+      "description": "Diameter 0.21077 um, Material teflon",
+      "input": {
+        "diameter_um": 0.21077,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7337685193621867,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.1850899088838267,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.1885697709806863,
+        "effective_multiplier_ridge": 0.30455399327296595,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_018",
+      "description": "Diameter 0.22144 um, Material kapton",
+      "input": {
+        "diameter_um": 0.22144,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6660541230068338,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.103934715261959,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.6747735701078095,
+        "effective_multiplier_ridge": 2.775811484956831,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_019",
+      "description": "Diameter 0.23212 um, Material silicone",
+      "input": {
+        "diameter_um": 0.23212,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6173075170842824,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 1.0329471070615035,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.6173075170842824,
+        "effective_multiplier_ridge": 1.0329471070615035,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_020",
+      "description": "Diameter 0.24279 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.24279,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5765962414578587,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.9663264464692483,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.5765962414578587,
+        "effective_multiplier_ridge": 0.9663264464692483,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_021",
+      "description": "Diameter 0.25346 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.25346,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5358849658314351,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.8997057858769931,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.5358849658314351,
+        "effective_multiplier_ridge": 0.8997057858769931,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_022",
+      "description": "Diameter 0.26413 um, Material teflon",
+      "input": {
+        "diameter_um": 0.26413,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.49517369020501156,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.8330851252847382,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.1272537413281023,
+        "effective_multiplier_ridge": 0.2140929559350826,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_023",
+      "description": "Diameter 0.27481 um, Material kapton",
+      "input": {
+        "diameter_um": 0.27481,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.46429890660592255,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.7723958086560365,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.1674659919574961,
+        "effective_multiplier_ridge": 1.9421666217745288,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_024",
+      "description": "Diameter 0.28548 um, Material silicone",
+      "input": {
+        "diameter_um": 0.28548,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.44028533029612754,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.7159104328018223,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.44028533029612754,
+        "effective_multiplier_ridge": 0.7159104328018223,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_025",
+      "description": "Diameter 0.29615 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.29615,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.41627175398633254,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.6594250569476081,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.41627175398633254,
+        "effective_multiplier_ridge": 0.6594250569476081,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_026",
+      "description": "Diameter 0.30683 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.30683,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3922356719817768,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.6028867425968111,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3922356719817768,
+        "effective_multiplier_ridge": 0.6028867425968111,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_027",
+      "description": "Diameter 0.31750 um, Material teflon",
+      "input": {
+        "diameter_um": 0.3175,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.37347312072892935,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.5499446469248293,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.09597814431247684,
+        "effective_multiplier_ridge": 0.14132922493433092,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_028",
+      "description": "Diameter 0.32817 um, Material kapton",
+      "input": {
+        "diameter_um": 0.32817,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3604455125284738,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.5008723690205011,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 0.9063296765155788,
+        "effective_multiplier_ridge": 1.2594288912227247,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_029",
+      "description": "Diameter 0.33885 um, Material silicone",
+      "input": {
+        "diameter_um": 0.33885,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.34740569476082006,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.45175410022779056,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.34740569476082006,
+        "effective_multiplier_ridge": 0.45175410022779056,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_030",
+      "description": "Diameter 0.34952 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.34952,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3343780865603645,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.4026818223234625,
+        "ci_lower_95": 0.686,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3343780865603645,
+        "effective_multiplier_ridge": 0.4026818223234625,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_031",
+      "description": "Diameter 0.36019 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.36019,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.32410626423690203,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.35569189066059226,
+        "ci_lower_95": 0.6866911617312074,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.32410626423690203,
+        "effective_multiplier_ridge": 0.35569189066059226,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_032",
+      "description": "Diameter 0.37087 um, Material teflon",
+      "input": {
+        "diameter_um": 0.37087,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3186324601366743,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.31229070615034177,
+        "ci_lower_95": 0.6885887471526196,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.08188474764113962,
+        "effective_multiplier_ridge": 0.0802549923909988,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_033",
+      "description": "Diameter 0.38154 um, Material kapton",
+      "input": {
+        "diameter_um": 0.38154,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3131637813211845,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.268930159453303,
+        "ci_lower_95": 0.6904845558086561,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 0.7874411492327934,
+        "effective_multiplier_ridge": 0.6762170035431935,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_034",
+      "description": "Diameter 0.39221 um, Material silicone",
+      "input": {
+        "diameter_um": 0.39221,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.30769510250569476,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.22556961275626422,
+        "ci_lower_95": 0.6923803644646924,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.30769510250569476,
+        "effective_multiplier_ridge": 0.22556961275626422,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_035",
+      "description": "Diameter 0.40288 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.40288,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3035877904328018,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.18334455580865597,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3035877904328018,
+        "effective_multiplier_ridge": 0.18334455580865597,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_036",
+      "description": "Diameter 0.41356 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.41356,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3035391343963553,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.14446838268792717,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3035391343963553,
+        "effective_multiplier_ridge": 0.14446838268792717,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_037",
+      "description": "Diameter 0.42423 um, Material teflon",
+      "input": {
+        "diameter_um": 0.42423,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3034905239179954,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.1056286104783599,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.07799345035920886,
+        "effective_multiplier_ridge": 0.02714529495518025,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_038",
+      "description": "Diameter 0.43490 um, Material kapton",
+      "input": {
+        "diameter_um": 0.4349,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.30344191343963556,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.06678883826879264,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 0.762995797394725,
+        "effective_multiplier_ridge": 0.16793857623133623,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_039",
+      "description": "Diameter 0.44558 um, Material silicone",
+      "input": {
+        "diameter_um": 0.44558,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3039394077448747,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.032177357630979515,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3039394077448747,
+        "effective_multiplier_ridge": 0.032177357630979515,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_040",
+      "description": "Diameter 0.45625 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.45625,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.30782824601366743,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.024083712984054678,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.30782824601366743,
+        "effective_multiplier_ridge": 0.024083712984054678,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_041",
+      "description": "Diameter 0.46692 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.46692,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.31171708428246014,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.015990068337129834,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.31171708428246014,
+        "effective_multiplier_ridge": 0.015990068337129834,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_042",
+      "description": "Diameter 0.47760 um, Material teflon",
+      "input": {
+        "diameter_um": 0.4776,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3156095671981777,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.007888838268792685,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.08110790015576791,
+        "effective_multiplier_ridge": 0.0020273374864091653,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_043",
+      "description": "Diameter 0.48827 um, Material kapton",
+      "input": {
+        "diameter_um": 0.48827,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3195722095671982,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 0.803554954224953,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_044",
+      "description": "Diameter 0.49894 um, Material silicone",
+      "input": {
+        "diameter_um": 0.49894,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3263776765375854,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3263776765375854,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_045",
+      "description": "Diameter 0.50962 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.50962,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3331895216400911,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.3331895216400911,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_046",
+      "description": "Diameter 0.52029 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.52029,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.33999498861047833,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.33999498861047833,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_047",
+      "description": "Diameter 0.53096 um, Material teflon",
+      "input": {
+        "diameter_um": 0.53096,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.3468004555808656,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.0891235870158694,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_048",
+      "description": "Diameter 0.54163 um, Material kapton",
+      "input": {
+        "diameter_um": 0.54163,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.35564501138952154,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 0.8942589571054279,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_049",
+      "description": "Diameter 0.55231 um, Material silicone",
+      "input": {
+        "diameter_um": 0.55231,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.36469503416856486,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.36469503416856486,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_050",
+      "description": "Diameter 0.56298 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.56298,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.373736583143508,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.373736583143508,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_051",
+      "description": "Diameter 0.57365 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.57365,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.382778132118451,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.382778132118451,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_052",
+      "description": "Diameter 0.58433 um, Material teflon",
+      "input": {
+        "diameter_um": 0.58433,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.393168861047836,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.10103971501662702,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_053",
+      "description": "Diameter 0.59500 um, Material kapton",
+      "input": {
+        "diameter_um": 0.595,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.40388747152619586,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.0155632091219757,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_054",
+      "description": "Diameter 0.60567 um, Material silicone",
+      "input": {
+        "diameter_um": 0.60567,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.41460608200455584,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.41460608200455584,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_055",
+      "description": "Diameter 0.61635 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.61635,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.42533473804100225,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.42533473804100225,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_056",
+      "description": "Diameter 0.62702 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.62702,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.43697043280182235,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.43697043280182235,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_057",
+      "description": "Diameter 0.63769 um, Material teflon",
+      "input": {
+        "diameter_um": 0.63769,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.44902583143507974,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.11539429120197914,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_058",
+      "description": "Diameter 0.64837 um, Material kapton",
+      "input": {
+        "diameter_um": 0.64837,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.4610925284738041,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.1594036481239327,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_059",
+      "description": "Diameter 0.65904 um, Material silicone",
+      "input": {
+        "diameter_um": 0.65904,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.4731479271070615,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.4731479271070615,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_060",
+      "description": "Diameter 0.66971 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.66971,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.4857739635535308,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.4857739635535308,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_061",
+      "description": "Diameter 0.68038 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.68038,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.4988258769931663,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.4988258769931663,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_062",
+      "description": "Diameter 0.69106 um, Material teflon",
+      "input": {
+        "diameter_um": 0.69106,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5118900227790433,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.13154963972377365,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_063",
+      "description": "Diameter 0.70173 um, Material kapton",
+      "input": {
+        "diameter_um": 0.70173,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5249419362186788,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.3199511124582326,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_064",
+      "description": "Diameter 0.71240 um, Material silicone",
+      "input": {
+        "diameter_um": 0.7124,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5383510250569477,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.5383510250569477,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_065",
+      "description": "Diameter 0.72308 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.72308,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5521936674259681,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.5521936674259681,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_066",
+      "description": "Diameter 0.73375 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.73375,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5660233485193622,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.5660233485193622,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_067",
+      "description": "Diameter 0.74442 um, Material teflon",
+      "input": {
+        "diameter_um": 0.74442,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5798530296127562,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.14901532310431975,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_068",
+      "description": "Diameter 0.75510 um, Material kapton",
+      "input": {
+        "diameter_um": 0.7551,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.5939148063781321,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.4933813728641798,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_069",
+      "description": "Diameter 0.76577 um, Material silicone",
+      "input": {
+        "diameter_um": 0.76577,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.608376423690205,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.608376423690205,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_070",
+      "description": "Diameter 0.77644 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.77644,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6228380410022779,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.6228380410022779,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_071",
+      "description": "Diameter 0.78712 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.78712,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6373132118451026,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.6373132118451026,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_072",
+      "description": "Diameter 0.79779 um, Material teflon",
+      "input": {
+        "diameter_um": 0.79779,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6518825968109339,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.16752606406961043,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_073",
+      "description": "Diameter 0.80846 um, Material kapton",
+      "input": {
+        "diameter_um": 0.80846,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6668060136674259,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.6766641771357877,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_074",
+      "description": "Diameter 0.81913 um, Material silicone",
+      "input": {
+        "diameter_um": 0.81913,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6817294305239181,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.6817294305239181,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_075",
+      "description": "Diameter 0.82981 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.82981,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.6966668337129842,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.6966668337129842,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_076",
+      "description": "Diameter 0.84048 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.84048,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7116339863325741,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.7116339863325741,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_077",
+      "description": "Diameter 0.85115 um, Material teflon",
+      "input": {
+        "diameter_um": 0.85115,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7269219817767654,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.18681029235707924,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_078",
+      "description": "Diameter 0.86183 um, Material kapton",
+      "input": {
+        "diameter_um": 0.86183,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.74222430523918,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 1.866301260766246,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_079",
+      "description": "Diameter 0.87250 um, Material silicone",
+      "input": {
+        "diameter_um": 0.8725,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7575123006833714,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.7575123006833714,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_080",
+      "description": "Diameter 0.88317 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.88317,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7728022095671983,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.7728022095671983,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_081",
+      "description": "Diameter 0.89385 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.89385,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.7883964692482917,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.7883964692482917,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_082",
+      "description": "Diameter 0.90452 um, Material teflon",
+      "input": {
+        "diameter_um": 0.90452,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8039761275626424,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.2066122901813866,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_083",
+      "description": "Diameter 0.91519 um, Material kapton",
+      "input": {
+        "diameter_um": 0.91519,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8195557858769931,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.060749002227317,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_084",
+      "description": "Diameter 0.92587 um, Material silicone",
+      "input": {
+        "diameter_um": 0.92587,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8351500455580865,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.8351500455580865,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_085",
+      "description": "Diameter 0.93654 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.93654,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8509035535307516,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.8509035535307516,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_086",
+      "description": "Diameter 0.94721 um, Material cellulose",
+      "input": {
+        "diameter_um": 0.94721,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8666776537585421,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.8666776537585421,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_087",
+      "description": "Diameter 0.95788 um, Material teflon",
+      "input": {
+        "diameter_um": 0.95788,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8824517539863325,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.2267795916011097,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_088",
+      "description": "Diameter 0.96856 um, Material kapton",
+      "input": {
+        "diameter_um": 0.96856,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.8982406378132117,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.258599756150618,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_089",
+      "description": "Diameter 0.97923 um, Material silicone",
+      "input": {
+        "diameter_um": 0.97923,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9141096127562643,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.9141096127562643,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_090",
+      "description": "Diameter 0.98990 um, Material pyrell",
+      "input": {
+        "diameter_um": 0.9899,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9300052391799545,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.9300052391799545,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_091",
+      "description": "Diameter 1.00058 um, Material cellulose",
+      "input": {
+        "diameter_um": 1.00058,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.94591576309795,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.94591576309795,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_092",
+      "description": "Diameter 1.01125 um, Material teflon",
+      "input": {
+        "diameter_um": 1.01125,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9618113895216401,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.24717407283479845,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_093",
+      "description": "Diameter 1.02192 um, Material kapton",
+      "input": {
+        "diameter_um": 1.02192,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9777881093394077,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.4586195417493473,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_094",
+      "description": "Diameter 1.03260 um, Material silicone",
+      "input": {
+        "diameter_um": 1.0326,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 0.9938202733485193,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 0.9938202733485193,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_095",
+      "description": "Diameter 1.04327 um, Material pyrell",
+      "input": {
+        "diameter_um": 1.04327,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0098374259681093,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0098374259681093,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_096",
+      "description": "Diameter 1.05394 um, Material cellulose",
+      "input": {
+        "diameter_um": 1.05394,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0258545785876994,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0258545785876994,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_097",
+      "description": "Diameter 1.06462 um, Material teflon",
+      "input": {
+        "diameter_um": 1.06462,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0419137129840546,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.2677594160210364,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_098",
+      "description": "Diameter 1.07529 um, Material kapton",
+      "input": {
+        "diameter_um": 1.07529,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0579794760820047,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.6602583829970063,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_099",
+      "description": "Diameter 1.08596 um, Material silicone",
+      "input": {
+        "diameter_um": 1.08596,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0740452391799544,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0740452391799544,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_100",
+      "description": "Diameter 1.09663 um, Material pyrell",
+      "input": {
+        "diameter_um": 1.09663,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0901110022779044,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0901110022779044,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_101",
+      "description": "Diameter 1.10731 um, Material cellulose",
+      "input": {
+        "diameter_um": 1.10731,
+        "material": "cellulose"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0991,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0991,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_102",
+      "description": "Diameter 1.11798 um, Material teflon",
+      "input": {
+        "diameter_um": 1.11798,
+        "material": "teflon"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0991,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 0.25698809093717556,
+        "effective_multiplier_poly": 0.2824556107490496,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 0.2762108001392763
+      }
+    },
+    {
+      "case_id": "m1_response_103",
+      "description": "Diameter 1.12865 um, Material kapton",
+      "input": {
+        "diameter_um": 1.12865,
+        "material": "kapton"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0991,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 2.514470689780005,
+        "effective_multiplier_poly": 2.7636547351372034,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 2.7025530973755494
+      }
+    },
+    {
+      "case_id": "m1_response_104",
+      "description": "Diameter 1.13933 um, Material silicone",
+      "input": {
+        "diameter_um": 1.13933,
+        "material": "silicone"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0991,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0991,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    },
+    {
+      "case_id": "m1_response_105",
+      "description": "Diameter 1.15000 um, Material pyrell",
+      "input": {
+        "diameter_um": 1.15,
+        "material": "pyrell"
+      },
+      "expected": {
+        "base_multiplier_poly": 1.0991,
+        "base_multiplier_isotonic": 1.0748,
+        "base_multiplier_ridge": 0.0,
+        "ci_lower_95": 0.6938,
+        "ci_upper_95": 1.6466,
+        "material_multiplier": 1.0,
+        "effective_multiplier_poly": 1.0991,
+        "effective_multiplier_ridge": 0.0,
+        "effective_multiplier_isotonic": 1.0748
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+# PROGRESS (agent updates after every approved step)
+
+## Baseline (fill in Step 00)
+| Item | Value |
+|---|---|
+| Console branch HEAD | `657bd02` |
+| npm test (pass/fail) | 157 passed, 0 failed (13 test suites) |
+| npm run build | exit code 0 (vite v5.4.14, 3566 modules transformed) |
+| npm run lint | 0 errors, 17 warnings (oxlint) |
+| grouped_loocv | 80.30% acc (106/132) / 46.72% bal / 48.00% ext recall (p=1.0000 vs O2 rule) |
+| backend pytest | 194 passed, 0 failed |
+| Explanation of 96 vs 98 | Commit `79faad0` on `fix/phase0-integrity` added `apps/web/src/lib/assistant/__tests__/qa_holdout.test.ts` (2 tests), bringing suite baseline from 96 to 98. |
+
+## Human answers
+- Space Apps 2026 pre-event work rule: needs human input (Action H1: check eligibility rules for pre-hackathon code)
+- CI green on fix/phase0-integrity: needs human confirmation (Action H2: check GitHub Actions status for fix/phase0-integrity)
+
+## Steps
+- [x] 00 Sync and baseline
+- [x] 01 Console audit and fixes
+- [x] 02 Console e2e + Monte Carlo hardening (+ merge into ml)
+- [x] 03 ML data acquisition
+- [x] 04 M2 fusion detector
+- [x] 05 M1 SAME detector response
+- [x] 06 M4 FLEX extinction threshold
+- [x] 07 M5 abstention
+- [x] 08 Export + TS inference + parity
+- [x] 09 Integrate into console
+- [x] 10 Held-out abstention evaluation
+- [x] 11 QA and hardening
+- [x] 12 Docs and disclosure
+- [ ] 13 Merge, CI, deploy
+- [ ] 14 Demo and submission
+
+## Log (date, step, commit, test counts, notes)
+- 2026-11-04 | Step 00 Sync and baseline | HEAD 657bd02 | npm: 157 pass / 0 fail; py: 194 pass; loocv: 80.30% | Verified baselines, added agent_plan to docs/, updated .gitignore negations.
+- 2026-11-04 | Step 01 Console audit and fixes | HEAD ced8870 | npm: 186 pass / 0 fail; build: exit 0; lint: 0 errors | Added test registry & evidence binder tests; re-pointed literature to PMC7918997; verified honest UX & circularity caveats; captured 3 state screenshots.
+- 2026-11-04 | Step 02 Console e2e + MC hardening | console: 988d28c, ml: 44b4a32 | npm: 190 pass; e2e: 22 pass; py: 200 pass; loocv: 80.30% | Playwright e2e setup (12 routes, console flow, integration, offline CDN fallback); async chunked Monte Carlo with selectable N (100/200/500) and robustness sweep with plain-words flip reporting; CI e2e job added; clean merge into ml branch.
+- 2026-11-04 | Step 03 ML data acquisition | ml: b6ca655 | npm: 190 pass; ml py: 3 pass; py: 200 pass | Acquired NASA SAME/SAME-R flight datasets D4 & D5 via official presigned S3 URLs; confirmed CC BY 4.0 licenses for D1-D3; created requirements-ml.txt, ml_manifest.json, and data_inspection.md with channel mapping & SAME response derivability; added CI ml job; raw data safely gitignored.
+- 2026-11-04 | Step 04 M2 fusion detector | ml: 580134f | npm: 190 pass; ml py: 7 pass; py: 200 pass | Trained & evaluated M2 L2-logistic fusion detector on D1 (EN54) and D2 (Industrial Hall) with 10 unit-free features; evaluated under S1 (leave-one-scenario-out), S2 (cross-site domain shift), and S3 (leave-one-repetition-out) with 2000-resample group-bootstrap 95% CIs; 100 s latency reduction over B1 with zero false alarms/hr; exported params.json & metrics.json; written feature_spec.md & m2_fusion_detector.md model card.
+- 2026-11-04 | Step 05 M1 SAME detector response | ml: f71bca7 | npm: 190 pass; ml py: 11 pass; py: 200 pass | Calibrated M1 microgravity detector response models on 130 NASA SAME/SAME-R flight runs across 5 solid materials (Teflon, Kapton, Lampwick, Silicone, Pyrell); evaluated under LOMO (leave-one-material-out); Ridge multivariate model beats Global Mean baseline (MAE 0.9321 vs 1.1620, RMSE 2.8419 vs 2.8773); verified empirical small-particle penalty (Teflon multiplier 0.257 vs cellulose 1.334); generated response_curve.json, m1_target_definition.md, and m1_same_detector_response.md model card.
+- 2026-11-04 | Step 06 M4 FLEX extinction threshold | ml: e4d2dc3 | npm: 190 pass; ml py: 16 pass; py: 200 pass | Trained & evaluated M4 droplet flame extinction model on 262 NASA FLEX (PSI-69) runs across 82 physical mixture groups; evaluated under Grouped 5-Fold CV and Leave-One-Fuel-Out (Methanol vs Heptane); Logistic Regression achieves 82.4% accuracy vs 68.7% majority baseline and cuts False Extinction Rate from 100.0% to 35.4% [21.6%, 52.8%]; LOFO reveals 76.5% - 41.9% FER across fuel families; exported params.json & metrics.json with discrete category outputs; written m4_inspection.md and m4_flex_extinction.md model card.
+- 2026-11-04 | Step 07 M5 abstention | ml: 8929ea1 | npm: 190 pass; ml py: 21 pass; py: 200 pass | Implemented conformal prediction sets & margin-based abstention for M2 and M4 on group-disjoint calibration splits; for M4, abstaining on ambiguous flammability boundaries boosts confident accuracy from 82.5% to 94.9% (38.1% abstention, 96.8% coverage vs 90% target); for M2, disciplined abstention handles cross-site domain shift (D1 to D2, 8.2% abstention, 84.8% non-abstained acc); evaluated Brier score (0.1158 for M4, 0.1968 for M2) and ECE; exported params.json & metrics.json; updated M2 and M4 model cards.
+- 2026-11-04 | Step 08 Export + TS inference + parity | ml: bb59506 | npm: 199 pass; ml py: 27 pass; build: exit 0 | Exported m2-fusion-v1.json (2.48 KB), m4-extinction-v1.json (2.36 KB), and m1-response-curve-v1.json (7.33 KB); generated 345 golden vectors across all models (>= 100 each); implemented pure TypeScript browser inference in apps/web/src/lib/fire/ml/ (zero runtime dependencies, no Math.random, fully deterministic); achieved exact TS vs Python mathematical parity (max observed error: M2 features/score 5.09e-11, M4 score 4.96e-11, M1 multiplier 0.00e+0); implemented TrainedMLDetector conforming to DetectorEngine; added model export freshness and schema validation tests.
+- 2026-11-05 | Step 09 Integrate into console | ml: 67f0771 | npm: 200 pass; e2e: 23 pass; ml py: 27 pass; build: exit 0 | Integrated M2 TrainedMLDetector, M1 calibrated SAME-R response, and M4 FLEX extinction insight into /response console; added ModelCardModal, 3-arm Monte Carlo sweep with honest caveats, 4-row epistemic transparency table on /about and /gaps; updated parameter registry tests and copy-lint; all e2e tests green.
+- 2026-11-05 | Step 10 Held-out abstention evaluation | ml: 8326e7a | npm: 200 pass; py eval_qa: pass; holdout: 0.00% false-abstain, 83.33% OOS, 100% composite abstain | Evaluated shipped TS and Python BM25 engines against 26-question unseen held-out benchmark data/eval/qa_holdout.json; confirmed 100.0% cross-engine parity (56/56); documented real failure modes (holdout-20 Apollo 13 lexical overlap, keyword brittleness on novel phrasing caught by groundedness < 5.0) in docs/EVALUATION.md and README.md; no post-hoc rule changes.
+- 2026-11-05 | Step 11 QA and hardening | ml: 5b52460 | npm: 211 pass (15 suites); e2e: 29 pass; py: 194 pass (api) + 27 pass (ml); build: exit 0 (gzip 775.75 kB, models < 4 kB); MC N=200: 1.69s | Unit determinism tests added for Baseline, Heuristic Fusion, Trained ML, and Monte Carlo; comprehensive safety guard tests added (banned terms, retracted figures outside disclosure, literature tag integrity, model card integrity); accessibility aria-live and role attributes on alarm, safety alert, extinction insight, and event log; mobile 390x844 responsive spec added (no horizontal overflow, controls reachable); expanded offline CDN fallback spec across 5 routes; verified 0 secrets and 0 unexpected dependencies.
+- 2026-11-05 | Step 12 Docs and disclosure | ml: b8cce3d | npm: 211 pass; e2e: 29 pass; build: exit 0 | Created docs/FIRE_RESPONSE.md (architecture diagram, honesty table, model summaries, execution & reproduction guides); created docs/LIMITATIONS.md (9 physical & algorithmic boundaries); updated README.md with 3 detector arms, FLEX insight, dataset attributions (D1-D6 DOIs & licenses), local reproduction commands, and AI tool disclosure with <CONFIRM> markers; updated AboutPage.tsx with dataset attribution table; created CHANGELOG.md; verified 10 model metrics spot checks.
+- 2026-11-05 | Step 14 Deliverables & Clean Clone | ml: 9d5cd53 | clean clone npm: 211 pass; clean clone build: exit 0 | Pre-generated docs/DEMO_SCRIPT.md (90s timed script), docs/DEMO_CHECKLIST.md (recording & rehearsal guide), and docs/SUBMISSION.md (150-word summary, 5 highlights, judging criteria alignment table, explicit <CONFIRM> placeholders); verified clean clone build and test suite pass from scratch in temporary environment.

@@ -221,6 +221,10 @@ const FRAGMENT_SHADER = /* glsl */ `
     float alpha = clamp((outerFactor * 0.85 + coreFactor * 0.6 + haloFactor * 0.35), 0.0, 1.0);
     alpha = pow(alpha, softnessMultiplier);
 
+    // Edge-fade to smoothly eliminate polygon boundary clipping on canvas edges (FR-EGV-002)
+    float edge = smoothstep(0.0,0.12,vUv.x)*smoothstep(1.0,0.88,vUv.x)*smoothstep(0.0,0.08,vUv.y)*smoothstep(1.0,0.92,vUv.y);
+    alpha *= edge;
+
     if (alpha < 0.01) {
       discard;
     }
@@ -436,13 +440,15 @@ export interface FlameSceneProps {
   showBadges?: boolean;
 }
 
+import { getPlainFlameShape } from './flameShape';
+export { getPlainFlameShape };
+
 export function FlameScene({
   scenario,
   destination,
   compact = false,
   className = '',
   compareScenario,
-  compareDestination,
   showBadges = true,
 }: FlameSceneProps) {
   const paramsA = useMemo(() => deriveFlameParams(scenario), [scenario]);
@@ -465,16 +471,12 @@ export function FlameScene({
     return [1.0, Math.max(1.0, maxTarget)];
   }, [quality.tier, quality.maxDpr, dprScale]);
 
-  const o2A = scenario.oxygen_pct ?? 21.0;
   const airflowA = scenario.airflow_cm_s ?? 5.0;
-  const pressureA = scenario.pressure_kpa ?? 101.3;
 
   return (
     <div
       ref={containerRef}
-      className={`relative w-full ${
-        compact ? 'h-56 sm:h-64' : 'h-72 sm:h-80'
-      } bg-[#05070E] flex items-center justify-center overflow-hidden select-none ${className}`}
+      className={`relative w-full h-40 sm:h-48 lg:h-72 lg:sm:h-80 max-h-[180px] lg:max-h-none bg-[#05070E] flex items-center justify-center overflow-hidden select-none ${className}`}
     >
       {/* Destination-reactive visual backdrop with 500ms crossfade */}
       <DestinationBackdrop
@@ -494,24 +496,24 @@ export function FlameScene({
         />
       )}
 
-      {/* Step 5: Solid semi-transparent telemetry badges (NO backdrop-blur over active WebGL) */}
-      {showBadges && (
-        <>
-          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-cyan-300 pointer-events-none shadow-xs">
-            <span>{isCompare ? 'A: ' : ''}Airflow: {airflowA} cm/s →</span>
-          </div>
-
-          <div className="absolute top-3 right-3 z-10 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-mono text-slate-300 pointer-events-none shadow-xs">
-            {isCompare ? (
-              <span>B: <span className="text-orange-400 font-semibold">{compareDestination ? `${compareDestination} · ` : ''}{compareScenario?.airflow_cm_s ?? 5} cm/s</span></span>
-            ) : (
-              <>
-                <span>Regime: </span>
-                <span className="text-orange-400 font-semibold">{paramsA.regimeLabel}</span>
-              </>
-            )}
-          </div>
-        </>
+      {/* Top-left single label inside canvas (desktop only; hidden on compact/mobile) */}
+      {showBadges && !compact && (
+        <div className="hidden lg:flex absolute top-3 left-3 z-10 items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[rgba(10,20,40,0.88)] border border-slate-800/80 text-xs font-sans text-slate-300 pointer-events-none shadow-xs">
+          {isCompare ? (
+            <span>
+              A: <span className="text-orange-400 font-semibold">{getPlainFlameShape(paramsA.gravityG)}</span> · Fan: {airflowA} cm/s →
+              {compareScenario && paramsB && (
+                <span className="ml-2 text-cyan-300">
+                  | B: <span className="text-orange-400 font-semibold">{getPlainFlameShape(paramsB.gravityG)}</span> · Fan: {compareScenario.airflow_cm_s ?? 5} cm/s →
+                </span>
+              )}
+            </span>
+          ) : (
+            <span>
+              Flame shape: <span className="text-orange-400 font-semibold">{getPlainFlameShape(paramsA.gravityG)}</span> · Fan: {airflowA} cm/s →
+            </span>
+          )}
+        </div>
       )}
 
       {/* Step 4: Single R3F WebGL Canvas for both Single and Compare modes */}
@@ -620,22 +622,6 @@ export function FlameScene({
           </EffectComposer>
         )}
       </Canvas>
-
-      {/* Step 5: Bottom Readout Strip with solid glass background (NO backdrop-blur) */}
-      <div className="absolute bottom-2 inset-x-3 z-10 flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-400 border-t border-slate-800/80 pt-1.5 pointer-events-none bg-[rgba(10,20,40,0.88)] px-2 rounded-b shadow-xs">
-        {isCompare && compareScenario ? (
-          <>
-            <span className="text-cyan-300">A: {scenario.gravity_environment ?? '0g'} ({o2A}% O₂)</span>
-            <span className="text-orange-300">B: {compareScenario.gravity_environment ?? 'lunar'} ({compareScenario.oxygen_pct ?? 32}% O₂)</span>
-          </>
-        ) : (
-          <>
-            <span>O₂: {o2A}% ({o2A > 21 ? 'Accelerated' : 'Nominal'})</span>
-            <span>P: {pressureA} kPa</span>
-            <span>g: {paramsA.gravityG}g ({scenario.gravity_environment ?? '0g'})</span>
-          </>
-        )}
-      </div>
     </div>
   );
 }

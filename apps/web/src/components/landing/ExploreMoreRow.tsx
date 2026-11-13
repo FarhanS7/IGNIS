@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Database, BookOpen, Sparkles, ChevronRight } from 'lucide-react';
+import { Database, BookOpen, Sparkles } from 'lucide-react';
 import { Card } from '../common/Card';
 
 const EXPLORE_ITEMS = [
@@ -15,7 +15,7 @@ const EXPLORE_ITEMS = [
   },
   {
     title: 'Stories',
-    route: '/explore',
+    route: '/stories',
     description: 'Follow guided narrative journeys explaining physical combustion intuition with real spacecraft test data.',
     icon: BookOpen,
     accent: 'text-amber-400',
@@ -35,14 +35,17 @@ export const ExploreMoreRow: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="py-16 sm:py-20 max-w-6xl mx-auto px-4 sm:px-6">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+    <section id="explore-more" className="py-16 sm:py-20 max-w-6xl mx-auto px-4 sm:px-6 relative">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono tracking-wider uppercase mb-2">
-            Beyond the Simulator
+          <div className="cinema-eyebrow mb-2">
+            <span className="cinema-hairline" />
+            <span>03 / ARCHIVES & REASONING</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif]">
-            Explore More NASA Fire Science
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-['Space_Grotesk',sans-serif] leading-tight">
+            <span>EXPLORE MORE </span>
+            <span className="cinema-line-outline">FLIGHT </span>
+            <span className="cinema-line-warm">SCIENCE</span>
           </h2>
         </div>
       </div>
@@ -62,14 +65,14 @@ export const ExploreMoreRow: React.FC = () => {
                 <Card
                   variant="interactive"
                   padding="lg"
-                  className="h-full flex flex-col justify-between space-y-4 border-slate-800 hover:border-slate-700 bg-slate-900/60"
+                  className="h-full flex flex-col justify-between space-y-4 cinema-card border-slate-800 hover:border-cyan-500/40 bg-slate-900/60"
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center group-hover:scale-105 group-hover:border-cyan-500/50 transition-all">
                         <Icon className={`w-5 h-5 ${item.accent}`} />
                       </div>
-                      <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider px-2 py-0.5 rounded bg-black/40 border border-slate-800">
+                      <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider px-2 py-0.5 rounded bg-black/50 border border-slate-800/90 group-hover:border-cyan-500/30 transition-colors">
                         {item.tag}
                       </span>
                     </div>
@@ -82,9 +85,9 @@ export const ExploreMoreRow: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="pt-2 text-xs font-mono font-medium text-cyan-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Explore {item.title}</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                  <div className="pt-2 text-xs font-mono font-medium text-cyan-400 flex items-center gap-1.5 group-hover:translate-x-1.5 transition-transform">
+                    <span>EXPLORE {item.title.toUpperCase()}</span>
+                    <span className="button-arrow">↗</span>
                   </div>
                 </Card>
               </Link>

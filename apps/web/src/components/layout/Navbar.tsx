@@ -19,6 +19,7 @@ export const Navbar: React.FC = () => {
     location.pathname.startsWith('/story');
 
   const isAskActive = location.pathname === '/ask';
+  const isResponseActive = location.pathname === '/response';
   const isGapsActive = location.pathname === '/gaps';
   const isDataActive =
     location.pathname.startsWith('/experiment') ||
@@ -41,9 +42,18 @@ export const Navbar: React.FC = () => {
             Simulator
           </Link>
 
+          {/* Fire Response Console */}
+          <Link
+            to="/response"
+            aria-current={isResponseActive ? 'page' : undefined}
+            onClick={closeMenu}
+          >
+            Fire Response
+          </Link>
+
           {/* Item 2: Learn (Story Mode) */}
           <Link
-            to="/explore"
+            to="/stories"
             aria-current={isLearnActive ? 'page' : undefined}
             onClick={closeMenu}
           >

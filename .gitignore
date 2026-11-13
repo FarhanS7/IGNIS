@@ -3,6 +3,9 @@
 skills/
 node_modules/
 dist/
+playwright-report/
+test-results/
+New features/
 .venv/
 __pycache__/
 *.pyc
@@ -30,6 +33,7 @@ data/raw/PSI-39_metadata.json
 
 # Documentation & Inventories (allow core data modeling docs)
 docs/*
+!docs/*.md
 !docs/DATA_INVENTORY.md
 !docs/VERIFIED_FACTS.md
 !docs/DATA_QUALITY.md
@@ -40,6 +44,12 @@ docs/*
 !docs/IGNIS_EXPLANATION_BANGLA.md
 !docs/screenshots/
 !docs/screenshots/**
+!docs/agent_plan/
+!docs/agent_plan/**
+!docs/models/
+!docs/models/**
+!docs/hero_kit/
+!docs/hero_kit/**
 
 IGNIS_PRD*.md
 IGNIS_Project_Concept*.md
@@ -51,3 +61,9 @@ PROJECT_CONTEXT.md
 IGNIS_MASTER_GUIDE*.md
 !IGNIS_MASTER_GUIDE_BANGLA.md
 
+
+# ML Raw Data & Cache
+data/raw_ml/
+data/ml_cache/
+*.parquet
+*.pkl

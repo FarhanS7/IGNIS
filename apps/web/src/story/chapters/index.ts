@@ -1,5 +1,8 @@
-import type { Chapter } from '../types';
-import { chapter1 } from './chapter1';
+import type { Chapter } from '../types.ts';
+import { chapter1 } from './chapter1.ts';
+import { chapter2 } from './chapter2.ts';
+import { chapter3 } from './chapter3.ts';
+import { chapter4 } from './chapter4.ts';
 
 export interface ChapterSummary {
   id: string;
@@ -16,7 +19,7 @@ export interface ChapterSummary {
   tags: string[];
 }
 
-export const CHAPTER_REGISTRY: Chapter[] = [chapter1];
+export const CHAPTER_REGISTRY: Chapter[] = [chapter1, chapter2, chapter3, chapter4];
 
 export const ALL_CHAPTER_SUMMARIES: ChapterSummary[] = [
   {
@@ -28,40 +31,46 @@ export const ALL_CHAPTER_SUMMARIES: ChapterSummary[] = [
     summary: chapter1.summary,
     estimatedMinutes: chapter1.estimatedMinutes,
     status: chapter1.status,
-    tags: ['Microgravity', 'Buoyancy', 'FLEX-1/2', 'Diffusion'],
+    tags: ['FLEX (PSI-69)', 'Droplet Flames', '0g Freefall', 'Molecular Diffusion'],
   },
   {
-    id: 'chapter-02',
-    slug: 'the-airflow-paradox',
-    number: 2,
-    title: 'The Airflow Paradox',
-    subtitle: 'Why 0.05 m/s ventilation is the most dangerous breeze in space',
-    summary:
-      'In dead-still zero-g air, fire quickly starves itself. But introduce a tiny cabin breeze of just 5 cm/s, and flames thrive. Discover how ventilation governs life and fire aboard space stations.',
-    estimatedMinutes: {
-      quick: 5,
-      full: 9,
-    },
-    status: 'coming-soon',
-    tags: ['Saffire-I', 'Airflow', 'ECLSS', 'Extinction'],
+    id: chapter2.id,
+    slug: chapter2.slug,
+    number: chapter2.number,
+    title: chapter2.title,
+    subtitle: chapter2.subtitle,
+    summary: chapter2.summary,
+    estimatedMinutes: chapter2.estimatedMinutes,
+    status: chapter2.status,
+    tags: ['BASS-II (PSI-25)', 'PMMA Solid Fuel', 'Airflow Quenching', '1–5 cm/s Breeze'],
   },
   {
-    id: 'chapter-03',
-    slug: 'cool-flames-invisible-burn',
-    number: 3,
-    title: 'Cool Flames: The Invisible Fire',
-    subtitle: 'What happens when fire continues to burn after the light goes out',
-    summary:
-      'The shocking ISS discovery of low-temperature combustion: hydrocarbon fuel consuming oxygen without any visible glow or soot emission.',
-    estimatedMinutes: {
-      quick: 4,
-      full: 8,
-    },
-    status: 'coming-soon',
-    tags: ['FLEX-2', 'Cool Flames', 'Chemistry', 'Sensors'],
+    id: chapter3.id,
+    slug: chapter3.slug,
+    number: chapter3.number,
+    title: chapter3.title,
+    subtitle: chapter3.subtitle,
+    summary: chapter3.summary,
+    estimatedMinutes: chapter3.estimatedMinutes,
+    status: chapter3.status,
+    tags: ['SAME-R (PSI-101)', 'Kapton / Teflon Wire', 'Duct Detectors', 'Sub-Micron Smoke'],
+  },
+  {
+    id: chapter4.id,
+    slug: chapter4.slug,
+    number: chapter4.number,
+    title: chapter4.title,
+    subtitle: chapter4.subtitle,
+    summary: chapter4.summary,
+    estimatedMinutes: chapter4.estimatedMinutes,
+    status: chapter4.status,
+    tags: ['Artemis Gateway', '34% O2 at 56 kPa', 'Moon 0.16g', 'Exploration Gaps'],
   },
 ];
 
 export function getChapterBySlug(slug: string): Chapter | undefined {
+  if (slug === 'why-is-a-flame-round-in-space') {
+    return chapter1;
+  }
   return CHAPTER_REGISTRY.find((c) => c.slug === slug);
 }

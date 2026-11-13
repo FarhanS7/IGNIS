@@ -1,0 +1,252 @@
+[
+  {
+    "id": "holdout-01",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "Why must temperature measurements for spherical flames in ACME Flame Design cover a broader region than normal-gravity flames?",
+    "source_chunk_id": "PSI-10-SRD-FLAME-DESIGN-p032-c002",
+    "gold_chunk_ids": [
+      "PSI-10-SRD-FLAME-DESIGN-p032-c002"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-02",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "How can ACME experimental objectives for ignition location and Le < 1 wrinkling be addressed in a single experiment?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p060-c002",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p060-c002"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-03",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What instrument measures the acceleration environment during BASS-II testing on the ISS?",
+    "source_chunk_id": "PSI-25-BASS2-SRD-p002-c001",
+    "gold_chunk_ids": [
+      "PSI-25-BASS2-SRD-p002-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-04",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What vaporization ratio is observed across the blowoff branch in BASS-II surface energy balance calculations?",
+    "source_chunk_id": "NTRS-20210011385-p096-c001",
+    "gold_chunk_ids": [
+      "NTRS-20210011385-p096-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-05",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What is the maximum allowable mole fraction of trace contaminants in ACME burner gas?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p023-c001",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p023-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-06",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What is the measurement uncertainty of the suggested Hastings HFC-D-302 flow meter in ACME?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p031-c001",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p031-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-07",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "Which 1971 study by G.R. Allen examined the spontaneous ignition temperature of organic materials in oxygen?",
+    "source_chunk_id": "NTRS-20080013149-p012-c002",
+    "gold_chunk_ids": [
+      "NTRS-20080013149-p012-c002"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-08",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "How is the gas radiation timescale defined in the BASS-II leading-edge energy balance formulation?",
+    "source_chunk_id": "NTRS-20210011385-p043-c003",
+    "gold_chunk_ids": [
+      "NTRS-20210011385-p043-c003"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-09",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What fiber material and diameter are specified if ACME temperature measurements use Thin Filament Pyrometry?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p038-c002",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p038-c002"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-10",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What six monitoring measurements are required for ACME hardware to verify boundary and initial conditions?",
+    "source_chunk_id": "PSI-23-ACME-SRD-REVIEW-p024-c001",
+    "gold_chunk_ids": [
+      "PSI-23-ACME-SRD-REVIEW-p024-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-11",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What ground-based operational goal was BASS-II microgravity data intended to assist regarding NASA material screening?",
+    "source_chunk_id": "NTRS-20210011385-p063-c003",
+    "gold_chunk_ids": [
+      "NTRS-20210011385-p063-c003"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-12",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "Why is it not necessary to download all optical image data for ACME exploratory test runs?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p026-c002",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p026-c002"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-13",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "What extinction velocities were measured for 100-\u00b5m versus 200-\u00b5m samples in BASS-II tests?",
+    "source_chunk_id": "NTRS-20210011385-p033-c001",
+    "gold_chunk_ids": [
+      "NTRS-20210011385-p033-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-14",
+    "label": "answerable",
+    "category": "answerable",
+    "question": "Which two spherical burner numbers were designated for the Flame Design team by Chand Associates?",
+    "source_chunk_id": "PSI-10-ACME-ISRD-p090-c001",
+    "gold_chunk_ids": [
+      "PSI-10-ACME-ISRD-p090-c001"
+    ],
+    "expected_abstain": false
+  },
+  {
+    "id": "holdout-15",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "How does the Hubble Space Telescope point at distant galaxies?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-16",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "What is the orbital period of the ISS?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-17",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "How do astronauts exercise to prevent bone loss?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-18",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "What material is the Orion heat shield made of?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-19",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "How does the Mars helicopter fly in thin air?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-20",
+    "label": "out_of_scope",
+    "category": "out_of_scope",
+    "question": "What was the Apollo 13 oxygen tank failure?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-21",
+    "label": "untested",
+    "category": "untested",
+    "question": "How would a candle flame behave on a Moon base?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-22",
+    "label": "untested",
+    "category": "untested",
+    "question": "Would paper burn faster at the gravity found on Mars?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-23",
+    "label": "untested",
+    "category": "untested",
+    "question": "What happens to a flame inside a spinning habitat with artificial gravity?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-24",
+    "label": "untested",
+    "category": "untested",
+    "question": "Is a fire in a pure-oxygen capsule like Apollo 1 more dangerous?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-25",
+    "label": "untested",
+    "category": "untested",
+    "question": "How does flame spread change in a high-pressure hyperbaric chamber?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  },
+  {
+    "id": "holdout-26",
+    "label": "untested",
+    "category": "untested",
+    "question": "What would a fire look like on a world with one-third Earth gravity?",
+    "gold_chunk_ids": [],
+    "expected_abstain": true
+  }
+]

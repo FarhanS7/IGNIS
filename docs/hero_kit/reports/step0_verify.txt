@@ -1,0 +1,51 @@
+﻿Step: 0
+Compared with: hero-baseline
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=211 fail=0
+[PASS] build 
+[SKIP] e2e (add -E2E to run)
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-baseline 37 files
+
+Changed files:
+  .agent/rules/ignis-hero-kit.md
+  .gitignore
+  AGENTS.md
+  apps/web/scripts/scout_scenarios.ts
+  docs/hero_kit/AGENTS.md
+  docs/hero_kit/CHECKLISTS.md
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/prompts/00_preamble.md
+  docs/hero_kit/prompts/99_finalize.md
+  docs/hero_kit/prompts/audit_review.md
+  docs/hero_kit/prompts/fix_failures.md
+  docs/hero_kit/prompts/optional/check_llm_endpoint.md
+  docs/hero_kit/prompts/optional/fix_about_metrics.md
+  docs/hero_kit/prompts/optional/fix_abstention_threshold.md
+  docs/hero_kit/prompts/optional/verify_context_citations.md
+  docs/hero_kit/prompts/step0_recon.md
+  docs/hero_kit/prompts/step0b_lock_decision.md
+  docs/hero_kit/prompts/step1_timeline_shell.md
+  docs/hero_kit/prompts/step2_station_3d.md
+  docs/hero_kit/prompts/step3_localize_alarm.md
+  docs/hero_kit/prompts/step4_containment_gate.md
+  docs/hero_kit/prompts/step5_earth_vs_orbit.md
+  docs/hero_kit/prompts/step6_capture_polish.md
+  docs/hero_kit/QUICKSTART.md
+  docs/hero_kit/README.md
+  docs/hero_kit/RECORDING.md
+  docs/hero_kit/reference/station_live_demo.html
+  docs/hero_kit/reports/.gitkeep
+  docs/hero_kit/reports/step0_scout.md
+  docs/hero_kit/scripts/checkpoint.ps1
+  docs/hero_kit/scripts/install.ps1
+  docs/hero_kit/scripts/rollback.ps1
+  docs/hero_kit/scripts/run_step.ps1
+  docs/hero_kit/scripts/verify.ps1
+  docs/hero_kit/SHOT_LIST.md
+  docs/hero_kit/templates/step_report_template.md
+  docs/hero_kit/TROUBLESHOOTING.md

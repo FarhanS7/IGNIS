@@ -1,0 +1,158 @@
+﻿
+> web@0.0.0 test:e2e
+> playwright test
+
+
+Running 31 tests using 1 worker
+
+  x   1 [chromium] › e2e\integration.spec.ts:4:3 › Additive Integration & Cross-Page Navigation › navigates to /response via link on Simulator page (9.0s)
+  x   2 [chromium] › e2e\integration.spec.ts:4:3 › Additive Integration & Cross-Page Navigation › navigates to /response via link on Simulator page (retry #1) (6.2s)
+  ok  3 [chromium] › e2e\integration.spec.ts:19:3 › Additive Integration & Cross-Page Navigation › research gaps page displays Fire Response Console capability card (737ms)
+  ok  4 [chromium] › e2e\integration.spec.ts:30:3 › Additive Integration & Cross-Page Navigation › about page displays fire detection methodology section (721ms)
+  ok  5 [chromium] › e2e\integration.spec.ts:41:3 › Additive Integration & Cross-Page Navigation › navbar maintains all original links without removal (748ms)
+  ok  6 [chromium] › e2e\mobile.spec.ts:6:3 › Mobile Viewport (390x844) Responsiveness › verifies /response page renders without horizontal overflow and controls remain accessible (1.7s)
+  ok  7 [chromium] › e2e\mobile.spec.ts:53:3 › Mobile Viewport (390x844) Responsiveness › verifies /simulator page renders without horizontal overflow and controls remain accessible (1.7s)
+  x   8 [chromium] › e2e\mobile.spec.ts:70:3 › Mobile Viewport (390x844) Responsiveness › verifies /response station demo page renders without horizontal overflow on mobile (1.6s)
+  x   9 [chromium] › e2e\mobile.spec.ts:70:3 › Mobile Viewport (390x844) Responsiveness › verifies /response station demo page renders without horizontal overflow on mobile (retry #1) (1.9s)
+  ok 10 [chromium] › e2e\offline.spec.ts:10:3 › Offline & CDN Fallback Integrity › renders landing page fallback gradient when CDN assets are blocked (1.6s)
+  ok 11 [chromium] › e2e\offline.spec.ts:23:3 › Offline & CDN Fallback Integrity › verifies /response functions completely offline without external network (1.6s)
+  ok 12 [chromium] › e2e\offline.spec.ts:41:3 › Offline & CDN Fallback Integrity › verifies /simulator loads and renders completely offline (1.7s)
+  ok 13 [chromium] › e2e\offline.spec.ts:51:3 › Offline & CDN Fallback Integrity › verifies /experiments flight data explorer renders offline (1.6s)
+  ok 14 [chromium] › e2e\offline.spec.ts:61:3 › Offline & CDN Fallback Integrity › verifies /ask works completely client-side offline (1.6s)
+  ok 15 [chromium] › e2e\response.spec.ts:26:3 › Fire Response Console End-to-End › enforces honesty rules: persistent banner visible and zero confidence/risk percentages (790ms)
+  ok 16 [chromium] › e2e\response.spec.ts:39:3 › Fire Response Console End-to-End › simulates scenario, triggers alarm, highlights source zone, and verifies sequencer in CREWED mode (2.5s)
+  ok 17 [chromium] › e2e\response.spec.ts:83:3 › Fire Response Console End-to-End › uncrewed mode autonomous suppression progression past timeout (1.8s)
+  ok 18 [chromium] › e2e\response.spec.ts:97:3 › Fire Response Console End-to-End › lunar habitat preset enforces unvalidated partial-gravity notice and INSUFFICIENT_EVIDENCE (1.3s)
+  ok 19 [chromium] › e2e\response.spec.ts:114:3 › Fire Response Console End-to-End › parameter tags are visible and Monte Carlo modal shows design-consistency label (1.3s)
+  ok 20 [chromium] › e2e\response.spec.ts:129:3 › Fire Response Console End-to-End › integrates trained ML model: reveals honest caveats, suppression insight, and 3-arm Monte Carlo (4.4s)
+  ok 21 [chromium] › e2e\response.spec.ts:191:3 › Fire Response Console End-to-End › verifies StationDemoPage hero view at /response with race clocks and view toggle (1.0s)
+  ok 22 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/" with HTTP 200 and no uncaught console errors (1.0s)
+  ok 23 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/simulator" with HTTP 200 and no uncaught console errors (1.2s)
+  ok 24 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/build" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 25 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/evidence" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 26 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/experiments" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 27 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/explorer" with HTTP 200 and no uncaught console errors (1.0s)
+node.exe : [WebServer] 3:34:38 AM [vite] http proxy error: /api/v1/stories
+At E:\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([WebServer] 3:3.../api/v1/stories:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:8000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+  ok 28 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/explore" with HTTP 200 and no uncaught console errors (1.0s)
+  ok 29 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/stories/v2" with HTTP 200 and no uncaught console errors (1.0s)
+  ok 30 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/ask" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 31 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/gaps" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 32 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/about" with HTTP 200 and no uncaught console errors (1.1s)
+  ok 33 [chromium] › e2e\routes.spec.ts:20:5 › All 12 Core Application Routes › loads route "/response" with HTTP 200 and no uncaught console errors (1.0s)
+
+
+  1) [chromium] › e2e\integration.spec.ts:4:3 › Additive Integration & Cross-Page Navigation › navigates to /response via link on Simulator page 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: /Fire Response Console/i, level: 1 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: /Fire Response Console/i, level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: /Fire Response Console/i, level: 1 })
+
+
+      14 |
+      15 |     const header = page.getByRole('heading', { level: 1, name: /Fire Response Console/i });
+    > 16 |     await expect(header).toBeVisible();
+         |                          ^
+      17 |   });
+      18 |
+      19 |   test('research gaps page displays Fire Response Console capability card', async ({ page }) => {
+        at E:\IGNIS\apps\web\e2e\integration.spec.ts:16:26
+
+    Error Context: test-results\integration-Additive-Integ-a6ad9--via-link-on-Simulator-page-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: /Fire Response Console/i, level: 1 })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: /Fire Response Console/i, level: 1 }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: /Fire Response Console/i, level: 1 })
+
+
+      14 |
+      15 |     const header = page.getByRole('heading', { level: 1, name: /Fire Response Console/i });
+    > 16 |     await expect(header).toBeVisible();
+         |                          ^
+      17 |   });
+      18 |
+      19 |   test('research gaps page displays Fire Response Console capability card', async ({ page }) => {
+        at E:\IGNIS\apps\web\e2e\integration.spec.ts:16:26
+
+    Error Context: test-results\integration-Additive-Integ-a6ad9--via-link-on-Simulator-page-chromium-retry1\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\integration-Additive-Integ-a6ad9--via-link-on-Simulator-page-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\integration-Additive-Integ-a6ad9--via-link-on-Simulator-page-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › e2e\mobile.spec.ts:70:3 › Mobile Viewport (390x844) Responsiveness › verifies /response station demo page renders without horizontal overflow on mobile 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      77 |       return document.documentElement.scrollWidth <= window.innerWidth + 1;
+      78 |     });
+    > 79 |     expect(isNoHorizontalScroll).toBe(true);
+         |                                  ^
+      80 |
+      81 |     const clocks = page.getByText(/SAME-R calibrated/i);
+      82 |     await expect(clocks.first()).toBeVisible();
+        at E:\IGNIS\apps\web\e2e\mobile.spec.ts:79:34
+
+    Error Context: test-results\mobile-Mobile-Viewport-390-b4417-rizontal-overflow-on-mobile-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      77 |       return document.documentElement.scrollWidth <= window.innerWidth + 1;
+      78 |     });
+    > 79 |     expect(isNoHorizontalScroll).toBe(true);
+         |                                  ^
+      80 |
+      81 |     const clocks = page.getByText(/SAME-R calibrated/i);
+      82 |     await expect(clocks.first()).toBeVisible();
+        at E:\IGNIS\apps\web\e2e\mobile.spec.ts:79:34
+
+    Error Context: test-results\mobile-Mobile-Viewport-390-b4417-rizontal-overflow-on-mobile-chromium-retry1\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\mobile-Mobile-Viewport-390-b4417-rizontal-overflow-on-mobile-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\mobile-Mobile-Viewport-390-b4417-rizontal-overflow-on-mobile-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    [chromium] › e2e\integration.spec.ts:4:3 › Additive Integration & Cross-Page Navigation › navigates to /response via link on Simulator page 
+    [chromium] › e2e\mobile.spec.ts:70:3 › Mobile Viewport (390x844) Responsiveness › verifies /response station demo page renders without horizontal overflow on mobile 
+  29 passed (1.2m)
+

@@ -1,16 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Hanken Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-serif: 'Prata', Georgia, serif;
-  --font-logo: 'Poppins', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-logo: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --color-cyan-glow: #79dce8;
   --color-cyan-accent: #5fd0e1;
   --color-ember-accent: #ff7a3d;
   --color-amber-accent: #ffaa40;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: local('Plus Jakarta Sans');
+}
+
+@font-face {
+  font-family: 'Prata';
+  font-style: normal;
+  font-weight: 100 900;
+  src: local('Plus Jakarta Sans');
+}
+
+@font-face {
+  font-family: 'Hanken Grotesk';
+  font-style: normal;
+  font-weight: 100 900;
+  src: local('Plus Jakarta Sans');
+}
+
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 100 900;
+  src: local('Plus Jakarta Sans');
 }
 
 :root {
@@ -25,9 +53,9 @@
   --cyan-logo: #5fd0e1;
   --rule: rgba(255, 255, 255, .23);
   --btn-ink: #071227;
-  --font-serif: 'Prata', Georgia, serif;
-  --font-body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-logo: 'Poppins', sans-serif;
+  --font-serif: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-logo: 'Plus Jakarta Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --ember: #ff7a3d;
   --amber: #ffaa40;
@@ -137,6 +165,8 @@ textarea:focus-visible,
   position: absolute;
   inset: 0;
   z-index: 0;
+  background-color: #060813;
+  background-image: radial-gradient(circle at 60% 40%, #0d2137 0%, #060b18 60%, #020409 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -152,7 +182,7 @@ textarea:focus-visible,
   object-fit: cover;
   display: block;
   opacity: 0;
-  transition: opacity .22s linear;
+  transition: opacity .8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sky video.is-active {
@@ -174,22 +204,33 @@ textarea:focus-visible,
 /* Planet switcher buttons */
 .planet {
   position: absolute;
-  z-index: -1;
-  padding: 0;
-  border: 0;
-  background: none;
+  z-index: 2;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+  height: auto !important;
+  border-radius: 50% !important;
   -webkit-appearance: none;
   appearance: none;
   line-height: 0;
   cursor: pointer;
   pointer-events: auto;
-  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1), filter .35s ease;
 }
 
 .planet img {
   display: none;
   width: 100%;
   height: auto;
+  border-radius: 50%;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 calc(6 * var(--u)) calc(16 * var(--u)) rgba(0, 0, 0, 0.75));
+  transition: transform .35s ease, filter .35s ease;
 }
 
 .planet img.is-shown {
@@ -197,11 +238,15 @@ textarea:focus-visible,
 }
 
 .planet:hover {
-  transform: scale(1.045);
+  transform: scale(1.08);
+}
+
+.planet:hover img {
+  filter: drop-shadow(0 0 calc(20 * var(--u)) rgba(56, 189, 248, 0.55));
 }
 
 .planet:active {
-  transform: scale(.99);
+  transform: scale(.96);
 }
 
 .planet-l {
@@ -434,11 +479,11 @@ textarea:focus-visible,
 
 h1.title {
   top: calc(196 * var(--u));
-  font-family: 'Space Grotesk', var(--font-body);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 800;
   font-size: calc(54 * var(--u));
   line-height: 1.15;
-  letter-spacing: calc(-1 * var(--u));
+  letter-spacing: calc(-1.5 * var(--u));
   text-indent: 0;
   color: #fff;
   text-shadow: 0 calc(4 * var(--u)) calc(30 * var(--u)) rgba(0, 0, 0, .75);
@@ -484,6 +529,21 @@ h1.title {
   letter-spacing: calc(1.8 * var(--u));
 }
 
+@keyframes heroFadeTransition {
+  from {
+    opacity: 0.15;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-change {
+  animation: heroFadeTransition 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 p.lede {
   top: calc(390 * var(--u));
   font-size: calc(18 * var(--u));
@@ -502,7 +562,17 @@ p.lede {
   isolation: isolate;
 }
 
-.cta a, .cta button {
+.cta-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(14 * var(--u));
+  position: relative;
+  z-index: 2;
+}
+
+.cta-actions a,
+.cta-actions button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -529,22 +599,14 @@ p.lede {
   cursor: pointer;
 }
 
-.cta a:hover, .cta button:hover {
+.cta-actions a:hover,
+.cta-actions button:hover {
   transform: scale(1.035);
   box-shadow: 0 calc(12 * var(--u)) calc(24 * var(--u)) rgba(121, 220, 232, .45);
 }
 
-.cta-actions {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: calc(14 * var(--u));
-  position: relative;
-  z-index: 2;
-}
-
-.cta a.cta-secondary,
-.cta button.cta-secondary {
+.cta-actions a.cta-secondary,
+.cta-actions button.cta-secondary {
   background: rgba(10, 18, 34, 0.78);
   color: #f1f5f9;
   border: calc(1.5 * var(--u)) solid rgba(214, 239, 255, 0.32);
@@ -554,8 +616,8 @@ p.lede {
   backdrop-filter: blur(calc(8 * var(--u)));
 }
 
-.cta a.cta-secondary:hover,
-.cta button.cta-secondary:hover {
+.cta-actions a.cta-secondary:hover,
+.cta-actions button.cta-secondary:hover {
   background: rgba(20, 32, 58, 0.9);
   border-color: rgba(56, 189, 248, 0.7);
   color: #ffffff;
@@ -566,13 +628,14 @@ p.lede {
 .label {
   position: absolute;
   top: calc(33 * var(--u));
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: calc(17.8 * var(--u));
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: calc(14.5 * var(--u));
   letter-spacing: calc(4.6 * var(--u));
   line-height: 1;
   color: #fff;
   white-space: nowrap;
+  text-transform: uppercase;
 }
 
 .label.label-l {
@@ -755,7 +818,8 @@ p.lede {
     flex-wrap: wrap;
     justify-content: center;
   }
-  .cta a, .cta button {
+  .cta-actions a,
+  .cta-actions button {
     width: auto;
     min-width: calc(160 * var(--u));
     padding: 0 calc(20 * var(--u));
@@ -844,10 +908,10 @@ p.lede {
 }
 
 .section-title {
-  font-family: 'Space Grotesk', var(--font-body);
+  font-family: var(--font-display);
   font-size: clamp(32px, 4.2vw, 52px);
-  font-weight: 600;
-  letter-spacing: -0.5px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
   line-height: 1.15;
   color: #fff;
   margin-bottom: 18px;
@@ -911,9 +975,9 @@ p.lede {
 }
 
 .stat-val {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--cyan);
   line-height: 1;
   margin-bottom: 8px;
@@ -971,9 +1035,10 @@ p.lede {
 }
 
 .mode-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #fff;
   margin-bottom: 14px;
 }
@@ -1129,9 +1194,10 @@ p.lede {
 }
 
 .profile-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: #fff;
 }
 
@@ -1390,9 +1456,10 @@ p.lede {
 }
 
 .story-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: #fff;
   line-height: 1.25;
   margin-bottom: 12px;
@@ -1547,11 +1614,11 @@ p.lede {
 }
 
 .flame-chart-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-display);
   font-size: 24px;
   font-weight: 700;
   color: #fff;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
 }
 
 .flame-chart-sub {
@@ -1846,7 +1913,7 @@ p.lede {
 .glow-cursor {
   position: fixed;
   inset: 0;
-  z-index: 99;
+  z-index: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -1875,5 +1942,372 @@ p.lede {
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.8);
+}
+
+/* ==========================================================================
+   ECLIPSE-INSPIRED CINEMATIC UI & TELEMETRY STYLES
+   ========================================================================== */
+
+/* 1. Cinematic Eyebrows & Hairlines */
+.cinema-eyebrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--cyan, #79dce8);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cinema-hairline {
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan, #79dce8), transparent);
+  opacity: 0.8;
+  box-shadow: 0 0 8px rgba(121, 220, 232, 0.4);
+}
+
+.cinema-hairline-amber {
+  background: linear-gradient(90deg, #ffaa40, transparent);
+  box-shadow: 0 0 8px rgba(255, 170, 64, 0.4);
+}
+
+/* 2. Split Cinematic Headings */
+.cinema-heading {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.cinema-line-outline {
+  -webkit-text-stroke: 1px rgba(230, 235, 235, 0.55);
+  color: transparent;
+  display: inline-block;
+}
+
+.cinema-line-warm {
+  background: linear-gradient(105deg, #f1eee5 20%, #ff7a3d 60%, #ffaa40 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.cinema-line-cyan {
+  background: linear-gradient(105deg, #f1eee5 20%, #79dce8 60%, #38bdf8 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* 3. Signal Observation Telemetry Card */
+.signal-observation {
+  position: relative;
+  background: rgba(7, 18, 39, 0.75);
+  border: 1px solid rgba(121, 220, 232, 0.25);
+  border-radius: 12px;
+  padding: 20px 24px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(121, 220, 232, 0.04);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signal-observation:hover {
+  border-color: rgba(121, 220, 232, 0.45);
+  box-shadow: 0 16px 48px -12px rgba(121, 220, 232, 0.15), inset 0 0 24px rgba(121, 220, 232, 0.08);
+}
+
+.signal-kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.signal-kicker i {
+  width: 6px;
+  height: 6px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: liveSignalPulse 2s infinite ease-in-out;
+}
+
+@keyframes liveSignalPulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.signal-reading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 12px 0 6px;
+}
+
+.signal-reading strong {
+  font-family: var(--font-mono, monospace);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(121, 220, 232, 0.3);
+}
+
+.signal-reading span {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 1.5px;
+  color: #79dce8;
+  text-transform: uppercase;
+}
+
+.signal-wave {
+  width: 100%;
+  height: 40px;
+  fill: none;
+  margin: 10px 0 12px;
+}
+
+.wave-base {
+  stroke: rgba(121, 220, 232, 0.15);
+  stroke-width: 1;
+}
+
+.wave-live {
+  stroke: #38bdf8;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.6));
+  animation: liveWaveDash 6s linear infinite;
+}
+
+@keyframes liveWaveDash {
+  0% { stroke-dashoffset: 800; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.signal-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  color: #64748b;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.signal-status b {
+  color: #38bdf8;
+}
+
+/* 4. Journey Action Buttons with Corner Brackets */
+.journey-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-width: 200px;
+  padding: 12px 18px;
+  background: linear-gradient(110deg, rgba(121, 220, 232, 0.08), rgba(6, 16, 32, 0.8) 60%);
+  border: 1px solid rgba(121, 220, 232, 0.3);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  isolation: isolate;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.journey-button::before,
+.journey-button::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid var(--cyan, #79dce8);
+  border-left: 2px solid var(--cyan, #79dce8);
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.journey-button::after {
+  top: auto;
+  left: auto;
+  bottom: -1px;
+  right: -1px;
+  transform: rotate(180deg);
+}
+
+.journey-button:hover {
+  border-color: rgba(121, 220, 232, 0.6);
+  background: linear-gradient(110deg, rgba(121, 220, 232, 0.16), rgba(6, 16, 32, 0.9) 60%);
+  box-shadow: 0 0 20px rgba(121, 220, 232, 0.25);
+  transform: translateY(-1px);
+}
+
+.journey-button:hover .button-arrow {
+  transform: translate(3px, -3px);
+}
+
+.button-arrow {
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+  transition: transform 0.25s ease;
+}
+
+/* 5. Aerospace Coordinates HUD */
+.coordinates-hud {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  border-right: 2px solid rgba(121, 220, 232, 0.4);
+  padding-right: 12px;
+}
+
+.coordinates-hud span:first-child {
+  color: #79dce8;
+  font-weight: 600;
+}
+
+/* 6. Floating Journey Route HUD */
+.bottom-hud-journey {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: rgba(6, 17, 36, 0.9);
+  border: 1px solid rgba(121, 220, 232, 0.25);
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.7), 0 0 24px rgba(121, 220, 232, 0.1);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.travel-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-family: var(--font-mono, monospace);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.scroll-mouse {
+  display: inline-block;
+  width: 12px;
+  height: 18px;
+  border: 1px solid rgba(121, 220, 232, 0.4);
+  border-radius: 8px;
+  position: relative;
+}
+
+.scroll-mouse::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 4px;
+  background: #79dce8;
+  top: 3px;
+  left: 4px;
+  border-radius: 1px;
+  animation: scrollTick 2s infinite ease-in-out;
+}
+
+@keyframes scrollTick {
+  0%, 100% { transform: translateY(0); opacity: 0.2; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+
+.chapter-nav-pills {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chapter-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 9999px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chapter-pill-btn b {
+  color: #79dce8;
+}
+
+.chapter-pill-btn:hover {
+  color: #e2e8f0;
+  background: rgba(121, 220, 232, 0.08);
+  border-color: rgba(121, 220, 232, 0.2);
+}
+
+.chapter-pill-btn.is-active {
+  color: #ffffff;
+  background: rgba(121, 220, 232, 0.15);
+  border-color: rgba(121, 220, 232, 0.4);
+  box-shadow: 0 0 12px rgba(121, 220, 232, 0.2);
+}
+
+/* 7. Ambient Glowing Card */
+.cinema-card {
+  position: relative;
+  background: rgba(7, 18, 39, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.cinema-card:hover {
+  border-color: rgba(121, 220, 232, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(121, 220, 232, 0.08);
 }
 

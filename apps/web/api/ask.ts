@@ -146,7 +146,9 @@ CRITICAL RULES:
         throw new Error(`Gemini API returned status ${response.status}`);
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as {
+        candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+      };
       const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
       const parsed = JSON.parse(rawText || '{}');
 
@@ -179,7 +181,9 @@ CRITICAL RULES:
       throw new Error(`LLM API returned status ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
     const rawContent = data.choices?.[0]?.message?.content;
     const parsed = JSON.parse(rawContent || '{}');
 

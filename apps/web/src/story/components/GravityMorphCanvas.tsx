@@ -56,8 +56,11 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
         <circle cx="100" cy="100" r={derived.radius} fill={derived.outerColor} opacity="0.75" />
         <circle cx="100" cy="100" r={derived.radius * 0.45} fill={derived.coreColor} />
       </svg>
-      <div className="text-xs font-mono text-cyan-300 mt-2">
-        {derived.regimeLabel} ({activeGravityG.toFixed(2)}g)
+      <div className="text-xs font-mono text-cyan-300 mt-2 flex items-center justify-center gap-2">
+        <span className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-[10px] font-mono font-bold text-amber-300 uppercase tracking-wider">
+          Illustration
+        </span>
+        <span>{derived.regimeLabel} ({activeGravityG.toFixed(2)}g)</span>
       </div>
       <p className="text-[11px] text-slate-400 mt-1 max-w-xs">
         WebGL 3D engine paused or unavailable — displaying calibrated 2D cross-section schematic.
@@ -91,9 +94,14 @@ export const GravityMorphCanvas: React.FC<GravityMorphCanvasProps> = ({
 
         {/* Live Flame Shape Readout Badge */}
         <div className="absolute top-4 left-4 z-20 flex flex-col gap-1 pointer-events-none">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/75 border border-cyan-400/40 backdrop-blur-md text-xs font-mono text-cyan-300 shadow-md">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span>Effective Gravity: <strong>{activeGravityG.toFixed(2)}g</strong></span>
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-[10px] font-mono font-bold text-amber-300 uppercase tracking-wider shadow-sm">
+              Illustration
+            </span>
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/75 border border-cyan-400/40 backdrop-blur-md text-xs font-mono text-cyan-300 shadow-md">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span>Effective Gravity: <strong>{activeGravityG.toFixed(2)}g</strong></span>
+            </div>
           </div>
           <div className="px-3 py-1 rounded-md bg-black/60 border border-white/10 text-[11px] font-mono text-slate-300">
             Regime: <strong className="text-amber-400">{derived.regimeLabel}</strong>

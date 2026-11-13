@@ -7,7 +7,8 @@ import {
   BookOpen,
   CheckCircle2,
   Lock,
-  ArrowLeft,
+  Flame,
+  Check,
 } from 'lucide-react';
 import {
   ALL_CHAPTER_SUMMARIES,
@@ -19,7 +20,7 @@ import { StoryShell } from '../story/components/StoryShell';
 export const StoryModeV2Page: React.FC = () => {
   const { chapterSlug } = useParams<{ chapterSlug?: string }>();
 
-  // If a specific chapter slug is in the URL, render the interactive StoryShell
+  // If a specific chapter slug is in the URL, render the active Story chapter using the unified StoryShell design
   if (chapterSlug) {
     const chapter = getChapterBySlug(chapterSlug);
 
@@ -30,16 +31,16 @@ export const StoryModeV2Page: React.FC = () => {
             <Lock className="w-8 h-8" />
           </div>
           <h2 className="text-2xl font-bold font-['Space_Grotesk'] text-white">
-            Chapter In Orbit
+            Chapter Not Found
           </h2>
           <p className="text-slate-300 text-sm">
-            This story chapter is either still in peer-review or scheduled for future flight data release.
+            This story chapter is either not yet released or the link has expired.
           </p>
           <Link
-            to="/stories/v2"
+            to="/stories"
             className="px-5 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold font-['Space_Grotesk'] text-sm hover:bg-cyan-400 transition-colors"
           >
-            ← View Available Chapters
+            ← View All Chapters
           </Link>
         </div>
       );
@@ -54,43 +55,26 @@ export const StoryModeV2Page: React.FC = () => {
       {/* Header Banner */}
       <div className="space-y-4 border-b border-white/10 pb-8">
         <div className="flex items-center gap-2">
-          <Link
-            to="/explore"
-            className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Classic Explore Stories</span>
-          </Link>
-          <span className="text-slate-600">•</span>
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-[11px] font-semibold uppercase tracking-wider">
             <Sparkles className="w-3 h-3 text-cyan-400" />
-            Interactive Story Mode v2
+            Interactive Science Stories
           </span>
         </div>
 
         <h1 className="text-3xl sm:text-5xl font-bold font-['Space_Grotesk'] text-white tracking-tight">
-          Cinematic Science Stories
+          Learn how fire works in space
         </h1>
         <p className="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed font-['Hanken_Grotesk']">
-          Step-by-step interactive explorations designed for curious students and mission researchers.
-          Every beat combines plain-language intuition with verifiable NASA flight telemetry.
+          Four short, interactive chapters explaining how combustion behaves in orbit.
+          Every number, quote, and chart is grounded directly in verified NASA flight archives.
         </p>
 
-        {/* System Legend & Trust Model */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3">
-          <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/20 flex items-start gap-3">
-            <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-            <div className="text-xs text-slate-300 leading-relaxed">
-              <strong className="text-cyan-300">Measured NASA Telemetry: </strong>
-              Cyan badges link directly to peer-reviewed NASA flight archives (FLEX, Saffire, BASS) with provenance ratings.
-            </div>
-          </div>
-          <div className="p-3.5 rounded-xl bg-amber-950/25 border border-amber-500/20 flex items-start gap-3">
-            <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div className="text-xs text-slate-300 leading-relaxed">
-              <strong className="text-amber-300">Educational Analogies: </strong>
-              Amber badges highlight student-friendly simplifications and conceptual metaphors so you always know what is model vs reality.
-            </div>
+        {/* Epistemic Grounding Note */}
+        <div className="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/20 flex items-start gap-3">
+          <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+          <div className="text-xs text-slate-300 leading-relaxed font-sans">
+            <strong className="text-cyan-300">Measured NASA Telemetry: </strong>
+            Cites real flight investigations (FLEX droplet rack, BASS-II glovebox burns, and SAME-R smoke sensors) with verbatim quotes from published NASA technical reports.
           </div>
         </div>
       </div>
@@ -100,11 +84,10 @@ export const StoryModeV2Page: React.FC = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold font-['Space_Grotesk'] text-white flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-cyan-400" />
-            <span>Story Chapters</span>
+            <span>Interactive Chapters</span>
           </h2>
-          <span className="text-xs font-mono text-slate-400">
-            {ALL_CHAPTER_SUMMARIES.filter((c) => c.status === 'available').length} Available •{' '}
-            {ALL_CHAPTER_SUMMARIES.filter((c) => c.status === 'coming-soon').length} In Flight Prep
+          <span className="text-xs font-mono text-cyan-400">
+            4 of 4 Chapters Available
           </span>
         </div>
 
@@ -113,6 +96,7 @@ export const StoryModeV2Page: React.FC = () => {
             const isAvailable = ch.status === 'available';
             const progress = isAvailable ? getChapterProgress(ch.slug) : null;
             const hasStarted = progress && progress.currentBeatIndex > 0;
+            const isDone = progress && progress.completedBeatIds && progress.completedBeatIds.length >= 4;
 
             return (
               <div
@@ -131,21 +115,21 @@ export const StoryModeV2Page: React.FC = () => {
                         Chapter {ch.number}
                       </span>
 
-                      {isAvailable ? (
+                      {isDone ? (
                         <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-mono text-xs font-semibold flex items-center gap-1">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Ready to Launch
+                          <Check className="w-3.5 h-3.5" />
+                          Done
                         </span>
                       ) : (
-                        <span className="px-2.5 py-0.5 rounded-md bg-slate-800 text-slate-400 font-mono text-xs font-semibold flex items-center gap-1">
-                          <Lock className="w-3.5 h-3.5" />
-                          Coming Soon
+                        <span className="px-2.5 py-0.5 rounded-md bg-cyan-500/15 text-cyan-300 font-mono text-xs font-semibold flex items-center gap-1">
+                          <Flame className="w-3.5 h-3.5 text-cyan-400" />
+                          Ready
                         </span>
                       )}
 
                       <span className="text-xs text-slate-400 flex items-center gap-1 font-mono">
                         <Clock className="w-3.5 h-3.5" />
-                        Quick {ch.estimatedMinutes.quick}m / Full {ch.estimatedMinutes.full}m
+                        About 2 min
                       </span>
                     </div>
 
@@ -155,7 +139,7 @@ export const StoryModeV2Page: React.FC = () => {
                     <p className="text-cyan-400 text-sm font-medium font-['Hanken_Grotesk']">
                       {ch.subtitle}
                     </p>
-                    <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-sans">
                       {ch.summary}
                     </p>
 
@@ -174,26 +158,23 @@ export const StoryModeV2Page: React.FC = () => {
 
                   {/* Right Column: Launch Action */}
                   <div className="shrink-0 flex flex-col items-start md:items-end justify-center gap-2">
-                    {isAvailable ? (
-                      <>
-                        <Link
-                          to={`/stories/v2/${ch.slug}`}
-                          className="w-full md:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-['Space_Grotesk'] text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-102"
-                        >
-                          <span>{hasStarted ? 'Resume Story' : 'Start Chapter'}</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </Link>
-                        {hasStarted && (
-                          <span className="text-[11px] text-cyan-300 font-mono">
-                            Saved at Beat {progress.currentBeatIndex + 1}
-                          </span>
-                        )}
-                      </>
-                    ) : (
-                      <div className="px-5 py-3 rounded-xl bg-white/5 text-slate-500 font-mono text-xs flex items-center gap-2 select-none border border-white/5">
-                        <Lock className="w-4 h-4" />
-                        <span>Arriving in Next Flight</span>
-                      </div>
+                    <Link
+                      to={`/stories/${ch.slug}`}
+                      className="w-full md:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold font-['Space_Grotesk'] text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-102 cursor-pointer"
+                    >
+                      <span>
+                        {isDone
+                          ? 'Review Chapter'
+                          : hasStarted
+                          ? 'Resume Story'
+                          : 'Start Chapter'}
+                      </span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    {hasStarted && !isDone && (
+                      <span className="text-[11px] text-cyan-300 font-mono">
+                        Saved at Beat {progress.currentBeatIndex + 1}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -205,3 +186,5 @@ export const StoryModeV2Page: React.FC = () => {
     </div>
   );
 };
+
+export default StoryModeV2Page;

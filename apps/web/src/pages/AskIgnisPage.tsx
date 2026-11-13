@@ -19,6 +19,11 @@ import {
 import { Button } from '../components/common/Button';
 import { EvidenceBadge } from '../components/common/EvidenceBadge';
 import { ConfidenceBadge } from '../components/common/ConfidenceBadge';
+import {
+  CORPUS_SCOPES,
+  formatMatchMaterial,
+  type CorpusScopeId,
+} from '../lib/assistant/corpus_scopes';
 
 export const AskIgnisPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -30,12 +35,15 @@ export const AskIgnisPage: React.FC = () => {
     inputQuery,
     setInputQuery,
     isLoading,
+    scope,
+    setScope,
+    useLLMSynthesis,
+    setUseLLMSynthesis,
     sendMessage,
     clearSession,
     suggestedPrompts,
   } = useAskIgnis();
 
-  const [selectedScope, setSelectedScope] = useState<string>(scopeParam || 'global');
   const [expandedFacts, setExpandedFacts] = useState<Record<string, boolean>>({});
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
@@ -49,13 +57,22 @@ export const AskIgnisPage: React.FC = () => {
     setExpandedFacts((prev) => ({ ...prev, [msgId]: !prev[msgId] }));
   };
 
+  // Sync scope URL param if present
+  useEffect(() => {
+    if (scopeParam === 'global' || scopeParam === 'solid' || scopeParam === 'acme') {
+      setScope(scopeParam);
+    }
+  }, [scopeParam, setScope]);
+
   // Handle URL prefilled query parameter (e.g. from /simulator or /experiments)
   useEffect(() => {
     if (!initialSearchTriggered.current && queryParam) {
       initialSearchTriggered.current = true;
-      sendMessage(queryParam);
+      const validScope =
+        scopeParam === 'solid' || scopeParam === 'acme' ? scopeParam : undefined;
+      sendMessage(queryParam, undefined, validScope);
     }
-  }, [queryParam, sendMessage]);
+  }, [queryParam, scopeParam, sendMessage]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -72,49 +89,68 @@ export const AskIgnisPage: React.FC = () => {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-6">
         <div>
           <div className="eyebrow-pill mb-2">
-            <span>NASA Space Apps 2026 • Traceable RAG Assistant</span>
+            <span>NASA Space Apps 2026 • Extractive NASA Evidence Search</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-['Space_Grotesk',sans-serif]">
             Ask IGNIS
           </h1>
           <p className="text-slate-300 text-sm mt-1 max-w-2xl leading-relaxed">
-            Inquire about microgravity combustion, material quenching limits, and spacecraft fire safety. Every response is grounded in published NASA Physical Sciences Informatics (PSI) research.
+            Search bundled NASA Physical Sciences Informatics (PSI) records and NTRS combustion reports with deterministic citation verification and strict abstention guardrails.
           </p>
         </div>
 
-        {/* Clear chat action */}
-        <Button
-          variant="outline"
-          size="sm"
-          icon={<RotateCcw className="w-3.5 h-3.5" />}
-          onClick={clearSession}
-        >
-          Reset Session
-        </Button>
+        {/* Mode toggle & Clear chat action */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setUseLLMSynthesis(!useLLMSynthesis)}
+            aria-pressed={useLLMSynthesis}
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono border transition-colors cursor-pointer ${
+              useLLMSynthesis
+                ? 'bg-amber-500/20 text-amber-200 border-amber-400/50'
+                : 'bg-white/5 text-slate-300 border-white/15 hover:bg-white/10'
+            }`}
+            title="Default mode runs 100% locally in-browser via BM25 extraction. Toggle to request serverless /api/ask synthesis if configured."
+          >
+            {useLLMSynthesis ? 'LLM Synthesis: ON (falls back if unconfigured)' : 'Mode: Offline Extractive (BM25)'}
+          </button>
+          <Button
+            variant="outline"
+            size="sm"
+            icon={<RotateCcw className="w-3.5 h-3.5" />}
+            onClick={clearSession}
+          >
+            Reset Session
+          </Button>
+        </div>
       </div>
 
       {/* Scope Selector Tabs */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs">
-        <span className="text-slate-400 font-mono px-3 py-1 font-semibold">EVIDENCE SCOPE:</span>
-        {[
-          { id: 'global', label: 'All NASA PSI Records' },
-          { id: 'saffire', label: 'Saffire Spacecraft Burns' },
-          { id: 'glovebox', label: 'BASS & FLEX Microgravity' },
-          { id: 'earthdata', label: 'NASA Earthdata FIRMS' },
-        ].map((scope) => (
-          <button
-            key={scope.id}
-            type="button"
-            className={`px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
-              selectedScope === scope.id
-                ? 'bg-cyan-500/20 text-[#79dce8] border border-cyan-400/40 shadow-sm'
-                : 'text-slate-300 hover:text-white hover:bg-white/5'
-            }`}
-            onClick={() => setSelectedScope(scope.id)}
-          >
-            {scope.label}
-          </button>
-        ))}
+      <div className="space-y-1.5">
+        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs">
+          <span className="text-slate-400 font-mono px-3 py-1 font-semibold">EVIDENCE SCOPE:</span>
+          {CORPUS_SCOPES.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              disabled={!item.connected}
+              title={item.description}
+              className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
+                !item.connected
+                  ? 'text-slate-500 bg-white/[0.02] border border-white/5 cursor-not-allowed opacity-60'
+                  : scope === item.id
+                  ? 'bg-cyan-500/20 text-[#79dce8] border border-cyan-400/40 shadow-sm cursor-pointer'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5 cursor-pointer'
+              }`}
+              onClick={() => item.connected && setScope(item.id as CorpusScopeId)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[11px] text-slate-400 px-1 font-mono">
+          Active corpus: {CORPUS_SCOPES.find((s) => s.id === scope)?.description}
+        </p>
       </div>
 
       {/* Suggested Prompt Chips */}
@@ -200,7 +236,7 @@ export const AskIgnisPage: React.FC = () => {
                     <span>Structured Flight Matcher Tool Output:</span>
                   </div>
                   <div className="text-zinc-200">
-                    Nearest Tested Flight Run: <strong className="text-white">{msg.structuredMatch.matches[0].run_uid}</strong> ({msg.structuredMatch.matches[0].material_family || msg.structuredMatch.matches[0].material})
+                    Nearest Tested Flight Run: <strong className="text-white">{msg.structuredMatch.matches[0].run_uid}</strong> ({formatMatchMaterial(msg.structuredMatch.matches[0])})
                   </div>
                   <div className="text-zinc-400 text-xs">
                     Tested Conditions: {msg.structuredMatch.matches[0].factors?.oxygen?.experiment_value}% O₂, {msg.structuredMatch.matches[0].factors?.flow?.experiment_value} cm/s • Observed Outcome: <span className="text-amber-300 font-semibold">{msg.structuredMatch.matches[0].outcome_class}</span>
@@ -374,7 +410,11 @@ export const AskIgnisPage: React.FC = () => {
           <span>Press <strong>Enter</strong> to submit, <strong>Shift+Enter</strong> for newline</span>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="font-mono">Grounded RAG Guardrails Active</span>
+            <span className="font-mono">
+              {useLLMSynthesis
+                ? 'Serverless /api/ask + Verifier Active (Extractive Fallback)'
+                : 'Offline BM25 + Verbatim Evidence Guardrails Active'}
+            </span>
           </div>
         </div>
       </div>
@@ -389,7 +429,7 @@ export const AskIgnisPage: React.FC = () => {
           <Link to="/experiments" className="text-cyan-400 hover:text-white flex items-center gap-1 font-mono">
             Browse Flight Data <ArrowRight className="w-3 h-3" />
           </Link>
-          <Link to="/explore" className="text-amber-400 hover:text-white flex items-center gap-1 font-mono">
+          <Link to="/stories" className="text-amber-400 hover:text-white flex items-center gap-1 font-mono">
             Stories <Compass className="w-3 h-3" />
           </Link>
         </div>

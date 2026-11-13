@@ -61,8 +61,8 @@ const TIER_CONFIGS: Record<EvidenceTier, TierConfig> = {
   E: {
     code: 'E',
     title: 'Level E — Grounded Synthesis',
-    shortLabel: 'Grounded AI Synthesis',
-    description: 'Grounded AI synthesis strictly constrained to retrieved evidence (lowest authority tier).',
+    shortLabel: 'Grounded Evidence Synthesis',
+    description: 'Verbatim excerpt or verified synthesis strictly constrained to retrieved NASA evidence (lowest authority tier).',
     // Semantic: moderate (caution / lowest authority / synthesis)
     badgeClasses: 'bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-sm shadow-amber-500/10',
     icon: Sparkles,

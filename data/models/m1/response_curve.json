@@ -1,0 +1,451 @@
+{
+  "model_name": "M1_SAME_R_Detector_Response",
+  "generated_date": "2026-11-04T14:37:26.888022+00:00",
+  "dataset_provenance": "NASA Physical Sciences Informatics PSI-101 (SAME-R) and PSI-102 (SAME)",
+  "platform": "International Space Station (ISS) Microgravity Environment",
+  "total_calibrated_runs": 130,
+  "applicable_range_um": {
+    "min": 0.04900510396933735,
+    "max": 1.1026381309223143
+  },
+  "reference_sensitivity_v_per_mg_m3": 0.2153,
+  "small_particle_penalty_calibrated": {
+    "kapton_mean_multiplier": 2.514470689780005,
+    "teflon_mean_multiplier": 0.25698809093717556,
+    "combined_small_particle_multiplier": 1.5872903366838431
+  },
+  "curve_points": [
+    {
+      "diameter_um": 0.049,
+      "response_multiplier_isotonic": 0.8333,
+      "response_multiplier_poly": 4.3163,
+      "response_multiplier_ridge": 3.4173,
+      "ci_lower_95": 0.1081,
+      "ci_upper_95": 1.3605
+    },
+    {
+      "diameter_um": 0.0929,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 2.2853,
+      "response_multiplier_ridge": 2.4353,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.1368,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.4006,
+      "response_multiplier_ridge": 1.8411,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.1807,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9246,
+      "response_multiplier_ridge": 1.4138,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.2246,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.646,
+      "response_multiplier_ridge": 1.0799,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.2685,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4785,
+      "response_multiplier_ridge": 0.8058,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.3124,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3797,
+      "response_multiplier_ridge": 0.5734,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.3563,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3261,
+      "response_multiplier_ridge": 0.3715,
+      "ci_lower_95": 0.686,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.4002,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3036,
+      "response_multiplier_ridge": 0.1931,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.4441,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3034,
+      "response_multiplier_ridge": 0.0333,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.488,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3194,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.5319,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3474,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.5758,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.3846,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.6197,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4287,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.6636,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.4783,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7075,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.532,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7514,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.5889,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.7953,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.6484,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.8392,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.7098,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.8831,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.7727,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.927,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.8368,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 0.9709,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9017,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.0148,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 0.9671,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.0587,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.033,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    },
+    {
+      "diameter_um": 1.1026,
+      "response_multiplier_isotonic": 1.0748,
+      "response_multiplier_poly": 1.0991,
+      "response_multiplier_ridge": 0.0,
+      "ci_lower_95": 0.6938,
+      "ci_upper_95": 1.6466
+    }
+  ],
+  "lomo_evaluations": {
+    "Global_Mean_Baseline": {
+      "overall_rmse": 2.877254661105396,
+      "overall_mae": 1.1619527087102128,
+      "mae_95_ci": {
+        "point": 1.1619527087102128,
+        "ci_lower": 0.8089048051423633,
+        "ci_upper": 1.6945476588371235
+      },
+      "per_material": {
+        "Teflon": {
+          "rmse": 0.9970314462049521,
+          "mae": 0.9868684556917269,
+          "n_runs": 23,
+          "y_true_mean": 0.25698809093717556,
+          "y_pred_mean": 1.243856546628902
+        },
+        "Kapton": {
+          "rmse": 5.458963344877313,
+          "mae": 1.9590717799508304,
+          "n_runs": 33,
+          "y_true_mean": 2.514470689780005,
+          "y_pred_mean": 0.5775860187433758
+        },
+        "Lampwick": {
+          "rmse": 0.8721819027296175,
+          "mae": 0.5847872382379264,
+          "n_runs": 25,
+          "y_true_mean": 1.3338423436340987,
+          "y_pred_mean": 1.006260171333287
+        },
+        "Silicone": {
+          "rmse": 1.1124065663082965,
+          "mae": 1.1079781289731239,
+          "n_runs": 29,
+          "y_true_mean": 0.20844296580432364,
+          "y_pred_mean": 1.3164210947774473
+        },
+        "Pyrell": {
+          "rmse": 0.8672029727306835,
+          "mae": 0.8477731108435902,
+          "n_runs": 20,
+          "y_true_mean": 0.5362106563687276,
+          "y_pred_mean": 1.1661742132133914
+        }
+      }
+    },
+    "Material_Mean_Baseline": {
+      "overall_rmse": 2.877254661105396,
+      "overall_mae": 1.1619527087102128,
+      "mae_95_ci": {
+        "point": 1.1619527087102128,
+        "ci_lower": 0.8089048051423633,
+        "ci_upper": 1.6945476588371235
+      },
+      "per_material": {
+        "Teflon": {
+          "rmse": 0.9970314462049521,
+          "mae": 0.9868684556917269,
+          "n_runs": 23,
+          "y_true_mean": 0.25698809093717556,
+          "y_pred_mean": 1.243856546628902
+        },
+        "Kapton": {
+          "rmse": 5.458963344877313,
+          "mae": 1.9590717799508304,
+          "n_runs": 33,
+          "y_true_mean": 2.514470689780005,
+          "y_pred_mean": 0.5775860187433758
+        },
+        "Lampwick": {
+          "rmse": 0.8721819027296175,
+          "mae": 0.5847872382379264,
+          "n_runs": 25,
+          "y_true_mean": 1.3338423436340987,
+          "y_pred_mean": 1.006260171333287
+        },
+        "Silicone": {
+          "rmse": 1.1124065663082965,
+          "mae": 1.1079781289731239,
+          "n_runs": 29,
+          "y_true_mean": 0.20844296580432364,
+          "y_pred_mean": 1.3164210947774473
+        },
+        "Pyrell": {
+          "rmse": 0.8672029727306835,
+          "mae": 0.8477731108435902,
+          "n_runs": 20,
+          "y_true_mean": 0.5362106563687276,
+          "y_pred_mean": 1.1661742132133914
+        }
+      }
+    },
+    "Isotonic_Monotone": {
+      "overall_rmse": 2.8898814419652727,
+      "overall_mae": 1.174933444034462,
+      "mae_95_ci": {
+        "point": 1.174933444034462,
+        "ci_lower": 0.8215002724513959,
+        "ci_upper": 1.709519907451434
+      },
+      "per_material": {
+        "Teflon": {
+          "rmse": 0.9970314462049525,
+          "mae": 0.9868684556917269,
+          "n_runs": 23,
+          "y_true_mean": 0.25698809093717556,
+          "y_pred_mean": 1.2438565466289022
+        },
+        "Kapton": {
+          "rmse": 5.482105428327185,
+          "mae": 1.9936619275969854,
+          "n_runs": 33,
+          "y_true_mean": 2.514470689780005,
+          "y_pred_mean": 0.5442247263446898
+        },
+        "Lampwick": {
+          "rmse": 0.8702836320099571,
+          "mae": 0.5849907633768284,
+          "n_runs": 25,
+          "y_true_mean": 1.3338423436340987,
+          "y_pred_mean": 1.0113482998058363
+        },
+        "Silicone": {
+          "rmse": 1.1271389863522765,
+          "mae": 1.122768658305088,
+          "n_runs": 29,
+          "y_true_mean": 0.20844296580432364,
+          "y_pred_mean": 1.331211624109412
+        },
+        "Pyrell": {
+          "rmse": 0.8740069783749892,
+          "mae": 0.8533734728800779,
+          "n_runs": 20,
+          "y_true_mean": 0.5362106563687276,
+          "y_pred_mean": 1.1755081499408708
+        }
+      }
+    },
+    "Log_Polynomial": {
+      "overall_rmse": 2.8999526429809603,
+      "overall_mae": 1.0655540569305733,
+      "mae_95_ci": {
+        "point": 1.0655540569305733,
+        "ci_lower": 0.6940089901970106,
+        "ci_upper": 1.5983098597786154
+      },
+      "per_material": {
+        "Teflon": {
+          "rmse": 1.6836374840327764,
+          "mae": 1.159785311115138,
+          "n_runs": 23,
+          "y_true_mean": 0.25698809093717556,
+          "y_pred_mean": 1.4167734020523133
+        },
+        "Kapton": {
+          "rmse": 5.418168100587893,
+          "mae": 1.8816960083266459,
+          "n_runs": 33,
+          "y_true_mean": 2.514470689780005,
+          "y_pred_mean": 0.6663644044416638
+        },
+        "Lampwick": {
+          "rmse": 1.170006429380567,
+          "mae": 0.8915777573378381,
+          "n_runs": 25,
+          "y_true_mean": 1.3338423436340987,
+          "y_pred_mean": 0.9018105724925262
+        },
+        "Silicone": {
+          "rmse": 0.7999771057594067,
+          "mae": 0.6679740737297137,
+          "n_runs": 29,
+          "y_true_mean": 0.20844296580432364,
+          "y_pred_mean": 0.8764170395340374
+        },
+        "Pyrell": {
+          "rmse": 0.5709582509126263,
+          "mae": 0.40451524494697005,
+          "n_runs": 20,
+          "y_true_mean": 0.5362106563687276,
+          "y_pred_mean": 0.4972605521817228
+        }
+      }
+    },
+    "Ridge_Multivariate": {
+      "overall_rmse": 2.841891842081107,
+      "overall_mae": 0.9320667253992367,
+      "mae_95_ci": {
+        "point": 0.9320667253992367,
+        "ci_lower": 0.5605136152346524,
+        "ci_upper": 1.4626422902810103
+      },
+      "per_material": {
+        "Teflon": {
+          "rmse": 1.569027943505052,
+          "mae": 1.3248514421747373,
+          "n_runs": 23,
+          "y_true_mean": 0.25698809093717556,
+          "y_pred_mean": 1.5374977215720038
+        },
+        "Kapton": {
+          "rmse": 5.398551032429036,
+          "mae": 1.7605032665088047,
+          "n_runs": 33,
+          "y_true_mean": 2.514470689780005,
+          "y_pred_mean": 0.7639531497342874
+        },
+        "Lampwick": {
+          "rmse": 0.9549129072708188,
+          "mae": 0.6608423346945241,
+          "n_runs": 25,
+          "y_true_mean": 1.3338423436340987,
+          "y_pred_mean": 1.1086580595982327
+        },
+        "Silicone": {
+          "rmse": 0.40158317119916864,
+          "mae": 0.33414718874250426,
+          "n_runs": 29,
+          "y_true_mean": 0.20844296580432364,
+          "y_pred_mean": 0.49769248561853596
+        },
+        "Pyrell": {
+          "rmse": 0.4508855535091576,
+          "mae": 0.319457824809776,
+          "n_runs": 20,
+          "y_true_mean": 0.5362106563687276,
+          "y_pred_mean": 0.5534268341517038
+        }
+      }
+    }
+  }
+}

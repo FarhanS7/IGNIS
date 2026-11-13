@@ -84,14 +84,14 @@ test('validateChapterConfig - validates Chapter 1 against NASA fixtures', () => 
   assert.equal(result.valid, true, `Chapter 1 validation failed with errors: ${result.errors.join('; ')}`);
   assert.equal(result.errors.length, 0);
 
-  // Verify all 7 beat types are present in Chapter 1
+  // Verify 4 to 6 beats and core beat types are present in Chapter 1
+  assert.ok(chapter1.beats.length >= 4 && chapter1.beats.length <= 6);
   const types = chapter1.beats.map((b) => b.type);
   assert.ok(types.includes('hook'));
   assert.ok(types.includes('predict'));
   assert.ok(types.includes('reveal'));
   assert.ok(types.includes('why'));
   assert.ok(types.includes('check'));
-  assert.ok(types.includes('real-world'));
   assert.ok(types.includes('takeaway'));
 });
 
@@ -329,3 +329,39 @@ test('safeStorage - onboarding tour dismissal persistence', () => {
   assert.equal(isOnboardingDismissed(), false);
 });
 
+
+test('provenance integrity - no story item with a fixture UUID is typed measured or level A', () => {
+  chapter1.beats.forEach((beat) => {
+    if (beat.layer2?.evidenceRefs) {
+      beat.layer2.evidenceRefs.forEach((ref) => {
+        const hasFixtureUuid =
+          Boolean(ref.experimentId && ref.experimentId.includes('22222222')) ||
+          Boolean(ref.runId && ref.runId.includes('22222222')) ||
+          Boolean(ref.sourceDocId && ref.sourceDocId.includes('33333333'));
+
+        assert.ok(
+          !hasFixtureUuid,
+          `Beat "${beat.id}" cites synthetic fixture UUID as a NASA source: ${ref.experimentId || ref.runId || ref.sourceDocId}`
+        );
+        assert.notEqual(
+          ref.type,
+          'measured',
+          `Beat "${beat.id}" evidence ref is typed 'measured' without real flight connection`
+        );
+        assert.notEqual(
+          ref.provenanceLevel,
+          'A',
+          `Beat "${beat.id}" evidence ref claims Level A provenance on synthetic content`
+        );
+      });
+    }
+
+    if (beat.layer3) {
+      const l3 = beat.layer3 as any;
+      const hasFixtureUuid =
+        Boolean(l3.sourceExperimentId && l3.sourceExperimentId.includes('22222222')) ||
+        Boolean(l3.sourceRunId && l3.sourceRunId.includes('22222222'));
+      assert.ok(!hasFixtureUuid, `Beat "${beat.id}" layer3 cites synthetic fixture UUID`);
+    }
+  });
+});

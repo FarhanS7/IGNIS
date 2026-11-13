@@ -1,0 +1,1110 @@
+{
+  "evaluation_date": "2026-11-04T14:22:13.423104+00:00",
+  "models": [
+    "B1_Particulate",
+    "B2_CO",
+    "B3_Rule_Fusion",
+    "M2_Learned_Fusion"
+  ],
+  "splits": {
+    "S1_Leave_One_Scenario_Out": {
+      "B1_Particulate": {
+        "point_metrics": {
+          "fire_detection_rate": 1.0,
+          "fire_detected_count": 13,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 0.8571428571428571,
+          "nuisance_rejected_count": 6,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 300.0,
+          "p90_delay_sec": 1646.0000000000005,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 4,
+              "delays": [
+                4660.0,
+                110.0,
+                200.0,
+                30.0
+              ]
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                1790.0,
+                1070.0,
+                640.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                20.0,
+                300.0,
+                10.0
+              ]
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                920.0,
+                790.0,
+                140.0
+              ]
+            }
+          }
+        },
+        "fire_detection_rate_ci": {
+          "point": 1.0,
+          "ci_lower": 1.0,
+          "ci_upper": 1.0
+        },
+        "nuisance_rejection_rate_ci": {
+          "point": 0.8571428571428571,
+          "ci_lower": 0.5,
+          "ci_upper": 1.0
+        }
+      },
+      "B2_CO": {
+        "point_metrics": {
+          "fire_detection_rate": 0.07692307692307693,
+          "fire_detected_count": 1,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 0.8571428571428571,
+          "nuisance_rejected_count": 6,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 1160.0,
+          "p90_delay_sec": 1160.0,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 1,
+              "delays": [
+                1160.0
+              ]
+            }
+          }
+        },
+        "fire_detection_rate_ci": {
+          "point": 0.07692307692307693,
+          "ci_lower": 0.0,
+          "ci_upper": 0.25
+        },
+        "nuisance_rejection_rate_ci": {
+          "point": 0.8571428571428571,
+          "ci_lower": 0.5,
+          "ci_upper": 1.0
+        }
+      },
+      "B3_Rule_Fusion": {
+        "point_metrics": {
+          "fire_detection_rate": 0.3076923076923077,
+          "fire_detected_count": 4,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 0.8571428571428571,
+          "nuisance_rejected_count": 6,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 2515.0,
+          "p90_delay_sec": 10571.000000000002,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 1,
+              "delays": [
+                13400.0
+              ]
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 1,
+              "delays": [
+                90.0
+              ]
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 2,
+              "delays": [
+                1060.0,
+                3970.0
+              ]
+            }
+          }
+        },
+        "fire_detection_rate_ci": {
+          "point": 0.3076923076923077,
+          "ci_lower": 0.07142857142857142,
+          "ci_upper": 0.5833333333333334
+        },
+        "nuisance_rejection_rate_ci": {
+          "point": 0.8571428571428571,
+          "ci_lower": 0.5,
+          "ci_upper": 1.0
+        }
+      },
+      "M2_Learned_Fusion": {
+        "point_metrics": {
+          "fire_detection_rate": 1.0,
+          "fire_detected_count": 13,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 0.7142857142857143,
+          "nuisance_rejected_count": 5,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 200.0,
+          "p90_delay_sec": 1574.0000000000005,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 4,
+              "delays": [
+                1690.0,
+                110.0,
+                200.0,
+                30.0
+              ]
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                1800.0,
+                1110.0,
+                650.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                20.0,
+                670.0,
+                10.0
+              ]
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                40.0,
+                740.0,
+                140.0
+              ]
+            }
+          }
+        },
+        "fire_detection_rate_ci": {
+          "point": 1.0,
+          "ci_lower": 1.0,
+          "ci_upper": 1.0
+        },
+        "nuisance_rejection_rate_ci": {
+          "point": 0.7142857142857143,
+          "ci_lower": 0.3333333333333333,
+          "ci_upper": 1.0
+        }
+      }
+    },
+    "S2_Cross_Site": {
+      "D1_to_D2": {
+        "B1_Particulate": {
+          "fire_detection_rate": 0.8823529411764706,
+          "fire_detected_count": 15,
+          "fire_total_count": 17,
+          "nuisance_rejection_rate": 0.6666666666666666,
+          "nuisance_rejected_count": 10,
+          "nuisance_total_count": 15,
+          "median_delay_sec": 1680.0,
+          "p90_delay_sec": 7767.999999999999,
+          "false_alarms_per_hour": 0.0017433667317200735,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 32,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Smoke": {
+              "total_experiments": 2,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                11430.0,
+                260.0,
+                5770.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 7,
+              "detected_alarms": 6,
+              "delays": [
+                1680.0,
+                8400.0,
+                1200.0,
+                1900.0,
+                560.0,
+                6820.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "CO": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Exhaust": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 4,
+              "detected_alarms": 3,
+              "delays": [
+                1410.0,
+                3010.0,
+                2870.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                530.0,
+                730.0,
+                100.0
+              ]
+            },
+            "Green_Waste": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Welding": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Abrasive_Cutting": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            }
+          }
+        },
+        "B2_CO": {
+          "fire_detection_rate": 1.0,
+          "fire_detected_count": 17,
+          "fire_total_count": 17,
+          "nuisance_rejection_rate": 0.2,
+          "nuisance_rejected_count": 3,
+          "nuisance_total_count": 15,
+          "median_delay_sec": 2030.0,
+          "p90_delay_sec": 5438.0,
+          "false_alarms_per_hour": 33.65918148931946,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 32,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Smoke": {
+              "total_experiments": 2,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                40.0,
+                270.0,
+                4380.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 7,
+              "detected_alarms": 7,
+              "delays": [
+                2030.0,
+                3700.0,
+                1190.0,
+                6050.0,
+                2300.0,
+                4010.0,
+                210.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 2,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "CO": {
+              "total_experiments": 2,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "Exhaust": {
+              "total_experiments": 3,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 4,
+              "detected_alarms": 4,
+              "delays": [
+                8900.0,
+                1950.0,
+                5030.0,
+                2600.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                710.0,
+                560.0,
+                1380.0
+              ]
+            },
+            "Green_Waste": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Welding": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Abrasive_Cutting": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            }
+          }
+        },
+        "B3_Rule_Fusion": {
+          "fire_detection_rate": 1.0,
+          "fire_detected_count": 17,
+          "fire_total_count": 17,
+          "nuisance_rejection_rate": 0.6,
+          "nuisance_rejected_count": 9,
+          "nuisance_total_count": 15,
+          "median_delay_sec": 2600.0,
+          "p90_delay_sec": 5438.0,
+          "false_alarms_per_hour": 0.29985907785585264,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 32,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Smoke": {
+              "total_experiments": 2,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                230.0,
+                270.0,
+                4380.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 7,
+              "detected_alarms": 7,
+              "delays": [
+                3230.0,
+                3700.0,
+                1190.0,
+                6050.0,
+                2430.0,
+                4010.0,
+                450.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "CO": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Exhaust": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 4,
+              "detected_alarms": 4,
+              "delays": [
+                11010.0,
+                3160.0,
+                5030.0,
+                2600.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                740.0,
+                560.0,
+                1380.0
+              ]
+            },
+            "Green_Waste": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Welding": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Abrasive_Cutting": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            }
+          }
+        },
+        "M2_Learned_Fusion": {
+          "fire_detection_rate": 1.0,
+          "fire_detected_count": 17,
+          "fire_total_count": 17,
+          "nuisance_rejection_rate": 0.13333333333333333,
+          "nuisance_rejected_count": 2,
+          "nuisance_total_count": 15,
+          "median_delay_sec": 1490.0,
+          "p90_delay_sec": 4158.0,
+          "false_alarms_per_hour": 24.049744064078414,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 32,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Smoke": {
+              "total_experiments": 2,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                0.0,
+                260.0,
+                4380.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 7,
+              "detected_alarms": 7,
+              "delays": [
+                2030.0,
+                3700.0,
+                1190.0,
+                1910.0,
+                560.0,
+                4010.0,
+                210.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 2,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "CO": {
+              "total_experiments": 2,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "Exhaust": {
+              "total_experiments": 3,
+              "detected_alarms": 2,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 4,
+              "detected_alarms": 4,
+              "delays": [
+                8850.0,
+                1490.0,
+                3120.0,
+                2600.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                540.0,
+                560.0,
+                110.0
+              ]
+            },
+            "Green_Waste": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Welding": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            },
+            "Abrasive_Cutting": {
+              "total_experiments": 1,
+              "detected_alarms": 1,
+              "delays": []
+            }
+          }
+        }
+      },
+      "D2_to_D1": {
+        "B1_Particulate": {
+          "fire_detection_rate": 0.8461538461538461,
+          "fire_detected_count": 11,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 1.0,
+          "nuisance_rejected_count": 7,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 1700.0,
+          "p90_delay_sec": 8560.0,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 20,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                1700.0,
+                8560.0,
+                490.0
+              ]
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                25340.0,
+                3970.0,
+                3780.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 3,
+              "delays": [
+                310.0,
+                640.0,
+                80.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 2,
+              "delays": [
+                40.0,
+                2140.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            }
+          }
+        },
+        "B2_CO": {
+          "fire_detection_rate": 0.0,
+          "fire_detected_count": 0,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 1.0,
+          "nuisance_rejected_count": 7,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 0.0,
+          "p90_delay_sec": 0.0,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 20,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            }
+          }
+        },
+        "B3_Rule_Fusion": {
+          "fire_detection_rate": 0.0,
+          "fire_detected_count": 0,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 1.0,
+          "nuisance_rejected_count": 7,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 0.0,
+          "p90_delay_sec": 0.0,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 20,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            }
+          }
+        },
+        "M2_Learned_Fusion": {
+          "fire_detection_rate": 0.9230769230769231,
+          "fire_detected_count": 12,
+          "fire_total_count": 13,
+          "nuisance_rejection_rate": 1.0,
+          "nuisance_rejected_count": 7,
+          "nuisance_total_count": 7,
+          "median_delay_sec": 985.0,
+          "p90_delay_sec": 1547.0,
+          "false_alarms_per_hour": 0.0,
+          "per_scenario": {
+            "Background": {
+              "total_experiments": 20,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Wood": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                1240.0,
+                1520.0,
+                210.0
+              ]
+            },
+            "Candles": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                1880.0,
+                1320.0,
+                730.0
+              ]
+            },
+            "Cable": {
+              "total_experiments": 4,
+              "detected_alarms": 3,
+              "delays": [
+                170.0,
+                230.0,
+                50.0
+              ]
+            },
+            "Ethanol": {
+              "total_experiments": 4,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Lunts": {
+              "total_experiments": 3,
+              "detected_alarms": 3,
+              "delays": [
+                30.0,
+                1400.0,
+                1550.0
+              ]
+            },
+            "Deodorant": {
+              "total_experiments": 2,
+              "detected_alarms": 0,
+              "delays": []
+            },
+            "Hairspray": {
+              "total_experiments": 1,
+              "detected_alarms": 0,
+              "delays": []
+            }
+          }
+        }
+      }
+    },
+    "S3_Leave_Repetition_Out": {
+      "B1_Particulate": {
+        "fire_detection_rate": 1.0,
+        "fire_detected_count": 13,
+        "fire_total_count": 13,
+        "nuisance_rejection_rate": 1.0,
+        "nuisance_rejected_count": 0,
+        "nuisance_total_count": 0,
+        "median_delay_sec": 300.0,
+        "p90_delay_sec": 1646.0000000000005,
+        "false_alarms_per_hour": 0.0,
+        "per_scenario": {
+          "Wood": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              920.0,
+              790.0,
+              140.0
+            ]
+          },
+          "Candles": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              1790.0,
+              1070.0,
+              640.0
+            ]
+          },
+          "Cable": {
+            "total_experiments": 4,
+            "detected_alarms": 4,
+            "delays": [
+              4660.0,
+              110.0,
+              200.0,
+              30.0
+            ]
+          },
+          "Lunts": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              20.0,
+              300.0,
+              10.0
+            ]
+          }
+        }
+      },
+      "B2_CO": {
+        "fire_detection_rate": 0.07692307692307693,
+        "fire_detected_count": 1,
+        "fire_total_count": 13,
+        "nuisance_rejection_rate": 1.0,
+        "nuisance_rejected_count": 0,
+        "nuisance_total_count": 0,
+        "median_delay_sec": 1160.0,
+        "p90_delay_sec": 1160.0,
+        "false_alarms_per_hour": 0.0,
+        "per_scenario": {
+          "Wood": {
+            "total_experiments": 3,
+            "detected_alarms": 1,
+            "delays": [
+              1160.0
+            ]
+          },
+          "Candles": {
+            "total_experiments": 3,
+            "detected_alarms": 0,
+            "delays": []
+          },
+          "Cable": {
+            "total_experiments": 4,
+            "detected_alarms": 0,
+            "delays": []
+          },
+          "Lunts": {
+            "total_experiments": 3,
+            "detected_alarms": 0,
+            "delays": []
+          }
+        }
+      },
+      "B3_Rule_Fusion": {
+        "fire_detection_rate": 0.07692307692307693,
+        "fire_detected_count": 1,
+        "fire_total_count": 13,
+        "nuisance_rejection_rate": 1.0,
+        "nuisance_rejected_count": 0,
+        "nuisance_total_count": 0,
+        "median_delay_sec": 1160.0,
+        "p90_delay_sec": 1160.0,
+        "false_alarms_per_hour": 0.0,
+        "per_scenario": {
+          "Wood": {
+            "total_experiments": 3,
+            "detected_alarms": 1,
+            "delays": [
+              1160.0
+            ]
+          },
+          "Candles": {
+            "total_experiments": 3,
+            "detected_alarms": 0,
+            "delays": []
+          },
+          "Cable": {
+            "total_experiments": 4,
+            "detected_alarms": 0,
+            "delays": []
+          },
+          "Lunts": {
+            "total_experiments": 3,
+            "detected_alarms": 0,
+            "delays": []
+          }
+        }
+      },
+      "M2_Learned_Fusion": {
+        "fire_detection_rate": 0.9230769230769231,
+        "fire_detected_count": 12,
+        "fire_total_count": 13,
+        "nuisance_rejection_rate": 1.0,
+        "nuisance_rejected_count": 0,
+        "nuisance_total_count": 0,
+        "median_delay_sec": 430.0,
+        "p90_delay_sec": 1091.0,
+        "false_alarms_per_hour": 0.0,
+        "per_scenario": {
+          "Wood": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              920.0,
+              880.0,
+              150.0
+            ]
+          },
+          "Candles": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              1820.0,
+              1110.0,
+              650.0
+            ]
+          },
+          "Cable": {
+            "total_experiments": 4,
+            "detected_alarms": 3,
+            "delays": [
+              110.0,
+              210.0,
+              30.0
+            ]
+          },
+          "Lunts": {
+            "total_experiments": 3,
+            "detected_alarms": 3,
+            "delays": [
+              20.0,
+              730.0,
+              20.0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

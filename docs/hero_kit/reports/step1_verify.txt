@@ -1,0 +1,31 @@
+﻿Step: 1
+Compared with: hero-step-0b
+Overall: PASS
+
+[PASS] protected files untouched (vs hero-baseline)
+[PASS] banned claim terms in new code 
+[PASS] non-determinism (Math.random / Date.now) 
+[PASS] unit tests pass=217 fail=0
+[PASS] build 
+[PASS] e2e passed=31
+[SKIP] python tests (add -Python to run)
+[INFO] files changed since hero-step-0b 17 files
+
+Changed files:
+  apps/web/e2e/mobile.spec.ts
+  apps/web/e2e/offline.spec.ts
+  apps/web/e2e/response.spec.ts
+  apps/web/scripts/scout_scenarios.ts
+  apps/web/src/components/response/Caption.tsx
+  apps/web/src/components/response/StationDemoPage.tsx
+  apps/web/src/lib/fire/timeline/__tests__/timeline.test.ts
+  apps/web/src/lib/fire/timeline/buildTimeline.ts
+  apps/web/src/lib/fire/timeline/types.ts
+  apps/web/src/lib/fire/timeline/useTimeline.ts
+  apps/web/src/pages/ResponseConsolePage.tsx
+  docs/hero_kit/DECISION.md
+  docs/hero_kit/PROGRESS.md
+  docs/hero_kit/reports/checkpoints.log
+  docs/hero_kit/reports/step0_agent_report.md
+  docs/hero_kit/reports/step1_e2e_output.txt
+  docs/hero_kit/reports/step1_verify.txt

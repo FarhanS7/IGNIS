@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   ShieldAlert,
   Database,
@@ -211,7 +212,7 @@ export const AboutPage: React.FC = () => {
           </h2>
         </div>
         <p className="text-sm text-slate-300 leading-relaxed">
-          To evaluate whether multi-factor similarity matching provides predictive utility over simple rules, we conducted grouped leave-one-out cross-validation (Grouped LOOCV) grouped by fuel material and sample geometry (110 independent test groups across 132 usable solid runs), benchmarked against a baseline single-parameter oxygen threshold rule:
+          To evaluate whether multi-factor similarity matching provides predictive utility over simple rules, we conducted grouped leave-one-group-out cross-validation (Grouped LOOCV) grouped strictly by physical sample hardware (110 independent test groups across 132 usable solid runs), benchmarked against a baseline single-parameter oxygen threshold rule:
         </p>
 
         <div className="overflow-x-auto rounded-2xl border border-white/10 bg-slate-900/40">
@@ -227,20 +228,20 @@ export const AboutPage: React.FC = () => {
             <tbody className="divide-y divide-white/5 text-slate-300 text-xs">
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Overall Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">92.42% (122/132)</td>
-                <td className="p-3 sm:p-4 text-slate-300">91.67% (121/132)</td>
-                <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.000)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">80.30% (106/132)</td>
+                <td className="p-3 sm:p-4 text-slate-300">79.55% (105/132)</td>
+                <td className="p-3 sm:p-4 text-slate-400">+0.76% [-4.55%, +6.82%] (p=1.0000)</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Balanced Accuracy</td>
-                <td className="p-3 sm:p-4 text-cyan-400">87.89%</td>
-                <td className="p-3 sm:p-4 text-slate-300">85.55%</td>
+                <td className="p-3 sm:p-4 text-cyan-400">46.72%</td>
+                <td className="p-3 sm:p-4 text-slate-300">44.38%</td>
                 <td className="p-3 sm:p-4 text-slate-400">+2.34% [-5.88%, +10.85%]</td>
               </tr>
               <tr>
                 <td className="p-3 sm:p-4 font-sans font-semibold text-white">Extinction Recall</td>
-                <td className="p-3 sm:p-4 text-cyan-400">84.00% (21/25)</td>
-                <td className="p-3 sm:p-4 text-slate-300">76.00% (19/25)</td>
+                <td className="p-3 sm:p-4 text-cyan-400">48.00% (12/25)</td>
+                <td className="p-3 sm:p-4 text-slate-300">40.00% (10/25)</td>
                 <td className="p-3 sm:p-4 text-slate-400">+8.00% [-16.67%, +33.33%]</td>
               </tr>
             </tbody>
@@ -248,11 +249,144 @@ export const AboutPage: React.FC = () => {
         </div>
 
         <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-800/40 text-xs text-slate-300 space-y-2">
-          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding:</strong>
+          <strong className="block text-cyan-300 font-semibold">Honest Epistemic Finding & Retraction:</strong>
           <p>
-            Because every 95% bootstrap confidence interval for the performance difference spans zero, the multi-factor kNN matcher demonstrates <strong>no statistically validated performance advantage</strong> over a simple oxygen threshold rule.
+            Under strict grouped leave-one-group-out cross-validation across all 110 independent hardware groups, the multi-factor kNN matcher achieves <strong>80.30% overall accuracy (106/132)</strong>, <strong>46.72% balanced accuracy</strong>, and <strong>48.00% extinction recall (12/25)</strong>. Because every 95% bootstrap confidence interval for the performance difference spans zero and exact McNemar test yields p = 1.0000, multi-factor matching demonstrates <strong>no statistically validated performance advantage</strong> over a single oxygen threshold rule.
+          </p>
+          <p className="text-slate-400">
+            <strong>Retraction of Ungrouped Figures:</strong> Earlier development snapshots reported 92.42% overall accuracy, 87.89% balanced accuracy, and 84.00% extinction recall. As proven in our validation audit (<code>docs/VALIDATION.md</code>), those figures were an artifact of ungrouped sample-level cross-validation, where repeated burns of identical physical samples leaked between training and test folds.
+          </p>
+          <p>
             The system's true purpose and value is therefore not outcome forecasting, but <strong>epistemic provenance retrieval</strong>: instantly providing astronautical engineers with the raw flight records, physical test conditions, DOI citations, and primary data tables from real NASA missions.
           </p>
+        </div>
+      </section>
+
+      {/* Fire Response Console Methodology */}
+      <section className="space-y-4 pt-4 border-t border-slate-800">
+        <h2 className="text-xl font-bold font-serif text-white flex items-center gap-2">
+          <ShieldAlert className="w-5 h-5 text-rose-400" />
+          Fire Response & Smoke Containment Simulation
+        </h2>
+        <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-xs text-slate-300 space-y-3">
+          <p>
+            The <strong>Fire Response Console</strong> (<code>/response</code>) demonstrates emergency response containment, multi-sensor alarm discrimination, and ventilation isolation in microgravity habitats.
+          </p>
+          <ul className="list-disc pl-5 space-y-1 text-slate-400">
+            <li><strong>Transport Modeling:</strong> Microgravity smoke transport along duct networks is grounded in qualitative findings from NASA SAME (NTRS-20130000422). Absence of buoyant convection means smoke disperses via forced ventilation and duct mixing rather than rising.</li>
+            <li><strong>Multi-Channel Heuristic Fusion:</strong> Evaluates coincident obscuration, carbon monoxide (ppm), and thermal rate-of-rise over a sustained persistence window to reject transient non-fire dust and cleaning aerosols.</li>
+            <li><strong>Emergency Sequencing:</strong> Progression follows NASA ISS procedures (NTRS-20030053429) and water mist extinguishing research (NTRS-20130011664). In crewed mode, fire suppression agent discharge strictly requires human verification to safeguard cabin breathing volumes.</li>
+          </ul>
+
+          {/* 4-Row Epistemic Transparency Table: Real-Data Trained vs Simulated */}
+          <div className="pt-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 font-mono mb-2">
+              Epistemic Audit: Real-Data Trained vs. Simulated Components
+            </h3>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/60 overflow-hidden">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-slate-900 text-slate-400 border-b border-slate-800">
+                  <tr>
+                    <th className="py-2 px-3">Subsystem</th>
+                    <th className="py-2 px-3">Implementation</th>
+                    <th className="py-2 px-3">Grounding / Training Source</th>
+                    <th className="py-2 px-3">Operational Boundary & Caveats</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                  <tr>
+                    <td className="py-2.5 px-3 font-semibold text-cyan-300">Detector Fusion (M2)</td>
+                    <td className="py-2.5 px-3">L2 Logistic Classifier + Conformal Abstention</td>
+                    <td className="py-2.5 px-3">Ground EN54 room & industrial hall (DOIs: 10.17632/npk2zcm85h.2, 10.17632/yghykzm4km.1)</td>
+                    <td className="py-2.5 px-3 text-amber-300">Trained on Earth-gravity data. Not validated in microgravity. Evaluates behavioral consistency on simulated streams.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-3 font-semibold text-cyan-300">Detector Response (M1)</td>
+                    <td className="py-2.5 px-3">Calibrated Response Curve + Domain Check</td>
+                    <td className="py-2.5 px-3">130 NASA SAME / SAME-R flight runs on ISS (PSI-101/102, PMC7918997)</td>
+                    <td className="py-2.5 px-3 text-slate-400">Calibrated on microgravity flight tests. Abstains outside empirical particle size range [0.035, 1.07] µm.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-3 font-semibold text-cyan-300">Extinction Boundary (M4)</td>
+                    <td className="py-2.5 px-3">Conformal Logistic Extinction Classifier</td>
+                    <td className="py-2.5 px-3">274 NASA FLEX / FLEX-2 droplet burns on ISS (PSI-69/68)</td>
+                    <td className="py-2.5 px-3 text-amber-300">Droplet flames in ISS microgravity (FLEX). Not cabin solid fuels. Informs physical boundaries; never auto-triggers.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2.5 px-3 font-semibold text-cyan-300">Transport & Sequencer</td>
+                    <td className="py-2.5 px-3">1D Advection-Dispersion Compartment Network</td>
+                    <td className="py-2.5 px-3">Qualitative transport from NASA SAME (NTRS-20130000422) & ISS Procedures (NTRS-20030053429)</td>
+                    <td className="py-2.5 px-3 text-slate-400">Simulated sensor data. Not flight software. Assumes well-mixed zone compartments.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {/* Primary Dataset Citations & Open Licenses (Creative Commons & Public Domain) */}
+          <div className="pt-3">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-200 font-mono mb-2">
+              Primary Dataset Citations & Open Licenses (ml_manifest.json)
+            </h3>
+            <div className="rounded-xl border border-slate-800 bg-slate-950/60 overflow-hidden">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-slate-900 text-slate-400 border-b border-slate-800">
+                  <tr>
+                    <th className="py-2 px-3">ID</th>
+                    <th className="py-2 px-3">Dataset Title & Primary Reference</th>
+                    <th className="py-2 px-3">DOI / Source</th>
+                    <th className="py-2 px-3">License</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D1</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (EN54 Room) · Pascal Vorwerk et al., Otto von Guericke University Magdeburg</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/npk2zcm85h.2" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/npk2zcm85h.2</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D2</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (Industrial Hall) · Pascal Vorwerk et al., Otto von Guericke University Magdeburg</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/yghykzm4km.1" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/yghykzm4km.1</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D3</td>
+                    <td className="py-2 px-3">Indoor Fire Dataset (Small Scale Test Chamber) · Pascal Vorwerk et al.</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.17632/m85f9h6g9j.1" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.17632/m85f9h6g9j.1</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">CC BY 4.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D4</td>
+                    <td className="py-2 px-3">Smoke Aerosol Measurement Experiment (SAME / PSI-102) · David L. Urban et al., NASA GRC</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/gd4k-8h62" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/gd4k-8h62</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D5</td>
+                    <td className="py-2 px-3">Smoke Aerosol Measurement Experiment-Reflight (SAME-R / PSI-101) · David L. Urban et al., NASA GRC</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/2np7-jv14" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/2np7-jv14</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                  <tr>
+                    <td className="py-2 px-3 font-bold text-cyan-300">D6</td>
+                    <td className="py-2 px-3">Flame Extinguishment Experiment (FLEX / PSI-69 & FLEX-2 / PSI-68) · Forman A. Williams et al., NASA PSI</td>
+                    <td className="py-2 px-3"><a href="https://doi.org/10.60555/psi-69-flex" target="_blank" rel="noreferrer" className="text-cyan-400 hover:underline">10.60555/psi-69-flex</a></td>
+                    <td className="py-2 px-3"><span className="rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 text-[10px]">CC0-1.0</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="pt-2">
+            <Link
+              to="/response"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-medium transition-colors text-xs"
+            >
+              <span>Explore Fire Response Console</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>
