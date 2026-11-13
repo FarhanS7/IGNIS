@@ -183,4 +183,12 @@ test('Event-Driven Educational Narration Segments & Epistemic Verification', asy
       );
     }
   });
+
+  await t.test('every guided cue provides keyTakeaway and structured educational bullets', () => {
+    const guidedCues = deriveNarrationCues(timeline, habitat, true);
+    for (const cue of guidedCues) {
+      assert.ok(cue.keyTakeaway && cue.keyTakeaway.length > 10, `Cue ${cue.id} missing keyTakeaway`);
+      assert.ok(cue.bullets && cue.bullets.length >= 3, `Cue ${cue.id} must have at least 3 bullets`);
+    }
+  });
 });

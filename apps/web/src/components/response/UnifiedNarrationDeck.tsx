@@ -9,6 +9,9 @@ import {
   VolumeX,
   ChevronUp,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
 } from 'lucide-react';
 
 export interface UnifiedNarrationDeckProps {
@@ -21,8 +24,19 @@ export interface UnifiedNarrationDeckProps {
   onToggleMute: () => void;
   onVolumeChange?: (vol: number) => void;
   onReplayCue: () => void;
+  onSelectStage?: (stageNumber: number) => void;
+  onNextStage?: () => void;
+  onPrevStage?: () => void;
   className?: string;
 }
+
+const STAGES = [
+  { num: 1, label: 'Fire Physics', short: 'Physics' },
+  { num: 2, label: 'AI Detection', short: 'AI Detection' },
+  { num: 3, label: 'Alarm', short: 'Alarm' },
+  { num: 4, label: 'Containment', short: 'Containment' },
+  { num: 5, label: 'Protection', short: 'Protection' },
+];
 
 export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
   scene,
@@ -33,6 +47,9 @@ export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
   onToggleSubtitles,
   onToggleMute,
   onReplayCue,
+  onSelectStage,
+  onNextStage,
+  onPrevStage,
   className = '',
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -79,8 +96,36 @@ export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
     <section
       role="region"
       aria-label="Event Explanation Card"
-      className={`bg-[#060b14]/92 border border-slate-800 rounded-xl shadow-xl backdrop-blur-md text-left transition-all ${className}`}
+      className={`bg-[#060b14]/94 border border-slate-800 rounded-xl shadow-2xl backdrop-blur-md text-left transition-all ${className}`}
     >
+      {/* 5-Stage Interactive Selector Pills (Approach B Walkthrough) */}
+      <div className="px-3 pt-2 pb-1.5 border-b border-slate-800/60 flex items-center justify-between gap-1 overflow-x-auto">
+        <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 shrink-0 mr-1 flex items-center gap-1">
+          <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+          <span>Stage:</span>
+        </span>
+        <div className="flex items-center gap-1 min-w-0">
+          {STAGES.map((s) => {
+            const isCurrent = currentStageNumber === s.num;
+            return (
+              <button
+                key={s.num}
+                type="button"
+                onClick={() => onSelectStage?.(s.num)}
+                className={`px-2 py-0.5 rounded text-[11px] font-mono transition-all shrink-0 cursor-pointer ${
+                  isCurrent
+                    ? 'bg-cyan-500/25 border border-cyan-400 text-cyan-200 shadow-[0_0_8px_rgba(58,215,255,0.3)] font-bold'
+                    : 'bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                }`}
+                title={`Jump to Stage ${s.num}: ${s.label}`}
+              >
+                {s.num}. {s.short}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Subtitles Banner (when enabled and active) */}
       {settings.areSubtitlesEnabled && activeCue && (
         <div
@@ -110,28 +155,78 @@ export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
         </div>
       )}
 
-      {/* Expanded Storyboard Details (collapsible on demand) */}
+      {/* Expanded Storyboard & Science Breakdown Details */}
       {isExpanded && (
-        <div className="p-3 border-b border-slate-800/80 space-y-1.5 font-sans">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] font-bold text-cyan-300 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-500/40">
-              Scene {scene.sceneNumber}/{scene.totalScenes}
-            </span>
-            {scene.provenance && (
-              <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">
-                {scene.provenance}
+        <div className="p-3.5 border-b border-slate-800/80 space-y-2.5 font-sans bg-slate-950/70">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] font-bold text-cyan-300 bg-cyan-950/80 px-1.5 py-0.5 rounded border border-cyan-500/40">
+                Scene {scene.sceneNumber}/{scene.totalScenes}
               </span>
-            )}
-            <span className="font-mono text-[10px] text-slate-400 uppercase">
-              {scene.category}
-            </span>
+              {scene.provenance && (
+                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">
+                  {scene.provenance}
+                </span>
+              )}
+              <span className="font-mono text-[10px] text-slate-400 uppercase">
+                {scene.category}
+              </span>
+            </div>
+
+            {/* Stepper buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={onPrevStage}
+                disabled={currentStageNumber <= 1}
+                className="px-2 py-0.5 rounded text-[11px] font-mono bg-slate-900 border border-slate-800 text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Previous stage"
+              >
+                ← Prev
+              </button>
+              <button
+                type="button"
+                onClick={onNextStage}
+                disabled={currentStageNumber >= 5}
+                className="px-2 py-0.5 rounded text-[11px] font-mono bg-cyan-950 border border-cyan-500/50 text-cyan-200 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                title="Next stage"
+              >
+                Next →
+              </button>
+            </div>
           </div>
-          <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight">
-            {scene.title}
-          </h4>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            {scene.plainSummary}
-          </p>
+
+          <div>
+            <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight">
+              {scene.title}
+            </h4>
+            <p className="text-xs text-slate-300 leading-relaxed mt-1">
+              {scene.plainSummary}
+            </p>
+          </div>
+
+          {/* Key Takeaway Box */}
+          {activeCue?.keyTakeaway && (
+            <div className="text-xs text-cyan-200/90 font-medium bg-cyan-950/40 border border-cyan-800/40 p-2 rounded-lg leading-relaxed">
+              <span className="font-bold text-cyan-400 mr-1">Key Insight:</span>
+              <span>{activeCue.keyTakeaway}</span>
+            </div>
+          )}
+
+          {/* Structured Educational Bullets */}
+          {activeCue?.bullets && activeCue.bullets.length > 0 && (
+            <ul className="space-y-1.5 text-xs text-slate-300 pt-0.5">
+              {activeCue.bullets.map((bullet, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-2 bg-slate-900/70 p-2 rounded-md border border-slate-800/70"
+                >
+                  <span className="text-cyan-400 font-bold shrink-0 mt-0.5">•</span>
+                  <span className="leading-relaxed">{bullet}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 
@@ -142,6 +237,34 @@ export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
           aria-label="Narration and Audio Controls"
           className="flex items-center gap-1.5 flex-wrap"
         >
+          {/* Previous Stage Quick Step */}
+          {onPrevStage && (
+            <button
+              type="button"
+              onClick={onPrevStage}
+              disabled={currentStageNumber <= 1}
+              className="p-1 rounded text-slate-400 hover:text-cyan-300 disabled:opacity-30 disabled:hover:text-slate-400 transition-colors"
+              title="Previous stage"
+              aria-label="Previous educational stage"
+            >
+              <ChevronLeft className="h-3.5 w-3.5" />
+            </button>
+          )}
+
+          {/* Next Stage Quick Step */}
+          {onNextStage && (
+            <button
+              type="button"
+              onClick={onNextStage}
+              disabled={currentStageNumber >= 5}
+              className="p-1 rounded text-slate-400 hover:text-cyan-300 disabled:opacity-30 disabled:hover:text-slate-400 transition-colors"
+              title="Next stage"
+              aria-label="Next educational stage"
+            >
+              <ChevronRight className="h-3.5 w-3.5" />
+            </button>
+          )}
+
           {/* Voice Toggle */}
           <button
             type="button"
@@ -212,7 +335,7 @@ export const UnifiedNarrationDeck: React.FC<UnifiedNarrationDeckProps> = ({
             <span>Explore why</span>
           </button>
 
-          {/* Optional Expand / Collapse Details Button */}
+          {/* Expand / Collapse Details Button */}
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="p-1 rounded text-slate-500 hover:text-slate-300 transition-colors"

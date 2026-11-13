@@ -231,6 +231,33 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     }
   };
 
+  // Educational Stage Walkthrough (Approach B) Handlers
+  const handleSelectStage = useCallback(
+    (stageNum: number) => {
+      pause();
+      let targetT = 0.0;
+      if (stageNum === 1) targetT = 2.0;
+      else if (stageNum === 2) targetT = 7.5;
+      else if (stageNum === 3) targetT = timeline.clocks.cal.alarmTime_s ?? 12.0;
+      else if (stageNum === 4) targetT = 18.0;
+      else if (stageNum === 5) targetT = 28.5;
+      seek(targetT);
+    },
+    [pause, seek, timeline.clocks.cal.alarmTime_s]
+  );
+
+  const currentStageNum = activeCue?.stageNumber ?? currentScene.sceneNumber ?? 1;
+
+  const handleNextStage = useCallback(() => {
+    const next = Math.min(5, currentStageNum + 1);
+    handleSelectStage(next);
+  }, [currentStageNum, handleSelectStage]);
+
+  const handlePrevStage = useCallback(() => {
+    const prev = Math.max(1, currentStageNum - 1);
+    handleSelectStage(prev);
+  }, [currentStageNum, handleSelectStage]);
+
   // Plain-English single-sentence current event caption
   const currentEventCaption = useMemo(() => {
     const originZone = currentHabitat.zones.find((z) => z.id === timeline.scenario.sourceZoneId);
@@ -448,6 +475,9 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
               onToggleMute={toggleMute}
               onVolumeChange={setVolume}
               onReplayCue={replayCurrentCue}
+              onSelectStage={handleSelectStage}
+              onNextStage={handleNextStage}
+              onPrevStage={handlePrevStage}
             />
           </div>
         )}
@@ -616,7 +646,12 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
           <GuidedProgressSequence
             t={t}
             duration_s={timeline.duration_s}
-            onSeek={seek}
+            onSeek={(seekTime) => {
+              if (experienceMode === 'guided') {
+                pause();
+              }
+              seek(seekTime);
+            }}
           />
         </div>
       </footer>

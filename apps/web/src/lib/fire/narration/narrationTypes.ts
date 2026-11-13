@@ -24,6 +24,8 @@ export interface NarrationCue {
   highlightWords?: string[];
   soundEffect?: SoundEffectType;
   category: 'OBSERVATION' | 'DETECTOR' | 'ALARM' | 'COMMAND' | 'CONFIRMATION' | 'OUTCOME';
+  keyTakeaway?: string;
+  bullets?: string[];
 }
 
 export interface NarrationAudioSettings {

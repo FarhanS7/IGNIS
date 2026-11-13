@@ -76,6 +76,12 @@ export function deriveNarrationCues(
           `spherical diffusion flame — no rising smoke, no flickering.`,
         highlightWords: ['microgravity', 'spherical diffusion', 'no buoyancy', originName],
         category: 'OBSERVATION',
+        keyTakeaway: 'In microgravity, zero buoyant convection collapses fire into a slow, spherical diffusion ball that does not rise.',
+        bullets: [
+          'No Buoyant Convection: Warm gas is not lighter than cold gas; heat and smoke do not rise.',
+          'Spherical Diffusion Flame: The flame is quiet, rounded, and burns only by slow molecular diffusion.',
+          'Detection Challenge: Conventional ceiling-mounted detectors miss it because smoke drifts along vents instead of rising.',
+        ],
       },
 
       // ── Stage 2: AI/ML Detection Advantage (→ just before alarm) ──
@@ -112,6 +118,12 @@ export function deriveNarrationCues(
           'false alarms',
         ],
         category: 'DETECTOR',
+        keyTakeaway: 'Standard smoke detectors wait for 2.5%/m smoke and trigger false alarms from dust; IGNIS AI fuses 1.2%/m particulate, CO, and temperature to detect earlier without false alarms.',
+        bullets: [
+          'Standard Detector: 2.5%/m single-channel obscuration threshold; slow in zero-g and easily tripped by floating dust/lint.',
+          'IGNIS SAME-R AI: Calibrated fusion of 1.2%/m particulate + Carbon Monoxide (CO) + thermal rate over a 6s persistence window.',
+          'Earlier & Cleaner: Detects smoldering fire seconds faster while cross-validating chemical and thermal channels to reject dust.',
+        ],
       },
 
       // ── Stage 3: Alarm Consensus (alarm time → +3s) ──
@@ -138,6 +150,12 @@ export function deriveNarrationCues(
         highlightWords: ['consensus', 'alarm latched', originName, 'multi-sensor fusion', 'false alarms'],
         soundEffect: 'alarm',
         category: 'ALARM',
+        keyTakeaway: 'Multiple independent sensor channels must agree before latching an alarm, preventing disruptive false station evacuations.',
+        bullets: [
+          'Consensus Gating: Particulate obscuration must correlate with elevated CO and thermal change.',
+          'Zero False Evacuations: Eliminates nuisance alarms that disrupt science payloads and waste critical astronaut hours.',
+          'Containment Latched: Once confirmed, the system immediately initializes the automated response sequencer.',
+        ],
       },
 
       // ── Stage 4: Automated AI-Driven Response (→ ~27s) ──
@@ -172,6 +190,13 @@ export function deriveNarrationCues(
         ],
         soundEffect: 'confirm',
         category: 'COMMAND',
+        keyTakeaway: 'A 4-step autonomous containment chain executes in seconds—power cut, ventilation sealed, oxygen starved, suppressant discharged.',
+        bullets: [
+          '1. Power Cut: Removes electrical power from equipment racks to prevent electrical arc re-ignition.',
+          '2. Ventilation Dampers Sealed: High-speed dampers close to trap toxic gases away from crew quarters.',
+          '3. Makeup Oxygen Inhibited: Cabin O₂ injection is shut down to starve the combustion reaction.',
+          '4. Suppression Discharged: Clean suppressant blankets the compartment. (Human gate required in crewed mode).',
+        ],
       },
 
       // ── Stage 5: Outcome & Lives Saved (~27s → 36s) ──
@@ -208,6 +233,12 @@ export function deriveNarrationCues(
           : ['Fire suppressed', originName, 'thermal cooling', 'containment boundaries'],
         soundEffect: 'resolved',
         category: 'OUTCOME',
+        keyTakeaway: 'Faster AI detection combined with automated containment prevents toxic smoke spread, preserves station oxygen, and protects crew lives.',
+        bullets: [
+          'Crew Lives Protected: Immediate vent isolation prevents toxic combustion gases from entering crew living quarters.',
+          'Station Assets Preserved: Fast cooling prevents structural hull damage and avoids venting irreplaceable oxygen.',
+          'Epistemic Grounding: Tested against spaceflight combustion data. Simulated. Not flight software.',
+        ],
       },
     ];
   }
@@ -247,6 +278,12 @@ export function deriveNarrationCues(
         `standard detectors can miss it.`,
       highlightWords: ['spherical diffusion', 'buoyancy', 'microgravity', 'ventilation currents'],
       category: 'OBSERVATION',
+      keyTakeaway: 'In microgravity, zero buoyant convection collapses fire into a spherical diffusion ball.',
+      bullets: [
+        'Zero Buoyancy: Hot combustion products do not rise.',
+        'Diffusion Flame: Flame burns in a quiet sphere.',
+        'Ventilation Drift: Smoke moves only where cabin airflow pushes it.',
+      ],
     },
 
     // ── Explore Stage 2: AI/ML Detection Deep Dive ──
@@ -278,6 +315,12 @@ export function deriveNarrationCues(
         `Trained on Earth-gravity data. Not validated in microgravity.`,
       highlightWords: [originName, 'multi-channel fusion', '1.2 percent per meter', 'persistence window', 'carbon monoxide'],
       category: 'DETECTOR',
+      keyTakeaway: 'Multi-sensor fusion correlates obscuration, CO, and temperature rate over 6s to detect fire earlier and reject dust.',
+      bullets: [
+        'Standard: 2.5%/m obscuration single-channel.',
+        'IGNIS SAME-R: 1.2%/m + CO + temp rate over 6s window.',
+        'Advantage: Catches smolder faster; rejects false dust spikes.',
+      ],
     },
 
     // ── Explore Stage 3: Alarm Consensus & False Alarm Reduction ──
@@ -307,6 +350,12 @@ export function deriveNarrationCues(
       highlightWords: ['consensus alarm', originName, 'nuisance alarms', 'crew time', 'multi-channel verification'],
       soundEffect: 'alarm',
       category: 'ALARM',
+      keyTakeaway: 'Consensus alarm latches only when multiple independent channels agree, eliminating disruptive false alarms.',
+      bullets: [
+        'Multi-Sensor Check: Particulate must correlate with gas and thermal changes.',
+        'Zero False Alarms: Prevents unnecessary crew evacuations.',
+        'Sequencer Armed: Initializes autonomous containment upon confirmation.',
+      ],
     },
 
     // ── Explore Stage 4: Automated Response Sequence ──
@@ -336,6 +385,13 @@ export function deriveNarrationCues(
       highlightWords: ['power isolated', 'dampers sealed', 'oxygen inhibited', 'suppression agent', originName],
       soundEffect: 'confirm',
       category: 'COMMAND',
+      keyTakeaway: 'Autonomous containment chain isolates power, seals ventilation ducts, shuts off oxygen, and deploys suppressant.',
+      bullets: [
+        'Power Cut: Eliminates re-ignition sources.',
+        'Vent Dampers Sealed: Stops toxic gas migration.',
+        'Oxygen Inhibited: Starves flame of fresh O2.',
+        'Suppressant Released: Blankets compartment.',
+      ],
     },
 
     // ── Explore Stage 5: Outcome & Impact ──
@@ -374,6 +430,12 @@ export function deriveNarrationCues(
         : ['Fire suppressed', originName, 'thermal decay', 'containment boundaries'],
       soundEffect: 'resolved',
       category: 'OUTCOME',
+      keyTakeaway: 'Early detection and autonomous containment reduce crew exposure, minimize damage, and preserve life-support.',
+      bullets: [
+        'Crew Protected: Toxic gas contained within origin module.',
+        'Resources Saved: Critical station atmosphere preserved.',
+        'Epistemic Truth: Simulated. Not flight software.',
+      ],
     },
   ];
 }

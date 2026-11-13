@@ -51,7 +51,7 @@ export function useNarration({
   timeline,
   habitat,
   t,
-  isPlaying,
+  isPlaying: _isPlaying,
   isGuidedMode = true,
 }: UseNarrationOptions) {
   const [settings, setSettings] = useState<NarrationAudioSettings>(() => loadStoredSettings());
@@ -185,24 +185,18 @@ export function useNarration({
     [settings, speakCue]
   );
 
-  // Synchronized Trigger Loop: triggers narration once when entering each segment
+  // Synchronized Trigger Loop: triggers narration once when entering each segment (whether playing or paused)
   useEffect(() => {
-    if (!isPlaying) {
-      cancelSpeech(true);
-      return;
-    }
-
     if (!activeCue) {
-      // Past end of all cues — don't force-cancel (let last utterance finish)
       return;
     }
 
-    // Trigger segment only once on entry
+    // Trigger segment once on entry to new cue
     if (activeCue.id !== lastTriggeredCueIdRef.current) {
       lastTriggeredCueIdRef.current = activeCue.id;
       playCue(activeCue);
     }
-  }, [isPlaying, activeCue, playCue, cancelSpeech]);
+  }, [activeCue, playCue]);
 
   // Reset trigger ref when seeking backwards
   useEffect(() => {
