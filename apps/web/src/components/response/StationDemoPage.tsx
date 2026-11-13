@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { FuelType, SequencerMode } from '../../lib/fire/types.ts';
 import { getHabitatById, getHabitatPresets } from '../../lib/fire/habitat.ts';
@@ -21,11 +21,15 @@ import { useNarration } from '../../lib/fire/narration/useNarration.ts';
 import { UnifiedNarrationDeck } from './UnifiedNarrationDeck.tsx';
 import { GuidedProgressSequence } from './GuidedProgressSequence.tsx';
 import { DetailsMenuDrawer } from './DetailsMenuDrawer.tsx';
+import { JudgeExecutiveSummaryModal } from './JudgeExecutiveSummaryModal.tsx';
 import {
   Pause,
   Play,
   RotateCcw,
   Sliders,
+  Zap,
+  Trophy,
+  Info,
 } from 'lucide-react';
 
 export interface StationDemoPageProps {
@@ -100,6 +104,23 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     restart();
   };
 
+  // Auto-Pace: Pauses simulation during voice narration so speech finishes naturally, then smoothly resumes
+  const wasPlayingBeforeSpeechRef = useRef<boolean>(false);
+
+  const handleAutoPacePause = useCallback(() => {
+    if (isPlaying) {
+      wasPlayingBeforeSpeechRef.current = true;
+      pause();
+    }
+  }, [isPlaying, pause]);
+
+  const handleAutoPaceResume = useCallback(() => {
+    if (wasPlayingBeforeSpeechRef.current) {
+      wasPlayingBeforeSpeechRef.current = false;
+      play();
+    }
+  }, [play]);
+
   // Synchronized Voice Narration & Guided Audio
   const {
     activeCue,
@@ -115,10 +136,16 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     t,
     isPlaying,
     isGuidedMode: experienceMode === 'guided',
+    onAutoPacePause: handleAutoPacePause,
+    onAutoPaceResume: handleAutoPaceResume,
   });
 
   // Human Gate State in CREWED Mode
   const [hasConfirmedCrewSuppression, setHasConfirmedCrewSuppression] = useState<boolean>(false);
+
+  // Executive Judge Modal & Info Drawer States
+  const [isJudgeModalOpen, setIsJudgeModalOpen] = useState<boolean>(false);
+  const [isWhy13sOpen, setIsWhy13sOpen] = useState<boolean>(false);
 
   // Details Menu & Drawer States
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
@@ -258,9 +285,22 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
     handleSelectStage(prev);
   }, [currentStageNum, handleSelectStage]);
 
+  // Origin zone and live sensor telemetry (deterministic timeline slice)
+  const originZone = useMemo(() => {
+    return currentHabitat.zones.find((z) => z.id === timeline.scenario.sourceZoneId);
+  }, [currentHabitat.zones, timeline.scenario.sourceZoneId]);
+
+  const stepIdx = Math.min(
+    timeline.steps.length - 1,
+    Math.max(0, Math.floor(t / timeline.dt_s))
+  );
+  const originSeries = timeline.zoneSeries[timeline.scenario.sourceZoneId];
+  const liveObscuration = originSeries?.smokeObscuration[stepIdx] ?? 0;
+  const liveCoPpm = originSeries?.coPpm[stepIdx] ?? 0;
+  const liveTempC = originSeries?.temperature_c[stepIdx] ?? 21.0;
+
   // Plain-English single-sentence current event caption
   const currentEventCaption = useMemo(() => {
-    const originZone = currentHabitat.zones.find((z) => z.id === timeline.scenario.sourceZoneId);
     const originName = originZone?.name.replace(/\(.*\)/, '').trim() || 'the station';
 
     if (frameState.isFireExtinguished) {
@@ -282,7 +322,7 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
       return `Smoke detected in ${originName}`;
     }
     return 'Smoke begins spreading through the station';
-  }, [currentHabitat, timeline.scenario.sourceZoneId, frameState, mode, timeline.clocks.cal.alarmTime_s, t]);
+  }, [originZone, frameState, mode, timeline.clocks.cal.alarmTime_s, t]);
 
   // Lead time difference calculation (honest comparison from active timeline)
   const stdAlarmTime = timeline.clocks.std.alarmTime_s;
@@ -407,6 +447,35 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
               <option value="pmma">PMMA / Acrylic</option>
               <option value="silicone">Silicone Wire</option>
             </select>
+
+            {/* "See AI Win" Material Switcher (Feature 3) */}
+            {fuel !== 'teflon' ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setFuel('teflon');
+                  restart();
+                }}
+                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/40 hover:border-cyan-400 text-cyan-300 hover:text-cyan-100 text-[11px] font-sans transition-all shadow-[0_0_12px_rgba(58,215,255,0.15)] hover:shadow-[0_0_16px_rgba(58,215,255,0.3)] active:scale-95 cursor-pointer"
+                title="Switch to Teflon wire overheating to see SAME-R multi-sensor alarm ~10s faster than optical detector"
+              >
+                <Zap className="h-3 w-3 text-cyan-400 fill-cyan-400/20" />
+                <span>See AI Win: Test Teflon Wire</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setFuel('cellulose');
+                  restart();
+                }}
+                className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/50 text-emerald-300 hover:text-emerald-100 text-[11px] font-sans transition-all active:scale-95 shadow-[0_0_12px_rgba(16,185,129,0.2)] cursor-pointer"
+                title="Teflon wire active (sub-micron smoke). Click to revert to Cellulose."
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span>Teflon Active (AI ~10s faster) · Revert</span>
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -427,17 +496,65 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
       <main className="relative flex-1 min-h-[380px] max-h-[580px] bg-[#03060c] border-b border-slate-800/80 overflow-hidden flex flex-col justify-between">
         {/* At most ONE caption line over canvas */}
         <div className="absolute top-3 left-3 z-10 pointer-events-none">
-          <span className="px-3 py-1 rounded-full bg-[#09111c]/90 border border-slate-700/80 text-xs font-sans text-slate-200 shadow-md">
+          <span className="px-3 py-1 rounded-full bg-[#060b14]/85 backdrop-blur-xl border border-white/10 text-xs font-sans text-slate-200 shadow-md">
             {currentEventCaption}
           </span>
         </div>
 
-        {/* ONE Details Menu Button at Top Right (Layout H) */}
-        <div className="absolute top-3 right-3 z-20">
+        {/* Floating Atmospheric Telemetry HUD (Feature 2) */}
+        <div className="absolute top-3 inset-x-0 hidden md:flex justify-center pointer-events-none z-10 px-4">
+          <div className="flex items-center gap-3 px-3.5 py-1 rounded-full bg-[#060b14]/85 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)] text-xs font-sans text-slate-200">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="font-mono text-[10px] text-slate-400 uppercase tracking-wider">{originZone?.name.replace(/\(.*\)/, '').trim() || 'Origin'}:</span>
+            </div>
+            <div className="flex items-center gap-2.5 font-mono text-[11px]">
+              <span className="flex items-center gap-1 text-slate-300">
+                <span className="text-slate-500">Smoke</span>
+                <span className={liveObscuration >= 0.012 ? 'text-amber-400 font-bold' : 'text-slate-300'}>
+                  {(liveObscuration * 100).toFixed(2)}%/m
+                </span>
+              </span>
+              <span className="text-slate-700">·</span>
+              <span className="flex items-center gap-1 text-slate-300">
+                <span className="text-slate-500">CO</span>
+                <span className={liveCoPpm >= 15 ? 'text-red-400 font-bold' : 'text-slate-300'}>
+                  {liveCoPpm.toFixed(0)} ppm
+                </span>
+              </span>
+              <span className="text-slate-700">·</span>
+              <span className="flex items-center gap-1 text-slate-300">
+                <span className="text-slate-500">Temp</span>
+                <span className="text-slate-300">{liveTempC.toFixed(1)}°C</span>
+              </span>
+              <span className="text-slate-700">·</span>
+              <span className="flex items-center gap-1">
+                <span className="text-slate-500">Ducts</span>
+                <span className={frameState.areVentsIsolated ? 'text-amber-400 font-bold' : 'text-emerald-400'}>
+                  {frameState.areVentsIsolated ? 'SEALED' : 'OPEN'}
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Top Right Action Cluster: Judge Brief & Details (Layout H) */}
+        <div className="absolute top-3 right-3 z-20 flex items-center gap-2">
+          <button
+            onClick={() => setIsJudgeModalOpen(true)}
+            aria-label="Judge Brief"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950/85 border border-cyan-500/50 hover:border-cyan-400 text-xs font-sans text-cyan-200 hover:text-white shadow-[0_0_14px_rgba(58,215,255,0.25)] hover:shadow-[0_0_20px_rgba(58,215,255,0.4)] backdrop-blur-xl transition-all cursor-pointer font-medium active:scale-95"
+            title="Executive Brief for Judges & Visitors: 30-second breakdown of microgravity physics, multi-sensor breakthrough, and sequencer"
+          >
+            <Trophy className="h-3.5 w-3.5 text-cyan-400" />
+            <span className="hidden sm:inline">Judge Brief (30s)</span>
+            <span className="sm:hidden">Brief</span>
+          </button>
+
           <button
             onClick={() => setIsDetailsOpen(true)}
             aria-label="Details"
-            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#09111c]/90 border border-slate-700/90 hover:border-cyan-400 text-xs font-sans text-slate-200 shadow-lg backdrop-blur-md transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#060b14]/85 border border-white/10 hover:border-cyan-400 text-xs font-sans text-slate-200 shadow-lg backdrop-blur-xl transition-colors cursor-pointer"
           >
             <Sliders className="h-3.5 w-3.5 text-cyan-400" />
             <span>Details</span>
@@ -523,24 +640,25 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
       </main>
 
       {/* Clocks Section (Layout D): Exactly Two Clocks + Difference Line */}
-      <div className="bg-[#060b13] border-b border-slate-800/80 px-4 py-3">
+      <div className="bg-[#030712]/90 border-b border-white/10 px-4 py-3 backdrop-blur-xl">
         <div className="max-w-xl mx-auto">
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {/* Standard detector */}
             <button
               onClick={() => setSelectedDetectorArm('std')}
               aria-label="Inspect standard baseline detector"
-              className={`p-3 rounded-xl border text-left transition-all ${
+              className={`p-3 rounded-2xl border text-left transition-all ${
                 isStdFlashing
                   ? 'border-white bg-white/30 ring-2 ring-white shadow-[0_0_20px_rgba(255,255,255,0.6)]'
                   : frameState.clocks.std.isFrozen
-                  ? 'border-red-500/60 bg-red-950/40'
-                  : 'border-slate-800 bg-[#09111c]/80'
+                  ? 'border-red-500/60 bg-red-950/40 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
+                  : 'border-white/10 bg-[#09111c]/80 hover:border-white/20'
               }`}
               title="Traditional spacecraft smoke obscuration threshold"
             >
-              <div className="text-xs font-sans text-slate-400">
-                Standard detector
+              <div className="flex items-center justify-between text-xs font-sans">
+                <span className="text-slate-400">Standard detector</span>
+                <span className="text-[10px] text-slate-500 font-mono">Single optical</span>
               </div>
               <div className="font-mono text-xl sm:text-2xl font-bold text-amber-400 mt-1">
                 {frameState.clocks.std.time_s.toFixed(1)} <span className="text-xs font-sans text-slate-400 font-normal">s</span>
@@ -548,18 +666,42 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
               <div className="text-[11px] font-mono uppercase text-slate-400 mt-0.5">
                 {frameState.clocks.std.isFrozen ? 'ALARM' : frameState.clocks.std.status}
               </div>
+
+              {/* Live Single-Channel Obscuration Bar (Feature 1) */}
+              <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-1">
+                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <span>Obscuration</span>
+                  <span className={liveObscuration >= 0.025 ? 'text-red-400 font-bold' : 'text-slate-300'}>
+                    {(liveObscuration * 100).toFixed(2)}% / 2.50%
+                  </span>
+                </div>
+                <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                  <div
+                    className={`h-full transition-all duration-150 rounded-full ${
+                      liveObscuration >= 0.025
+                        ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.7)]'
+                        : 'bg-amber-500/70'
+                    }`}
+                    style={{ width: `${Math.min(100, (liveObscuration / 0.025) * 100)}%` }}
+                  />
+                </div>
+                <div className="text-[9px] text-slate-500 flex items-center justify-between pt-0.5 font-mono">
+                  <span>Fixed threshold</span>
+                  <span className="text-amber-500/80">No dust filter</span>
+                </div>
+              </div>
             </button>
 
             {/* Calibrated detector */}
             <button
               onClick={() => setSelectedDetectorArm('cal')}
               aria-label="Inspect SAME-R calibrated multi-sensor detector"
-              className={`p-3 rounded-xl border text-left transition-all ${
+              className={`p-3 rounded-2xl border text-left transition-all ${
                 isCalFlashing
                   ? 'border-white bg-white/30 ring-2 ring-white shadow-[0_0_20px_rgba(255,255,255,0.6)]'
                   : frameState.clocks.cal.isFrozen
                   ? 'border-cyan-500/80 bg-cyan-950/45 shadow-[0_0_15px_rgba(58,215,255,0.25)]'
-                  : 'border-slate-800 bg-[#09111c]/80'
+                  : 'border-white/10 bg-[#09111c]/80 hover:border-white/20'
               }`}
               title="NASA SAME-R multi-sensor heuristic fusion (smoke + CO + thermal)"
             >
@@ -573,14 +715,104 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
               <div className="text-[11px] font-mono uppercase text-slate-400 mt-0.5">
                 {frameState.clocks.cal.isFrozen ? 'ALARM' : frameState.clocks.cal.status}
               </div>
+
+              {/* Live Multi-Sensor Bars + 6s Dust Filter Countdown (Feature 1) */}
+              <div className="mt-2.5 pt-2 border-t border-slate-800/80 space-y-1">
+                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <span>Smoke + CO Fusion</span>
+                  <span className={liveObscuration >= 0.012 && liveCoPpm >= 15 ? 'text-cyan-300 font-bold' : 'text-slate-300'}>
+                    {(liveObscuration * 100).toFixed(2)}% · {liveCoPpm.toFixed(0)}ppm
+                  </span>
+                </div>
+                <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                  <div
+                    className={`h-full transition-all duration-150 rounded-full ${
+                      calAlarmTime !== null && t >= calAlarmTime
+                        ? 'bg-cyan-400 shadow-[0_0_8px_rgba(58,215,255,0.7)]'
+                        : liveObscuration >= 0.012
+                        ? 'bg-cyan-500/70'
+                        : 'bg-slate-700'
+                    }`}
+                    style={{
+                      width: `${
+                        calAlarmTime !== null && t >= calAlarmTime
+                          ? 100
+                          : liveObscuration >= 0.012
+                          ? Math.min(100, 50 + (t - (calAlarmTime ? calAlarmTime - 6.0 : 9.0)) * 8.3)
+                          : Math.min(50, (liveObscuration / 0.012) * 50)
+                      }%`,
+                    }}
+                  />
+                </div>
+
+                {/* Dynamic 6s Dust Verification Pill */}
+                <div className="pt-0.5">
+                  {calAlarmTime !== null && t >= calAlarmTime ? (
+                    <div className="text-[9px] font-mono text-cyan-300 flex items-center justify-between">
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                        <span>True fire verified</span>
+                      </span>
+                      <span className="text-cyan-400 font-bold">Dust filtered</span>
+                    </div>
+                  ) : calAlarmTime !== null && t < calAlarmTime && liveObscuration >= 0.012 ? (
+                    <div className="text-[9px] font-mono text-amber-300 flex items-center justify-between animate-pulse">
+                      <span>⏳ Checking CO & temp:</span>
+                      <span className="font-bold">{(calAlarmTime - t).toFixed(1)}s dust filter</span>
+                    </div>
+                  ) : (
+                    <div className="text-[9px] text-slate-500 flex items-center justify-between font-mono">
+                      <span>Nominal surveillance</span>
+                      <span className="text-cyan-500/80">6s filter ready</span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </button>
           </div>
 
-          {/* Single Difference Line */}
-          <div className="text-center text-xs font-sans text-cyan-300 font-medium mt-2">
-            {calAlarmTime !== null && t >= calAlarmTime
-              ? detectorComparison.afterAlarm
-              : detectorComparison.beforeAlarm}
+          {/* Single Difference Line & Explanatory Pill */}
+          <div className="mt-2.5 p-2.5 rounded-xl bg-slate-900/60 border border-white/5 backdrop-blur-md text-center">
+            <div className="text-xs font-sans text-cyan-300 font-medium">
+              {calAlarmTime !== null && t >= calAlarmTime
+                ? detectorComparison.afterAlarm
+                : detectorComparison.beforeAlarm}
+            </div>
+            <div className="text-[10px] text-slate-400 font-sans mt-0.5">
+              {calAlarmTime !== null && calAlarmTime > (stdAlarmTime ?? 0)
+                ? 'Standard triggers at 13s on optical threshold alone. Calibrated waits 6s to cross-verify CO & temperature, preventing station dust false alarms.'
+                : 'In wire overheating, sub-micron smoke particles delay optical scattering. SAME-R multi-sensor catches combustion gas ~10s earlier.'}
+            </div>
+
+            {/* 13s vs 15s Explainer Pill (Component 3) */}
+            <div className="mt-2 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setIsWhy13sOpen(!isWhy13sOpen)}
+                className="inline-flex items-center gap-1 text-[10px] font-mono text-cyan-300 hover:text-cyan-100 bg-cyan-950/60 hover:bg-cyan-900/70 border border-cyan-500/40 px-2.5 py-0.5 rounded-full transition-colors cursor-pointer shadow-sm active:scale-95"
+              >
+                <Info className="h-3 w-3 text-cyan-400" />
+                <span>Why 13s vs 15s? {isWhy13sOpen ? 'Hide Analysis' : 'Show Analysis'}</span>
+              </button>
+            </div>
+
+            {isWhy13sOpen && (
+              <div className="mt-2.5 p-3 rounded-xl bg-slate-950/95 border border-cyan-500/30 text-left text-xs font-sans text-slate-200 animate-in fade-in space-y-2 shadow-2xl">
+                <div className="font-bold font-mono text-[10px] text-cyan-300 flex items-center justify-between border-b border-white/5 pb-1">
+                  <span>Physics Breakdown: False Alarm Rejection vs Optical Delay</span>
+                  <span className="text-[9px] text-slate-400">NASA SAME-R</span>
+                </div>
+                <div className="text-[11px] text-slate-300 leading-snug">
+                  <strong className="text-amber-400">Standard Optical (13.0s):</strong> Fixed 2.5%/m obscuration threshold with zero gas cross-check. Ambient station lint or dust triggers emergency alarms and costly crew sleep disruptions.
+                </div>
+                <div className="text-[11px] text-slate-300 leading-snug">
+                  <strong className="text-cyan-400">Calibrated Multi-Sensor (15.0s):</strong> Detects early smoke at 1.2%/m, then enforces a 6-second persistence window confirming concurrent CO rise (&gt;15 ppm). Latching at 15.0s eliminates false alarms.
+                </div>
+                <div className="text-[11px] text-slate-300 leading-snug">
+                  <strong className="text-emerald-400">Teflon Wire Overheat:</strong> Invisible sub-micron smoke delays optical scatter detection to 25.0s. IGNIS detects CO outgassing early at 15.2s — <span className="font-bold text-emerald-300">alarming nearly 10s earlier</span>!
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -710,6 +942,16 @@ export const StationDemoPage: React.FC<StationDemoPageProps> = ({ onSwitchToInsp
         timeline={timeline}
         frameState={frameState}
         t={t}
+      />
+
+      <JudgeExecutiveSummaryModal
+        isOpen={isJudgeModalOpen}
+        onClose={() => setIsJudgeModalOpen(false)}
+        onJumpToTeflon={() => {
+          setFuel('teflon');
+          restart();
+        }}
+        onExploreTimeline={() => handleToggleExperienceMode('explore')}
       />
 
       <ProofDrawerOverlay

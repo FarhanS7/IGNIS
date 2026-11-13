@@ -329,19 +329,20 @@ Clicking *"Export Evidence Brief"* generates a publication-ready scientific summ
 
 ## 9. Verification, Cross-Validation & The 5-Second UX Test
 
-### 1. Grouped Leave-One-Out Cross-Validation (LOOCV)
-To prove the reliability of the matching engine without data leakage, the matcher underwent grouped cross-validation grouped by material and experiment run blocks:
-- **Overall Accuracy**: **$92.4\%$** across flight outcome classifications.
-- **Extinction Recall**: **$88.2\%$** (flame quenching prediction).
-- **Bootstrap $95\%$ Confidence Interval**: $[0.864, 0.961]$.
-- **McNemar Test vs. Baseline Classifier**: $p < 0.001$ (statistically significant superiority over majority-class baseline).
+### 1. Grouped Leave-One-Group-Out Cross-Validation (LOOCV)
+To eliminate hardware leakage between repeated burns of the same specimen, the matcher underwent strict grouped leave-one-group-out cross-validation across **110 physical hardware groups** (132 usable solid flight runs):
+- **Overall Accuracy**: **$80.30\%$** (106/132) [$95\%$ Wilson CI: $72.7\%–86.2\%$].
+- **Balanced Accuracy**: **$46.72\%$**.
+- **Extinction Recall**: **$48.00\%$** (12/25 quenched runs identified).
+- **Paired Bootstrap vs. Single-$O_2$ Rule**: Difference $+0.76\%$ [$95\%$ Bootstrap CI: $-4.55\%, +6.82\%$], McNemar test $p = 1.0000$ (no statistically significant advantage over a single oxygen-threshold baseline).
+- **Scientific Retraction**: Earlier reported $92.42\%$ accuracy, $87.89\%$ balanced accuracy, and $84.00\%$ extinction recall were formally retracted in `docs/VALIDATION.md` after proving they were artifacts of ungrouped cross-validation where repeated burns of identical physical specimens leaked across folds.
 
-### 2. The Circularity Check
-During the development audit, BASS-II test matrix entries were audited for potential circularity between fan dial notes and extinction events. When rows deriving both flow and outcome from display notes were masked or excluded:
-- Full Dataset LOOCV: $92.4\%$ accuracy.
-- Excluded Questionable Rows: $91.8\%$ accuracy.
-- Flow Masked: $89.5\%$ accuracy.
-This confirms that the engine's predictive power stems from underlying thermodynamic correlations rather than textual artifacts.
+### 2. The Circularity Check & Flow Disentanglement
+During the development audit, BASS-II test matrix entries were audited for potential circularity where 25 flight runs had flow velocity and extinction outcome co-recorded in display notes. Under grouped CV across three conditions:
+- **Condition (a) As-Is (Full Corpus)**: $80.30\%$ accuracy, $48.00\%$ extinction recall.
+- **Condition (b) Excluding Circular Rows**: $95.33\%$ accuracy (corpus collapses to 102 recorded burns, 1 extinction, 4 no-ignitions; extinction recall drops to $0.00\%$).
+- **Condition (c) Flow Masked for Circular Rows**: $78.03\%$ accuracy, $44.00\%$ extinction recall.
+This confirms flow carries real physical information but is entangled with outcome logging in those historical rows. The matcher is therefore framed strictly as an empirical nearest-neighbor evidence locator rather than an outcome forecaster.
 
 ### 3. Automated Copy-Lint Honesty Guard
 A dedicated AST test suite (`apps/web/src/tests/copy_lint.test.ts`) inspects the UI copy to ensure strict honesty:

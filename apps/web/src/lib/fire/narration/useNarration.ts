@@ -45,6 +45,8 @@ export interface UseNarrationOptions {
   t: number;
   isPlaying: boolean;
   isGuidedMode?: boolean;
+  onAutoPacePause?: () => void;
+  onAutoPaceResume?: () => void;
 }
 
 export function useNarration({
@@ -53,8 +55,11 @@ export function useNarration({
   t,
   isPlaying: _isPlaying,
   isGuidedMode = true,
+  onAutoPacePause,
+  onAutoPaceResume,
 }: UseNarrationOptions) {
   const [settings, setSettings] = useState<NarrationAudioSettings>(() => loadStoredSettings());
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
 
   // Derive deterministic 5 coherent segments
   const cues = useMemo(() => {
@@ -69,15 +74,25 @@ export function useNarration({
   const lastTriggeredCueIdRef = useRef<string | null>(null);
   const currentUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const staggerTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const heartbeatTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Save settings on update
   useEffect(() => {
     saveStoredSettings(settings);
   }, [settings]);
 
+  const clearHeartbeat = useCallback(() => {
+    if (heartbeatTimerRef.current) {
+      clearInterval(heartbeatTimerRef.current);
+      heartbeatTimerRef.current = null;
+    }
+  }, []);
+
   // Cancel speech synthesis gracefully (let current utterance finish naturally
   // unless we are seeking backward or pausing)
   const cancelSpeech = useCallback((force = false) => {
+    clearHeartbeat();
+    setIsSpeaking(false);
     if (staggerTimerRef.current) {
       clearTimeout(staggerTimerRef.current);
       staggerTimerRef.current = null;
@@ -90,7 +105,7 @@ export function useNarration({
       }
       currentUtteranceRef.current = null;
     }
-  }, []);
+  }, [clearHeartbeat]);
 
   // Preferred natural speech synthesis voice
   const getPreferredVoice = useCallback((): SpeechSynthesisVoice | null => {
@@ -135,12 +150,31 @@ export function useNarration({
           utterance.voice = voice;
         }
 
+        utterance.onstart = () => {
+          setIsSpeaking(true);
+          clearHeartbeat();
+          // Heartbeat interval to prevent Chromium SpeechSynthesis 15s garbage collection pause
+          heartbeatTimerRef.current = setInterval(() => {
+            if (typeof window !== 'undefined' && window.speechSynthesis && window.speechSynthesis.speaking) {
+              window.speechSynthesis.pause();
+              window.speechSynthesis.resume();
+            }
+          }, 10000);
+          onAutoPacePause?.();
+        };
+
         utterance.onend = () => {
+          clearHeartbeat();
+          setIsSpeaking(false);
           currentUtteranceRef.current = null;
+          onAutoPaceResume?.();
         };
 
         utterance.onerror = () => {
+          clearHeartbeat();
+          setIsSpeaking(false);
           currentUtteranceRef.current = null;
+          onAutoPaceResume?.();
         };
 
         currentUtteranceRef.current = utterance;
@@ -149,7 +183,7 @@ export function useNarration({
         // Speech synthesis failed — subtitles continue undisturbed
       }
     },
-    [settings, getPreferredVoice]
+    [settings, getPreferredVoice, clearHeartbeat, onAutoPacePause, onAutoPaceResume]
   );
 
   // Play narration with staggered sound effect
@@ -268,6 +302,7 @@ export function useNarration({
     cues,
     activeCue,
     settings,
+    isSpeaking,
     toggleVoice,
     toggleSubtitles,
     setVolume,
